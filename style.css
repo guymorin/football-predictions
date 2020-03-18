@@ -1,0 +1,175 @@
+html, body {
+ margin: 0;
+ padding: 0;
+ background:#efd;
+ }
+body {
+ font-family: Verdana, sans-serif; 
+ font-size: 0.8em;
+ }
+h1 {
+ font: 120% sans-serif; 
+ text-transform:uppercase;
+ text-align: center;
+ }
+h2 {
+ font: 110% sans-serif; 
+ font-weight:bold;
+ }
+h3 {
+ font: 100% sans-serif; 
+ text-transform:uppercase;
+ }
+h4 {
+ font: 90% sans-serif; 
+ }
+select, input {font-size:0.8em;}
+th,td {padding:0 0.5em;}
+a{color:#095;text-decoration:none}
+a:hover{text-decoration:underline}
+
+table{font-size:0.9em;margin:0 auto;border:2px solid #582;border-radius:3px;box-shadow:1px 1px 10px 0 #9c6}
+td{border:0.1em solid #ad7}
+tr{background:#dec}
+tr:nth-child(2n) {background:#efd}
+th{padding:.4em;background:#7a5;color:white;}
+input[type='date'] {font-size:1.2em}
+input[type='number'] {width:6em;padding:1em 0}
+
+header{width:100%;padding:0;}
+header, header h1 {margin:0;}
+header h1 {background:#371;padding:.2em;border-bottom:1px solid #564}
+header a {text-decoration:none;color:white;}
+header a:hover {text-decoration:none}
+
+nav {text-align:center;background:linear-gradient(#bf7,#9d6);color:#564;margin:0;text-transform:uppercase;}
+nav a {display:inline-block;background:#5b3;color:white;padding:1em;text-decoration:none;margin:.2em 0}
+nav a:hover {background:#fff;padding:1em;color:#231;text-decoration:none}
+nav form {display:inline}
+nav form, nav select, nav label, nav input {margin:0 .5em;padding:0}
+nav label {margin-right:0.2em}
+
+section ul li {display:inline}
+
+section {clear:both;text-align:center;margin:1em 0;padding:0 1em 1em 1em;}
+
+
+
+#overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: visible;
+  opacity: 1;
+}
+
+.update {
+  margin: 7em auto;
+  padding: .2em;
+  background: white;
+  border:1px solid #cfa;
+  border-radius: 6px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+  color:black;
+}
+
+.update a {background:linear-gradient(#ad7,#8b6);color:white;border-radius:5px;border:1px solid #9c6;text-decoration:none;padding:.5em 1em}
+.update a:hover {background:#361;color:white;border-color:#361;text-decoration:none;padding:.5em 1em}
+.update p {margin:1em;}
+
+.update .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: all 20ms;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin:0;
+  padding:.1em .3em;
+  text-decoration: none;
+  background:none;border:none;color:#8b6;
+}
+.update .close:hover {background:none;border:none;color:#361;padding:.1em .3em;}
+
+
+section #changeJ {display:inline-block;margin:0 auto;text-align:center;height:3em}
+section #changeJ input[type=submit] {min-width:0;width:4em;text-align:center;margin:0 .5em}
+section #changeJ input[type=submit]:first-child{float:left}
+section #changeJ input[type=submit]:last-child{float:right}
+section #changeJ form,
+section #changeJ input,
+section #changeJ h2 {display:inline-block;margin:0;padding:0}
+section #changeJ h2 {position:relative;top:-1em;padding:1em;}
+
+section table.stats th,
+section table.stats td{width:1.5em;height:2em}
+section table.stats th:first-child{width:15em}
+
+
+section #resultats td:nth-child(3) {width:20em;}
+
+
+section #equipe_type td:nth-child(2) {width:20em;}
+
+section #criteres table {margin-bottom:1em}
+section #criteres table td:first-child {width:20em;}
+section #criteres table td:nth-child(2),
+section #criteres table td:nth-child(3),
+section #criteres table td:nth-child(4){width:10em;text-align:center}
+section #criteres table td:nth-child(3){width:3em}
+section #criteres table input[type='radio'] {margin-bottom:.3em}
+
+section input[type='submit'] {margin:.5em;min-width:10em;height:3em}
+section #criteres table.expert {border-color:#9c6;}
+section #criteres table.expert th {background:#fff;color:#f30;border-color:#f60;}
+section #criteres table.expert tr{background:#fd3}
+section #criteres table.expert tr:nth-child(2n) {background:#fe9}
+
+section ul {list-style:none;padding:.2em 0 0 0;margin:0}
+section .menu {display:inline-flex;text-align:center}
+section .menu:first-child {background:#dec;border-radius:4px;box-shadow:1px 1px 10px 0 #9c6;padding-left:.1em}
+section .menu:last-child {padding-right:.1em}
+section .menu li ul li a {display:grid;background:linear-gradient(#be8,#9c7);color:green;border-radius:6px;text-decoration:none;padding:.3em 1em;margin:0 .1em .2em .1em;width:12em;height:6em}
+section .menu li ul li a big {font-size:2.5em}
+section .menu li ul:last-child {margin-bottom:1em}
+section .menu li ul li a:hover {background:linear-gradient(#4a2,#6c4);color:white;}
+
+section #classement ul {display:inline;}
+/* Onglet autres */
+section #classement li a,
+section #classement li p {display:inline;background:linear-gradient(#ad7,#8b6);color:white;padding:0 1em;margin:0;border-top:1px solid #99c;border-right:1px solid #9c6;border-left:1px solid #9c6;border-top-left-radius:3px;border-top-right-radius:3px}
+/* Onglet en cours */
+section #classement li p {background:linear-gradient(#8b6,#582);color:white;border-color:#583}
+/* Onglet au survol */
+section #classement li a:hover{text-decoration:none;background:white;color:#583}
+section #classement th {min-width:2em}
+
+section .infobulle span{
+  display:none; 
+}
+section .infobulle{
+  text-decoration:none; 
+  position:relative;                
+}
+section .infobulle:hover span,.infobulle:focus span{
+  display:block; 
+  position:absolute; 
+  top:.3em; 
+  left:1em;
+  background:white;
+  border:1px solid #ccf;
+  border-radius: 6px;
+  color:#564;
+  padding:.5em;
+}
+
+footer {clear:both;font-size:0.9em;color:#564;padding:0.5em;margin-top:1em;text-align:center}
+footer strong {color:#231}
+
+
