@@ -1,6 +1,6 @@
 <?php
 // NAVIGATION JOURNEES
-include("journees_nav.php");
+include("matchday_nav.php");
 ?>
 
     <section>

@@ -4,7 +4,7 @@
         $reponse = $bdd->query("SELECT * FROM saisons ORDER BY nom;"); 
         echo "  <section>\n";
         echo "  	<form action=\"index.php\" method=\"POST\">\n";             // Choisir
-        echo "      <h1><big>&#127937;</big></h1><label>Choisir la saison :</label>\n";                                    
+        echo "      <h1><big>&#127937;</big></h1><label>$selectTheSeason :</label>\n";                                    
         echo "  	<select name=\"choixSaison\" onchange=\"submit()\">\n";
         echo "  		<option value=\"0\">...</option>\n";
         // On affiche chaque entrée
@@ -31,7 +31,7 @@
         LEFT JOIN saison_championnat_club scc ON c.id_championnat=scc.id_championnat WHERE scc.id_saison=".$_SESSION['idSaison']." ORDER BY c.nom;"); 
         echo "  <section>\n";
         echo "  	<form action=\"index.php\" method=\"POST\">\n";             // Choisir
-        echo "    <h1><big>&#127942;</big></h1><label>Choisir le championnat :</label>\n";                                    
+        echo "    <h1><big>&#127942;</big></h1><label>$selectTheChampionship :</label>\n";                                    
         echo "  	<select name=\"choixChampionnat\" onchange=\"submit()\">\n";
         echo "  		<option value=\"0\">...</option>\n";
         // On affiche chaque entrée

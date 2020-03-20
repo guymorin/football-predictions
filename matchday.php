@@ -1,7 +1,7 @@
 <?php
-include("inc_changeJ.php");
+include("inc_changeMD.php");
 // NAVIGATION JOURNEES
-include("journees_nav.php");
+include("matchday_nav.php");
 ?>
 
     <section>
@@ -80,7 +80,7 @@ if(isset($_SESSION['idJournee'])){
             }
         } 
         $bdd->exec($req);
-        popup("Modification de l'équipe type.","index.php?page=journees");
+        popup("Modification de l'équipe type.","index.php?matchday");
     
     } else {
         
