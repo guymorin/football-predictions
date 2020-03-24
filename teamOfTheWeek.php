@@ -1,108 +1,98 @@
 <?php
-include("inc_changeJ.php");
-// NAVIGATION JOURNEES
-include("journees_nav.php");
-?>
+/* This is the Football Predictions team of the week section page */
+/* Author : Guy Morin */
 
-    <section>
-<?php
+// Files to include
+include("include/inc_changeMD.php");
+include("matchday_nav.php");
 
-// EQUIPE TYPE
-if(isset($_SESSION['idJournee'])){
+echo "<section>\n";
 
-    changeJ($bdd,"&Eacute;quipe type","equipe_type");
+// Only if a matchday is selected
+if(isset($_SESSION['matchdayId'])){
+
+    changeMD($db,$title_teamOfTheWeek." ".$title_MD,"teamOfTheWeek");
     
-    // MAJ DES NOTES
-    if($equipe==1){
-        // On met à jour
-        $bdd->exec("ALTER TABLE equipes AUTO_INCREMENT=0;");
+    // Popup modified
+    if($teamOfTheWeek==1){
+        $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
         $req="";
-
-        foreach($delJoueur as $d){
-            $req="DELETE FROM equipes WHERE id_journee='".$_SESSION['idJournee']."' AND id_joueur='".$d."';";
-            $bdd->exec($req);
+        foreach($deletePlayer as $d){
+            $req="DELETE FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$d."';";
+            $db->exec($req);
         }
-        
-        $bdd->exec("ALTER TABLE equipes AUTO_INCREMENT=0;");
+        $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
         $req="";
         foreach($val as $k=>$v){
-            if(($v!="")&&(!in_array($k,$delJoueur))){
+            if(($v!="")&&(!in_array($k,$deletePlayer))){
             
-                $reponse = $bdd->query("SELECT COUNT(*) as nb FROM equipes WHERE id_journee='".$_SESSION['idJournee']."' AND id_joueur='".$k."';");
-                $donnees = $reponse->fetch();
-                $reponse->closeCursor(); // Termine le traitement de la requête
+                $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';");
+                $data = $response->fetch();
+                $response->closeCursor();
                 
-                if($donnees[0]==0) {
-                    $req.="INSERT INTO equipes VALUES(NULL,'".$_SESSION['idJournee']."','".$k."','".$v."');";
+                if($data[0]==0) {
+                    $req.="INSERT INTO teamOfTheWeek VALUES(NULL,'".$_SESSION['matchdayId']."','".$k."','".$v."');";
                 }
-                if($donnees[0]==1) {
-                    $req.="UPDATE equipes SET note='".$v."' WHERE id_journee='".$_SESSION['idJournee']."' AND id_joueur='".$k."';";
+                if($data[0]==1) {
+                    $req.="UPDATE teamOfTheWeek SET rating='".$v."' WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';";
                 }
             
             }
         } 
-        $bdd->exec($req);
-        popup("Modification des joueurs l'équipe type.","index.php?page=equipe_type");
-    
-    } else {
+        $db->exec($req);
+        popup($title_modified,"index.php?page=teamOfTheWeek");
+    }
+    // Modify form
+    else {
+        $counter=0;
+        $req = "SELECT j.id_player,j.name,j.firstname,e.rating FROM teamOfTheWeek e LEFT JOIN player j ON e.id_player=j.id_player WHERE id_matchday='".$_SESSION['matchdayId']."' ORDER BY j.position,j.name,j.firstname;";
+        $response = $db->query($req); 
         
-        // On propose le formulaire
+        echo "	 <form action='index.php?page=teamOfTheWeek' method='POST' onsubmit='return confirm();'>\n";
+        echo "      <input type='hidden' name='teamOfTheWeek' value='1'>\n";
         
-        $compteur=0;
-        $req = "SELECT j.id_joueur,j.nom,j.prenom,e.note FROM equipes e LEFT JOIN joueurs j ON e.id_joueur=j.id_joueur WHERE id_journee='".$_SESSION['idJournee']."' ORDER BY j.poste,j.nom,j.prenom;";
-        $reponse = $bdd->query($req); 
-        
-        echo "	 <form action=\"index.php?page=equipe_type\" method=\"POST\" onsubmit=\"return confirm('Attention, vous allez modifier les données !');\">\n";
-        echo "      <input type=\"hidden\" name=\"equipe\" value=\"1\">\n";
-        
-        echo "  <table id=\"equipe_type\">\n";
-        echo "    <tr><th> </th><th>Joueur</th><th>Note</th><th>&#10060;</th></tr>\n";
-        
-        // On affiche chaque entrée
-        while ($donnees = $reponse->fetch())
+        echo "   <table id='teamOfTheWeek'>\n";
+        echo "    <tr><th> </th><th>$title_player</th><th>$title_rating</th><th>&#10060;</th></tr>\n";
+
+        while ($data = $response->fetch())
         {
-            $compteur++;
-            echo "  	<tr>";
-            echo "<td>".$compteur."</td>";
-            echo "<td><input type=\"hidden\" name=\"id_joueur[]\" value=\"".$donnees['id_joueur']."\">".mb_strtoupper($donnees['nom'],'UTF-8')." ".$donnees['prenom']."</td>";
-            echo "<td><input type=\"text\" name=\"note[]\" size=\"3\" value=\"".$donnees['note']."\"</td><td><input type=\"checkbox\" name=\"delete[]\" value=\"".$donnees['id_joueur']."\"></td></tr>\n";
+            $counter++;
+            echo "  	<tr><td>".$counter."</td>";
+            echo "<td><input type='hidden' name='id_player[]' value='".$data['id_player']."'>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']."</td>";
+            echo "<td><input type='text' name='rating[]' size='3' value='".$data['rating']."'</td><td><input type='checkbox' name='delete[]' value='".$data['id_player']."'></td></tr>\n";
         }
         
-        $req = "SELECT j.id_joueur, j.nom, j.prenom, j.poste, c.nom as club 
-        FROM joueurs j
-        LEFT JOIN saison_club_joueur scj ON scj.id_joueur=j.id_joueur 
-        LEFT JOIN saison_championnat_club scc ON scc.id_club=scj.id_club 
-        LEFT JOIN clubs c ON c.id_club=scj.id_club
-        WHERE scc.id_saison='".$_SESSION['idSaison']."' 
-        AND scc. id_championnat='".$_SESSION['idChampionnat']."' 
-        ORDER BY j.nom, j.prenom;";
+        $req = "SELECT j.id_player, j.name, j.firstname, j.position, c.name as team 
+        FROM player j
+        LEFT JOIN season_team_player scj ON scj.id_player=j.id_player 
+        LEFT JOIN season_championship_team scc ON scc.id_team=scj.id_team 
+        LEFT JOIN team c ON c.id_team=scj.id_team
+        WHERE scc.id_season='".$_SESSION['seasonId']."' 
+        AND scc. id_championship='".$_SESSION['championshipId']."' 
+        ORDER BY j.name, j.firstname;";
        
-        $reste=11-$compteur;
-        for($i=0;$i<$reste;$i++){
-            $compteur++;
-            $reponse = $bdd->query($req);
+        $playersLeft=11-$counter;
+        for($i=0;$i<$playersLeft;$i++){
+            $counter++;
+            $response = $db->query($req);
             echo "  	<tr>";
-            echo "<td>".$compteur."</td>";
-            echo "<td><select name=\"id_joueur[]\">\n";
-            echo "  <option value=\"\">...</option>\n";
-            // On affiche chaque entrée
-            while ($donnees = $reponse->fetch())
+            echo "<td>".$counter."</td>";
+            echo "<td><select name='id_player[]'>\n";
+            echo "  <option value=''>...</option>\n";
+            while ($data = $response->fetch())
             {
 
-                echo "  <option value=\"".$donnees['id_joueur']."\">".mb_strtoupper($donnees['nom'],'UTF-8')." ".$donnees['prenom']." [".$donnees['club']."]";
+                echo "  <option value='".$data['id_player']."'>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']." [".$data['team']."]";
                 echo "</option>\n";
             }
             echo "</select>\n";
-            echo "</td><td><input type=\"text\" name=\"note[]\" value=\"\"></td><td> </td></tr>\n";
+            echo "</td><td><input type='text' name='rating[]' value=''></td><td> </td></tr>\n";
         }
         echo "  </table>\n";
-        echo "      <input type=\"submit\">\n";
+        echo "      <input type='submit'>\n";
         echo "	 <form>\n";
-        $reponse->closeCursor(); // Termine le traitement de la requête   
+        $response->closeCursor();   
     
     }
 }
-
-?>
-    </section>
-    
+echo "</section>\n";

@@ -1,237 +1,232 @@
 <?php
-// NAVIGATION JOURNEES
+/* This is the Football Predictions match section page */
+/* Author : Guy Morin */
+
+// Files to include
 include("matchday_nav.php");
-?>
 
-    <section>
-<?php
+echo "<section>\n";
 
-if(empty($_SESSION['idJournee'])) {
-    if(isset($_POST['choixJournee'])){
-
-        $v=explode(",",$_POST['choixJournee']);
-        $_SESSION['idJournee']=$v[0];
-        $_SESSION['numJournee']=$v[1];
-
-        popup("Journée : J".$_SESSION['numJournee'].".","index.php?page=matchs");
-
-    
-    } else {
-        echo "   <form action=\"index.php?page=matchs\" method=\"POST\">\n";             // Modifier
-        echo "    <label>Matchs de la journée :</label>\n";        
-        include("journees_select.php");
-        echo "      <noscript><input type=\"submit\"></noscript>\n";
+// No matchday selected
+if(empty($_SESSION['matchdayId'])) {
+    // Popup matchday
+    if(isset($_POST['matchdaySelect'])){
+        $v=explode(",",$_POST['matchdaySelect']);
+        $_SESSION['matchdayId']=$v[0];
+        $_SESSION['matchdayNum']=$v[1];
+        popup($title_MD.$_SESSION['matchdayNum'],"index.php?page=match");
+    }
+    // Form select
+    else {
+        echo "   <form action='index.php?page=match' method='POST'>\n";             // Modifier
+        echo "    <label>$title_matchday</label>\n";        
+        include("matchday_select.php");
+        echo "      <noscript><input type='submit'></noscript>\n";
         echo "	 </form>\n";
     }
-} else {
-
-$idMatch=$eq1=$eq2=0;
-$resultat=$date="";
-$cote1=$coteN=$cote2=0;
-if(isset($_POST['id_match'])) $idMatch=$_POST['id_match'];
-if(isset($_POST['equipe_1'])) $eq1=$_POST['equipe_1'];
-if(isset($_POST['equipe_2'])) $eq2=$_POST['equipe_2'];
-if(isset($_POST['resultat'])) $resultat=$_POST['resultat'];
-if(isset($_POST['cote1'])) $cote1=$_POST['cote1'];
-if(isset($_POST['coteN'])) $coteN=$_POST['coteN'];
-if(isset($_POST['cote2'])) $cote2=$_POST['cote2'];
-if(isset($_POST['date'])) $date=$_POST['date'];
-
-$cree=0;
-$modifie=0;
-$supprime=0;
-$sortie=0;
-if(isset($_GET['cree'])) $cree=$_GET['cree'];
-if(isset($_POST['cree'])) $cree=$_POST['cree'];
-if(isset($_GET['modifie'])) $modifie=$_GET['modifie'];
-if(isset($_POST['modifie'])) $modifie=$_POST['modifie'];
-if(isset($_POST['supprime'])) $supprime=$_POST['supprime'];
-if(isset($_GET['sortie'])) $sortie=$_GET['sortie'];
-
-// SORTIR DE LA JOURNEE
-if($sortie==1){
-    unset($_SESSION['idJournee']);
-    unset($_SESSION['numJournee']);
-    popup("Sortie de la journée.","index.php?page=journees");
 }
+// Matchday selected
+else {
 
-// SUPPRIMER
-if($supprime==1){
-        $req="DELETE FROM matchs WHERE id_match='".$idMatch."';";
-        $bdd->exec($req);
-        $bdd->exec("ALTER TABLE matchs AUTO_INCREMENT=0;");
-        popup("Suppression pour le match ".$idMatch.".","index.php?page=matchs");
-}
+    // Values
+    $idMatch=$team1=$team2=0;
+    $result=$date="";
+    $odds1=$oddsD=$odds2=0;
+    if(isset($_POST['id_match'])) $idMatch=$_POST['id_match'];
+    if(isset($_POST['team_1'])) $team1=$_POST['team_1'];
+    if(isset($_POST['team_2'])) $team2=$_POST['team_2'];
+    if(isset($_POST['result'])) $result=$_POST['result'];
+    if(isset($_POST['odds1'])) $odds1=$_POST['odds1'];
+    if(isset($_POST['oddsD'])) $oddsD=$_POST['oddsD'];
+    if(isset($_POST['odds2'])) $odds2=$_POST['odds2'];
+    if(isset($_POST['date'])) $date=$_POST['date'];
+    $create=0;
+    $modify=0;
+    $delete=0;
+    $exit=0;
+    if(isset($_GET['create'])) $create=$_GET['create'];
+    if(isset($_POST['create'])) $create=$_POST['create'];
+    if(isset($_GET['modify'])) $modify=$_GET['modify'];
+    if(isset($_POST['modify'])) $modify=$_POST['modify'];
+    if(isset($_POST['delete'])) $delete=$_POST['delete'];
+    if(isset($_GET['exit'])) $exit=$_GET['exit'];
 
-// CREER
-elseif($cree==1){
-
-    echo "<h2>Créer un match J".$_SESSION['numJournee']."</h2>\n";
-
-    // S'il y a une création
-    if(($eq1>0)&&($eq2>0)&&($eq1!=$eq2)) {
-        $bdd->exec("ALTER TABLE matchs AUTO_INCREMENT=0;");
-        $req="INSERT INTO matchs VALUES(NULL,'".$_SESSION['idJournee']."','".$eq1."','".$eq2."','".$resultat."','".$cote1."','".$coteN."','".$cote2."','".$date."',0,0,0,0);";
-        $bdd->exec($req);
-        popup("Création du match.","index.php?page=matchs&cree=1");
-    } else {
-          
-        echo "	    <form action=\"index.php?page=matchs\" method=\"POST\">\n";
-        echo "      <input type=\"hidden\" name=\"cree\" value=\"1\">\n"; 
-        
-        echo "	    <p><label>Id. journée</label>\n";
-        echo "      <input type=\"text\" readonly name=\"idJournee\" value=\"".$_SESSION['idJournee']."\"></p>\n"; 
-        
-        $req="SELECT c.id_club, c.nom FROM clubs c LEFT JOIN saison_championnat_club scc ON c.id_club=scc.id_club WHERE scc.id_saison='".$_SESSION['idSaison']."' AND scc.id_championnat='".$_SESSION['idChampionnat']."' ORDER BY c.nom;";
-        $reponse = $bdd->query($req);
-        
-        echo "	    <label>&Eacute;quipe 1</label>\n";
-        echo "  	<select name=\"equipe_1\">\n";
-        include("clubs_select.php");
-        echo "  	</select>\n";
-        echo "	    <label>&Eacute;quipe 2</label>\n";
-        $reponse = $bdd->query($req);
-        echo "  	<select name=\"equipe_2\">\n";
-        include("clubs_select.php");
-        echo "  	</select>\n";
-        
-        $reponse->closeCursor(); // Termine le traitement de la requête
-        
-        echo "	    <p><label>Date :</label>\n";
-        echo "         <input type=\"date\" name=\"date\" value=\"\">\n";
-        echo "      </p>\n";
-        echo "	    <p><label>Cotes :</label>\n";
-        echo "         1<input type=\"number\" step=\"0.01\" size=\"2\" name=\"cote1\" value=\"0\">\n";
-        echo "         N<input type=\"number\" step=\"0.01\" size=\"2\" name=\"coteN\" value=\"0\">\n";
-        echo "         2<input type=\"number\" step=\"0.01\" size=\"2\" name=\"cote2\" value=\"0\">\n";
-        echo "      </p>\n";
-        
-        echo "	    <p><label>Résultat :</label>\n";
-        echo "     <input type=\"radio\" name=\"resultat\" id=\"1\" value=\"1\"";
-        echo "><label for=\"1\">Domicile</label>\n";
-        echo "     <input type=\"radio\" name=\"resultat\" id=\"N\" value=\"N\"";
-        echo "><label for=\"N\">Nul</label>\n";
-        echo "     <input type=\"radio\" name=\"resultat\" id=\"2\" value=\"2\"";
-        echo "><label for=\"2\">Extérieur</label>\n";
-        
-        echo "     <input type=\"submit\" value=\"Créer\">\n";
-
-        echo "	    </form>\n";   
-
-	}
-	
-}
-// MODIFIER
-else{
-
-    echo "<h2>Modifier un match J".$_SESSION['numJournee']."</h2>\n";
-
-    // S'il y a une modification
-    if(($eq1>0)&&($eq2>0)&&($eq1!=$eq2)) {
-        $req="UPDATE matchs SET id_journee='".$_SESSION['idJournee']."', equipe_1='".$eq1."', equipe_2='".$eq2."', resultat='".$resultat."' WHERE id_match='".$idMatch."';";
-        $bdd->exec($req);
-        popup("Modification du match.","index.php?page=matchs");
-    } elseif($idMatch>0) {
     
-    // Si un match est sélectionné alors affichage
-        $req="SELECT m.id_match,c1.nom as nom1,c2.nom as nom2,c1.id_club as id1,c2.id_club as id2, m.resultat, m.date, m.cote1, m.coteN, m.cote2 FROM matchs m LEFT JOIN clubs c1 ON m.equipe_1=c1.id_club LEFT JOIN clubs c2 ON m.equipe_2=c2.id_club WHERE m.id_match='".$idMatch."';";
-        $reponse = $bdd->query($req);
-        $donnees = $reponse->fetch();
-        $nom1=$donnees['nom1'];
-        $nom2=$donnees['nom2'];
-        $id1=$donnees['id1'];
-        $id2=$donnees['id2'];
-        $resultat=$donnees['resultat'];
-        $date=$donnees['date'];
-        $cote1=$donnees['cote1'];
-        $coteN=$donnees['coteN'];
-        $cote2=$donnees['cote2'];
-        
-        echo "	 <form action=\"index.php?page=matchs\" method=\"POST\">\n";
-        echo "      <input type=\"hidden\" name=\"modifie\" value=1>\n";    
-        
-        echo "	 <p><label>Id.</label>\n";
-        echo "      <input type=\"text\" name=\"id_match\" readonly value=\"".$donnees['id_match']."\"></p>\n";
-
-        echo "	 <label>&Eacute;quipe 1</label>\n";
-        echo "  	<select name=\"equipe_1\">\n";
-        echo "  		<option value=\"0\">...</option>\n";
-        $reponse = $bdd->query("SELECT c.* FROM clubs c LEFT JOIN saison_championnat_club scc ON c.id_club=scc.id_club WHERE scc.id_saison='".$_SESSION['idSaison']."' AND scc.id_championnat='".$_SESSION['idChampionnat']."' ORDER BY nom;");
-        // On affiche chaque entrée
-        while ($donnees = $reponse->fetch())
-        {
-            echo "  		<option value=\"".$donnees['id_club']."\"";
-            if($donnees['id_club']==$id1) echo " selected";
-            echo ">".$donnees['nom']."</option>\n";
-        }
-        echo "  	</select>\n";
-        
-        
-        echo "	 <label>&Eacute;quipe 2</label>\n";
-        echo "  	<select name=\"equipe_2\">\n";
-        $reponse = $bdd->query("SELECT c.* FROM clubs c LEFT JOIN saison_championnat_club scc ON c.id_club=scc.id_club WHERE scc.id_saison='".$_SESSION['idSaison']."' AND scc.id_championnat='".$_SESSION['idChampionnat']."' ORDER BY nom;");      
-        echo "  		<option value=\"0\">...</option>\n";
-        // On affiche chaque entrée
-        while ($donnees = $reponse->fetch())
-        {
-             echo "  		<option value=\"".$donnees['id_club']."\"";
-            if($donnees['id_club']==$id2) echo " selected";
-            echo ">".$donnees['nom']."</option>\n";        }
-        echo "  	</select>\n";
-
-        echo "	    <p><label>Date :</label>\n";
-        echo "         <input type=\"date\" name=\"date\" value=\"".$date."\">\n";
-        echo "      </p>\n";
-        echo "	    <p><label>Cotes :</label>\n";
-        echo "         1<input type=\"number\" step=\"0.01\" size=\"2\" name=\"cote1\" value=\"".$cote1."\">\n";
-        echo "         N<input type=\"number\" step=\"0.01\" size=\"2\" name=\"coteN\" value=\"".$coteN."\">\n";
-        echo "         2<input type=\"number\" step=\"0.01\" size=\"2\" name=\"cote2\" value=\"".$cote2."\">\n";
-        echo "      </p>\n";
-        
-        echo "	    <p><label>Résultat :</label>\n";
-        echo "     <input type=\"radio\" name=\"resultat\" id=\"1\" value=\"1\"";
-        if($resultat=="1") echo " checked";
-        echo "><label for=\"1\">Domicile</label>\n";
-        echo "     <input type=\"radio\" name=\"resultat\" id=\"N\" value=\"N\"";
-        if($resultat=="N") echo " checked";
-        echo "><label for=\"N\">Nul</label>\n";
-        echo "     <input type=\"radio\" name=\"resultat\" id=\"2\" value=\"2\"";
-        if($resultat=="2") echo " checked";
-        echo "><label for=\"2\">Extérieur</label>\n";
-        
-        echo "      <input type=\"submit\" value=\"Modifier\">\n";
-        echo "	 </form>\n";
-        
-        echo "	 <form action=\"index.php?page=matchs\" method=\"POST\" onsubmit=\"return(confirm('Supprimer ".$nom1." - ".$nom2." ?'))\">\n";
-        echo "      <input type=\"hidden\" name=\"supprime\" value=1>\n";
-        echo "      <input type=\"hidden\" name=\"id_match\" value=$idMatch>\n";
-        echo "      <input type=\"submit\" value=\"&#9888 Supprimer ".$nom1." - ".$nom2." &#9888\">\n"; // Bouton Supprimer
-        echo "	 </form>\n";
-        $reponse->closeCursor(); // Termine le traitement de la requête   
-    
-    } else {
-    
-        // Sinon affichage de tous les matchs
-        echo "  	<form action=\"index.php?page=matchs\" method=\"POST\">\n";             // Modifier
-        echo "      <input type=\"hidden\" name=\"modifie\" value=\"1\">\n"; 
-        echo "    <label>Modifier un match :</label>\n";                                    
-        echo "  	<select multiple size=\"10\" name=\"id_match\">\n";
-        // On affiche chaque entrée
-        $reponse = $bdd->query("SELECT m.id_match,c1.nom as nom1,c2.nom as nom2, m.resultat FROM matchs m LEFT JOIN clubs c1 ON m.equipe_1=c1.id_club LEFT JOIN clubs c2 ON m.equipe_2=c2.id_club WHERE m.id_journee='".$_SESSION['idJournee']."';");
-        while ($donnees = $reponse->fetch())
-        {
-            echo "  		<option value=\"".$donnees['id_match']."\">";
-            if($donnees['resultat']!="") echo "[".$donnees['resultat']."] ";
-            echo $donnees['nom1']." - ".$donnees['nom2']."</option>\n";
-        }
-        echo "	 </select>\n";
-        echo "      <input type=\"submit\">\n";
-        echo "	 </form>\n";
-        $reponse->closeCursor(); // Termine le traitement de la requête   
+// Popup if needed
+    // Exit
+    if($exit==1){
+        unset($_SESSION['matchdayId']);
+        unset($_SESSION['matchdayNum']);
+        popup($title_exited,"index.php?page=matchday");
     }
-}
+    // Delete
+    elseif($delete==1){
+            $req="DELETE FROM matchs WHERE id_match='".$idMatch."';";
+            $db->exec($req);
+            $db->exec("ALTER TABLE matchs AUTO_INCREMENT=0;");
+            popup($title_deleted,"index.php?page=match");
+    }
+    // Create
+    elseif($create==1){
+        echo "<h2>$title_createAMatch</h2>\n";
+        // Create popup
+        if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
+            $db->exec("ALTER TABLE matchs AUTO_INCREMENT=0;");
+            $req="INSERT INTO matchs VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0,0,0);";
+            $db->exec($req);
+            popup($title_created,"index.php?page=match&create=1");
+        }
+        // Create form 
+        else {
+            echo "	  <form action='index.php?page=match' method='POST'>\n";
+            echo "      <input type='hidden' name='create' value='1'>\n"; 
+            
+            echo "	    <p><label>Id.</label>\n";
+            echo "      <input type='text' readonly name='matchdayId' value='".$_SESSION['matchdayId']."'></p>\n"; 
+            
+            $req="SELECT c.id_team, c.name FROM team c LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team WHERE scc.id_season='".$_SESSION['seasonId']."' AND scc.id_championship='".$_SESSION['championshipId']."' ORDER BY c.name;";
+            $response = $db->query($req);
+            
+            echo "	    <label>$title_team 1</label>\n";
+            echo "  	<select name='team_1'>\n";
+            include("team_select.php");
+            echo "  	</select>\n";
+            echo "	    <label>$title_team 2</label>\n";
+            $response = $db->query($req);
+            echo "  	<select name='team_2'>\n";
+            include("team_select.php");
+            echo "  	</select>\n";
+            
+            $response->closeCursor();
+            
+            echo "	    <p><label>$title_date :</label>\n";
+            echo "         <input type='date' name='date' value=''>\n";
+            echo "      </p>\n";
+            echo "	    <p><label>$title_odds :</label>\n";
+            echo "         1<input type='number' step='0.01' size='2' name='odds1' value='0'>\n";
+            echo "         $title_draw<input type='number' step='0.01' size='2' name='oddsD' value='0'>\n";
+            echo "         2<input type='number' step='0.01' size='2' name='odds2' value='0'>\n";
+            echo "      </p>\n";
+            
+            echo "	    <p><label>$title_result :</label>\n";
+            echo "      <input type='radio' name='result' id='1' value='1'";
+            echo "><label for='1'>$title_home</label>\n";
+            echo "      <input type='radio' name='result' id='D' value='D'";
+            echo "><label for='D'>$title_draw</label>\n";
+            echo "      <input type='radio' name='result' id='2' value='2'";
+            echo "><label for='2'>$title_away</label>\n";
+            
+            echo "      <input type='submit' value='$title_create'>\n";
+    
+            echo "	  </form>\n";   
+    	}
+    }
+    // Modify
+    else{
+        echo "<h2>$title_modifyAMatch $title_MD".$_SESSION['matchdayNum']."</h2>\n";
+        // Modify popup
+        if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
+            $req="UPDATE matchs SET id_matchday='".$_SESSION['matchdayId']."', team_1='".$team1."', team_2='".$team2."', result='".$result."' WHERE id_match='".$idMatch."';";
+            $db->exec($req);
+            popup($title_modifyAMatch,"index.php?page=match");
+        } 
+        // Modify form
+        elseif($idMatch>0) {
+            $req="SELECT m.id_match,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchs m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_match='".$idMatch."';";
+            $response = $db->query($req);
+            $data = $response->fetch();
+            $name1=$data['name1'];
+            $name2=$data['name2'];
+            $id1=$data['id1'];
+            $id2=$data['id2'];
+            $result=$data['result'];
+            $date=$data['date'];
+            $odds1=$data['odds1'];
+            $oddsD=$data['oddsD'];
+            $odds2=$data['odds2'];
+            
+            echo "	 <form action='index.php?page=match' method='POST'>\n";
+            echo "      <input type='hidden' name='modify' value=1>\n";    
+            echo "	    <p><label>Id.</label>\n";
+            echo "      <input type='text' name='id_match' readonly value='".$data['id_match']."'></p>\n";
+            echo "	    <label>$title_team 1</label>\n";
+            echo "  	<select name='team_1'>\n";
+            echo "  		<option value='0'>...</option>\n";
+            $response = $db->query("SELECT c.* FROM team c LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team WHERE scc.id_season='".$_SESSION['seasonId']."' AND scc.id_championship='".$_SESSION['championshipId']."' ORDER BY name;");
+            while ($data = $response->fetch())
+            {
+                echo "  		<option value='".$data['id_team']."'";
+                if($data['id_team']==$id1) echo " selected";
+                echo ">".$data['name']."</option>\n";
+            }
+            echo "  	</select>\n";
+            
+            echo "	    <label>$title_team 2</label>\n";
+            echo "  	<select name='team_2'>\n";
+            $response = $db->query("SELECT c.* FROM team c LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team WHERE scc.id_season='".$_SESSION['seasonId']."' AND scc.id_championship='".$_SESSION['championshipId']."' ORDER BY name;");      
+            echo "  		<option value='0'>...</option>\n";
+            while ($data = $response->fetch())
+            {
+                 echo "  		<option value='".$data['id_team']."'";
+                if($data['id_team']==$id2) echo " selected";
+                echo ">".$data['name']."</option>\n";        }
+            echo "  	</select>\n";
+    
+            echo "	    <p><label>$title_date :</label>\n";
+            echo "         <input type='date' name='date' value='".$date."'>\n";
+            echo "      </p>\n";
+            echo "	    <p><label>$title_odds :</label>\n";
+            echo "         1<input type='number' step='0.01' size='2' name='odds1' value='".$odds1."'>\n";
+            echo "         N<input type='number' step='0.01' size='2' name='oddsD' value='".$oddsD."'>\n";
+            echo "         2<input type='number' step='0.01' size='2' name='odds2' value='".$odds2."'>\n";
+            echo "      </p>\n";
+            
+            echo "	    <p><label>$title_result :</label>\n";
+            echo "     <input type='radio' name='result' id='1' value='1'";
+            if($result=="1") echo " checked";
+            echo "><label for='1'>$title_home</label>\n";
+            echo "     <input type='radio' name='result' id='D' value='D'";
+            if($result=="D") echo " checked";
+            echo "><label for='D'>$title_draw</label>\n";
+            echo "     <input type='radio' name='result' id='2' value='2'";
+            if($result=="2") echo " checked";
+            echo "><label for='2'>$title_away</label>\n";
+            
+            echo "      <input type='submit' value='$title_modify'>\n";
+            echo "	 </form>\n";
+            
+            echo "	 <form action='index.php?page=match' method='POST' onsubmit='return confirm()'>\n";
+            echo "      <input type='hidden' name='delete' value=1>\n";
+            echo "      <input type='hidden' name='id_match' value=$idMatch>\n";
+            echo "      <input type='submit' value='&#9888 $title_delete $name1 - $name2 &#9888'>\n";
+            echo "	 </form>\n";
+            $response->closeCursor();  
+        }
+        // Modify selection of a match
+        else {
+
+            echo "  <form action='index.php?page=match' method='POST'>\n";             // Modifier
+            echo "      <input type='hidden' name='modify' value='1'>\n"; 
+            echo "      <label>$title_modifyAMatch :</label>\n";                                    
+            echo "  	<select multiple size='10' name='id_match'>\n";
+            $response = $db->query("SELECT m.id_match,c1.name as name1,c2.name as name2, m.result FROM matchs m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_matchday='".$_SESSION['matchdayId']."';");
+            while ($data = $response->fetch())
+            {
+                echo "  		<option value='".$data['id_match']."'>";
+                if($data['result']!=""){
+                    if($data['result']=="D") echo "[$title_draw] ";
+                    else echo "[".$data['result']."] ";
+                }
+                echo $data['name1']." - ".$data['name2']."</option>\n";
+            }
+            echo "	    </select>\n";
+            echo "      <input type='submit'>\n";
+            echo "	 </form>\n";
+            $response->closeCursor();
+        }
+    }
 
 }
-?>
-    </section>
-    
+
+echo "</section>\n";
+?>  

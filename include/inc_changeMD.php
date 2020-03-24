@@ -1,12 +1,10 @@
 <?php
+/* Include to display the matchday */
 
-// CHOIX DE LA JOURNEE
-
-    if(isset($_POST['choixJournee'])){
-
-        $v=explode(",",$_POST['choixJournee']);
-        $_SESSION['idJournee']=$v[0];
-        $_SESSION['numJournee']=$v[1];
-    
+    if(isset($_POST['matchdaySelect'])){
+        // Values
+        $v=explode(",",$_POST['matchdaySelect']);
+        $_SESSION['matchdayId']=$v[0];
+        $_SESSION['matchdayNum']=$v[1];
     }
 ?>

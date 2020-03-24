@@ -98,38 +98,38 @@ section {clear:both;text-align:center;margin:1em 0;padding:0 1em 1em 1em;}
 .update .close:hover {background:none;border:none;color:#361;padding:.1em .3em;}
 
 
-section #changeJ {display:inline-block;margin:0 auto;text-align:center;height:3em}
-section #changeJ input[type=submit] {min-width:0;width:4em;text-align:center;margin:0 .5em}
-section #changeJ input[type=submit]:first-child{float:left}
-section #changeJ input[type=submit]:last-child{float:right}
-section #changeJ form,
-section #changeJ input,
-section #changeJ h2 {display:inline-block;margin:0;padding:0}
-section #changeJ h2 {position:relative;top:-1em;padding:1em;}
+section #changeMD {display:inline-block;margin:0 auto;text-align:center;height:3em}
+section #changeMD input[type=submit] {min-width:0;width:4em;text-align:center;margin:0 .5em}
+section #changeMD input[type=submit]:first-child{float:left}
+section #changeMD input[type=submit]:last-child{float:right}
+section #changeMD form,
+section #changeMD input,
+section #changeMD h2 {display:inline-block;margin:0;padding:0}
+section #changeMD h2 {position:relative;top:-1em;padding:1em;}
 
 section table.stats th,
 section table.stats td{width:1.5em;height:2em}
 section table.stats th:first-child{width:15em}
 
 
-section #resultats td:nth-child(3) {width:20em;}
+section #results td:nth-child(3) {width:20em;}
 
 
 section #equipe_type td:nth-child(2) {width:20em;}
 
-section #criteres table {margin-bottom:1em}
-section #criteres table td:first-child {width:20em;}
-section #criteres table td:nth-child(2),
-section #criteres table td:nth-child(3),
-section #criteres table td:nth-child(4){width:10em;text-align:center}
-section #criteres table td:nth-child(3){width:3em}
-section #criteres table input[type='radio'] {margin-bottom:.3em}
+section #criterion table {margin-bottom:1em}
+section #criterion table td:first-child {width:20em;}
+section #criterion table td:nth-child(2),
+section #criterion table td:nth-child(3),
+section #criterion table td:nth-child(4){width:10em;text-align:center}
+section #criterion table td:nth-child(3){width:3em}
+section #criterion table input[type='radio'] {margin-bottom:.3em}
 
 section input[type='submit'] {margin:.5em;min-width:10em;height:3em}
-section #criteres table.expert {border-color:#9c6;}
-section #criteres table.expert th {background:#fff;color:#f30;border-color:#f60;}
-section #criteres table.expert tr{background:#fd3}
-section #criteres table.expert tr:nth-child(2n) {background:#fe9}
+section #criterion table.expert {border-color:#9c6;}
+section #criterion table.expert th {background:#fff;color:#f30;border-color:#f60;}
+section #criterion table.expert tr{background:#fd3}
+section #criterion table.expert tr:nth-child(2n) {background:#fe9}
 
 section ul {list-style:none;padding:.2em 0 0 0;margin:0}
 section .menu {display:inline-flex;text-align:center}

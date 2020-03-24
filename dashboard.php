@@ -1,317 +1,275 @@
 <?php
-include("champ_nav.php");
-?>
+/* This is the Football Predictions dashboard section page */
+/* Author : Guy Morin */
 
-    <section>
-<?php
+// Files to include
+include("championship_nav.php");
 
-    echo "<h2>Championnats</h2>\n";
-    echo "<h3>Tableau de bord</h3>\n";
+echo "<section>\n";
+echo "<h2>$title_championship</h2>\n";
+echo "<h3>$title_dashboard</h3>\n";
 
-    $graph=array(0=>0);
-// STATISTIQUES
-        $req="SELECT m.id_match,
-        cr.motivation_confiance1,cr.motivation_confiance2,
-        cr.serie_en_cours1,cr.serie_en_cours2,
-        cr.forme_physique1,cr.forme_physique2,
-        cr.meteo1,cr.meteo2,
-        cr.joueurs_cles1,cr.joueurs_cles2,
-        cr.valeur_marchande1,cr.valeur_marchande2,
-        cr.domicile_exterieur1,cr.domicile_exterieur2,
-        c1.nom as nom1,c2.nom as nom2,c1.id_club as eq1,c2.id_club as eq2,
-        m.resultat, m.date, m.cote1, m.coteN, m.cote2, j.numero 
+$graph=array(0=>0);
+
+// Statistics
+$req="SELECT m.id_match,
+cr.motivation1,cr.motivation2,
+cr.currentForm1,cr.currentForm2,
+cr.physicalForm1,cr.physicalForm2,
+cr.weather1,cr.weather2,
+cr.bestPlayers1,cr.bestPlayers2,
+cr.marketValue1,cr.marketValue2,
+cr.home_away1,cr.home_away2,
+c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
+m.result, m.date, m.odds1, m.oddsD, m.odds2, j.number 
+FROM matchs m 
+LEFT JOIN team c1 ON m.team_1=c1.id_team 
+LEFT JOIN team c2 ON m.team_2=c2.id_team 
+LEFT JOIN criterion cr ON cr.id_match=m.id_match 
+LEFT JOIN matchday j ON j.id_matchday=m.id_matchday 
+WHERE m.result<>'';
+ORDER BY j.number 
+;";
+$response = $db->query($req);
+
+// Table of benefits
+$table="	 <table class='benef'>\n";
+$table.="  		<tr>\n";
+$table.="  		  <th>$title_matchday</th>\n";
+$table.="  		  <th>$title_bet</th>\n";
+$table.="         <th>$title_success</th>\n";
+$table.="         <th>$title_oddsAveragePlayed</th>\n";
+$table.="         <th>$title_earning</th>\n";
+$table.="         <th>$title_profit</th>\n";
+$table.="         <th>$title_profit<br />total</th>\n";
+$table.="       </tr>\n";
+
+$matchdayBetSum=$matchdaySuccessSum=$matchdayEarningSum;$matchdayPlayedOddsSum;$matchdayProfitSum=0;
+while ($data = $response->fetch())
+{
+    $PlayedOdds=0;         
+
+    // Marketvalue
+    $mv1 = $data['marketValue1']; 
+    $mv2 = $data['marketValue2']; 
+    
+    $home = $data['home_away1']; 
+    $away = $data['home_away2']; 
+    
+    // Predictions history
+        $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
+        SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
+        SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
         FROM matchs m 
-        LEFT JOIN clubs c1 ON m.equipe_1=c1.id_club 
-        LEFT JOIN clubs c2 ON m.equipe_2=c2.id_club 
-        LEFT JOIN criteres cr ON cr.id_match=m.id_match 
-        LEFT JOIN journees j ON j.id_journee=m.id_journee 
-        WHERE m.resultat<>'';
-        ORDER BY j.numero 
-        ;";
-        $reponse = $bdd->query($req);
+        LEFT JOIN criterion cr ON cr.id_match=m.id_match 
+        WHERE cr.motivation1='".$data['motivation1']."' 
+        AND cr.motivation2='".$data['motivation2']."' 
+        AND cr.currentForm1='".$data['currentForm1']."' 
+        AND cr.currentForm2='".$data['currentForm2']."' 
+        AND cr.physicalForm1='".$data['physicalForm1']."' 
+        AND cr.physicalForm2='".$data['physicalForm2']."' 
+        AND cr.weather1='".$data['weather1']."' 
+        AND cr.weather2='".$data['weather2']."' 
+        AND cr.bestPlayers1='".$data['bestPlayers1']."' 
+        AND cr.bestPlayers2='".$data['bestPlayers2']."' 
+        AND cr.marketValue1='".$data['marketValue1']."' 
+        AND cr.marketValue2='".$data['marketValue2']."' 
+        AND cr.home_away1='".$data['home_away1']."' 
+        AND cr.home_away2='".$data['home_away2']."' 
+        AND m.date<'".$data['date']."'";
+        $r = $db->query($req)->fetch();
+        $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
+        $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
+    
+    // Sum
+    $win="";
+    $id=$data['id_match'];
+    $sum1=
+        $data['motivation1']
+        +$data['currentForm1']
+        +$data['physicalForm1']
+        +$data['weather1']
+        +$data['bestPlayers1']
+        +$predictionsHistoryHome
+        +$mv1
+        +$home;
+    $sum2=
+        $data['motivation2']
+        +$data['currentForm2']
+        +$data['physicalForm2']
+        +$data['weather2']
+        +$data['bestPlayers2']
+        +$predictionsHistoryAway
+        +$mv2
+        +$away;
+    if($sum1>$sum2) $prediction="1";
+    elseif($sum1==$sum2) $prediction="D";
+    elseif($sum1<$sum2) $prediction="2";
+    
+    $playedOdds=0;
+    switch($prediction){
+        case "1":
+            $PlayedOdds = $data['odds1'];
+            break;
+        case "D":
+            $PlayedOdds = $data['oddsD'];
+            break;
+        case "2":
+            $PlayedOdds = $data['odds2'];
+            break;
+    }
+    
+    if($prediction==$data['result']){
+        $matchdaySuccess++;
+        $jGains+=$PlayedOdds;
+    }
+    $matchdayPlayedOdds+=$PlayedOdds;
 
-        $table="	 <table class=\"benef\">\n";
-           
-        $table.="  		<tr>\n";
-        $table.="  		  <th>Journée</th>\n";
-        $table.="  		  <th>Mises</th>\n";
-        $table.="         <th>Succ&egrave;s</th>\n";
-        $table.="         <th>Cote<br />moyenne<br />jouée</th>\n";
-        $table.="         <th>Gains</th>\n";
-        $table.="         <th>Bénéfice</th>\n";
-        $table.="         <th>Bénéfice<br />total</th>\n";
+    $matchdayMatchs++;
+
+    $matchdayProfit=$jGains-$matchdayMatchs;
+    
+    if($matchdayMatchs==10){
+        
+        $matchdayProfitSum+=$matchdayProfit;
+        $matchdayBetSum+=$matchdayMatchs;
+        $matchdaySuccessSum+=$matchdaySuccess;
+        $matchdayEarningSum+=$jGains;
+        $matchdayPlayedOddsSum+=$matchdayPlayedOdds;
+        $table.="       <tr>\n";
+        $table.="           <td><strong>".$data['number']."</strong></td>\n";
+        $table.="           <td>".$matchdayMatchs."</td>\n";
+        $table.="           <td>".$matchdaySuccess."</td>\n";
+        $averageOdds=(round($matchdayPlayedOdds/$matchdayMatchs,2));
+        $table.="           <td>".$averageOdds."</td>\n";
+        $table.="           <td>".(money_format('%i',$jGains))."</td>\n";
+        $table.="           <td><span style='color:".valColor($matchdayProfit)."'>";
+        if($matchdayProfit>0) $table.="+";
+        $table.=(money_format('%i',$matchdayProfit))."</span></td>\n";
+        $table.="           <td><span style='color:".valColor($matchdayProfitSum)."'>";
+        if($matchdayProfitSum>0) $table.="+";
+        $table.=(money_format('%i',$matchdayProfitSum))."</span></td>\n";
         $table.="       </tr>\n";
         
-    
-        $jMisesTotal=$jSuccesTotal=$jGainsTotal;$jCoteJoueeTotal;$jBenefTotal=0;
-        while ($donnees = $reponse->fetch())
-        {
-            $mCoteJouee=0;         
+        $matchdayMatchs=$matchdaySuccess=$matchdayPlayedOdds=$jGains=$matchdayProfit=0;
+        $graph[$data['number']]=$matchdayProfitSum;
+    }
+}
+$response->closeCursor();
+$table.="	 </table>\n";
 
-            // Calcul de la VM
-            $vm1 = $donnees['valeur_marchande1']; 
-            $vm2 = $donnees['valeur_marchande2']; 
-            
-            $dom = $donnees['domicile_exterieur1']; 
-            $ext = $donnees['domicile_exterieur2']; 
-            
-            // Calcul des matchs similaires
-                $req="SELECT SUM(CASE WHEN m.resultat = '1' THEN 1 ELSE 0 END) AS Dom,
-                SUM(CASE WHEN m.resultat = 'N' THEN 1 ELSE 0 END) AS Nul,
-                SUM(CASE WHEN m.resultat = '2' THEN 1 ELSE 0 END) AS Ext
-                FROM matchs m 
-                LEFT JOIN criteres cr ON cr.id_match=m.id_match 
-                WHERE cr.motivation_confiance1='".$donnees['motivation_confiance1']."' 
-                AND cr.motivation_confiance2='".$donnees['motivation_confiance2']."' 
-                AND cr.serie_en_cours1='".$donnees['serie_en_cours1']."' 
-                AND cr.serie_en_cours2='".$donnees['serie_en_cours2']."' 
-                AND cr.forme_physique1='".$donnees['forme_physique1']."' 
-                AND cr.forme_physique2='".$donnees['forme_physique2']."' 
-                AND cr.meteo1='".$donnees['meteo1']."' 
-                AND cr.meteo2='".$donnees['meteo2']."' 
-                AND cr.joueurs_cles1='".$donnees['joueurs_cles1']."' 
-                AND cr.joueurs_cles2='".$donnees['joueurs_cles2']."' 
-                AND cr.valeur_marchande1='".$donnees['valeur_marchande1']."' 
-                AND cr.valeur_marchande2='".$donnees['valeur_marchande2']."' 
-                AND cr.domicile_exterieur1='".$donnees['domicile_exterieur1']."' 
-                AND cr.domicile_exterieur2='".$donnees['domicile_exterieur2']."' 
-                AND m.date<'".$donnees['date']."'";
-                $r = $bdd->query($req)->fetch();
-                $similairesDom=criteres("msDom",$r,$bdd);
-                $similairesExt=criteres("msExt",$r,$bdd);
-            
-            // Calcul du total
-            $gagne="";
-            $id=$donnees['id_match'];
-            $total1=
-                $donnees['motivation_confiance1']
-                +$donnees['serie_en_cours1']
-                +$donnees['forme_physique1']
-                +$donnees['meteo1']
-                +$donnees['joueurs_cles1']
-                +$similairesDom
-                +$vm1
-                +$dom;
-            $total2=
-                $donnees['motivation_confiance2']
-                +$donnees['serie_en_cours2']
-                +$donnees['forme_physique2']
-                +$donnees['meteo2']
-                +$donnees['joueurs_cles2']
-                +$similairesExt
-                +$vm2
-                +$ext;
-            if($total1>$total2) $prono="1";
-            elseif($total1==$total2) $prono="N";
-            elseif($total1<$total2) $prono="2";
-            
-            $coteJouee=0;
-            switch($prono){
-                case "1":
-                    $mCoteJouee = $donnees['cote1'];
-                    break;
-                case "N":
-                    $mCoteJouee = $donnees['coteN'];
-                    break;
-                case "2":
-                    $mCoteJouee = $donnees['cote2'];
-                    break;
-            }
-            
-            if($prono==$donnees['resultat']){
-                $jSucces++;
-                $jGains+=$mCoteJouee;
-            }
-            $jCoteJouee+=$mCoteJouee;
+// Values
+$roi = round(($matchdayProfitSum/$matchdayBetSum)*100);
+$tauxReussite = round(($matchdaySuccessSum/$matchdayBetSum)*100);
+$gainParMise = (round($matchdayEarningSum/$matchdayBetSum,2));
 
-            $jMatchs++;
+echo "<p>\n<table class='stats'>\n";
+echo "  <tr>\n";
+echo "      <td>$title_bet</td>\n";
+echo "      <td>".$matchdayBetSum."</td>\n";
 
-            $jBenef=$jGains-$jMatchs;
-            
-            if($jMatchs==10){
-                
-                $jBenefTotal+=$jBenef;
-                $jMisesTotal+=$jMatchs;
-                $jSuccesTotal+=$jSucces;
-                $jGainsTotal+=$jGains;
-                $jCoteJoueeTotal+=$jCoteJouee;
-                $table.="       <tr>\n";
-                $table.="           <td><strong>".$donnees['numero']."</strong></td>\n";
-                $table.="           <td>".$jMatchs."</td>\n";
-                $table.="           <td>".$jSucces."</td>\n";
-                $coteMoy=(round($jCoteJouee/$jMatchs,2));
-                $table.="           <td>".$coteMoy."</td>\n";
-                $table.="           <td>".(money_format('%i',$jGains))."</td>\n";
-                $table.="           <td><span style=\"color:".valColor($jBenef)."\">";
-                if($jBenef>0) $table.="+";
-                $table.=(money_format('%i',$jBenef))."</span></td>\n";
-                $table.="           <td><span style=\"color:".valColor($jBenefTotal)."\">";
-                if($jBenefTotal>0) $table.="+";
-                $table.=(money_format('%i',$jBenefTotal))."</span></td>\n";
-                $table.="       </tr>\n";
-                
-                $jMatchs=$jSucces=$jCoteJouee=$jGains=$jBenef=0;
-                $graph[$donnees['numero']]=$jBenefTotal;
-            }
-        }
-        $reponse->closeCursor(); // Termine le traitement de la requête
-        $table.="	 </table>\n";
-        
-        // Calculs
-        $roi = round(($jBenefTotal/$jMisesTotal)*100);
-        $tauxReussite = round(($jSuccesTotal/$jMisesTotal)*100);
-        $gainParMise = (round($jGainsTotal/$jMisesTotal,2));
-        
-        echo "<p>\n<table class=\"stats\">\n";
-        echo "  <tr>\n";
-        echo "      <td>Mises</td>\n";
-        echo "      <td>".$jMisesTotal."</td>\n";
-        
-        // Bénéfice
-        echo "      <td>Bénéfice</td>\n";
-        echo "      <td>";
-        echo "<span style=\"color:".valColor($jBenefTotal)."\">";
-        if($jBenefTotal>0) echo "+";
-        echo (money_format('%i',$jBenefTotal))."&nbsp;&euro;</span></td>\n";
+// Profit
+echo "      <td>$title_profit</td>\n";
+echo "      <td>";
+echo "<span style='color:".valColor($matchdayProfitSum)."'>";
+if($matchdayProfitSum>0) echo "+";
+echo (money_format('%i',$matchdayProfitSum))."&nbsp;&euro;</span></td>\n";
 
-        // ROI
-        echo "      <td>ROI</td>\n";
-        echo "      <td>";
-        echo "<span style=\"color:".valColor($roi)."\">";
-        if($roi>0) echo "+";
-        echo $roi."&nbsp;%</span>";
-        echo "&nbsp;<a href=\"#\" class=\"infobulle\">&#128172;<span>Le&nbsp;ROI&nbsp;est&nbsp;";
-        switch($roi){
-            case($roi<0):
-                echo "perdant";
-                break;
-            case($roi==0):
-                echo "neutre";
-                break;
-            case($roi>0&&$roi<15):
-                echo "gagnant";
-                break;
-            case($roi>=15):
-                echo "excellent";
-                break;
-        }
-        echo "&nbsp;!</span></a></td>\n";
-        echo " </tr>\n";
-        
-        echo "  <tr>\n";
-        // Succès
-        echo "      <td>Succ&egrave;s</td>\n";
-        echo "      <td>".$jSuccesTotal."</td>\n";
-        
-        // Gains
-        echo "      <td>Gains</td>\n";
-        echo "      <td>".money_format('%i',$jGainsTotal)."&nbsp;&euro;</td>\n";
-        
-        // Gains par mise
-        echo "      <td>Gains&nbsp;par&nbsp;mise</td>\n";
-        echo "      <td>".$gainParMise."</td>\n";
-    
+// ROI
+echo "      <td>ROI</td>\n";
+echo "      <td>";
+echo "<span style='color:".valColor($roi)."'>";
+if($roi>0) echo "+";
+echo $roi."&nbsp;%</span>";
+echo "&nbsp;<a href='#' class='infobulle'>&#128172;".valRoi($roi)."</a>";
+echo "</td>\n";
+echo " </tr>\n";
 
-        echo " </tr>\n";
+echo " <tr>\n";
+// Success
+echo "      <td>$title_success</td>\n";
+echo "      <td>$matchdaySuccessSum</td>\n";
+// Earning
+echo "      <td>$title_earning</td>\n";
+echo "      <td>".money_format('%i',$matchdayEarningSum)."&nbsp;&euro;</td>\n";
+// Earning by bet
+echo "      <td>$title_earningByBet</td>\n";
+echo "      <td>$gainParMise</td>\n";
+echo " </tr>\n";
 
-        echo " </tr>\n";
-        
-        // Taux de réussite
-        echo "      <td>Taux&nbsp;de&nbsp;réussite</td>\n";
-        echo "      <td>";
-        if($jMisesTotal==0) $tauxReussite= 0;
-        echo $tauxReussite."&nbsp;%</td>\n";
+echo " <tr>\n";
+// Success rate
+echo "      <td>$title_successRate</td>\n";
+echo "      <td>";
+if($matchdayBetSum==0) $tauxReussite= 0;
+echo $tauxReussite."&nbsp;%</td>\n";
 
-        // Cote moyenne jouée
-        $coteMoy=(round($jCoteJoueeTotal/$jMisesTotal,2));
-        echo "      <td>Cote&nbsp;moyenne&nbsp;jouée</td>\n";
-        echo "      <td>".$coteMoy;
-        if(($coteMoy<1.8)||($coteMoy>2.3)){
-            echo "&nbsp;<a href=\"#\" class=\"infobulle\">&#128172;<span>Jeu&nbsp;";
-            switch($coteMoy){
-                case($coteMoy<1.5):
-                    echo "trop prudent";
-                    break;
-                case($coteMoy<1.8):
-                    echo "prudent";
-                    break;
-                case($coteMoy>3):
-                    echo "trop spéculateur";
-                    break;
-                case($coteMoy>2.3):
-                    echo "spéculateur";
-                    break;
-            }
-            echo "&nbsp;!</span></a>";
-        }
-        echo "</td>\n";
+// Average odds played
+$averageOdds=(round($matchdayPlayedOddsSum/$matchdayBetSum,2));
+echo "      <td>$title_oddsAveragePlayed</td>\n";
+echo "      <td>".$averageOdds;
+if(($averageOdds<1.8)||($averageOdds>2.3)){
+    echo "&nbsp;<a href='#' class='infobulle'>&#128172;".valOdds($averageOdds)."</a>";
+}
+echo "</td>\n";
+echo "      <td></td>\n";
+echo "      <td></td>\n";
+echo " </tr>\n";
+echo "</table>\n</p>";
 
-        echo "      <td></td>\n";
-        echo "      <td></td>\n";
-        echo " </tr>\n";
-        echo "</table>\n</p>";
-
-        echo "<h3>&Eacute;volution du bénéfice</h3>\n";
+echo "<h3>$title_profitEvolution</h3>\n";
 ?>
 
-
 <?php
-$largeur=400;
-$hauteur=300;
+$width=500;
+$height=300;
 $maxX=array_key_last($graph);
 $maxY=end($graph);;
 ?>
-<svg width="<?php echo $largeur;?>" height="<?php echo $hauteur;?>">
+<svg width="<?php echo $width;?>" height="<?php echo $height;?>">
 <!-- fond -->
 <rect width="100%" height="100%" fill="#dec" stroke="#9c7" stroke-width="4"/>
         
 <!-- margin -->
-  <g class="layer" transform="translate(40,<?php echo ($hauteur/2);?>)">
+<g class="layer" transform="translate(40,<?php echo ($height/2);?>)">
   
 <?php
 foreach ($graph as $k => $v) {
     $cx=$k*10;
     $cy=-$v*2;
     $color=valColor(-($cy));
-    echo "<circle r=\"2\" cx=\"".$cx."\" cy=\"".$cy."\" fill=\"".$color."\" />\n";
-    echo "<line x1=\"".$cxPrec."\" y1=\"".$cyPrec."\" x2=\"".$cx."\" y2=\"".$cy."\" stroke=\"".$color."\" stroke-width=\"1\" />\n";
+    echo "<circle r='2' cx='".$cx."' cy='".$cy."' fill='".$color."' />\n";
+    echo "<line x1='".$cxPrec."' y1='".$cyPrec."' x2='".$cx."' y2='".$cy."' stroke='".$color."' stroke-width='1' />\n";
     $cxPrec=$cx;
     $cyPrec=$cy;
 }
-
-
 ?>
-<!-- Axe y -->
+
+<!-- Y Axis -->
     <g class="y axis" fill="purple">
-      <line x1="<?php echo -($largeur-10);?>" y1="0" x2="<?php echo ($largeur-10);?>" y2="0" stroke="#555" stroke-width="1" />
+      <line x1="<?php echo -($width-10);?>" y1="0" x2="<?php echo ($width-10);?>" y2="0" stroke="#555" stroke-width="1" />
 <?php
-// Mesures de l'axe Y
-for($i=-($hauteur/(2*25));$i<($hauteur/(2*25)+1);$i++){
+for($i=-($height/(2*25));$i<($height/(2*25)+1);$i++){
     if($i!=0) {
-        echo "<text text-anchor=\"end\" x=\"-6\" y=\"".(($i*20)+4)."\" fill=\"#583\">".-($i*10)."</text>\n";
-        echo "<line x1=\"-2\" y1=\"".($i*20)."\" x2=\"2\" y2=\"".($i*20)."\" stroke=\"#583\" stroke-width=\"2\" />\n";
+        echo "<text text-anchor='end' x='-6' y='".(($i*20)+4)."' fill='#583'>".-($i*10)."</text>\n";
+        echo "<line x1='-2' y1='".($i*20)."' x2='2' y2='".($i*20)."' stroke='#583' stroke-width='2' />\n";
     }
 }
 ?>
 
-<!-- Axe x -->
+<!-- X axis -->
     </g>
     <g class="x axis" fill="purple">
-      <line x1="0" y1="<?php echo -($hauteur-10);?>" x2="0" y2="<?php echo ($hauteur-10);?>" stroke="#555" stroke-width="1" />
-      <text x="5" y="20" fill="black">J1</text>
-      <text x="<?php echo ($maxX*10)+5;?>" y="<?php echo (-($maxY*2)+15);?>" fill="black">J<?php echo $maxX;?></text>
+      <line x1="0" y1="<?php echo -($height-10);?>" x2="0" y2="<?php echo ($height-10);?>" stroke="#555" stroke-width="1" />
+      <text x="5" y="20" fill="black"><?php echo $title_MD;?>1</text>
+      <text x="<?php echo ($maxX*10)+5;?>" y="<?php echo (-($maxY*2)+15);?>" fill="black"><?php echo $title_MD.$maxX;?></text>
     </g>
 
   </g>
 </svg>
     
-
-    
-
-    
 <?php
-        echo "<h3>Bénéfice par journée</h3>\n";
-        echo $table;      
-?>
-    </section>
-    
+        echo "<h3>$title_profitByMatchday</h3>\n";
+        echo $table; 
+        echo "</section>\n";
+?>   

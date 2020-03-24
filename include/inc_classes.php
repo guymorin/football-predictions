@@ -1,4 +1,44 @@
 <?php
+function valOdds($val){
+    include("lang/fr.php");
+    $odds = "<span>$title_game&nbsp;";
+    switch($val){
+        case($val<1.5):
+            $odds .= $title_carefulToo;
+            break;
+        case($val<1.8):
+            $odds .= $title_careful;
+            break;
+        case($val>3):
+            $odds .= $title_speculativeToo;
+            break;
+        case($val>2.3):
+            $odds .= $title_speculative;
+            break;
+    }
+    $odds .= "</span>";
+    return $odds;
+}
+function valRoi($val){
+    include("lang/fr.php");
+    $roi="<span>";
+    switch($val){
+        case($val<0):
+            $roi .= "$title_ROIisLosing";
+            break;
+        case($val==0):
+            $roi .= "$title_ROIisNeutral";
+            break;
+        case($val>0&&$val<15):
+            $roi .= "$title_ROIwins";
+            break;
+        case($val>=15):
+            $roi .= "$title_ROIisExcellent";
+            break;
+    }
+    $roi.="</span>";
+    return $roi;
+}
 function valColor($val){
     switch($val){
         case $val>0:
@@ -12,88 +52,88 @@ function valColor($val){
     }
     return $color;
 }
-function criteres($type,$donnees,$bdd){
+function criterion($type,$data,$db){
     $v=0;
     switch($type){
         case "motivC1":
-                if($donnees['motivation_confiance1']!="") $v=$donnees['motivation_confiance1'];
+                if($data['motivation1']!="") $v=$data['motivation1'];
                 else $v=1; // Avantage à domicile
             break;
         case "motivC2":
-                if($donnees['motivation_confiance2']!="") $v=$donnees['motivation_confiance2'];
+                if($data['motivation2']!="") $v=$data['motivation2'];
             break;
         case "serieC1":
-                if($donnees['serie_en_cours1']!="") $v=$donnees['serie_en_cours1'];
-                elseif(($_SESSION['numJournee']-1)>0) {
-                    $num = ($_SESSION['numJournee']-1);
+                if($data['currentForm1']!="") $v=$data['currentForm1'];
+                elseif(($_SESSION['matchdayNum']-1)>0) {
+                    $num = ($_SESSION['matchdayNum']-1);
                     $req="
-                    SELECT m.equipe_1 as club FROM matchs m
-                    LEFT JOIN saison_championnat_club s ON s.id_club=m.equipe_1
-                    LEFT JOIN journees j ON j.id_journee=m.id_journee
-                    WHERE j.numero='".$num."'
-                    AND m.equipe_1='".$donnees['eq1']."' 
-                    AND m.resultat='1'
-                    AND s.id_championnat='".$_SESSION['idChampionnat']."'
-                    AND s.id_saison='".$_SESSION['idSaison']."'
+                    SELECT m.team_1 as team FROM matchs m
+                    LEFT JOIN season_championship_team s ON s.id_team=m.team_1
+                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
+                    WHERE j.number='".$num."'
+                    AND m.team_1='".$data['eq1']."' 
+                    AND m.result='1'
+                    AND s.id_championship='".$_SESSION['championshipId']."'
+                    AND s.id_season='".$_SESSION['seasonId']."'
                     UNION
-                    SELECT m.equipe_2 as club FROM matchs m
-                    LEFT JOIN saison_championnat_club s ON s.id_club=m.equipe_2
-                    LEFT JOIN journees j ON j.id_journee=m.id_journee
-                    WHERE j.numero='".$num."'
-                    AND m.equipe_2='".$donnees['eq1']."' 
-                    AND m.resultat='2'
-                    AND s.id_championnat='".$_SESSION['idChampionnat']."'
-                    AND s.id_saison='".$_SESSION['idSaison']."'";
-                    $r = $bdd->query($req);
+                    SELECT m.team_2 as team FROM matchs m
+                    LEFT JOIN season_championship_team s ON s.id_team=m.team_2
+                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
+                    WHERE j.number='".$num."'
+                    AND m.team_2='".$data['eq1']."' 
+                    AND m.result='2'
+                    AND s.id_championship='".$_SESSION['championshipId']."'
+                    AND s.id_season='".$_SESSION['seasonId']."'";
+                    $r = $db->query($req);
                     while($data=$r->fetchColumn(0))   $res[] = $data;
-                    if(in_array($donnees['eq1'],$res)) $v=1;
+                    if(in_array($data['eq1'],$res)) $v=1;
                 }
             break;
         case "serieC2":
-                if($donnees['serie_en_cours2']!="") $v=$donnees['serie_en_cours2'];
-                elseif(($_SESSION['numJournee']-1)>0) {
-                    $num = ($_SESSION['numJournee']-1);
+                if($data['currentForm2']!="") $v=$data['currentForm2'];
+                elseif(($_SESSION['matchdayNum']-1)>0) {
+                    $num = ($_SESSION['matchdayNum']-1);
                     $req="
-                    SELECT m.equipe_1 as club FROM matchs m
-                    LEFT JOIN saison_championnat_club s ON s.id_club=m.equipe_1
-                    LEFT JOIN journees j ON j.id_journee=m.id_journee
-                    WHERE j.numero='".$num."'
-                    AND m.equipe_1='".$donnees['eq2']."' 
-                    AND m.resultat='1'
-                    AND s.id_championnat='".$_SESSION['idChampionnat']."'
-                    AND s.id_saison='".$_SESSION['idSaison']."'
+                    SELECT m.team_1 as team FROM matchs m
+                    LEFT JOIN season_championship_team s ON s.id_team=m.team_1
+                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
+                    WHERE j.number='".$num."'
+                    AND m.team_1='".$data['eq2']."' 
+                    AND m.result='1'
+                    AND s.id_championship='".$_SESSION['championshipId']."'
+                    AND s.id_season='".$_SESSION['seasonId']."'
                     UNION
-                    SELECT m.equipe_2 as club FROM matchs m
-                    LEFT JOIN saison_championnat_club s ON s.id_club=m.equipe_2
-                    LEFT JOIN journees j ON j.id_journee=m.id_journee
-                    WHERE j.numero='".$num."'
-                    AND m.equipe_2='".$donnees['eq2']."' 
-                    AND m.resultat='2'
-                    AND s.id_championnat='".$_SESSION['idChampionnat']."'
-                    AND s.id_saison='".$_SESSION['idSaison']."'";
-                    $r = $bdd->query($req);
+                    SELECT m.team_2 as team FROM matchs m
+                    LEFT JOIN season_championship_team s ON s.id_team=m.team_2
+                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
+                    WHERE j.number='".$num."'
+                    AND m.team_2='".$data['eq2']."' 
+                    AND m.result='2'
+                    AND s.id_championship='".$_SESSION['championshipId']."'
+                    AND s.id_season='".$_SESSION['seasonId']."'";
+                    $r = $db->query($req);
                     while($data=$r->fetchColumn(0))   $res[] = $data;
-                    if(in_array($donnees['eq2'],$res)) $v=1;
+                    if(in_array($data['eq2'],$res)) $v=1;
                 }
             break;
         case "v1":
-                $req="SELECT valeur FROM valeurs WHERE id_club='".$donnees['eq1']."' AND id_saison='".$_SESSION['idSaison']."';";
-                $r = $bdd->query($req)->fetch();
+                $req="SELECT marketValue FROM marketValue WHERE id_team='".$data['eq1']."' AND id_season='".$_SESSION['seasonId']."';";
+                $r = $db->query($req)->fetch();
                 $v = $r[0]; 
             break;
         case "v2":
-                $req="SELECT valeur FROM valeurs WHERE id_club='".$donnees['eq2']."' AND id_saison='".$_SESSION['idSaison']."';";
-                $r = $bdd->query($req)->fetch();
+                $req="SELECT marketValue FROM marketValue WHERE id_team='".$data['eq2']."' AND id_season='".$_SESSION['seasonId']."';";
+                $r = $db->query($req)->fetch();
                 $v = $r[0];
             break;
-        case "msDom":
-                if(isset($donnees['Dom'])) $v=$donnees['Dom'];
+        case "predictionsHistoryHome":
+                if(isset($data['Dom'])) $v=$data['Dom'];
             break;
         case "msNul":
-                if(isset($donnees['Nul'])) $v=$donnees['Nul'];
+                if(isset($data['Nul'])) $v=$data['Nul'];
             break;
-        case "msExt":
-                if(isset($donnees['Ext'])) $v=$donnees['Ext'];
+        case "predictionsHistoryAway":
+                if(isset($data['Ext'])) $v=$data['Ext'];
             break;
     }
     return $v;
@@ -101,41 +141,40 @@ function criteres($type,$donnees,$bdd){
 
 function popup($texte,$lien){
 
-    echo "  <div id=\"overlay\"><div class=\"update\"><a class=\"close\" href=\"".$lien."\">&times;</a><p>".$texte."</p><p><a href=\"".$lien."\">Ok</a></p></div></div>\n";
+    echo "  <div id='overlay'><div class='update'><a class='close' href='".$lien."'>&times;</a><p>".$texte."</p><p><a href='".$lien."'>Ok</a></p></div></div>\n";
 
 }
-function changeJ($bdd,$titre,$page){
-    // Flèche changement de journée
-    echo "<div id=\"changeJ\">\n";
-        $req="SELECT id_journee, numero FROM journees WHERE numero>=".($_SESSION['numJournee']-1)." AND numero<=".($_SESSION['numJournee']+1)." AND id_saison='".$_SESSION['idSaison']."' AND id_championnat='".$_SESSION['idChampionnat']."' ORDER BY numero;";
-        
-        $reponse = $bdd->query($req);
-        $nb=sizeof($reponse->fetchAll());
-        if($nb==2) $ajout="<input type=\"submit\" value=\"\" readonly>\n";
+function changeMD($db,$titre,$page){
+    // Arrows to change matchday
+    echo "<div id='changeMD'>\n";
+        $req="SELECT id_matchday, number FROM matchday WHERE number>=".($_SESSION['matchdayNum']-1)." AND number<=".($_SESSION['matchdayNum']+1)." AND id_season='".$_SESSION['seasonId']."' AND id_championship='".$_SESSION['championshipId']."' ORDER BY number;";
+        $response = $db->query($req);
+        $nb=sizeof($response->fetchAll());
+        if($nb==2) $add="<input type='submit' value='' readonly>\n";
         $cpt=0;
         
-        $reponse = $bdd->query($req);
-        while ($donnees = $reponse->fetch())
+        $response = $db->query($req);
+        while ($data = $response->fetch())
         {
             $cpt++;
             
-            if($donnees['numero']==$_SESSION['numJournee']-1) $cpt="&#x3008;";//précédente
-            if($donnees['numero']==$_SESSION['numJournee']+1) $cpt="&#x3009;";//suivante
+            if($data['number']==$_SESSION['matchdayNum']-1) $cpt="&#x3008;";// Previous
+            if($data['number']==$_SESSION['matchdayNum']+1) $cpt="&#x3009;";// Next
             
-            if($donnees['numero']==$_SESSION['numJournee']) {
-                if($cpt==1) echo $ajout;
-                echo "<h2>".$titre." J".$_SESSION['numJournee']."</h2>\n";
-                if($nb==1)   echo $ajout;
+            if($data['number']==$_SESSION['matchdayNum']) {
+                if($cpt==1) echo $add;
+                echo "<h2>".$titre.$_SESSION['matchdayNum']."</h2>\n"; 
+                if($nb==1)   echo $add;
             } else {
-                echo "<form action=\"index.php?page=".$page."\" method=\"POST\">\n";
-                echo "  <input type=\"hidden\" name=\"choixJournee\" value=\"".$donnees['id_journee'].",".$donnees['numero']."\">\n";
-                echo "  <input type=\"submit\" value=\"".$cpt."\">\n";
+                echo "<form action='index.php?page=".$page."' method='POST'>\n";
+                echo "  <input type='hidden' name='matchdaySelect' value='".$data['id_matchday'].",".$data['number']."'>\n";
+                echo "  <input type='submit' value='".$cpt."'>\n"; // Arrow button
                 echo "</form>\n";
             }
             $nb--;
         }
         
     echo "</div>\n";
-    $reponse->closeCursor(); // Termine le traitement de la requête
+    $response->closeCursor();
 }
 ?>

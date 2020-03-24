@@ -1,9 +1,9 @@
 <?php
 
-        echo "  		<option value=\"0\">...</option>\n";
+        echo "  		<option value='0'>...</option>\n";
         // On affiche chaque entrée
-        while ($donnees = $reponse->fetch())
+        while ($data = $response->fetch())
         {
-            echo "  		<option value=\"".$donnees['id_club']."\">".$donnees['nom']."</option>\n";
+            echo "  		<option value='".$data['id_team']."'>".$data['name']."</option>\n";
         }
 ?>

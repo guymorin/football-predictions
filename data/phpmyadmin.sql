@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Ven 07 Février 2020 à 21:51
+-- Généré le :  Mar 24 Mars 2020 à 23:13
 -- Version du serveur :  5.7.29-0ubuntu0.18.04.1
--- Version de PHP :  7.2.24-0ubuntu0.18.04.2
+-- Version de PHP :  7.2.24-0ubuntu0.18.04.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,89 +23,51 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `championnats`
+-- Structure de la table `championship`
 --
 
-CREATE TABLE `championnats` (
-  `id_championnat` int(11) NOT NULL,
-  `nom` varchar(50) NOT NULL
+CREATE TABLE `championship` (
+  `id_championship` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `championnats`
+-- Contenu de la table `championship`
 --
 
-INSERT INTO `championnats` (`id_championnat`, `nom`) VALUES
+INSERT INTO `championship` (`id_championship`, `name`) VALUES
 (1, 'Ligue 1');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `clubs`
+-- Structure de la table `criterion`
 --
 
-CREATE TABLE `clubs` (
-  `id_club` int(11) NOT NULL,
-  `nom` varchar(50) NOT NULL,
-  `code_insee` varchar(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `clubs`
---
-
-INSERT INTO `clubs` (`id_club`, `nom`, `code_insee`) VALUES
-(1, 'Amiens', '80021'),
-(2, 'Angers', '49007'),
-(3, 'ASSE', '42218'),
-(4, 'Bordeaux', '33063'),
-(5, 'Brest', '29019'),
-(6, 'Dijon', '21231'),
-(7, 'Lille', '59350'),
-(8, 'Lyon', '69123'),
-(9, 'Marseille', '13055'),
-(10, 'Metz', '57463'),
-(11, 'Monaco', '99999'),
-(12, 'Montpellier', '34172'),
-(13, 'Nantes', '44109'),
-(14, 'Nice', '06088'),
-(15, 'Nimes', '30189'),
-(16, 'PSG', '75116'),
-(17, 'Reims', '51454'),
-(18, 'Rennes', '35238'),
-(19, 'Strasbourg', '67482'),
-(20, 'Toulouse', '31555');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `criteres`
---
-
-CREATE TABLE `criteres` (
+CREATE TABLE `criterion` (
   `id_criteres` int(11) NOT NULL,
   `id_match` int(11) NOT NULL,
-  `motivation_confiance1` int(11) NOT NULL DEFAULT '0',
-  `serie_en_cours1` int(11) NOT NULL DEFAULT '0',
-  `forme_physique1` int(11) NOT NULL DEFAULT '0',
-  `meteo1` int(11) NOT NULL DEFAULT '0',
-  `joueurs_cles1` int(11) NOT NULL DEFAULT '0',
-  `valeur_marchande1` int(11) NOT NULL DEFAULT '0',
-  `domicile_exterieur1` int(11) NOT NULL DEFAULT '0',
-  `motivation_confiance2` int(11) NOT NULL DEFAULT '0',
-  `serie_en_cours2` int(11) NOT NULL DEFAULT '0',
-  `forme_physique2` int(11) NOT NULL DEFAULT '0',
-  `meteo2` int(11) NOT NULL DEFAULT '0',
-  `joueurs_cles2` int(11) NOT NULL DEFAULT '0',
-  `valeur_marchande2` int(11) NOT NULL DEFAULT '0',
-  `domicile_exterieur2` int(11) NOT NULL DEFAULT '0'
+  `motivation1` int(11) NOT NULL DEFAULT '0',
+  `currentForm1` int(11) NOT NULL DEFAULT '0',
+  `physicalForm1` int(11) NOT NULL DEFAULT '0',
+  `weather1` int(11) NOT NULL DEFAULT '0',
+  `bestPlayers1` int(11) NOT NULL DEFAULT '0',
+  `marketValue1` int(11) NOT NULL DEFAULT '0',
+  `home_away1` int(11) NOT NULL DEFAULT '0',
+  `motivation2` int(11) NOT NULL DEFAULT '0',
+  `currentForm2` int(11) NOT NULL DEFAULT '0',
+  `physicalForm2` int(11) NOT NULL DEFAULT '0',
+  `weather2` int(11) NOT NULL DEFAULT '0',
+  `bestPlayers2` int(11) NOT NULL DEFAULT '0',
+  `marketValue2` int(11) NOT NULL DEFAULT '0',
+  `home_away2` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `criteres`
+-- Contenu de la table `criterion`
 --
 
-INSERT INTO `criteres` (`id_criteres`, `id_match`, `motivation_confiance1`, `serie_en_cours1`, `forme_physique1`, `meteo1`, `joueurs_cles1`, `valeur_marchande1`, `domicile_exterieur1`, `motivation_confiance2`, `serie_en_cours2`, `forme_physique2`, `meteo2`, `joueurs_cles2`, `valeur_marchande2`, `domicile_exterieur2`) VALUES
+INSERT INTO `criterion` (`id_criteres`, `id_match`, `motivation1`, `currentForm1`, `physicalForm1`, `weather1`, `bestPlayers1`, `marketValue1`, `home_away1`, `motivation2`, `currentForm2`, `physicalForm2`, `weather2`, `bestPlayers2`, `marketValue2`, `home_away2`) VALUES
 (1, 191, 1, -1, 0, 1, 0, 2, -1, 0, 0, -2, 0, -1, 1, 1),
 (2, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0),
 (3, 2, 1, 0, 0, 1, 0, 2, 0, 0, 1, 0, 0, 0, 1, 0),
@@ -345,26 +307,1270 @@ INSERT INTO `criteres` (`id_criteres`, `id_match`, `motivation_confiance1`, `ser
 (255, 237, 1, 0, 0, 0, 0, 2, 0, 0, 0, -1, 1, -1, 1, -1),
 (256, 238, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, -1, 1, 0),
 (257, 239, 1, 1, 0, 0, -1, 1, 0, 0, 0, 0, 1, 0, 1, 0),
-(258, 240, 1, 1, 0, 0, -2, 2, 1, 0, 0, 0, 1, -1, 1, -1);
+(258, 240, 1, 1, 0, 0, -2, 2, 1, 0, 0, 0, 1, -1, 1, -1),
+(259, 241, 1, 1, 0, 0, -1, 2, 0, 0, 1, 0, 1, -1, 1, 0),
+(260, 242, 1, 0, 0, 1, 0, 0, -1, 0, 1, -1, 1, -2, 4, 1),
+(261, 243, 1, 1, 0, 0, 0, 2, -1, 0, 0, -1, 1, -1, 1, -1),
+(262, 244, 1, 0, 0, 0, -3, 1, 0, 0, 0, 0, 1, -1, 1, 0),
+(263, 245, 1, 1, 0, 1, -1, 1, 0, 0, 0, 0, 1, -1, 1, 1),
+(264, 246, 1, 0, 0, 1, 0, 1, -1, 0, 0, 0, 1, -1, 1, 1),
+(265, 247, 1, 1, -1, 0, -1, 2, -1, 0, 0, 0, 1, -1, 1, 0),
+(266, 248, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, -2, 2, 1),
+(267, 249, 1, 0, 0, 1, 0, 1, -1, 0, 0, -1, 1, 0, 1, -1),
+(268, 250, 1, 1, 0, 1, -2, 1, 1, 0, 1, -1, 1, -1, 1, 0),
+(269, 251, 1, 1, 0, 0, -2, 2, 0, 0, 1, 0, 1, -1, 0, 0),
+(270, 252, 1, 0, 0, 1, -1, 0, -1, 0, 0, 0, 1, -1, 3, -1),
+(271, 253, 1, 1, 0, 0, -1, 2, 1, 0, 0, 0, 1, -1, 1, 0),
+(272, 254, 1, 0, 0, 1, -2, 1, 0, 0, 0, 0, 1, 0, 1, 0),
+(273, 255, 1, 0, 0, 1, -2, 0, 0, 0, 1, -1, 1, 0, 3, 0),
+(274, 256, 1, 0, 0, 0, -1, 2, 1, 0, 0, 0, 1, 0, 1, 1),
+(275, 257, 1, 0, 0, 0, -2, 1, 0, 0, 0, 0, 1, 0, 1, 1),
+(276, 258, 1, 0, 0, 0, -3, 1, -1, 0, 1, 0, 1, 0, 1, -1),
+(277, 259, 1, 0, 0, 0, 0, 2, 0, 0, 1, 0, 1, -1, 1, 1),
+(278, 260, 1, 0, -1, 0, 0, 3, 1, 0, 0, 0, 1, 0, 0, -1),
+(279, 261, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, -1, 2, 1),
+(280, 262, 1, 1, 0, 0, -2, 5, 1, 0, 0, 0, 1, -2, 0, 0),
+(281, 263, 1, 0, 0, 0, 0, 1, -1, 0, 0, 0, 1, -2, 1, 0),
+(282, 264, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, -1, 1, 0),
+(283, 265, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 1),
+(284, 266, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, -1, 2, 0),
+(285, 267, 1, 0, 0, 1, 0, 1, -1, 0, 1, 0, 1, 0, 1, -1),
+(286, 268, 1, 1, 0, 1, -1, 1, 0, 0, 1, 0, 1, -1, 2, 0),
+(287, 269, 1, 0, 0, 1, 0, 1, -1, 0, 0, 0, 1, -2, 1, 0),
+(288, 270, 2, 1, -1, 0, -1, 2, -1, 0, 0, 0, 1, -2, 1, 0),
+(289, 273, 2, 1, 0, 0, -2, 2, 1, 0, 0, 0, 1, 0, 1, 0),
+(290, 272, 1, 0, 0, 2, -1, 0, 0, 0, 1, -1, 1, -2, 3, 1),
+(291, 274, 1, 1, 0, 2, -3, 1, 0, 0, 0, 0, 1, 0, 1, 0),
+(292, 275, 1, 0, 0, 2, -2, 1, 0, 0, 0, 0, 1, 0, 1, -1),
+(293, 276, 1, 1, 0, 2, 0, 1, -1, 0, 0, 0, 1, 0, 1, -1),
+(294, 277, 1, 0, 0, 1, -2, 1, 0, 0, 0, 0, 1, 0, 1, 0),
+(295, 278, 1, 0, 0, 0, -1, 1, 0, 0, 0, 0, 1, 0, 1, 0),
+(296, 271, 1, 1, 0, 2, 0, 1, 1, 2, 1, -1, 1, -1, 1, 1),
+(297, 279, 1, 0, 0, 2, -3, 1, -1, 0, 0, 0, 1, 0, 1, 1),
+(298, 280, 1, 1, 0, 0, 0, 3, 0, 0, 1, 0, 2, 0, 0, 0),
+(299, 281, 1, 0, 0, 0, 0, 2, 0, 0, 1, 0, 1, -2, 0, 1),
+(300, 282, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 3, 1),
+(301, 283, 1, 0, 0, 1, 0, 1, -1, 0, 1, 0, 1, -1, 1, 0),
+(302, 284, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 2, 0),
+(303, 285, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, -1),
+(304, 286, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, -2, 1, -1),
+(305, 287, 1, 0, 0, 0, 0, 1, -1, 0, 1, 0, 1, 0, 1, 0),
+(306, 289, 1, 0, 0, 0, -1, 2, 0, 0, 0, 0, 1, -2, 1, -1),
+(307, 288, 1, 0, 0, 1, -2, 1, -1, 0, 1, 0, 1, 0, 1, 1),
+(308, 290, 1, 0, 0, 0, -1, 2, 1, 0, 1, 0, 1, -2, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `equipes`
+-- Structure de la table `marketValue`
 --
 
-CREATE TABLE `equipes` (
-  `id_equipe` int(11) NOT NULL,
-  `id_journee` int(11) NOT NULL,
-  `id_joueur` int(11) NOT NULL,
-  `note` int(11) NOT NULL
+CREATE TABLE `marketValue` (
+  `id_marketValue` int(11) NOT NULL,
+  `id_season` int(11) NOT NULL,
+  `id_team` int(11) NOT NULL,
+  `marketValue` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `equipes`
+-- Contenu de la table `marketValue`
 --
 
-INSERT INTO `equipes` (`id_equipe`, `id_journee`, `id_joueur`, `note`) VALUES
+INSERT INTO `marketValue` (`id_marketValue`, `id_season`, `id_team`, `marketValue`) VALUES
+(1, 1, 1, 67),
+(2, 1, 2, 78),
+(3, 1, 3, 123),
+(4, 1, 4, 131),
+(5, 1, 5, 55),
+(6, 1, 6, 47),
+(7, 1, 7, 262),
+(8, 1, 8, 419),
+(9, 1, 9, 247),
+(10, 1, 10, 53),
+(11, 1, 11, 335),
+(12, 1, 12, 26),
+(13, 1, 13, 92),
+(14, 1, 14, 184),
+(15, 1, 15, 55),
+(16, 1, 16, 1020),
+(17, 1, 17, 78),
+(18, 1, 18, 184),
+(19, 1, 19, 90),
+(20, 1, 20, 92);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `matchday`
+--
+
+CREATE TABLE `matchday` (
+  `id_matchday` int(11) NOT NULL,
+  `id_season` int(11) NOT NULL,
+  `id_championship` int(11) NOT NULL,
+  `number` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `matchday`
+--
+
+INSERT INTO `matchday` (`id_matchday`, `id_season`, `id_championship`, `number`) VALUES
+(1, 1, 1, 1),
+(2, 1, 1, 2),
+(3, 1, 1, 3),
+(4, 1, 1, 4),
+(5, 1, 1, 5),
+(6, 1, 1, 6),
+(7, 1, 1, 7),
+(8, 1, 1, 8),
+(9, 1, 1, 9),
+(10, 1, 1, 10),
+(11, 1, 1, 11),
+(12, 1, 1, 12),
+(13, 1, 1, 13),
+(14, 1, 1, 14),
+(15, 1, 1, 15),
+(16, 1, 1, 16),
+(17, 1, 1, 17),
+(18, 1, 1, 18),
+(19, 1, 1, 19),
+(20, 1, 1, 20),
+(21, 1, 1, 21),
+(22, 1, 1, 22),
+(23, 1, 1, 23),
+(24, 1, 1, 24),
+(25, 1, 1, 25),
+(26, 1, 1, 26),
+(27, 1, 1, 27),
+(28, 1, 1, 28),
+(29, 1, 1, 29),
+(30, 1, 1, 30);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `matchs`
+--
+
+CREATE TABLE `matchs` (
+  `id_match` int(11) NOT NULL,
+  `id_matchday` int(11) NOT NULL,
+  `team_1` int(11) NOT NULL,
+  `team_2` int(11) NOT NULL,
+  `result` enum('1','D','2','') NOT NULL,
+  `odds1` float DEFAULT NULL,
+  `oddsD` float DEFAULT NULL,
+  `odds2` float DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `red1` int(11) NOT NULL,
+  `red2` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `matchs`
+--
+
+INSERT INTO `matchs` (`id_match`, `id_matchday`, `team_1`, `team_2`, `result`, `odds1`, `oddsD`, `odds2`, `date`, `red1`, `red2`) VALUES
+(1, 1, 6, 3, '2', 3.55, 3.35, 2.1, '2019-08-10', 0, 0),
+(2, 1, 9, 17, '2', 1.6, 3.8, 6.1, '2019-08-10', 0, 0),
+(3, 1, 14, 1, '1', 2.18, 2.95, 4, '2019-08-10', 0, 1),
+(4, 1, 19, 10, 'D', 2.03, 3.2, 3.95, '2019-08-11', 0, 0),
+(5, 1, 12, 18, '2', 2.3, 3.25, 3.3, '2019-08-10', 0, 1),
+(6, 1, 2, 4, '1', 2.35, 3.15, 3.15, '2019-08-10', 0, 0),
+(7, 1, 7, 13, '1', 1.85, 3.4, 4.55, '2019-08-11', 0, 0),
+(8, 1, 16, 15, '1', 1.1, 10, 22, '2019-08-11', 0, 0),
+(9, 1, 5, 20, 'D', 2.38, 3.25, 3.1, '2019-08-10', 0, 0),
+(10, 1, 11, 8, '2', 2.9, 3.35, 2.42, '2019-08-09', 1, 0),
+(11, 2, 10, 11, '1', 2.85, 3.1, 2.58, '2019-08-17', 0, 1),
+(12, 2, 20, 6, '1', 1.99, 3.35, 3.85, '2019-08-17', 0, 0),
+(13, 2, 8, 2, '1', 1.38, 4.9, 7.5, '2019-08-16', 0, 0),
+(14, 2, 3, 5, 'D', 1.62, 3.85, 5.5, '2019-08-18', 0, 0),
+(15, 2, 15, 14, '2', 2.28, 3.25, 3.2, '2019-08-17', 2, 1),
+(16, 2, 13, 9, 'D', 2.63, 3.15, 2.75, '2019-08-17', 0, 0),
+(17, 2, 1, 7, '1', 3.35, 3, 2.33, '2019-08-17', 0, 1),
+(18, 2, 4, 12, 'D', 2.73, 2.95, 2.8, '2019-08-17', 0, 0),
+(19, 2, 17, 19, 'D', 2.05, 3.15, 3.9, '2019-08-18', 0, 0),
+(20, 2, 18, 16, '1', 8, 5.25, 1.35, '2019-08-18', 0, 0),
+(21, 3, 16, 20, '1', 1.11, 9, 22, '2019-08-25', 0, 0),
+(22, 3, 1, 13, '2', 2.75, 2.95, 2.8, '2019-08-24', 1, 0),
+(23, 3, 6, 4, '2', 2.58, 3.1, 2.85, '2019-08-24', 0, 0),
+(24, 3, 2, 10, '1', 2.08, 3.15, 3.8, '2019-08-24', 0, 0),
+(25, 3, 11, 15, 'D', 1.66, 3.85, 5, '2019-08-25', 1, 0),
+(26, 3, 14, 9, '2', 2.9, 3.15, 2.5, '2019-08-28', 0, 0),
+(27, 3, 7, 3, '1', 2.22, 3.3, 3.25, '2019-08-28', 0, 0),
+(28, 3, 12, 8, '1', 3.5, 3.4, 2.08, '2019-08-27', 0, 1),
+(29, 3, 19, 18, '2', 2.7, 3.1, 2.73, '2019-08-25', 1, 0),
+(30, 3, 5, 17, '1', 2.65, 3, 2.85, '2019-08-24', 0, 0),
+(31, 4, 2, 6, '1', 1.7, 3.6, 5, '2019-08-31', 0, 0),
+(32, 4, 20, 1, '1', 2.15, 3.1, 3.75, '2019-08-31', 0, 0),
+(33, 4, 17, 7, '1', 2.88, 2.95, 2.7, '2019-09-01', 0, 1),
+(34, 4, 18, 14, '2', 1.66, 3.6, 5.6, '2019-09-01', 0, 0),
+(35, 4, 13, 12, '1', 2.25, 3.1, 3.5, '2019-08-31', 0, 0),
+(36, 4, 8, 4, 'D', 0, 0, 0, '2019-08-31', 1, 0),
+(37, 4, 9, 3, '1', 1.98, 3.5, 3.75, '2019-09-01', 0, 0),
+(38, 4, 15, 5, '1', 2.1, 3.4, 3.5, '2019-08-31', 0, 0),
+(39, 4, 10, 16, '2', 7.5, 4.9, 1.4, '2019-08-30', 0, 0),
+(40, 4, 19, 11, 'D', 2.65, 3.2, 2.72, '2019-09-01', 0, 0),
+(41, 5, 6, 15, 'D', 2.68, 3.3, 2.6, '2019-09-14', 0, 0),
+(42, 5, 13, 17, '1', 2.15, 3.05, 3.75, '2019-09-15', 0, 0),
+(43, 5, 12, 14, '1', 1.95, 3.2, 4.3, '2019-09-14', 0, 0),
+(44, 5, 5, 18, 'D', 3.1, 3.15, 2.38, '2019-09-14', 0, 0),
+(45, 5, 11, 9, '2', 2.42, 3.4, 2.82, '2019-09-15', 0, 0),
+(46, 5, 3, 20, 'D', 1.63, 3.9, 5.25, '2019-09-15', 0, 0),
+(47, 5, 7, 2, '1', 1.82, 3.35, 4.7, '2019-09-13', 0, 0),
+(48, 5, 4, 10, '1', 1.83, 3.25, 4.8, '2019-09-14', 0, 0),
+(49, 5, 1, 8, 'D', 4.6, 3.65, 1.76, '2019-09-13', 0, 0),
+(50, 5, 16, 19, '1', 1.19, 6.75, 14, '2019-09-14', 0, 0),
+(51, 6, 17, 11, 'D', 2.7, 3.1, 2.73, '2019-09-21', 0, 0),
+(52, 6, 10, 1, '2', 2.08, 3.05, 4, '2019-09-21', 0, 0),
+(53, 6, 8, 16, '2', 3.65, 3.9, 1.88, '2019-09-22', 0, 0),
+(54, 6, 4, 5, 'D', 1.77, 3.45, 4.9, '2019-09-21', 0, 0),
+(55, 6, 19, 13, '1', 2.45, 3, 3.15, '2019-09-20', 0, 0),
+(56, 6, 9, 12, 'D', 1.93, 3.3, 4.2, '2019-09-21', 2, 1),
+(57, 6, 15, 20, '1', 1.91, 3.5, 4, '2019-09-21', 0, 1),
+(58, 6, 2, 3, '1', 2.13, 3.25, 3.55, '2019-09-22', 0, 0),
+(59, 6, 18, 7, 'D', 2.45, 3.1, 3.05, '2019-09-22', 0, 0),
+(60, 6, 14, 6, '1', 1.69, 3.65, 5.25, '2019-09-21', 0, 0),
+(61, 7, 11, 14, '1', 2, 3.55, 3.9, '2019-09-24', 0, 0),
+(62, 7, 5, 8, 'D', 4.7, 3.85, 1.75, '2019-09-25', 0, 0),
+(63, 7, 13, 18, '1', 2.3, 3.2, 3.45, '2019-09-25', 0, 0),
+(64, 7, 16, 17, '2', 1.15, 8.4, 18, '2019-09-25', 0, 0),
+(65, 7, 3, 10, '2', 1.8, 3.65, 4.75, '2019-09-25', 0, 0),
+(66, 7, 12, 15, '1', 1.91, 3.6, 4.2, '2019-09-25', 0, 0),
+(67, 7, 6, 9, 'D', 4.7, 3.85, 1.75, '2019-09-24', 0, 0),
+(68, 7, 20, 2, '2', 2.7, 3.25, 2.75, '2019-09-25', 0, 0),
+(69, 7, 7, 19, '1', 1.8, 3.55, 4.95, '2019-09-25', 0, 0),
+(70, 7, 1, 4, '2', 2.65, 3, 3.05, '2019-09-25', 0, 0),
+(71, 8, 14, 7, 'D', 2.92, 3.15, 2.55, '2019-09-28', 0, 0),
+(72, 8, 4, 16, '2', 6, 4.75, 1.48, '2019-09-28', 0, 0),
+(73, 8, 2, 1, 'D', 1.75, 3.5, 4.9, '2019-09-28', 0, 0),
+(74, 8, 11, 5, '1', 1.53, 4.3, 6.25, '2019-09-28', 0, 0),
+(75, 8, 10, 20, 'D', 2.1, 3.25, 3.7, '2019-09-28', 0, 0),
+(76, 8, 8, 13, '2', 1.55, 4.1, 6.5, '2019-09-28', 0, 0),
+(77, 8, 19, 12, '1', 2.65, 3.1, 2.92, '2019-09-29', 0, 0),
+(78, 8, 9, 18, 'D', 1.97, 3.45, 3.85, '2019-09-29', 0, 0),
+(79, 8, 15, 3, '2', 2.92, 3.15, 2.55, '2019-09-29', 0, 1),
+(80, 8, 17, 6, '2', 1.76, 3.45, 5.25, '2019-09-28', 0, 0),
+(81, 9, 18, 17, '2', 2.15, 3.15, 3.7, '2019-10-06', 0, 0),
+(82, 9, 6, 19, '1', 2.72, 3.15, 2.8, '2019-10-05', 0, 0),
+(83, 9, 1, 9, '1', 3.2, 3.3, 2.35, '2019-10-04', 0, 0),
+(84, 9, 12, 11, '1', 2.85, 3.35, 2.55, '2019-10-05', 0, 1),
+(85, 9, 7, 15, 'D', 1.65, 4, 5.5, '2019-10-06', 0, 0),
+(86, 9, 16, 2, '1', 1.18, 7.5, 14, '2019-10-05', 0, 0),
+(87, 9, 20, 4, '2', 2.52, 3.15, 2.95, '2019-10-05', 0, 0),
+(88, 9, 5, 10, '1', 2.47, 3.25, 3, '2019-10-05', 0, 0),
+(89, 9, 3, 8, '1', 3.4, 3.8, 2.05, '2019-10-06', 0, 0),
+(90, 9, 13, 14, '1', 2, 3.4, 4, '2019-10-05', 0, 0),
+(91, 10, 17, 12, '1', 2.15, 3, 3.8, '2019-10-19', 0, 0),
+(92, 10, 2, 5, '2', 1.63, 3.65, 5.75, '2019-10-18', 0, 0),
+(93, 10, 10, 13, '1', 2.78, 2.95, 2.78, '2019-10-19', 0, 0),
+(94, 10, 20, 7, '1', 3.4, 3.25, 2.18, '2019-10-19', 0, 0),
+(95, 10, 14, 16, '2', 9, 5.25, 1.32, '2019-10-18', 2, 0),
+(96, 10, 4, 3, '2', 2.3, 3.15, 3.25, '2019-10-20', 0, 0),
+(97, 10, 15, 1, 'D', 2.07, 3.3, 3.65, '2019-10-19', 0, 0),
+(98, 10, 9, 19, '1', 1.82, 3.5, 4.4, '2019-10-20', 0, 0),
+(99, 10, 8, 6, 'D', 1.33, 5.25, 8.5, '2019-10-18', 0, 0),
+(100, 10, 11, 18, '1', 1.83, 3.5, 4.4, '2019-10-20', 0, 0),
+(101, 11, 19, 14, '1', 1.92, 3.4, 4.75, '2019-10-26', 0, 1),
+(102, 11, 18, 20, '1', 1.88, 3.6, 4.5, '2019-10-27', 0, 0),
+(103, 11, 3, 1, 'D', 2.15, 3.5, 3.9, '2019-10-27', 0, 0),
+(104, 11, 5, 6, '1', 2.4, 3.3, 3.35, '2019-10-26', 1, 0),
+(105, 11, 8, 10, '1', 1.48, 4.8, 9, '2019-10-26', 0, 0),
+(106, 11, 16, 9, '1', 1.26, 7, 13.5, '2019-10-27', 0, 0),
+(107, 11, 13, 11, '2', 3.1, 3.4, 2.6, '2019-10-25', 0, 0),
+(108, 11, 17, 15, 'D', 1.67, 3.7, 6.25, '2019-10-26', 0, 0),
+(109, 11, 12, 2, 'D', 2.25, 3.2, 3.6, '2019-10-26', 0, 0),
+(110, 11, 7, 4, '1', 1.91, 3.45, 4.75, '2019-10-26', 0, 0),
+(111, 12, 4, 13, '1', 2.4, 3, 3.5, '2019-11-03', 0, 0),
+(112, 12, 15, 18, '2', 3.25, 3.18, 2.26, '2020-01-15', 0, 0),
+(113, 12, 9, 7, '1', 2.3, 3.3, 2.35, '2019-11-02', 0, 0),
+(114, 12, 3, 11, '1', 2.85, 3.5, 2.45, '2019-11-03', 0, 1),
+(115, 12, 10, 12, 'D', 3, 3.1, 2.65, '2019-11-02', 0, 0),
+(116, 12, 20, 8, '2', 4.75, 4, 1.75, '2019-11-02', 0, 0),
+(117, 12, 6, 16, '1', 16, 8, 1.22, '2019-11-01', 0, 0),
+(118, 12, 2, 19, '1', 2.05, 3.25, 4.4, '2019-11-02', 0, 0),
+(119, 12, 1, 5, '1', 1.75, 3.85, 4.9, '2019-11-02', 0, 0),
+(120, 12, 14, 17, '1', 2.7, 3.05, 2.95, '2019-11-03', 0, 1),
+(121, 13, 9, 8, '1', 2.78, 3.35, 2.53, '2019-11-10', 0, 0),
+(122, 13, 12, 20, '1', 1.8, 3.6, 4.85, '2019-11-10', 0, 0),
+(123, 13, 14, 4, 'D', 2.5, 3.1, 3, '2019-11-08', 0, 0),
+(124, 13, 11, 6, '1', 1.44, 4.55, 7, '2019-11-09', 0, 0),
+(125, 13, 18, 1, '1', 2.22, 3.2, 3.45, '2019-11-10', 0, 0),
+(126, 13, 7, 10, 'D', 1.65, 3.85, 5.75, '2019-11-09', 0, 0),
+(127, 13, 5, 16, '2', 14, 6.75, 1.2, '2019-11-09', 0, 0),
+(128, 13, 17, 2, 'D', 2.25, 3.05, 3.65, '2019-11-09', 0, 0),
+(129, 13, 19, 15, '1', 1.9, 3.4, 4.4, '2019-11-09', 0, 0),
+(130, 13, 13, 3, '2', 2.15, 3.15, 3.7, '2019-11-10', 0, 0),
+(131, 14, 20, 9, '2', 3.4, 3.35, 2.13, '2019-11-24', 1, 0),
+(132, 14, 16, 7, '1', 1.2, 6.75, 13, '2019-11-22', 0, 0),
+(133, 14, 8, 14, '1', 1.4, 4.6, 8, '2019-11-23', 1, 1),
+(134, 14, 5, 13, 'D', 2.95, 3.15, 2.48, '2019-11-23', 0, 0),
+(135, 14, 4, 11, '1', 3.2, 3.35, 2.22, '2019-11-24', 0, 1),
+(136, 14, 10, 17, 'D', 2.8, 2.95, 2.75, '2019-11-23', 0, 1),
+(137, 14, 3, 12, 'D', 2.35, 3.15, 3.15, '2019-11-24', 0, 0),
+(138, 14, 1, 19, '2', 2.38, 3.05, 3.2, '2019-11-23', 1, 0),
+(139, 14, 2, 15, '1', 1.69, 3.6, 5.25, '2019-11-23', 0, 0),
+(140, 14, 6, 18, '1', 2.9, 3.2, 2.48, '2019-11-23', 0, 0),
+(141, 15, 19, 8, '2', 3.3, 3.4, 2.1, '2019-11-30', 0, 0),
+(142, 15, 17, 4, 'D', 2, 3, 4.33, '2019-11-30', 1, 0),
+(143, 15, 11, 16, '2', 6, 5.15, 1.43, '2020-01-15', 0, 0),
+(144, 15, 15, 10, 'D', 2.15, 3.1, 3.6, '2019-11-30', 0, 0),
+(145, 15, 13, 20, '1', 1.72, 3.6, 4.75, '2019-12-01', 0, 1),
+(146, 15, 18, 3, '1', 2.3, 3.1, 3.25, '2019-12-01', 0, 0),
+(147, 15, 9, 5, '1', 1.47, 4.2, 7, '2019-11-29', 0, 0),
+(148, 15, 12, 1, '1', 1.8, 3.3, 4.75, '2019-11-30', 0, 1),
+(149, 15, 7, 6, '1', 1.57, 3.83, 6.25, '2019-11-30', 0, 0),
+(150, 15, 14, 2, '1', 2.62, 3, 2.8, '2019-11-30', 0, 0),
+(151, 16, 16, 13, '1', 1.13, 8, 19, '2019-12-04', 0, 0),
+(152, 16, 4, 15, '1', 1.9, 3.2, 4, '2019-12-03', 0, 0),
+(153, 16, 3, 14, '1', 2.25, 3.2, 3.05, '2019-12-04', 0, 0),
+(154, 16, 6, 12, 'D', 3, 3, 2.4, '2019-12-04', 0, 0),
+(155, 16, 1, 17, 'D', 2.68, 2.9, 2.92, '2020-01-15', 0, 0),
+(156, 16, 8, 7, '2', 2, 3.55, 3.9, '2019-12-03', 0, 0),
+(157, 16, 2, 9, '2', 2.8, 3.15, 2.45, '2019-12-03', 0, 0),
+(158, 16, 5, 19, '1', 3, 3.05, 2.35, '2019-12-03', 0, 0),
+(159, 16, 20, 11, '2', 3.75, 3.65, 1.83, '2019-12-04', 0, 0),
+(160, 16, 10, 18, '2', 2.95, 2.95, 2.42, '2019-12-04', 0, 0),
+(161, 17, 15, 8, '2', 4, 3.85, 1.85, '2019-12-06', 2, 0),
+(162, 17, 14, 10, '1', 1.77, 3.35, 4.5, '2019-12-07', 0, 0),
+(163, 17, 12, 16, '2', 6.55, 4.8, 1.45, '2019-12-07', 1, 0),
+(164, 17, 18, 2, '1', 2.03, 3.15, 3.6, '2019-12-07', 0, 0),
+(165, 17, 17, 3, '1', 1.95, 3.15, 3.95, '2019-12-08', 0, 0),
+(166, 17, 13, 6, '1', 1.73, 3.5, 4.45, '2019-12-08', 0, 0),
+(167, 17, 19, 20, '1', 1.66, 3.7, 4.7, '2019-12-07', 0, 0),
+(168, 17, 9, 4, '1', 1.58, 3.9, 5.15, '2019-12-08', 0, 0),
+(169, 17, 11, 1, '1', 1.42, 4.45, 6.3, '2019-12-07', 0, 0),
+(170, 17, 7, 5, '1', 1.38, 4.45, 7.4, '2019-12-06', 0, 0),
+(171, 18, 15, 13, '2', 3.2, 3.05, 2.24, '2019-12-14', 0, 0),
+(172, 18, 3, 16, '2', 7.15, 5, 1.34, '2019-12-15', 1, 0),
+(173, 18, 8, 18, '2', 1.65, 3.75, 4.8, '2019-12-15', 0, 0),
+(174, 18, 2, 11, 'D', 3, 3.4, 2.18, '2019-12-14', 0, 0),
+(175, 18, 4, 19, '2', 2.18, 3.1, 3.3, '2019-12-15', 0, 0),
+(176, 18, 20, 17, '2', 3.1, 3.05, 2.29, '2019-12-14', 0, 0),
+(177, 18, 7, 12, '1', 1.8, 3.25, 4.45, '2019-12-13', 0, 0),
+(178, 18, 10, 9, 'D', 4.4, 3.5, 1.75, '2019-12-14', 0, 0),
+(179, 18, 1, 6, 'D', 1.97, 3.25, 3.07, '2019-12-14', 0, 0),
+(180, 18, 5, 14, 'D', 2.6, 3.25, 2.55, '2019-12-14', 0, 0),
+(181, 19, 12, 5, '1', 1.51, 3.7, 3.3, '2019-12-21', 0, 0),
+(182, 19, 6, 10, 'D', 1.99, 3, 3.7, '2019-12-21', 0, 0),
+(183, 19, 18, 4, '1', 1.91, 3.2, 3.8, '2019-12-21', 0, 0),
+(184, 19, 19, 3, '1', 1.96, 3.1, 3.65, '2019-12-21', 0, 0),
+(185, 19, 11, 7, '1', 2, 3.4, 3.3, '2019-12-21', 0, 0),
+(186, 19, 17, 8, 'D', 2.72, 2.9, 2.52, '2019-12-21', 0, 0),
+(187, 19, 13, 2, '2', 2.01, 3, 3.65, '2019-12-21', 0, 0),
+(188, 19, 14, 20, '1', 1.63, 3.75, 4.45, '2019-12-21', 0, 0),
+(189, 19, 16, 1, '1', 1.06, 12, 30, '2019-12-21', 0, 0),
+(190, 19, 9, 15, '1', 1.26, 5.05, 8.8, '2019-12-21', 0, 0),
+(191, 20, 20, 5, '2', 2.25, 3.35, 3.23, '2020-01-11', 0, 0),
+(192, 20, 1, 12, '2', 3.5, 3.1, 2.25, '2020-01-11', 0, 0),
+(193, 20, 4, 8, '2', 3.3, 3.3, 2.35, '2020-01-11', 0, 0),
+(194, 20, 2, 14, 'D', 1.9, 3.6, 4.2, '2020-01-11', 0, 0),
+(195, 20, 18, 9, '2', 2.65, 3, 2.6, '2020-01-10', 0, 0),
+(196, 20, 15, 17, '1', 3.35, 3, 2.4, '2020-01-11', 0, 1),
+(197, 20, 10, 19, '1', 3, 3, 2.6, '2020-01-11', 0, 0),
+(198, 20, 6, 7, 'D', 4.3, 3.4, 1.9, '2020-01-12', 1, 1),
+(199, 20, 16, 11, 'D', 1.2, 7.5, 12, '2020-01-12', 0, 0),
+(200, 20, 3, 13, '2', 2.6, 2.95, 3.05, '2020-01-12', 0, 0),
+(201, 21, 5, 1, '1', 2.07, 3.4, 3.65, '2020-01-25', 0, 0),
+(202, 21, 9, 2, 'D', 1.75, 3.75, 4.7, '2020-01-25', 0, 0),
+(203, 21, 11, 19, '2', 1.6, 4.15, 5.45, '2020-01-25', 0, 0),
+(204, 21, 12, 6, '1', 1.62, 3.85, 5.75, '2020-01-25', 0, 1),
+(205, 21, 17, 10, '2', 1.86, 3.15, 5, '2020-01-25', 0, 0),
+(206, 21, 3, 15, '1', 1.74, 3.7, 4.85, '2020-01-25', 0, 0),
+(207, 21, 14, 18, 'D', 2.77, 3.15, 2.9, '2020-01-24', 0, 0),
+(208, 21, 8, 20, '1', 1.25, 6.4, 10.5, '2020-01-26', 0, 0),
+(209, 21, 13, 4, '2', 1.86, 3.28, 4.75, '2020-01-26', 1, 0),
+(210, 21, 7, 16, '2', 6.2, 5.6, 1.41, '2020-01-26', 0, 0),
+(211, 22, 18, 13, '1', 2.1, 2.92, 3.75, '2020-01-31', 0, 0),
+(212, 22, 16, 12, '1', 1.1, 8.15, 18, '2020-02-01', 0, 1),
+(213, 22, 1, 20, 'D', 1.91, 3.38, 3.75, '2020-02-01', 0, 0),
+(214, 22, 2, 17, '2', 1.98, 3.02, 4, '2020-02-01', 0, 0),
+(215, 22, 6, 5, '1', 1.98, 3.4, 3.5, '2020-02-01', 0, 0),
+(216, 22, 15, 11, '1', 4.4, 3.9, 1.66, '2020-02-01', 0, 1),
+(217, 22, 19, 7, '2', 2.6, 2.95, 2.75, '2020-02-01', 0, 0),
+(218, 22, 14, 8, '1', 3.28, 3.48, 2.03, '2020-02-02', 1, 1),
+(219, 22, 10, 3, '1', 2.6, 2.9, 2.82, '2020-02-02', 0, 0),
+(220, 22, 4, 9, 'D', 3.38, 3.12, 2.14, '2020-02-02', 0, 0),
+(221, 23, 7, 18, '1', 2.02, 3.35, 3.75, '2020-02-04', 0, 0),
+(222, 23, 11, 2, '1', 1.88, 3.55, 4.1, '2020-02-04', 0, 0),
+(223, 23, 13, 16, '2', 8.15, 5.25, 1.34, '2020-02-04', 0, 0),
+(224, 23, 8, 1, 'D', 1.29, 5.15, 9.1, '2020-02-05', 0, 0),
+(225, 23, 5, 4, 'D', 2.5, 3.1, 2.78, '2020-02-05', 1, 0),
+(226, 23, 20, 19, '2', 3.15, 3.05, 2.32, '2020-02-05', 0, 0),
+(227, 23, 15, 6, '1', 2.2, 3.15, 3.2, '2020-02-05', 0, 0),
+(228, 23, 17, 14, 'D', 2.05, 3.05, 3.8, '2020-02-05', 0, 0),
+(229, 23, 12, 10, 'D', 1.66, 3.35, 5.55, '2020-02-05', 0, 0),
+(230, 23, 3, 9, '2', 2.88, 3.2, 2.4, '2020-02-05', 0, 0),
+(231, 24, 2, 7, '2', 2.55, 3.08, 2.95, '2020-02-07', 0, 0),
+(232, 24, 9, 20, '1', 1.32, 5.2, 9.4, '2020-02-08', 0, 0),
+(233, 24, 1, 11, '2', 3.9, 3.6, 1.93, '2020-02-08', 0, 0),
+(234, 24, 6, 13, 'D', 2.6, 3.15, 2.82, '2020-02-08', 0, 0),
+(235, 24, 10, 4, '2', 2.52, 3.02, 3.05, '2020-02-08', 1, 0),
+(236, 24, 14, 15, '2', 1.92, 3.55, 4, '2020-02-08', 1, 0),
+(237, 24, 18, 5, 'D', 1.54, 4.2, 5.95, '2020-02-08', 0, 0),
+(238, 24, 12, 3, '1', 2.05, 3.12, 3.6, '2020-02-09', 1, 0),
+(239, 24, 19, 17, '1', 2.13, 2.92, 3.65, '2020-02-09', 0, 0),
+(240, 24, 16, 8, '1', 1.26, 6, 8.15, '2020-02-09', 0, 0),
+(241, 25, 11, 12, '1', 1.73, 3.6, 4.35, '2020-02-14', 0, 0),
+(242, 25, 1, 16, 'D', 7.6, 5.6, 1.29, '2020-02-15', 0, 0),
+(243, 25, 4, 6, 'D', 1.8, 3.28, 4.5, '2020-02-15', 0, 0),
+(244, 25, 13, 10, 'D', 1.73, 3.35, 4.8, '2020-02-15', 0, 1),
+(245, 25, 15, 2, '1', 2.44, 3.32, 2.38, '2020-02-15', 0, 1),
+(246, 25, 20, 14, '2', 2.75, 3.32, 2.38, '2020-02-15', 2, 0),
+(247, 25, 8, 19, 'D', 1.57, 3.85, 5.4, '2020-02-16', 0, 0),
+(248, 25, 5, 3, '1', 2.82, 3.18, 2.41, '2020-02-16', 0, 0),
+(249, 25, 17, 18, '1', 2.55, 2.92, 2.88, '2020-02-16', 0, 0),
+(250, 25, 7, 9, '2', 2.17, 3.25, 3.18, '2020-02-16', 0, 0),
+(251, 26, 14, 5, 'D', 1.77, 3.5, 4.25, '2020-02-21', 0, 0),
+(252, 26, 10, 8, '2', 3.95, 3.45, 1.85, '2020-02-21', 1, 0),
+(253, 26, 9, 13, '2', 1.63, 3.6, 5.1, '2020-02-22', 0, 0),
+(254, 26, 2, 12, '1', 2.36, 3, 3.05, '2020-02-22', 0, 0),
+(255, 26, 6, 11, 'D', 3.42, 3.5, 1.98, '2020-02-22', 0, 0),
+(256, 26, 7, 20, '1', 1.41, 4.2, 7.25, '2020-02-22', 0, 0),
+(257, 26, 19, 1, 'D', 1.69, 3.5, 4.85, '2020-02-22', 0, 0),
+(258, 26, 3, 17, 'D', 2.06, 3.12, 3.6, '2020-02-23', 0, 0),
+(259, 26, 18, 15, '1', 1.59, 3.65, 5.5, '2020-02-23', 0, 1),
+(260, 26, 16, 4, '1', 1.13, 7.2, 16, '2020-02-23', 1, 0),
+(261, 27, 15, 9, '2', 3.42, 3.3, 2.04, '2020-02-28', 0, 0),
+(262, 27, 16, 6, '1', 1.07, 9.9, 22, '2020-02-29', 0, 0),
+(263, 27, 1, 10, '2', 2.08, 3.12, 3.5, '2020-02-29', 0, 0),
+(264, 27, 5, 2, '2', 2.46, 3.12, 2.82, '2020-02-29', 0, 0),
+(265, 27, 11, 17, 'D', 1.62, 3.75, 5.05, '2020-02-29', 0, 0),
+(266, 27, 12, 19, '1', 2.12, 3.1, 3.45, '2020-02-29', 0, 0),
+(267, 27, 20, 18, '2', 3.08, 3.32, 2.19, '2020-02-29', 0, 0),
+(268, 27, 13, 7, '2', 2.8, 3.02, 2.52, '2020-03-01', 0, 0),
+(269, 27, 4, 14, 'D', 1.94, 3.3, 3.8, '2020-03-01', 0, 0),
+(270, 27, 8, 3, '1', 1.58, 3.9, 5.05, '2020-03-01', 0, 0),
+(271, 28, 7, 8, '1', 2.07, 3.25, 3.42, '2020-03-08', 0, 0),
+(272, 28, 19, 16, '', 4.5, 3.8, 1.69, '2020-03-07', 0, 0),
+(273, 28, 9, 1, 'D', 1.54, 4, 6.55, '2020-03-06', 0, 0),
+(274, 28, 2, 13, '1', 2.34, 2.98, 3.12, '2020-03-07', 0, 0),
+(275, 28, 6, 20, '1', 1.82, 3.5, 4, '2020-03-07', 0, 0),
+(276, 28, 10, 15, '1', 2.18, 3.05, 3.35, '2020-03-07', 0, 0),
+(277, 28, 14, 11, '1', 3.25, 3.6, 2, '2020-03-07', 0, 1),
+(278, 28, 17, 5, '1', 1.73, 3.38, 4.75, '2020-03-07', 1, 0),
+(279, 28, 3, 4, 'D', 2.23, 3.12, 3.18, '2020-03-08', 1, 0),
+(280, 28, 18, 12, '1', 2, 3.2, 3.65, '2020-03-08', 0, 0),
+(281, 29, 8, 17, '', 1.85, 3.22, 4.4, '2020-03-13', 0, 0),
+(282, 29, 12, 9, '', 2.68, 2.98, 2.68, '2020-03-14', 0, 0),
+(283, 29, 1, 2, '', 2.6, 2.92, 2.85, '2020-03-14', 0, 0),
+(284, 29, 5, 7, '', 4.1, 3.4, 1.85, '2020-03-14', 0, 0),
+(285, 29, 13, 15, '', 1.91, 3.18, 4.15, '2020-03-14', 0, 0),
+(286, 29, 19, 6, '', 1.79, 3.35, 4.55, '2020-03-14', 0, 0),
+(287, 29, 20, 10, '', 2.68, 3.02, 2.65, '2020-03-14', 0, 0),
+(288, 29, 4, 18, '', 2.85, 3.02, 2.5, '2020-03-15', 0, 0),
+(289, 29, 11, 3, '', 1.66, 3.8, 4.6, '2020-03-14', 0, 0),
+(290, 29, 16, 14, '', 1.13, 8.1, 14, '2020-03-15', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `player`
+--
+
+CREATE TABLE `player` (
+  `id_player` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `position` enum('Goalkeeper','Defender','Midfielder','Forward') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `player`
+--
+
+INSERT INTO `player` (`id_player`, `name`, `firstname`, `position`) VALUES
+(1, 'Chedjou', 'Aurélien', 'Defender'),
+(2, 'Guirassy', 'Serhou', 'Forward'),
+(3, 'Mendoza', 'Stiven', 'Forward'),
+(4, 'Manceau', 'Vincent', 'Defender'),
+(5, 'Capelle', 'Pierrick', 'Midfielder'),
+(8, 'Mangani', 'Thomas', 'Midfielder'),
+(9, 'Pereira Lage', 'Mathias', 'Midfielder'),
+(10, 'Santamaria', 'Baptiste', 'Midfielder'),
+(11, 'Thomas', 'Romain', 'Defender'),
+(14, 'Bouanga', 'Denis', 'Forward'),
+(15, 'Fofana', 'Wesley', 'Defender'),
+(16, 'Hamouma', 'Romain', 'Forward'),
+(17, 'Perrin', 'Loic', 'Defender'),
+(18, 'Saliba', 'William', 'Defender'),
+(19, 'Trauco', 'Miguel', 'Defender'),
+(20, 'Ruffier', 'Stéphane', 'Goalkeeper'),
+(21, 'Youssouf', 'Zaydou', 'Midfielder'),
+(22, 'Adli', 'Yacine', 'Midfielder'),
+(23, 'Benito', 'Loris', 'Defender'),
+(24, 'Costil', 'Benoit', 'Goalkeeper'),
+(25, 'De Préville', 'Nicolas', 'Forward'),
+(26, 'Hwang', 'Huijo', 'Forward'),
+(27, 'Koscielny', 'Laurent', 'Defender'),
+(28, 'Maja', 'Josh', 'Forward'),
+(29, 'Mexer', '', 'Defender'),
+(30, 'Pablo', '', 'Defender'),
+(31, 'Otavio', '', 'Midfielder'),
+(32, 'Sabaly', 'Youssouf', 'Defender'),
+(33, 'Tchouaméni', 'Aurélien', 'Midfielder'),
+(34, 'Baal', 'Ludovic', 'Defender'),
+(35, 'Battochio', 'Cristian', 'Midfielder'),
+(36, 'Castelletto', 'Jean-Charles', 'Defender'),
+(37, 'Chardonnet', 'Brendan', 'Defender'),
+(38, 'Court', 'Yoann', 'Midfielder'),
+(39, 'Larsonneur', '', 'Goalkeeper'),
+(40, 'Lasne', 'Paul', 'Midfielder'),
+(41, 'Léon', 'Donovan', 'Goalkeeper'),
+(42, 'Cadiz', 'Jhonder', 'Forward'),
+(43, 'Chafik', 'Fouad', 'Defender'),
+(44, 'Chouiar', 'Mounir', 'Midfielder'),
+(45, 'Gomis', 'Alfred', 'Goalkeeper'),
+(46, 'Baldé', 'Mama', 'Forward'),
+(47, 'Ndong', 'Didier', 'Midfielder'),
+(48, 'André', 'Benjamin', 'Midfielder'),
+(49, 'Ikoné', 'Jonathan', 'Forward'),
+(50, 'Araujo', 'Luis', 'Midfielder'),
+(51, 'Osimhen', 'Victor', 'Forward'),
+(52, 'Sanchez', 'Renato', 'Midfielder'),
+(53, 'Yazici', 'Yusuf', 'Midfielder'),
+(54, 'Anderson', 'Joachim', 'Defender'),
+(55, 'Aouar', 'Houssem', 'Midfielder'),
+(56, 'Cornet', 'Maxime', 'Forward'),
+(57, 'Dembélé', 'Moussa', 'Forward'),
+(58, 'Depay', 'Memphis', 'Forward'),
+(59, 'Reine-Adélaide', 'Jeff', 'Midfielder'),
+(60, 'Terrier', 'Martin', 'Midfielder'),
+(61, 'Tete', 'Kenny', 'Defender'),
+(62, 'Tousart', 'Lucas', 'Midfielder'),
+(63, 'Amavi', 'Jordan', 'Defender'),
+(64, 'Benedetto', 'Dario', 'Forward'),
+(65, 'Caleta-Car', 'Duje', 'Defender'),
+(66, 'Mandanda', 'Steve', 'Goalkeeper'),
+(67, 'Payet', 'Dimitri', 'Midfielder'),
+(68, 'Perrin', 'Lucas', 'Defender'),
+(69, 'Sakai', 'Hiroki', 'Defender'),
+(70, 'Sanson', 'Morgan', 'Midfielder'),
+(71, 'Centonze', 'Fabien', 'Defender'),
+(72, 'Cohade', 'Renaud', 'Midfielder'),
+(73, 'Diallo', 'Habibou', 'Forward'),
+(74, 'Maiga', 'Habib', 'Midfielder'),
+(75, 'Ndoram', 'Kévin', 'Midfielder'),
+(76, 'Nguette', 'Opa', 'Forward'),
+(77, 'Oukidja', 'Alexandre', 'Goalkeeper'),
+(78, 'Sunzu', 'Stoppila', 'Defender'),
+(79, 'Aguilar', 'Ruben', 'Defender'),
+(80, 'Baldé', 'Keita', 'Midfielder'),
+(81, 'Ben Yedder', 'Wissam', 'Forward'),
+(82, 'Martins', 'Gelson', 'Midfielder'),
+(83, 'Golovine', 'Aleksandr', 'Midfielder'),
+(84, 'Lecomte', 'Benjamin', 'Goalkeeper'),
+(85, 'Maripan', 'Guillermo', 'Defender'),
+(86, 'Slimani', 'Islam', 'Forward'),
+(87, 'Congré', 'Daniel', 'Defender'),
+(88, 'Delort', 'Andy', 'Forward'),
+(89, 'Ferri', 'Jordan', 'Midfielder'),
+(90, 'Hilton', 'Vitorino', 'Defender'),
+(91, 'Mollet', 'Florent', 'Forward'),
+(92, 'Oyongo', 'Ambroise', 'Defender'),
+(93, 'Rulli', 'Geronimo', 'Goalkeeper'),
+(94, 'Souquet', 'Arnaud', 'Defender'),
+(95, 'Bamba', 'Abdoul Kader', 'Forward'),
+(96, 'Fabio', '', 'Defender'),
+(97, 'Girotto', 'Andrei', 'Defender'),
+(98, 'Lafont', 'Alban', 'Goalkeeper'),
+(99, 'Louza', 'Imran', 'Midfielder'),
+(100, 'Pallois', 'Nicolas', 'Defender'),
+(101, 'Atal', 'Youssef', 'Defender'),
+(102, 'Coly', 'Racine', 'Defender'),
+(103, 'Cyprien', 'Wylan', 'Midfielder'),
+(104, 'Dante', '', 'Defender'),
+(105, 'Dolberg', 'Kasper', 'Forward'),
+(106, 'Lees-Melou', 'Pierre', 'Midfielder'),
+(107, 'Lusamba', 'Arnaud', 'Midfielder'),
+(108, 'Sarr', 'Malang', 'Defender'),
+(109, 'Denkey', 'Kevin', 'Forward'),
+(110, 'Feraht', 'Zinedine', 'Midfielder'),
+(111, 'Miguel', 'Florian', 'Defender'),
+(112, 'Philippoteaux', 'Romain', 'Forward'),
+(113, 'Valls', 'Théo', 'Midfielder'),
+(114, 'Bernat', 'Juan', 'Defender'),
+(115, 'Choupo-Moting', 'Eric Maxim', 'Forward'),
+(116, 'Dagba', 'Colin', 'Defender'),
+(117, 'Di Maria', 'Angel', 'Midfielder'),
+(118, 'Gueye', 'Idrissa', 'Midfielder'),
+(119, 'Herrera', 'Ander', 'Defender'),
+(120, 'Icardi', 'Mauro', 'Forward'),
+(121, 'Kimpembe', 'Presnel', 'Defender'),
+(122, 'Marquinhos', '', 'Midfielder'),
+(123, 'Mbappé', 'Kylian', 'Forward'),
+(124, 'Navas', 'Keylor', 'Goalkeeper'),
+(125, 'Neymar', '', 'Forward'),
+(126, 'Paredes', 'Leandro', 'Forward'),
+(127, 'Thiago Silva', '', 'Defender'),
+(128, 'Verratti', 'Marco', 'Midfielder'),
+(129, 'Abdelhamid', 'Yunis', 'Defender'),
+(130, 'Dia', 'Boulaye', 'Forward'),
+(131, 'Disasi', 'Axel', 'Defender'),
+(132, 'Foket', 'Thomas', 'Defender'),
+(133, 'Kamara', 'Hassane', 'Defender'),
+(134, 'Munetsi', 'Marshall', 'Midfielder'),
+(135, 'Rajkovic', 'Predrag', 'Goalkeeper'),
+(136, 'Camavinga', 'Eduardo', 'Midfielder'),
+(137, 'Da Silva', 'Damien', 'Defender'),
+(138, 'Gélin', 'Jérémy', 'Defender'),
+(139, 'Mendy', 'Édouard', 'Goalkeeper'),
+(140, 'Niang M.', '', 'Forward'),
+(141, 'Traoré', 'Hamari', 'Defender'),
+(142, 'Ajorque', 'Ludovic', 'Forward'),
+(143, 'Caci', 'Anthony', 'Defender'),
+(144, 'Carole', 'Lionel', 'Defender'),
+(145, 'Djiku', 'Alexander', 'Defender'),
+(146, 'Liénard', 'Dimitri', 'Midfielder'),
+(147, 'Ndour', 'Abdallah', 'Midfielder'),
+(148, 'Simakan', 'Mohamed', 'Defender'),
+(149, 'Makengo', 'Jean-Victor', 'Midfielder'),
+(150, 'Vainqueur', 'William', 'Midfielder'),
+(151, 'Caqueret', 'Maxence', 'Midfielder'),
+(152, 'Charbonnier', 'Gaetan', 'Forward'),
+(153, 'Appiah', 'Denis', 'Defender'),
+(154, 'Ecuele Manga', 'Bruno', 'Defender'),
+(155, 'Boye', 'John', 'Defender'),
+(156, 'Blas', 'Ludovic', 'Midfielder'),
+(157, 'Kamara', 'Boubacar', 'Defender'),
+(158, 'Marçal', 'Fernando', 'Defender'),
+(159, 'Tatarusanu', 'Ciprian', 'Goalkeeper'),
+(160, 'Traoré', 'Ismael', 'Defender'),
+(161, 'Pajot', 'Vincent', 'Midfielder'),
+(162, 'Thomasson', 'Adrien', 'Midfielder'),
+(163, 'Mitrovic', 'Stefan', 'Defender'),
+(164, 'Mendy', 'Alexandre', 'Forward'),
+(165, 'Rémy', 'Loic', 'Forward'),
+(166, 'Reinildo', '', 'Defender'),
+(167, 'Fofana', 'Youssouf', 'Midfielder'),
+(168, 'Simon', 'Moses', 'Forward'),
+(170, 'Savanier', 'Téji', 'Midfielder'),
+(171, 'Chavalerin', '', 'Midfielder'),
+(172, 'Claude-Maurice', '', 'Midfielder'),
+(173, 'Kurzawa', '', 'Defender'),
+(174, 'Gabriel', '', 'Defender'),
+(175, 'Lala', 'Kenny', 'Defender'),
+(176, 'Germain', 'Valère', 'Forward'),
+(177, 'Hérelle', 'Christophe', 'Defender'),
+(178, 'Glik', 'Kamil', 'Defender'),
+(179, 'Kouassi', 'Tanguy', 'Defender'),
+(180, 'Saar', 'Sidy', 'Midfielder'),
+(181, 'Kakuta', 'Gael', 'Forward'),
+(182, 'Gurtner', 'Régis', 'Goalkeeper'),
+(183, 'Bradaric', 'D', 'Defender'),
+(184, 'Sarabia', 'Pablo', 'Midfielder'),
+(185, 'Tait', 'Flavien', 'Midfielder'),
+(186, 'Hunou', 'Adrien', 'Forward'),
+(187, 'Maouassa', 'Faitout', 'Defender');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__bookmark`
+--
+
+CREATE TABLE `pma__bookmark` (
+  `id` int(11) NOT NULL,
+  `dbase` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `user` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `label` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `query` text COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Bookmarks';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__central_columns`
+--
+
+CREATE TABLE `pma__central_columns` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `col_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `col_type` varchar(64) COLLATE utf8_bin NOT NULL,
+  `col_length` text COLLATE utf8_bin,
+  `col_collation` varchar(64) COLLATE utf8_bin NOT NULL,
+  `col_isNull` tinyint(1) NOT NULL,
+  `col_extra` varchar(255) COLLATE utf8_bin DEFAULT '',
+  `col_default` text COLLATE utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Central list of columns';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__column_info`
+--
+
+CREATE TABLE `pma__column_info` (
+  `id` int(5) UNSIGNED NOT NULL,
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `column_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `comment` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `mimetype` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `input_transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `input_transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Column information for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__designer_settings`
+--
+
+CREATE TABLE `pma__designer_settings` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `settings_data` text COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Settings related to Designer';
+
+--
+-- Contenu de la table `pma__designer_settings`
+--
+
+INSERT INTO `pma__designer_settings` (`username`, `settings_data`) VALUES
+('phpmyadmin', '{\"angular_direct\":\"direct\",\"relation_lines\":\"true\",\"snap_to_grid\":\"off\"}');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__export_templates`
+--
+
+CREATE TABLE `pma__export_templates` (
+  `id` int(5) UNSIGNED NOT NULL,
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `export_type` varchar(10) COLLATE utf8_bin NOT NULL,
+  `template_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `template_data` text COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved export templates';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__favorite`
+--
+
+CREATE TABLE `pma__favorite` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `tables` text COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Favorite tables';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__history`
+--
+
+CREATE TABLE `pma__history` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `sqlquery` text COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='SQL history for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__navigationhiding`
+--
+
+CREATE TABLE `pma__navigationhiding` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `item_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `item_type` varchar(64) COLLATE utf8_bin NOT NULL,
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Hidden items of navigation tree';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__pdf_pages`
+--
+
+CREATE TABLE `pma__pdf_pages` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `page_nr` int(10) UNSIGNED NOT NULL,
+  `page_descr` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='PDF relation pages for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__recent`
+--
+
+CREATE TABLE `pma__recent` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `tables` text COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Recently accessed tables';
+
+--
+-- Contenu de la table `pma__recent`
+--
+
+INSERT INTO `pma__recent` (`username`, `tables`) VALUES
+('phpmyadmin', '[{\"db\":\"phpmyadmin\",\"table\":\"matchs\"},{\"db\":\"phpmyadmin\",\"table\":\"team\"},{\"db\":\"phpmyadmin\",\"table\":\"criterion\"},{\"db\":\"phpmyadmin\",\"table\":\"marketValue\"},{\"db\":\"phpmyadmin\",\"table\":\"valeurs\"},{\"db\":\"phpmyadmin\",\"table\":\"matchday\"},{\"db\":\"phpmyadmin\",\"table\":\"journees\"},{\"db\":\"phpmyadmin\",\"table\":\"player\"},{\"db\":\"phpmyadmin\",\"table\":\"teamOfTheWeek\"},{\"db\":\"phpmyadmin\",\"table\":\"season\"}]');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__relation`
+--
+
+CREATE TABLE `pma__relation` (
+  `master_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `master_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `master_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `foreign_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `foreign_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `foreign_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Relation table';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__savedsearches`
+--
+
+CREATE TABLE `pma__savedsearches` (
+  `id` int(5) UNSIGNED NOT NULL,
+  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `search_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `search_data` text COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved searches';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__table_coords`
+--
+
+CREATE TABLE `pma__table_coords` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `pdf_page_number` int(11) NOT NULL DEFAULT '0',
+  `x` float UNSIGNED NOT NULL DEFAULT '0',
+  `y` float UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table coordinates for phpMyAdmin PDF output';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__table_info`
+--
+
+CREATE TABLE `pma__table_info` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `display_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table information for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__table_uiprefs`
+--
+
+CREATE TABLE `pma__table_uiprefs` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `prefs` text COLLATE utf8_bin NOT NULL,
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Tables'' UI preferences';
+
+--
+-- Contenu de la table `pma__table_uiprefs`
+--
+
+INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
+('phpmyadmin', 'phpmyadmin', 'criterion', '{\"sorted_col\":\"`id_match` ASC\"}', '2020-03-21 22:19:00'),
+('phpmyadmin', 'phpmyadmin', 'matchs', '{\"sorted_col\":\"`id_match` ASC\"}', '2020-02-09 13:56:39'),
+('phpmyadmin', 'phpmyadmin', 'player', '[]', '2020-03-22 09:49:19'),
+('phpmyadmin', 'phpmyadmin', 'teamOfTheWeek', '[]', '2020-03-22 20:47:05');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__tracking`
+--
+
+CREATE TABLE `pma__tracking` (
+  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
+  `version` int(10) UNSIGNED NOT NULL,
+  `date_created` datetime NOT NULL,
+  `date_updated` datetime NOT NULL,
+  `schema_snapshot` text COLLATE utf8_bin NOT NULL,
+  `schema_sql` text COLLATE utf8_bin,
+  `data_sql` longtext COLLATE utf8_bin,
+  `tracking` set('UPDATE','REPLACE','INSERT','DELETE','TRUNCATE','CREATE DATABASE','ALTER DATABASE','DROP DATABASE','CREATE TABLE','ALTER TABLE','RENAME TABLE','DROP TABLE','CREATE INDEX','DROP INDEX','CREATE VIEW','ALTER VIEW','DROP VIEW') COLLATE utf8_bin DEFAULT NULL,
+  `tracking_active` int(1) UNSIGNED NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Database changes tracking for phpMyAdmin';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__userconfig`
+--
+
+CREATE TABLE `pma__userconfig` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `config_data` text COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User preferences storage for phpMyAdmin';
+
+--
+-- Contenu de la table `pma__userconfig`
+--
+
+INSERT INTO `pma__userconfig` (`username`, `timevalue`, `config_data`) VALUES
+('phpmyadmin', '2019-12-23 20:46:45', '{\"lang\":\"fr\",\"collation_connection\":\"utf8mb4_unicode_ci\"}');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__usergroups`
+--
+
+CREATE TABLE `pma__usergroups` (
+  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL,
+  `tab` varchar(64) COLLATE utf8_bin NOT NULL,
+  `allowed` enum('Y','N') COLLATE utf8_bin NOT NULL DEFAULT 'N'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User groups with configured menu items';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `pma__users`
+--
+
+CREATE TABLE `pma__users` (
+  `username` varchar(64) COLLATE utf8_bin NOT NULL,
+  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users and their assignments to user groups';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `season`
+--
+
+CREATE TABLE `season` (
+  `id_season` int(11) NOT NULL,
+  `name` varchar(9) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `season`
+--
+
+INSERT INTO `season` (`id_season`, `name`) VALUES
+(1, '2019-2020');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `season_championship_team`
+--
+
+CREATE TABLE `season_championship_team` (
+  `id_season_championship_team` int(11) NOT NULL,
+  `id_season` int(11) NOT NULL,
+  `id_championship` int(11) NOT NULL,
+  `id_team` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `season_championship_team`
+--
+
+INSERT INTO `season_championship_team` (`id_season_championship_team`, `id_season`, `id_championship`, `id_team`) VALUES
+(1, 1, 1, 1),
+(2, 1, 1, 2),
+(3, 1, 1, 3),
+(4, 1, 1, 4),
+(5, 1, 1, 5),
+(6, 1, 1, 6),
+(7, 1, 1, 7),
+(8, 1, 1, 8),
+(9, 1, 1, 9),
+(10, 1, 1, 10),
+(11, 1, 1, 11),
+(12, 1, 1, 12),
+(13, 1, 1, 13),
+(14, 1, 1, 14),
+(15, 1, 1, 15),
+(16, 1, 1, 16),
+(17, 1, 1, 17),
+(18, 1, 1, 18),
+(19, 1, 1, 19),
+(20, 1, 1, 20);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `season_team_player`
+--
+
+CREATE TABLE `season_team_player` (
+  `id_season_team_player` int(11) NOT NULL,
+  `id_season` int(11) NOT NULL,
+  `id_team` int(11) NOT NULL,
+  `id_player` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `season_team_player`
+--
+
+INSERT INTO `season_team_player` (`id_season_team_player`, `id_season`, `id_team`, `id_player`) VALUES
+(1, 1, 17, 129),
+(2, 1, 4, 22),
+(3, 1, 11, 79),
+(4, 1, 19, 142),
+(5, 1, 9, 63),
+(6, 1, 8, 54),
+(7, 1, 7, 48),
+(8, 1, 8, 55),
+(9, 1, 14, 101),
+(10, 1, 5, 34),
+(11, 1, 11, 80),
+(12, 1, 13, 95),
+(13, 1, 5, 35),
+(14, 1, 11, 81),
+(15, 1, 9, 64),
+(16, 1, 4, 23),
+(17, 1, 3, 14),
+(18, 1, 16, 114),
+(19, 1, 19, 143),
+(20, 1, 6, 42),
+(21, 1, 9, 65),
+(22, 1, 18, 136),
+(23, 1, 2, 5),
+(24, 1, 19, 144),
+(25, 1, 5, 36),
+(26, 1, 10, 71),
+(27, 1, 6, 43),
+(28, 1, 5, 37),
+(29, 1, 1, 1),
+(30, 1, 6, 44),
+(31, 1, 16, 115),
+(32, 1, 10, 72),
+(33, 1, 12, 87),
+(34, 1, 14, 102),
+(35, 1, 8, 56),
+(36, 1, 4, 24),
+(37, 1, 5, 38),
+(38, 1, 14, 103),
+(39, 1, 18, 137),
+(40, 1, 16, 116),
+(41, 1, 14, 104),
+(42, 1, 4, 25),
+(43, 1, 12, 88),
+(44, 1, 8, 57),
+(45, 1, 15, 109),
+(46, 1, 8, 58),
+(47, 1, 16, 117),
+(48, 1, 17, 130),
+(49, 1, 10, 73),
+(50, 1, 17, 131),
+(51, 1, 19, 145),
+(52, 1, 14, 105),
+(53, 1, 13, 96),
+(54, 1, 13, 96),
+(55, 1, 15, 110),
+(56, 1, 12, 89),
+(57, 1, 3, 15),
+(58, 1, 17, 132),
+(59, 1, 11, 82),
+(60, 1, 18, 138),
+(61, 1, 13, 97),
+(62, 1, 11, 83),
+(63, 1, 6, 45),
+(64, 1, 16, 118),
+(65, 1, 1, 2),
+(66, 1, 3, 16),
+(67, 1, 16, 119),
+(68, 1, 12, 90),
+(69, 1, 4, 26),
+(70, 1, 16, 120),
+(71, 1, 7, 49),
+(72, 1, 17, 133),
+(73, 1, 16, 121),
+(74, 1, 4, 27),
+(75, 1, 13, 98),
+(76, 1, 11, 84),
+(77, 1, 5, 40),
+(78, 1, 14, 106),
+(79, 1, 5, 41),
+(80, 1, 19, 146),
+(81, 1, 13, 99),
+(82, 1, 7, 50),
+(83, 1, 14, 107),
+(84, 1, 6, 46),
+(85, 1, 10, 74),
+(86, 1, 4, 28),
+(87, 1, 20, 149),
+(88, 1, 2, 4),
+(89, 1, 9, 66),
+(90, 1, 2, 8),
+(91, 1, 11, 85),
+(92, 1, 16, 122),
+(93, 1, 16, 123),
+(94, 1, 1, 3),
+(95, 1, 18, 139),
+(96, 1, 4, 29),
+(97, 1, 15, 111),
+(98, 1, 12, 91),
+(99, 1, 17, 134),
+(100, 1, 16, 124),
+(101, 1, 6, 47),
+(102, 1, 10, 75),
+(103, 1, 19, 147),
+(104, 1, 16, 125),
+(105, 1, 10, 76),
+(106, 1, 18, 140),
+(107, 1, 7, 51),
+(108, 1, 4, 31),
+(109, 1, 10, 77),
+(110, 1, 12, 92),
+(111, 1, 4, 30),
+(112, 1, 13, 100),
+(113, 1, 16, 126),
+(114, 1, 9, 67),
+(115, 1, 2, 9),
+(116, 1, 3, 17),
+(117, 1, 9, 68),
+(118, 1, 15, 112),
+(119, 1, 17, 135),
+(120, 1, 8, 59),
+(121, 1, 3, 20),
+(122, 1, 12, 93),
+(123, 1, 4, 32),
+(124, 1, 9, 69),
+(125, 1, 3, 18),
+(126, 1, 7, 52),
+(127, 1, 9, 70),
+(128, 1, 2, 10),
+(129, 1, 14, 108),
+(130, 1, 19, 148),
+(131, 1, 11, 86),
+(132, 1, 12, 94),
+(133, 1, 10, 78),
+(134, 1, 4, 33),
+(135, 1, 8, 60),
+(136, 1, 8, 61),
+(137, 1, 16, 127),
+(138, 1, 2, 11),
+(139, 1, 8, 62),
+(140, 1, 18, 141),
+(141, 1, 3, 19),
+(142, 1, 20, 150),
+(143, 1, 15, 113),
+(144, 1, 16, 128),
+(145, 1, 7, 53),
+(146, 1, 3, 21),
+(147, 1, 5, 39),
+(148, 1, 8, 151),
+(149, 1, 5, 152),
+(150, 1, 13, 153),
+(151, 1, 6, 154),
+(152, 1, 10, 155),
+(153, 1, 13, 156),
+(154, 1, 9, 157),
+(155, 1, 8, 158),
+(156, 1, 8, 159),
+(157, 1, 2, 160),
+(158, 1, 10, 161),
+(159, 1, 19, 162),
+(160, 1, 19, 163),
+(161, 1, 5, 164),
+(162, 1, 7, 165),
+(163, 1, 7, 166),
+(164, 1, 11, 167),
+(166, 1, 12, 170),
+(167, 1, 13, 168),
+(168, 1, 17, 171),
+(169, 1, 14, 172),
+(170, 1, 16, 173),
+(171, 1, 7, 174),
+(172, 1, 19, 175),
+(173, 1, 9, 176),
+(174, 1, 14, 177),
+(175, 1, 11, 178),
+(176, 1, 16, 179),
+(177, 1, 15, 180),
+(178, 1, 1, 181),
+(179, 1, 1, 182),
+(180, 1, 7, 183),
+(181, 1, 16, 184),
+(182, 1, 18, 185),
+(183, 1, 18, 186),
+(184, 1, 18, 187);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `team`
+--
+
+CREATE TABLE `team` (
+  `id_team` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `weather_code` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `team`
+--
+
+INSERT INTO `team` (`id_team`, `name`, `weather_code`) VALUES
+(1, 'Amiens', '80021'),
+(2, 'Angers', '49007'),
+(3, 'ASSE', '42218'),
+(4, 'Bordeaux', '33063'),
+(5, 'Brest', '29019'),
+(6, 'Dijon', '21231'),
+(7, 'Lille', '59350'),
+(8, 'Lyon', '69123'),
+(9, 'Marseille', '13055'),
+(10, 'Metz', '57463'),
+(11, 'Monaco', '99999'),
+(12, 'Montpellier', '34172'),
+(13, 'Nantes', '44109'),
+(14, 'Nice', '06088'),
+(15, 'Nimes', '30189'),
+(16, 'PSG', '75116'),
+(17, 'Reims', '51454'),
+(18, 'Rennes', '35238'),
+(19, 'Strasbourg', '67482'),
+(20, 'Toulouse', '31555');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `teamOfTheWeek`
+--
+
+CREATE TABLE `teamOfTheWeek` (
+  `id_teamOfTheWeek` int(11) NOT NULL,
+  `id_matchday` int(11) NOT NULL,
+  `id_player` int(11) NOT NULL,
+  `rating` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `teamOfTheWeek`
+--
+
+INSERT INTO `teamOfTheWeek` (`id_teamOfTheWeek`, `id_matchday`, `id_player`, `rating`) VALUES
 (1, 1, 20, 8),
 (2, 1, 104, 7),
 (3, 1, 17, 7),
@@ -616,1139 +1822,105 @@ INSERT INTO `equipes` (`id_equipe`, `id_journee`, `id_joueur`, `note`) VALUES
 (250, 22, 173, 7),
 (251, 22, 172, 7),
 (252, 22, 171, 7),
-(253, 22, 174, 7);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `joueurs`
---
-
-CREATE TABLE `joueurs` (
-  `id_joueur` int(11) NOT NULL,
-  `nom` varchar(50) NOT NULL,
-  `prenom` varchar(50) NOT NULL,
-  `poste` enum('Gardien','Défenseur','Milieu','Attaquant') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `joueurs`
---
-
-INSERT INTO `joueurs` (`id_joueur`, `nom`, `prenom`, `poste`) VALUES
-(1, 'Chedjou', 'Aurélien', 'Défenseur'),
-(2, 'Guirassy', 'Serhou', 'Attaquant'),
-(3, 'Mendoza', 'Stiven', 'Attaquant'),
-(4, 'Manceau', 'Vincent', 'Défenseur'),
-(5, 'Capelle', 'Pierrick', 'Milieu'),
-(8, 'Mangani', 'Thomas', 'Milieu'),
-(9, 'Pereira Lage', 'Mathias', 'Milieu'),
-(10, 'Santamaria', 'Baptiste', 'Milieu'),
-(11, 'Thomas', 'Romain', 'Défenseur'),
-(14, 'Bouanga', 'Denis', 'Attaquant'),
-(15, 'Fofana', 'Wesley', 'Défenseur'),
-(16, 'Hamouma', 'Romain', 'Attaquant'),
-(17, 'Perrin', 'Loic', 'Défenseur'),
-(18, 'Saliba', 'William', 'Défenseur'),
-(19, 'Trauco', 'Miguel', 'Défenseur'),
-(20, 'Ruffier', 'Stéphane', 'Gardien'),
-(21, 'Youssouf', 'Zaydou', 'Milieu'),
-(22, 'Adli', 'Yacine', 'Milieu'),
-(23, 'Benito', 'Loris', 'Défenseur'),
-(24, 'Costil', 'Benoit', 'Gardien'),
-(25, 'De Préville', 'Nicolas', 'Attaquant'),
-(26, 'Hwang', 'Huijo', 'Attaquant'),
-(27, 'Koscielny', 'Laurent', 'Défenseur'),
-(28, 'Maja', 'Josh', 'Attaquant'),
-(29, 'Mexer', '', 'Défenseur'),
-(30, 'Pablo', '', 'Défenseur'),
-(31, 'Otavio', '', 'Milieu'),
-(32, 'Sabaly', 'Youssouf', 'Défenseur'),
-(33, 'Tchouaméni', 'Aurélien', 'Milieu'),
-(34, 'Baal', 'Ludovic', 'Défenseur'),
-(35, 'Battochio', 'Cristian', 'Milieu'),
-(36, 'Castelletto', 'Jean-Charles', 'Défenseur'),
-(37, 'Chardonnet', 'Brendan', 'Défenseur'),
-(38, 'Court', 'Yoann', 'Milieu'),
-(39, 'Larsonneur', '', 'Gardien'),
-(40, 'Lasne', 'Paul', 'Milieu'),
-(41, 'Léon', 'Donovan', 'Gardien'),
-(42, 'Cadiz', 'Jhonder', 'Attaquant'),
-(43, 'Chafik', 'Fouad', 'Défenseur'),
-(44, 'Chouiar', 'Mounir', 'Milieu'),
-(45, 'Gomis', 'Alfred', 'Gardien'),
-(46, 'Baldé', 'Mama', 'Attaquant'),
-(47, 'Ndong', 'Didier', 'Milieu'),
-(48, 'André', 'Benjamin', 'Milieu'),
-(49, 'Ikoné', 'Jonathan', 'Attaquant'),
-(50, 'Araujo', 'Luis', 'Milieu'),
-(51, 'Osimhen', 'Victor', 'Attaquant'),
-(52, 'Sanchez', 'Renato', 'Milieu'),
-(53, 'Yazici', 'Yusuf', 'Milieu'),
-(54, 'Anderson', 'Joachim', 'Défenseur'),
-(55, 'Aouar', 'Houssem', 'Milieu'),
-(56, 'Cornet', 'Maxime', 'Attaquant'),
-(57, 'Dembélé', 'Moussa', 'Attaquant'),
-(58, 'Depay', 'Memphis', 'Attaquant'),
-(59, 'Reine-Adélaide', 'Jeff', 'Milieu'),
-(60, 'Terrier', 'Martin', 'Milieu'),
-(61, 'Tete', 'Kenny', 'Défenseur'),
-(62, 'Tousart', 'Lucas', 'Milieu'),
-(63, 'Amavi', 'Jordan', 'Défenseur'),
-(64, 'Benedetto', 'Dario', 'Attaquant'),
-(65, 'Caleta-Car', 'Duje', 'Défenseur'),
-(66, 'Mandanda', 'Steve', 'Gardien'),
-(67, 'Payet', 'Dimitri', 'Milieu'),
-(68, 'Perrin', 'Lucas', 'Défenseur'),
-(69, 'Sakai', 'Hiroki', 'Défenseur'),
-(70, 'Sanson', 'Morgan', 'Milieu'),
-(71, 'Centonze', 'Fabien', 'Défenseur'),
-(72, 'Cohade', 'Renaud', 'Milieu'),
-(73, 'Diallo', 'Habibou', 'Attaquant'),
-(74, 'Maiga', 'Habib', 'Milieu'),
-(75, 'Ndoram', 'Kévin', 'Milieu'),
-(76, 'Nguette', 'Opa', 'Attaquant'),
-(77, 'Oukidja', 'Alexandre', 'Gardien'),
-(78, 'Sunzu', 'Stoppila', 'Défenseur'),
-(79, 'Aguilar', 'Ruben', 'Défenseur'),
-(80, 'Baldé', 'Keita', 'Milieu'),
-(81, 'Ben Yedder', 'Wissam', 'Attaquant'),
-(82, 'Martins', 'Gelson', 'Milieu'),
-(83, 'Golovine', 'Aleksandr', 'Milieu'),
-(84, 'Lecomte', 'Benjamin', 'Gardien'),
-(85, 'Maripan', 'Guillermo', 'Défenseur'),
-(86, 'Slimani', 'Islam', 'Attaquant'),
-(87, 'Congré', 'Daniel', 'Défenseur'),
-(88, 'Delort', 'Andy', 'Attaquant'),
-(89, 'Ferri', 'Jordan', 'Milieu'),
-(90, 'Hilton', 'Vitorino', 'Défenseur'),
-(91, 'Mollet', 'Florent', 'Attaquant'),
-(92, 'Oyongo', 'Ambroise', 'Défenseur'),
-(93, 'Rulli', 'Geronimo', 'Gardien'),
-(94, 'Souquet', 'Arnaud', 'Défenseur'),
-(95, 'Bamba', 'Abdoul Kader', 'Attaquant'),
-(96, 'Fabio', '', 'Défenseur'),
-(97, 'Girotto', 'Andrei', 'Défenseur'),
-(98, 'Lafont', 'Alban', 'Gardien'),
-(99, 'Louza', 'Imran', 'Milieu'),
-(100, 'Pallois', 'Nicolas', 'Défenseur'),
-(101, 'Atal', 'Youssef', 'Défenseur'),
-(102, 'Coly', 'Racine', 'Défenseur'),
-(103, 'Cyprien', 'Wylan', 'Milieu'),
-(104, 'Dante', '', 'Défenseur'),
-(105, 'Dolberg', 'Kasper', 'Attaquant'),
-(106, 'Lees-Melou', 'Pierre', 'Milieu'),
-(107, 'Lusamba', 'Arnaud', 'Milieu'),
-(108, 'Sarr', 'Malang', 'Défenseur'),
-(109, 'Denkey', 'Kevin', 'Attaquant'),
-(110, 'Feraht', 'Zinedine', 'Milieu'),
-(111, 'Miguel', 'Florian', 'Défenseur'),
-(112, 'Philippoteaux', 'Romain', 'Attaquant'),
-(113, 'Valls', 'Théo', 'Milieu'),
-(114, 'Bernat', 'Juan', 'Défenseur'),
-(115, 'Choupo-Moting', 'Eric Maxim', 'Attaquant'),
-(116, 'Dagba', 'Colin', 'Défenseur'),
-(117, 'Di Maria', 'Angel', 'Milieu'),
-(118, 'Gueye', 'Idrissa', 'Milieu'),
-(119, 'Herrera', 'Ander', 'Défenseur'),
-(120, 'Icardi', 'Mauro', 'Attaquant'),
-(121, 'Kimpembe', 'Presnel', 'Défenseur'),
-(122, 'Marquinhos', '', 'Milieu'),
-(123, 'Mbappé', 'Kylian', 'Attaquant'),
-(124, 'Navas', 'Keylor', 'Gardien'),
-(125, 'Neymar', '', 'Attaquant'),
-(126, 'Paredes', 'Leandro', 'Attaquant'),
-(127, 'Thiago Silva', '', 'Défenseur'),
-(128, 'Verratti', 'Marco', 'Milieu'),
-(129, 'Abdelhamid', 'Yunis', 'Défenseur'),
-(130, 'Dia', 'Boulaye', 'Attaquant'),
-(131, 'Disasi', 'Axel', 'Défenseur'),
-(132, 'Foket', 'Thomas', 'Défenseur'),
-(133, 'Kamara', 'Hassane', 'Défenseur'),
-(134, 'Munetsi', 'Marshall', 'Milieu'),
-(135, 'Rajkovic', 'Predrag', 'Gardien'),
-(136, 'Camavinga', 'Eduardo', 'Milieu'),
-(137, 'Da Silva', 'Damien', 'Défenseur'),
-(138, 'Gélin', 'Jérémy', 'Défenseur'),
-(139, 'Mendy', 'Édouard', 'Gardien'),
-(140, 'Niang M.', '', 'Attaquant'),
-(141, 'Traoré', 'Hamari', 'Défenseur'),
-(142, 'Ajorque', 'Ludovic', 'Attaquant'),
-(143, 'Caci', 'Anthony', 'Défenseur'),
-(144, 'Carole', 'Lionel', 'Défenseur'),
-(145, 'Djiku', 'Alexander', 'Défenseur'),
-(146, 'Liénard', 'Dimitri', 'Milieu'),
-(147, 'Ndour', 'Abdallah', 'Milieu'),
-(148, 'Simakan', 'Mohamed', 'Défenseur'),
-(149, 'Makengo', 'Jean-Victor', 'Milieu'),
-(150, 'Vainqueur', 'William', 'Milieu'),
-(151, 'Caqueret', 'Maxence', 'Milieu'),
-(152, 'Charbonnier', 'Gaetan', 'Attaquant'),
-(153, 'Appiah', 'Denis', 'Défenseur'),
-(154, 'Ecuele Manga', 'Bruno', 'Défenseur'),
-(155, 'Boye', 'John', 'Défenseur'),
-(156, 'Blas', 'Ludovic', 'Milieu'),
-(157, 'Kamara', 'Boubacar', 'Défenseur'),
-(158, 'Marçal', 'Fernando', 'Défenseur'),
-(159, 'Tatarusanu', 'Ciprian', 'Gardien'),
-(160, 'Traoré', 'Ismael', 'Défenseur'),
-(161, 'Pajot', 'Vincent', 'Milieu'),
-(162, 'Thomasson', 'Adrien', 'Milieu'),
-(163, 'Mitrovic', 'Stefan', 'Défenseur'),
-(164, 'Mendy', 'Alexandre', 'Attaquant'),
-(165, 'Rémy', 'Loic', 'Attaquant'),
-(166, 'Reinildo', '', 'Défenseur'),
-(167, 'Fofana', 'Youssouf', 'Milieu'),
-(168, 'Simon', 'Moses', 'Attaquant'),
-(170, 'Savanier', 'Téji', 'Milieu'),
-(171, 'Chavalerin', '', 'Milieu'),
-(172, 'Claude-Maurice', '', 'Milieu'),
-(173, 'Kurzawa', '', 'Défenseur'),
-(174, 'Gabriel', '', 'Défenseur');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `journees`
---
-
-CREATE TABLE `journees` (
-  `id_journee` int(11) NOT NULL,
-  `id_saison` int(11) NOT NULL,
-  `id_championnat` int(11) NOT NULL,
-  `numero` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `journees`
---
-
-INSERT INTO `journees` (`id_journee`, `id_saison`, `id_championnat`, `numero`) VALUES
-(1, 1, 1, 1),
-(2, 1, 1, 2),
-(3, 1, 1, 3),
-(4, 1, 1, 4),
-(5, 1, 1, 5),
-(6, 1, 1, 6),
-(7, 1, 1, 7),
-(8, 1, 1, 8),
-(9, 1, 1, 9),
-(10, 1, 1, 10),
-(11, 1, 1, 11),
-(12, 1, 1, 12),
-(13, 1, 1, 13),
-(14, 1, 1, 14),
-(15, 1, 1, 15),
-(16, 1, 1, 16),
-(17, 1, 1, 17),
-(18, 1, 1, 18),
-(19, 1, 1, 19),
-(20, 1, 1, 20),
-(21, 1, 1, 21),
-(22, 1, 1, 22),
-(23, 1, 1, 23),
-(24, 1, 1, 24),
-(25, 1, 1, 25),
-(26, 1, 1, 26),
-(27, 1, 1, 27),
-(28, 1, 1, 28),
-(29, 1, 1, 29),
-(30, 1, 1, 30);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `matchs`
---
-
-CREATE TABLE `matchs` (
-  `id_match` int(11) NOT NULL,
-  `id_journee` int(11) NOT NULL,
-  `equipe_1` int(11) NOT NULL,
-  `equipe_2` int(11) NOT NULL,
-  `resultat` enum('1','N','2','') NOT NULL,
-  `cote1` float DEFAULT NULL,
-  `coteN` float DEFAULT NULL,
-  `cote2` float DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `rouge1` int(11) NOT NULL,
-  `rouge2` int(11) NOT NULL,
-  `blesse1` int(11) NOT NULL,
-  `blesse2` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `matchs`
---
-
-INSERT INTO `matchs` (`id_match`, `id_journee`, `equipe_1`, `equipe_2`, `resultat`, `cote1`, `coteN`, `cote2`, `date`, `rouge1`, `rouge2`, `blesse1`, `blesse2`) VALUES
-(1, 1, 6, 3, '2', 3.55, 3.35, 2.1, '2019-08-10', 0, 0, 0, 0),
-(2, 1, 9, 17, '2', 1.6, 3.8, 6.1, '2019-08-10', 0, 0, 0, 0),
-(3, 1, 14, 1, '1', 2.18, 2.95, 4, '2019-08-10', 0, 1, 0, 0),
-(4, 1, 19, 10, 'N', 2.03, 3.2, 3.95, '2019-08-11', 0, 0, 0, 0),
-(5, 1, 12, 18, '2', 2.3, 3.25, 3.3, '2019-08-10', 0, 1, 0, 0),
-(6, 1, 2, 4, '1', 2.35, 3.15, 3.15, '2019-08-10', 0, 0, 0, 0),
-(7, 1, 7, 13, '1', 1.85, 3.4, 4.55, '2019-08-11', 0, 0, 0, 0),
-(8, 1, 16, 15, '1', 1.1, 10, 22, '2019-08-11', 0, 0, 0, 0),
-(9, 1, 5, 20, 'N', 2.38, 3.25, 3.1, '2019-08-10', 0, 0, 0, 0),
-(10, 1, 11, 8, '2', 2.9, 3.35, 2.42, '2019-08-09', 1, 0, 0, 0),
-(11, 2, 10, 11, '1', 2.85, 3.1, 2.58, '2019-08-17', 0, 1, 0, 0),
-(12, 2, 20, 6, '1', 1.99, 3.35, 3.85, '2019-08-17', 0, 0, 0, 0),
-(13, 2, 8, 2, '1', 1.38, 4.9, 7.5, '2019-08-16', 0, 0, 0, 0),
-(14, 2, 3, 5, 'N', 1.62, 3.85, 5.5, '2019-08-18', 0, 0, 0, 0),
-(15, 2, 15, 14, '2', 2.28, 3.25, 3.2, '2019-08-17', 2, 1, 0, 0),
-(16, 2, 13, 9, 'N', 2.63, 3.15, 2.75, '2019-08-17', 0, 0, 0, 0),
-(17, 2, 1, 7, '1', 3.35, 3, 2.33, '2019-08-17', 0, 1, 0, 0),
-(18, 2, 4, 12, 'N', 2.73, 2.95, 2.8, '2019-08-17', 0, 0, 0, 0),
-(19, 2, 17, 19, 'N', 2.05, 3.15, 3.9, '2019-08-18', 0, 0, 0, 0),
-(20, 2, 18, 16, '1', 8, 5.25, 1.35, '2019-08-18', 0, 0, 0, 0),
-(21, 3, 16, 20, '1', 1.11, 9, 22, '2019-08-25', 0, 0, 0, 0),
-(22, 3, 1, 13, '2', 2.75, 2.95, 2.8, '2019-08-24', 1, 0, 0, 0),
-(23, 3, 6, 4, '2', 2.58, 3.1, 2.85, '2019-08-24', 0, 0, 0, 0),
-(24, 3, 2, 10, '1', 2.08, 3.15, 3.8, '2019-08-24', 0, 0, 0, 0),
-(25, 3, 11, 15, 'N', 1.66, 3.85, 5, '2019-08-25', 1, 0, 0, 0),
-(26, 3, 14, 9, '2', 2.9, 3.15, 2.5, '2019-08-28', 0, 0, 0, 0),
-(27, 3, 7, 3, '1', 2.22, 3.3, 3.25, '2019-08-28', 0, 0, 0, 0),
-(28, 3, 12, 8, '1', 3.5, 3.4, 2.08, '2019-08-27', 0, 1, 0, 0),
-(29, 3, 19, 18, '2', 2.7, 3.1, 2.73, '2019-08-25', 1, 0, 0, 0),
-(30, 3, 5, 17, '1', 2.65, 3, 2.85, '2019-08-24', 0, 0, 0, 0),
-(31, 4, 2, 6, '1', 1.7, 3.6, 5, '2019-08-31', 0, 0, 0, 0),
-(32, 4, 20, 1, '1', 2.15, 3.1, 3.75, '2019-08-31', 0, 0, 0, 0),
-(33, 4, 17, 7, '1', 2.88, 2.95, 2.7, '2019-09-01', 0, 1, 0, 0),
-(34, 4, 18, 14, '2', 1.66, 3.6, 5.6, '2019-09-01', 0, 0, 0, 0),
-(35, 4, 13, 12, '1', 2.25, 3.1, 3.5, '2019-08-31', 0, 0, 0, 0),
-(36, 4, 8, 4, 'N', 0, 0, 0, '2019-08-31', 1, 0, 0, 0),
-(37, 4, 9, 3, '1', 1.98, 3.5, 3.75, '2019-09-01', 0, 0, 0, 0),
-(38, 4, 15, 5, '1', 2.1, 3.4, 3.5, '2019-08-31', 0, 0, 0, 0),
-(39, 4, 10, 16, '2', 7.5, 4.9, 1.4, '2019-08-30', 0, 0, 0, 0),
-(40, 4, 19, 11, 'N', 2.65, 3.2, 2.72, '2019-09-01', 0, 0, 0, 0),
-(41, 5, 6, 15, 'N', 2.68, 3.3, 2.6, '2019-09-14', 0, 0, 0, 0),
-(42, 5, 13, 17, '1', 2.15, 3.05, 3.75, '2019-09-15', 0, 0, 0, 0),
-(43, 5, 12, 14, '1', 1.95, 3.2, 4.3, '2019-09-14', 0, 0, 0, 0),
-(44, 5, 5, 18, 'N', 3.1, 3.15, 2.38, '2019-09-14', 0, 0, 0, 0),
-(45, 5, 11, 9, '2', 2.42, 3.4, 2.82, '2019-09-15', 0, 0, 0, 0),
-(46, 5, 3, 20, 'N', 1.63, 3.9, 5.25, '2019-09-15', 0, 0, 0, 0),
-(47, 5, 7, 2, '1', 1.82, 3.35, 4.7, '2019-09-13', 0, 0, 0, 0),
-(48, 5, 4, 10, '1', 1.83, 3.25, 4.8, '2019-09-14', 0, 0, 0, 0),
-(49, 5, 1, 8, 'N', 4.6, 3.65, 1.76, '2019-09-13', 0, 0, 0, 0),
-(50, 5, 16, 19, '1', 1.19, 6.75, 14, '2019-09-14', 0, 0, 0, 0),
-(51, 6, 17, 11, 'N', 2.7, 3.1, 2.73, '2019-09-21', 0, 0, 0, 0),
-(52, 6, 10, 1, '2', 2.08, 3.05, 4, '2019-09-21', 0, 0, 0, 0),
-(53, 6, 8, 16, '2', 3.65, 3.9, 1.88, '2019-09-22', 0, 0, 0, 0),
-(54, 6, 4, 5, 'N', 1.77, 3.45, 4.9, '2019-09-21', 0, 0, 0, 0),
-(55, 6, 19, 13, '1', 2.45, 3, 3.15, '2019-09-20', 0, 0, 0, 0),
-(56, 6, 9, 12, 'N', 1.93, 3.3, 4.2, '2019-09-21', 2, 1, 0, 0),
-(57, 6, 15, 20, '1', 1.91, 3.5, 4, '2019-09-21', 0, 1, 0, 0),
-(58, 6, 2, 3, '1', 2.13, 3.25, 3.55, '2019-09-22', 0, 0, 0, 0),
-(59, 6, 18, 7, 'N', 2.45, 3.1, 3.05, '2019-09-22', 0, 0, 0, 0),
-(60, 6, 14, 6, '1', 1.69, 3.65, 5.25, '2019-09-21', 0, 0, 0, 0),
-(61, 7, 11, 14, '1', 2, 3.55, 3.9, '2019-09-24', 0, 0, 0, 0),
-(62, 7, 5, 8, 'N', 4.7, 3.85, 1.75, '2019-09-25', 0, 0, 0, 0),
-(63, 7, 13, 18, '1', 2.3, 3.2, 3.45, '2019-09-25', 0, 0, 0, 0),
-(64, 7, 16, 17, '2', 1.15, 8.4, 18, '2019-09-25', 0, 0, 0, 0),
-(65, 7, 3, 10, '2', 1.8, 3.65, 4.75, '2019-09-25', 0, 0, 0, 0),
-(66, 7, 12, 15, '1', 1.91, 3.6, 4.2, '2019-09-25', 0, 0, 0, 0),
-(67, 7, 6, 9, 'N', 4.7, 3.85, 1.75, '2019-09-24', 0, 0, 0, 0),
-(68, 7, 20, 2, '2', 2.7, 3.25, 2.75, '2019-09-25', 0, 0, 0, 0),
-(69, 7, 7, 19, '1', 1.8, 3.55, 4.95, '2019-09-25', 0, 0, 0, 0),
-(70, 7, 1, 4, '2', 2.65, 3, 3.05, '2019-09-25', 0, 0, 0, 0),
-(71, 8, 14, 7, 'N', 2.92, 3.15, 2.55, '2019-09-28', 0, 0, 0, 0),
-(72, 8, 4, 16, '2', 6, 4.75, 1.48, '2019-09-28', 0, 0, 0, 0),
-(73, 8, 2, 1, 'N', 1.75, 3.5, 4.9, '2019-09-28', 0, 0, 0, 0),
-(74, 8, 11, 5, '1', 1.53, 4.3, 6.25, '2019-09-28', 0, 0, 0, 0),
-(75, 8, 10, 20, 'N', 2.1, 3.25, 3.7, '2019-09-28', 0, 0, 0, 0),
-(76, 8, 8, 13, '2', 1.55, 4.1, 6.5, '2019-09-28', 0, 0, 0, 0),
-(77, 8, 19, 12, '1', 2.65, 3.1, 2.92, '2019-09-29', 0, 0, 0, 0),
-(78, 8, 9, 18, 'N', 1.97, 3.45, 3.85, '2019-09-29', 0, 0, 0, 0),
-(79, 8, 15, 3, '2', 2.92, 3.15, 2.55, '2019-09-29', 0, 1, 0, 0),
-(80, 8, 17, 6, '2', 1.76, 3.45, 5.25, '2019-09-28', 0, 0, 0, 0),
-(81, 9, 18, 17, '2', 2.15, 3.15, 3.7, '2019-10-06', 0, 0, 0, 0),
-(82, 9, 6, 19, '1', 2.72, 3.15, 2.8, '2019-10-05', 0, 0, 0, 0),
-(83, 9, 1, 9, '1', 3.2, 3.3, 2.35, '2019-10-04', 0, 0, 0, 0),
-(84, 9, 12, 11, '1', 2.85, 3.35, 2.55, '2019-10-05', 0, 1, 0, 0),
-(85, 9, 7, 15, 'N', 1.65, 4, 5.5, '2019-10-06', 0, 0, 0, 0),
-(86, 9, 16, 2, '1', 1.18, 7.5, 14, '2019-10-05', 0, 0, 0, 0),
-(87, 9, 20, 4, '2', 2.52, 3.15, 2.95, '2019-10-05', 0, 0, 0, 0),
-(88, 9, 5, 10, '1', 2.47, 3.25, 3, '2019-10-05', 0, 0, 0, 0),
-(89, 9, 3, 8, '1', 3.4, 3.8, 2.05, '2019-10-06', 0, 0, 0, 0),
-(90, 9, 13, 14, '1', 2, 3.4, 4, '2019-10-05', 0, 0, 0, 0),
-(91, 10, 17, 12, '1', 2.15, 3, 3.8, '2019-10-19', 0, 0, 0, 0),
-(92, 10, 2, 5, '2', 1.63, 3.65, 5.75, '2019-10-18', 0, 0, 0, 0),
-(93, 10, 10, 13, '1', 2.78, 2.95, 2.78, '2019-10-19', 0, 0, 0, 0),
-(94, 10, 20, 7, '1', 3.4, 3.25, 2.18, '2019-10-19', 0, 0, 0, 0),
-(95, 10, 14, 16, '2', 9, 5.25, 1.32, '2019-10-18', 2, 0, 0, 0),
-(96, 10, 4, 3, '2', 2.3, 3.15, 3.25, '2019-10-20', 0, 0, 0, 0),
-(97, 10, 15, 1, 'N', 2.07, 3.3, 3.65, '2019-10-19', 0, 0, 0, 0),
-(98, 10, 9, 19, '1', 1.82, 3.5, 4.4, '2019-10-20', 0, 0, 0, 0),
-(99, 10, 8, 6, 'N', 1.33, 5.25, 8.5, '2019-10-18', 0, 0, 0, 0),
-(100, 10, 11, 18, '1', 1.83, 3.5, 4.4, '2019-10-20', 0, 0, 0, 0),
-(101, 11, 19, 14, '1', 1.92, 3.4, 4.75, '2019-10-26', 0, 1, 0, 0),
-(102, 11, 18, 20, '1', 1.88, 3.6, 4.5, '2019-10-27', 0, 0, 0, 0),
-(103, 11, 3, 1, 'N', 2.15, 3.5, 3.9, '2019-10-27', 0, 0, 0, 0),
-(104, 11, 5, 6, '1', 2.4, 3.3, 3.35, '2019-10-26', 1, 0, 0, 0),
-(105, 11, 8, 10, '1', 1.48, 4.8, 9, '2019-10-26', 0, 0, 0, 0),
-(106, 11, 16, 9, '1', 1.26, 7, 13.5, '2019-10-27', 0, 0, 0, 0),
-(107, 11, 13, 11, '2', 3.1, 3.4, 2.6, '2019-10-25', 0, 0, 0, 0),
-(108, 11, 17, 15, 'N', 1.67, 3.7, 6.25, '2019-10-26', 0, 0, 0, 0),
-(109, 11, 12, 2, 'N', 2.25, 3.2, 3.6, '2019-10-26', 0, 0, 0, 0),
-(110, 11, 7, 4, '1', 1.91, 3.45, 4.75, '2019-10-26', 0, 0, 0, 0),
-(111, 12, 4, 13, '1', 2.4, 3, 3.5, '2019-11-03', 0, 0, 0, 0),
-(112, 12, 15, 18, '2', 3.25, 3.18, 2.26, '2020-01-15', 0, 0, 0, 0),
-(113, 12, 9, 7, '1', 2.3, 3.3, 2.35, '2019-11-02', 0, 0, 0, 0),
-(114, 12, 3, 11, '1', 2.85, 3.5, 2.45, '2019-11-03', 0, 1, 0, 0),
-(115, 12, 10, 12, 'N', 3, 3.1, 2.65, '2019-11-02', 0, 0, 0, 0),
-(116, 12, 20, 8, '2', 4.75, 4, 1.75, '2019-11-02', 0, 0, 0, 0),
-(117, 12, 6, 16, '1', 16, 8, 1.22, '2019-11-01', 0, 0, 0, 0),
-(118, 12, 2, 19, '1', 2.05, 3.25, 4.4, '2019-11-02', 0, 0, 0, 0),
-(119, 12, 1, 5, '1', 1.75, 3.85, 4.9, '2019-11-02', 0, 0, 0, 0),
-(120, 12, 14, 17, '1', 2.7, 3.05, 2.95, '2019-11-03', 0, 1, 0, 0),
-(121, 13, 9, 8, '1', 2.78, 3.35, 2.53, '2019-11-10', 0, 0, 0, 0),
-(122, 13, 12, 20, '1', 1.8, 3.6, 4.85, '2019-11-10', 0, 0, 0, 0),
-(123, 13, 14, 4, 'N', 2.5, 3.1, 3, '2019-11-08', 0, 0, 0, 0),
-(124, 13, 11, 6, '1', 1.44, 4.55, 7, '2019-11-09', 0, 0, 0, 0),
-(125, 13, 18, 1, '1', 2.22, 3.2, 3.45, '2019-11-10', 0, 0, 0, 0),
-(126, 13, 7, 10, 'N', 1.65, 3.85, 5.75, '2019-11-09', 0, 0, 0, 0),
-(127, 13, 5, 16, '2', 14, 6.75, 1.2, '2019-11-09', 0, 0, 0, 0),
-(128, 13, 17, 2, 'N', 2.25, 3.05, 3.65, '2019-11-09', 0, 0, 0, 0),
-(129, 13, 19, 15, '1', 1.9, 3.4, 4.4, '2019-11-09', 0, 0, 0, 0),
-(130, 13, 13, 3, '2', 2.15, 3.15, 3.7, '2019-11-10', 0, 0, 0, 0),
-(131, 14, 20, 9, '2', 3.4, 3.35, 2.13, '2019-11-24', 1, 0, 0, 0),
-(132, 14, 16, 7, '1', 1.2, 6.75, 13, '2019-11-22', 0, 0, 0, 0),
-(133, 14, 8, 14, '1', 1.4, 4.6, 8, '2019-11-23', 1, 1, 0, 0),
-(134, 14, 5, 13, 'N', 2.95, 3.15, 2.48, '2019-11-23', 0, 0, 0, 0),
-(135, 14, 4, 11, '1', 3.2, 3.35, 2.22, '2019-11-24', 0, 1, 0, 0),
-(136, 14, 10, 17, 'N', 2.8, 2.95, 2.75, '2019-11-23', 0, 1, 0, 0),
-(137, 14, 3, 12, 'N', 2.35, 3.15, 3.15, '2019-11-24', 0, 0, 0, 0),
-(138, 14, 1, 19, '2', 2.38, 3.05, 3.2, '2019-11-23', 1, 0, 0, 0),
-(139, 14, 2, 15, '1', 1.69, 3.6, 5.25, '2019-11-23', 0, 0, 0, 0),
-(140, 14, 6, 18, '1', 2.9, 3.2, 2.48, '2019-11-23', 0, 0, 0, 0),
-(141, 15, 19, 8, '2', 3.3, 3.4, 2.1, '2019-11-30', 0, 0, 0, 0),
-(142, 15, 17, 4, 'N', 2, 3, 4.33, '2019-11-30', 1, 0, 0, 0),
-(143, 15, 11, 16, '2', 6, 5.15, 1.43, '2020-01-15', 0, 0, 0, 0),
-(144, 15, 15, 10, 'N', 2.15, 3.1, 3.6, '2019-11-30', 0, 0, 0, 0),
-(145, 15, 13, 20, '1', 1.72, 3.6, 4.75, '2019-12-01', 0, 1, 0, 0),
-(146, 15, 18, 3, '1', 2.3, 3.1, 3.25, '2019-12-01', 0, 0, 0, 0),
-(147, 15, 9, 5, '1', 1.47, 4.2, 7, '2019-11-29', 0, 0, 0, 0),
-(148, 15, 12, 1, '1', 1.8, 3.3, 4.75, '2019-11-30', 0, 1, 0, 0),
-(149, 15, 7, 6, '1', 1.57, 3.83, 6.25, '2019-11-30', 0, 0, 0, 0),
-(150, 15, 14, 2, '1', 2.62, 3, 2.8, '2019-11-30', 0, 0, 0, 0),
-(151, 16, 16, 13, '1', 1.13, 8, 19, '2019-12-04', 0, 0, 0, 0),
-(152, 16, 4, 15, '1', 1.9, 3.2, 4, '2019-12-03', 0, 0, 0, 0),
-(153, 16, 3, 14, '1', 2.25, 3.2, 3.05, '2019-12-04', 0, 0, 0, 0),
-(154, 16, 6, 12, 'N', 3, 3, 2.4, '2019-12-04', 0, 0, 0, 0),
-(155, 16, 1, 17, 'N', 2.68, 2.9, 2.92, '2020-01-15', 0, 0, 0, 0),
-(156, 16, 8, 7, '2', 2, 3.55, 3.9, '2019-12-03', 0, 0, 0, 0),
-(157, 16, 2, 9, '2', 2.8, 3.15, 2.45, '2019-12-03', 0, 0, 0, 0),
-(158, 16, 5, 19, '1', 3, 3.05, 2.35, '2019-12-03', 0, 0, 0, 0),
-(159, 16, 20, 11, '2', 3.75, 3.65, 1.83, '2019-12-04', 0, 0, 0, 0),
-(160, 16, 10, 18, '2', 2.95, 2.95, 2.42, '2019-12-04', 0, 0, 0, 0),
-(161, 17, 15, 8, '2', 4, 3.85, 1.85, '2019-12-06', 2, 0, 0, 0),
-(162, 17, 14, 10, '1', 1.77, 3.35, 4.5, '2019-12-07', 0, 0, 0, 0),
-(163, 17, 12, 16, '2', 6.55, 4.8, 1.45, '2019-12-07', 1, 0, 0, 0),
-(164, 17, 18, 2, '1', 2.03, 3.15, 3.6, '2019-12-07', 0, 0, 0, 0),
-(165, 17, 17, 3, '1', 1.95, 3.15, 3.95, '2019-12-08', 0, 0, 0, 0),
-(166, 17, 13, 6, '1', 1.73, 3.5, 4.45, '2019-12-08', 0, 0, 0, 0),
-(167, 17, 19, 20, '1', 1.66, 3.7, 4.7, '2019-12-07', 0, 0, 0, 0),
-(168, 17, 9, 4, '1', 1.58, 3.9, 5.15, '2019-12-08', 0, 0, 0, 0),
-(169, 17, 11, 1, '1', 1.42, 4.45, 6.3, '2019-12-07', 0, 0, 0, 0),
-(170, 17, 7, 5, '1', 1.38, 4.45, 7.4, '2019-12-06', 0, 0, 0, 0),
-(171, 18, 15, 13, '2', 3.2, 3.05, 2.24, '2019-12-14', 0, 0, 0, 0),
-(172, 18, 3, 16, '2', 7.15, 5, 1.34, '2019-12-15', 1, 0, 0, 0),
-(173, 18, 8, 18, '2', 1.65, 3.75, 4.8, '2019-12-15', 0, 0, 2, 0),
-(174, 18, 2, 11, 'N', 3, 3.4, 2.18, '2019-12-14', 0, 0, 0, 0),
-(175, 18, 4, 19, '2', 2.18, 3.1, 3.3, '2019-12-15', 0, 0, 0, 0),
-(176, 18, 20, 17, '2', 3.1, 3.05, 2.29, '2019-12-14', 0, 0, 0, 0),
-(177, 18, 7, 12, '1', 1.8, 3.25, 4.45, '2019-12-13', 0, 0, 0, 0),
-(178, 18, 10, 9, 'N', 4.4, 3.5, 1.75, '2019-12-14', 0, 0, 0, 0),
-(179, 18, 1, 6, 'N', 1.97, 3.25, 3.07, '2019-12-14', 0, 0, 0, 0),
-(180, 18, 5, 14, 'N', 2.6, 3.25, 2.55, '2019-12-14', 0, 0, 0, 0),
-(181, 19, 12, 5, '1', 1.51, 3.7, 3.3, '2019-12-21', 0, 0, 0, 0),
-(182, 19, 6, 10, 'N', 1.99, 3, 3.7, '2019-12-21', 0, 0, 0, 0),
-(183, 19, 18, 4, '1', 1.91, 3.2, 3.8, '2019-12-21', 0, 0, 0, 0),
-(184, 19, 19, 3, '1', 1.96, 3.1, 3.65, '2019-12-21', 0, 0, 0, 0),
-(185, 19, 11, 7, '1', 2, 3.4, 3.3, '2019-12-21', 0, 0, 0, 0),
-(186, 19, 17, 8, 'N', 2.72, 2.9, 2.52, '2019-12-21', 0, 0, 0, 0),
-(187, 19, 13, 2, '2', 2.01, 3, 3.65, '2019-12-21', 0, 0, 0, 0),
-(188, 19, 14, 20, '1', 1.63, 3.75, 4.45, '2019-12-21', 0, 0, 0, 0),
-(189, 19, 16, 1, '1', 1.06, 12, 30, '2019-12-21', 0, 0, 0, 0),
-(190, 19, 9, 15, '1', 1.26, 5.05, 8.8, '2019-12-21', 0, 0, 0, 0),
-(191, 20, 20, 5, '2', 2.25, 3.35, 3.23, '2020-01-11', 0, 0, 0, 0),
-(192, 20, 1, 12, '2', 3.5, 3.1, 2.25, '2020-01-11', 0, 0, 0, 0),
-(193, 20, 4, 8, '2', 3.3, 3.3, 2.35, '2020-01-11', 0, 0, 0, 0),
-(194, 20, 2, 14, 'N', 1.9, 3.6, 4.2, '2020-01-11', 0, 0, 0, 0),
-(195, 20, 18, 9, '2', 2.65, 3, 2.6, '2020-01-10', 0, 0, 0, 0),
-(196, 20, 15, 17, '1', 3.35, 3, 2.4, '2020-01-11', 0, 1, 0, 0),
-(197, 20, 10, 19, '1', 3, 3, 2.6, '2020-01-11', 0, 0, 0, 0),
-(198, 20, 6, 7, 'N', 4.3, 3.4, 1.9, '2020-01-12', 1, 1, 0, 0),
-(199, 20, 16, 11, 'N', 1.2, 7.5, 12, '2020-01-12', 0, 0, 0, 0),
-(200, 20, 3, 13, '2', 2.6, 2.95, 3.05, '2020-01-12', 0, 0, 0, 0),
-(201, 21, 5, 1, '1', 2.07, 3.4, 3.65, '2020-01-25', 0, 0, 0, 0),
-(202, 21, 9, 2, 'N', 1.75, 3.75, 4.7, '2020-01-25', 0, 0, 0, 0),
-(203, 21, 11, 19, '2', 1.6, 4.15, 5.45, '2020-01-25', 0, 0, 0, 0),
-(204, 21, 12, 6, '1', 1.62, 3.85, 5.75, '2020-01-25', 0, 1, 0, 0),
-(205, 21, 17, 10, '2', 1.86, 3.15, 5, '2020-01-25', 0, 0, 0, 0),
-(206, 21, 3, 15, '1', 1.74, 3.7, 4.85, '2020-01-25', 0, 0, 0, 0),
-(207, 21, 14, 18, 'N', 2.77, 3.15, 2.9, '2020-01-24', 0, 0, 0, 0),
-(208, 21, 8, 20, '1', 1.25, 6.4, 10.5, '2020-01-26', 0, 0, 1, 0),
-(209, 21, 13, 4, '2', 1.86, 3.28, 4.75, '2020-01-26', 1, 0, 0, 0),
-(210, 21, 7, 16, '2', 6.2, 5.6, 1.41, '2020-01-26', 0, 0, 0, 0),
-(211, 22, 18, 13, '1', 2.1, 2.92, 3.75, '2020-01-31', 0, 0, 0, 0),
-(212, 22, 16, 12, '1', 1.1, 8.15, 18, '2020-02-01', 0, 1, 0, 0),
-(213, 22, 1, 20, 'N', 1.91, 3.38, 3.75, '2020-02-01', 0, 0, 0, 0),
-(214, 22, 2, 17, '2', 1.98, 3.02, 4, '2020-02-01', 0, 0, 0, 0),
-(215, 22, 6, 5, '1', 1.98, 3.4, 3.5, '2020-02-01', 0, 0, 0, 0),
-(216, 22, 15, 11, '1', 4.4, 3.9, 1.66, '2020-02-01', 0, 1, 0, 0),
-(217, 22, 19, 7, '2', 2.6, 2.95, 2.75, '2020-02-01', 0, 0, 0, 0),
-(218, 22, 14, 8, '1', 3.28, 3.48, 2.03, '2020-02-02', 1, 1, 0, 0),
-(219, 22, 10, 3, '1', 2.6, 2.9, 2.82, '2020-02-02', 0, 0, 0, 0),
-(220, 22, 4, 9, 'N', 3.38, 3.12, 2.14, '2020-02-02', 0, 0, 0, 0),
-(221, 23, 7, 18, '1', 2.02, 3.35, 3.75, '2020-02-04', 0, 0, 0, 0),
-(222, 23, 11, 2, '1', 1.88, 3.55, 4.1, '2020-02-04', 0, 0, 0, 0),
-(223, 23, 13, 16, '2', 8.15, 5.25, 1.34, '2020-02-04', 0, 0, 0, 0),
-(224, 23, 8, 1, 'N', 1.29, 5.15, 9.1, '2020-02-05', 0, 0, 0, 0),
-(225, 23, 5, 4, 'N', 2.5, 3.1, 2.78, '2020-02-05', 1, 0, 0, 0),
-(226, 23, 20, 19, '2', 3.15, 3.05, 2.32, '2020-02-05', 0, 0, 0, 0),
-(227, 23, 15, 6, '1', 2.2, 3.15, 3.2, '2020-02-05', 0, 0, 0, 0),
-(228, 23, 17, 14, 'N', 2.05, 3.05, 3.8, '2020-02-05', 0, 0, 0, 0),
-(229, 23, 12, 10, 'N', 1.66, 3.35, 5.55, '2020-02-05', 0, 0, 0, 0),
-(230, 23, 3, 9, '2', 2.88, 3.2, 2.4, '2020-02-05', 0, 0, 0, 0),
-(231, 24, 2, 7, '', 2.55, 3.08, 2.95, '2020-02-07', 0, 0, 0, 0),
-(232, 24, 9, 20, '', 1.32, 5.2, 9.4, '2020-02-08', 0, 0, 0, 0),
-(233, 24, 1, 11, '', 3.9, 3.6, 1.93, '2020-02-08', 0, 0, 0, 0),
-(234, 24, 6, 13, '', 2.6, 3.15, 2.82, '2020-02-08', 0, 0, 0, 0),
-(235, 24, 10, 4, '', 2.52, 3.02, 3.05, '2020-02-08', 0, 0, 0, 0),
-(236, 24, 14, 15, '', 1.92, 3.55, 4, '2020-02-08', 0, 0, 0, 0),
-(237, 24, 18, 5, '', 1.54, 4.2, 5.95, '2020-02-08', 0, 0, 0, 0),
-(238, 24, 12, 3, '', 2.05, 3.12, 3.6, '2020-02-09', 0, 0, 0, 0),
-(239, 24, 19, 17, '', 2.13, 2.92, 3.65, '2020-02-09', 0, 0, 0, 0),
-(240, 24, 16, 8, '', 1.26, 6, 8.15, '2020-02-09', 0, 0, 0, 0);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__bookmark`
---
-
-CREATE TABLE `pma__bookmark` (
-  `id` int(11) NOT NULL,
-  `dbase` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `user` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `label` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `query` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Bookmarks';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__central_columns`
---
-
-CREATE TABLE `pma__central_columns` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_type` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_length` text COLLATE utf8_bin,
-  `col_collation` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_isNull` tinyint(1) NOT NULL,
-  `col_extra` varchar(255) COLLATE utf8_bin DEFAULT '',
-  `col_default` text COLLATE utf8_bin
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Central list of columns';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__column_info`
---
-
-CREATE TABLE `pma__column_info` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `column_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `comment` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `mimetype` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `input_transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `input_transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Column information for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__designer_settings`
---
-
-CREATE TABLE `pma__designer_settings` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `settings_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Settings related to Designer';
-
---
--- Contenu de la table `pma__designer_settings`
---
-
-INSERT INTO `pma__designer_settings` (`username`, `settings_data`) VALUES
-('phpmyadmin', '{\"angular_direct\":\"direct\",\"relation_lines\":\"true\",\"snap_to_grid\":\"off\"}');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__export_templates`
---
-
-CREATE TABLE `pma__export_templates` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `export_type` varchar(10) COLLATE utf8_bin NOT NULL,
-  `template_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `template_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved export templates';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__favorite`
---
-
-CREATE TABLE `pma__favorite` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `tables` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Favorite tables';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__history`
---
-
-CREATE TABLE `pma__history` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `sqlquery` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='SQL history for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__navigationhiding`
---
-
-CREATE TABLE `pma__navigationhiding` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `item_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `item_type` varchar(64) COLLATE utf8_bin NOT NULL,
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Hidden items of navigation tree';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__pdf_pages`
---
-
-CREATE TABLE `pma__pdf_pages` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `page_nr` int(10) UNSIGNED NOT NULL,
-  `page_descr` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='PDF relation pages for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__recent`
---
-
-CREATE TABLE `pma__recent` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `tables` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Recently accessed tables';
-
---
--- Contenu de la table `pma__recent`
---
-
-INSERT INTO `pma__recent` (`username`, `tables`) VALUES
-('phpmyadmin', '[{\"db\":\"phpmyadmin\",\"table\":\"equipes\"},{\"db\":\"phpmyadmin\",\"table\":\"journees\"},{\"db\":\"phpmyadmin\",\"table\":\"matchs\"},{\"db\":\"phpmyadmin\",\"table\":\"criteres\"},{\"db\":\"phpmyadmin\",\"table\":\"clubs\"},{\"db\":\"phpmyadmin\",\"table\":\"valeurs\"},{\"db\":\"phpmyadmin\",\"table\":\"saison_club_joueur\"},{\"db\":\"phpmyadmin\",\"table\":\"joueurs\"},{\"db\":\"phpmyadmin\",\"table\":\"saison_championnat_club\"},{\"db\":\"phpmyadmin\",\"table\":\"equipe\"}]');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__relation`
---
-
-CREATE TABLE `pma__relation` (
-  `master_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `master_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `master_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `foreign_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `foreign_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `foreign_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Relation table';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__savedsearches`
---
-
-CREATE TABLE `pma__savedsearches` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `search_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `search_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved searches';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__table_coords`
---
-
-CREATE TABLE `pma__table_coords` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `pdf_page_number` int(11) NOT NULL DEFAULT '0',
-  `x` float UNSIGNED NOT NULL DEFAULT '0',
-  `y` float UNSIGNED NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table coordinates for phpMyAdmin PDF output';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__table_info`
---
-
-CREATE TABLE `pma__table_info` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `display_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table information for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__table_uiprefs`
---
-
-CREATE TABLE `pma__table_uiprefs` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `prefs` text COLLATE utf8_bin NOT NULL,
-  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Tables'' UI preferences';
-
---
--- Contenu de la table `pma__table_uiprefs`
---
-
-INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('phpmyadmin', 'phpmyadmin', 'criteres', '{\"sorted_col\":\"`id_match` ASC\"}', '2020-01-05 20:53:03'),
-('phpmyadmin', 'phpmyadmin', 'equipes', '{\"sorted_col\":\"`equipes`.`id_joueur` ASC\"}', '2019-12-26 19:24:45'),
-('phpmyadmin', 'phpmyadmin', 'joueurs', '[]', '2019-12-25 10:17:54'),
-('phpmyadmin', 'phpmyadmin', 'matchs', '{\"sorted_col\":\"`id_match` ASC\"}', '2020-01-11 16:52:46');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__tracking`
---
-
-CREATE TABLE `pma__tracking` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `version` int(10) UNSIGNED NOT NULL,
-  `date_created` datetime NOT NULL,
-  `date_updated` datetime NOT NULL,
-  `schema_snapshot` text COLLATE utf8_bin NOT NULL,
-  `schema_sql` text COLLATE utf8_bin,
-  `data_sql` longtext COLLATE utf8_bin,
-  `tracking` set('UPDATE','REPLACE','INSERT','DELETE','TRUNCATE','CREATE DATABASE','ALTER DATABASE','DROP DATABASE','CREATE TABLE','ALTER TABLE','RENAME TABLE','DROP TABLE','CREATE INDEX','DROP INDEX','CREATE VIEW','ALTER VIEW','DROP VIEW') COLLATE utf8_bin DEFAULT NULL,
-  `tracking_active` int(1) UNSIGNED NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Database changes tracking for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__userconfig`
---
-
-CREATE TABLE `pma__userconfig` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `config_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User preferences storage for phpMyAdmin';
-
---
--- Contenu de la table `pma__userconfig`
---
-
-INSERT INTO `pma__userconfig` (`username`, `timevalue`, `config_data`) VALUES
-('phpmyadmin', '2019-12-23 20:46:45', '{\"lang\":\"fr\",\"collation_connection\":\"utf8mb4_unicode_ci\"}');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__usergroups`
---
-
-CREATE TABLE `pma__usergroups` (
-  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL,
-  `tab` varchar(64) COLLATE utf8_bin NOT NULL,
-  `allowed` enum('Y','N') COLLATE utf8_bin NOT NULL DEFAULT 'N'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User groups with configured menu items';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__users`
---
-
-CREATE TABLE `pma__users` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users and their assignments to user groups';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `saisons`
---
-
-CREATE TABLE `saisons` (
-  `id_saison` int(11) NOT NULL,
-  `nom` varchar(9) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `saisons`
---
-
-INSERT INTO `saisons` (`id_saison`, `nom`) VALUES
-(1, '2019-2020');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `saison_championnat_club`
---
-
-CREATE TABLE `saison_championnat_club` (
-  `id_saison_championnat_club` int(11) NOT NULL,
-  `id_saison` int(11) NOT NULL,
-  `id_championnat` int(11) NOT NULL,
-  `id_club` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `saison_championnat_club`
---
-
-INSERT INTO `saison_championnat_club` (`id_saison_championnat_club`, `id_saison`, `id_championnat`, `id_club`) VALUES
-(1, 1, 1, 1),
-(2, 1, 1, 2),
-(3, 1, 1, 3),
-(4, 1, 1, 4),
-(5, 1, 1, 5),
-(6, 1, 1, 6),
-(7, 1, 1, 7),
-(8, 1, 1, 8),
-(9, 1, 1, 9),
-(10, 1, 1, 10),
-(11, 1, 1, 11),
-(12, 1, 1, 12),
-(13, 1, 1, 13),
-(14, 1, 1, 14),
-(15, 1, 1, 15),
-(16, 1, 1, 16),
-(17, 1, 1, 17),
-(18, 1, 1, 18),
-(19, 1, 1, 19),
-(20, 1, 1, 20);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `saison_club_joueur`
---
-
-CREATE TABLE `saison_club_joueur` (
-  `id_saison_club_joueur` int(11) NOT NULL,
-  `id_saison` int(11) NOT NULL,
-  `id_club` int(11) NOT NULL,
-  `id_joueur` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `saison_club_joueur`
---
-
-INSERT INTO `saison_club_joueur` (`id_saison_club_joueur`, `id_saison`, `id_club`, `id_joueur`) VALUES
-(1, 1, 17, 129),
-(2, 1, 4, 22),
-(3, 1, 11, 79),
-(4, 1, 19, 142),
-(5, 1, 9, 63),
-(6, 1, 8, 54),
-(7, 1, 7, 48),
-(8, 1, 8, 55),
-(9, 1, 14, 101),
-(10, 1, 5, 34),
-(11, 1, 11, 80),
-(12, 1, 13, 95),
-(13, 1, 5, 35),
-(14, 1, 11, 81),
-(15, 1, 9, 64),
-(16, 1, 4, 23),
-(17, 1, 3, 14),
-(18, 1, 16, 114),
-(19, 1, 19, 143),
-(20, 1, 6, 42),
-(21, 1, 9, 65),
-(22, 1, 18, 136),
-(23, 1, 2, 5),
-(24, 1, 19, 144),
-(25, 1, 5, 36),
-(26, 1, 10, 71),
-(27, 1, 6, 43),
-(28, 1, 5, 37),
-(29, 1, 1, 1),
-(30, 1, 6, 44),
-(31, 1, 16, 115),
-(32, 1, 10, 72),
-(33, 1, 12, 87),
-(34, 1, 14, 102),
-(35, 1, 8, 56),
-(36, 1, 4, 24),
-(37, 1, 5, 38),
-(38, 1, 14, 103),
-(39, 1, 18, 137),
-(40, 1, 16, 116),
-(41, 1, 14, 104),
-(42, 1, 4, 25),
-(43, 1, 12, 88),
-(44, 1, 8, 57),
-(45, 1, 15, 109),
-(46, 1, 8, 58),
-(47, 1, 16, 117),
-(48, 1, 17, 130),
-(49, 1, 10, 73),
-(50, 1, 17, 131),
-(51, 1, 19, 145),
-(52, 1, 14, 105),
-(53, 1, 13, 96),
-(54, 1, 13, 96),
-(55, 1, 15, 110),
-(56, 1, 12, 89),
-(57, 1, 3, 15),
-(58, 1, 17, 132),
-(59, 1, 11, 82),
-(60, 1, 18, 138),
-(61, 1, 13, 97),
-(62, 1, 11, 83),
-(63, 1, 6, 45),
-(64, 1, 16, 118),
-(65, 1, 1, 2),
-(66, 1, 3, 16),
-(67, 1, 16, 119),
-(68, 1, 12, 90),
-(69, 1, 4, 26),
-(70, 1, 16, 120),
-(71, 1, 7, 49),
-(72, 1, 17, 133),
-(73, 1, 16, 121),
-(74, 1, 4, 27),
-(75, 1, 13, 98),
-(76, 1, 11, 84),
-(77, 1, 5, 40),
-(78, 1, 14, 106),
-(79, 1, 5, 41),
-(80, 1, 19, 146),
-(81, 1, 13, 99),
-(82, 1, 7, 50),
-(83, 1, 14, 107),
-(84, 1, 6, 46),
-(85, 1, 10, 74),
-(86, 1, 4, 28),
-(87, 1, 20, 149),
-(88, 1, 2, 4),
-(89, 1, 9, 66),
-(90, 1, 2, 8),
-(91, 1, 11, 85),
-(92, 1, 16, 122),
-(93, 1, 16, 123),
-(94, 1, 1, 3),
-(95, 1, 18, 139),
-(96, 1, 4, 29),
-(97, 1, 15, 111),
-(98, 1, 12, 91),
-(99, 1, 17, 134),
-(100, 1, 16, 124),
-(101, 1, 6, 47),
-(102, 1, 10, 75),
-(103, 1, 19, 147),
-(104, 1, 16, 125),
-(105, 1, 10, 76),
-(106, 1, 18, 140),
-(107, 1, 7, 51),
-(108, 1, 4, 31),
-(109, 1, 10, 77),
-(110, 1, 12, 92),
-(111, 1, 4, 30),
-(112, 1, 13, 100),
-(113, 1, 16, 126),
-(114, 1, 9, 67),
-(115, 1, 2, 9),
-(116, 1, 3, 17),
-(117, 1, 9, 68),
-(118, 1, 15, 112),
-(119, 1, 17, 135),
-(120, 1, 8, 59),
-(121, 1, 3, 20),
-(122, 1, 12, 93),
-(123, 1, 4, 32),
-(124, 1, 9, 69),
-(125, 1, 3, 18),
-(126, 1, 7, 52),
-(127, 1, 9, 70),
-(128, 1, 2, 10),
-(129, 1, 14, 108),
-(130, 1, 19, 148),
-(131, 1, 11, 86),
-(132, 1, 12, 94),
-(133, 1, 10, 78),
-(134, 1, 4, 33),
-(135, 1, 8, 60),
-(136, 1, 8, 61),
-(137, 1, 16, 127),
-(138, 1, 2, 11),
-(139, 1, 8, 62),
-(140, 1, 18, 141),
-(141, 1, 3, 19),
-(142, 1, 20, 150),
-(143, 1, 15, 113),
-(144, 1, 16, 128),
-(145, 1, 7, 53),
-(146, 1, 3, 21),
-(147, 1, 5, 39),
-(148, 1, 8, 151),
-(149, 1, 5, 152),
-(150, 1, 13, 153),
-(151, 1, 6, 154),
-(152, 1, 10, 155),
-(153, 1, 13, 156),
-(154, 1, 9, 157),
-(155, 1, 8, 158),
-(156, 1, 8, 159),
-(157, 1, 2, 160),
-(158, 1, 10, 161),
-(159, 1, 19, 162),
-(160, 1, 19, 163),
-(161, 1, 5, 164),
-(162, 1, 7, 165),
-(163, 1, 7, 166),
-(164, 1, 11, 167),
-(166, 1, 12, 170),
-(167, 1, 13, 168),
-(168, 1, 17, 171),
-(169, 1, 14, 172),
-(170, 1, 16, 173),
-(171, 1, 7, 174);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `valeurs`
---
-
-CREATE TABLE `valeurs` (
-  `id_valeur` int(11) NOT NULL,
-  `id_saison` int(11) NOT NULL,
-  `id_club` int(11) NOT NULL,
-  `valeur` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `valeurs`
---
-
-INSERT INTO `valeurs` (`id_valeur`, `id_saison`, `id_club`, `valeur`) VALUES
-(1, 1, 1, 70),
-(2, 1, 2, 73),
-(3, 1, 3, 129),
-(4, 1, 4, 130),
-(5, 1, 5, 40),
-(6, 1, 6, 48),
-(7, 1, 7, 234),
-(8, 1, 8, 368),
-(9, 1, 9, 227),
-(10, 1, 10, 42),
-(11, 1, 11, 354),
-(12, 1, 12, 91),
-(13, 1, 13, 76),
-(14, 1, 14, 182),
-(15, 1, 15, 53),
-(16, 1, 16, 1050),
-(17, 1, 17, 78),
-(18, 1, 18, 157),
-(19, 1, 19, 96),
-(20, 1, 20, 92);
+(253, 22, 174, 7),
+(254, 24, 66, 7),
+(255, 24, 81, 7),
+(256, 24, 37, 7),
+(257, 24, 174, 7),
+(258, 24, 111, 6),
+(259, 24, 31, 7),
+(260, 24, 52, 8),
+(261, 24, 112, 8),
+(262, 24, 117, 8),
+(263, 24, 88, 7),
+(264, 24, 175, 7),
+(265, 25, 77, 7),
+(266, 25, 63, 7),
+(267, 25, 44, 7),
+(268, 25, 2, 7),
+(269, 25, 83, 7),
+(270, 25, 180, 7),
+(271, 25, 181, 7),
+(272, 25, 177, 7),
+(273, 25, 178, 7),
+(274, 25, 176, 7),
+(275, 25, 179, 7),
+(276, 26, 140, 7),
+(277, 26, 165, 8),
+(278, 26, 117, 6),
+(279, 26, 128, 7),
+(280, 26, 99, 7),
+(281, 26, 141, 7),
+(282, 26, 122, 6),
+(283, 26, 100, 7),
+(284, 26, 95, 8),
+(285, 26, 182, 7),
+(286, 26, 183, 7),
+(287, 27, 135, 9),
+(288, 27, 158, 7),
+(289, 27, 11, 7),
+(290, 27, 178, 7),
+(291, 27, 180, 6),
+(292, 27, 170, 8),
+(293, 27, 48, 7),
+(294, 27, 133, 7),
+(295, 27, 123, 8),
+(296, 27, 64, 8),
+(297, 27, 184, 7),
+(298, 28, 135, 8),
+(299, 28, 185, 8),
+(300, 28, 71, 8),
+(301, 28, 136, 8),
+(302, 28, 105, 8),
+(303, 28, 154, 7),
+(304, 28, 11, 7),
+(305, 28, 49, 7),
+(306, 28, 186, 7),
+(307, 28, 52, 7),
+(308, 28, 187, 7);
 
 --
 -- Index pour les tables exportées
 --
 
 --
--- Index pour la table `championnats`
+-- Index pour la table `championship`
 --
-ALTER TABLE `championnats`
-  ADD PRIMARY KEY (`id_championnat`);
+ALTER TABLE `championship`
+  ADD PRIMARY KEY (`id_championship`);
 
 --
--- Index pour la table `clubs`
+-- Index pour la table `criterion`
 --
-ALTER TABLE `clubs`
-  ADD PRIMARY KEY (`id_club`);
-
---
--- Index pour la table `criteres`
---
-ALTER TABLE `criteres`
+ALTER TABLE `criterion`
   ADD PRIMARY KEY (`id_criteres`),
   ADD KEY `CriteresMatch` (`id_match`);
 
 --
--- Index pour la table `equipes`
+-- Index pour la table `marketValue`
 --
-ALTER TABLE `equipes`
-  ADD PRIMARY KEY (`id_equipe`),
-  ADD KEY `EquipeJoueur` (`id_joueur`);
+ALTER TABLE `marketValue`
+  ADD PRIMARY KEY (`id_marketValue`);
 
 --
--- Index pour la table `joueurs`
+-- Index pour la table `matchday`
 --
-ALTER TABLE `joueurs`
-  ADD PRIMARY KEY (`id_joueur`);
-
---
--- Index pour la table `journees`
---
-ALTER TABLE `journees`
-  ADD PRIMARY KEY (`id_journee`);
+ALTER TABLE `matchday`
+  ADD PRIMARY KEY (`id_matchday`);
 
 --
 -- Index pour la table `matchs`
 --
 ALTER TABLE `matchs`
   ADD PRIMARY KEY (`id_match`),
-  ADD KEY `Equipe1` (`equipe_1`),
-  ADD KEY `Equipe2` (`equipe_2`);
+  ADD KEY `Equipe1` (`team_1`),
+  ADD KEY `Equipe2` (`team_2`);
+
+--
+-- Index pour la table `player`
+--
+ALTER TABLE `player`
+  ADD PRIMARY KEY (`id_player`);
 
 --
 -- Index pour la table `pma__bookmark`
@@ -1871,71 +2043,73 @@ ALTER TABLE `pma__users`
   ADD PRIMARY KEY (`username`,`usergroup`);
 
 --
--- Index pour la table `saisons`
+-- Index pour la table `season`
 --
-ALTER TABLE `saisons`
-  ADD PRIMARY KEY (`id_saison`);
+ALTER TABLE `season`
+  ADD PRIMARY KEY (`id_season`);
 
 --
--- Index pour la table `saison_championnat_club`
+-- Index pour la table `season_championship_team`
 --
-ALTER TABLE `saison_championnat_club`
-  ADD PRIMARY KEY (`id_saison_championnat_club`);
+ALTER TABLE `season_championship_team`
+  ADD PRIMARY KEY (`id_season_championship_team`);
 
 --
--- Index pour la table `saison_club_joueur`
+-- Index pour la table `season_team_player`
 --
-ALTER TABLE `saison_club_joueur`
-  ADD PRIMARY KEY (`id_saison_club_joueur`),
-  ADD KEY `ClubCascade` (`id_club`),
-  ADD KEY `JoueurCascade` (`id_joueur`),
-  ADD KEY `SaisonCascade` (`id_saison`);
+ALTER TABLE `season_team_player`
+  ADD PRIMARY KEY (`id_season_team_player`),
+  ADD KEY `ClubCascade` (`id_team`),
+  ADD KEY `JoueurCascade` (`id_player`),
+  ADD KEY `SaisonCascade` (`id_season`);
 
 --
--- Index pour la table `valeurs`
+-- Index pour la table `team`
 --
-ALTER TABLE `valeurs`
-  ADD PRIMARY KEY (`id_valeur`);
+ALTER TABLE `team`
+  ADD PRIMARY KEY (`id_team`);
+
+--
+-- Index pour la table `teamOfTheWeek`
+--
+ALTER TABLE `teamOfTheWeek`
+  ADD PRIMARY KEY (`id_teamOfTheWeek`),
+  ADD KEY `EquipeJoueur` (`id_player`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
 --
 
 --
--- AUTO_INCREMENT pour la table `championnats`
+-- AUTO_INCREMENT pour la table `championship`
 --
-ALTER TABLE `championnats`
-  MODIFY `id_championnat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `championship`
+  MODIFY `id_championship` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT pour la table `clubs`
+-- AUTO_INCREMENT pour la table `criterion`
 --
-ALTER TABLE `clubs`
-  MODIFY `id_club` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+ALTER TABLE `criterion`
+  MODIFY `id_criteres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=309;
 --
--- AUTO_INCREMENT pour la table `criteres`
+-- AUTO_INCREMENT pour la table `marketValue`
 --
-ALTER TABLE `criteres`
-  MODIFY `id_criteres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259;
+ALTER TABLE `marketValue`
+  MODIFY `id_marketValue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
--- AUTO_INCREMENT pour la table `equipes`
+-- AUTO_INCREMENT pour la table `matchday`
 --
-ALTER TABLE `equipes`
-  MODIFY `id_equipe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
---
--- AUTO_INCREMENT pour la table `joueurs`
---
-ALTER TABLE `joueurs`
-  MODIFY `id_joueur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
---
--- AUTO_INCREMENT pour la table `journees`
---
-ALTER TABLE `journees`
-  MODIFY `id_journee` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+ALTER TABLE `matchday`
+  MODIFY `id_matchday` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT pour la table `matchs`
 --
 ALTER TABLE `matchs`
-  MODIFY `id_match` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=241;
+  MODIFY `id_match` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=291;
+--
+-- AUTO_INCREMENT pour la table `player`
+--
+ALTER TABLE `player`
+  MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
 --
 -- AUTO_INCREMENT pour la table `pma__bookmark`
 --
@@ -1967,58 +2141,63 @@ ALTER TABLE `pma__pdf_pages`
 ALTER TABLE `pma__savedsearches`
   MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT pour la table `saisons`
+-- AUTO_INCREMENT pour la table `season`
 --
-ALTER TABLE `saisons`
-  MODIFY `id_saison` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `season`
+  MODIFY `id_season` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT pour la table `saison_championnat_club`
+-- AUTO_INCREMENT pour la table `season_championship_team`
 --
-ALTER TABLE `saison_championnat_club`
-  MODIFY `id_saison_championnat_club` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+ALTER TABLE `season_championship_team`
+  MODIFY `id_season_championship_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
--- AUTO_INCREMENT pour la table `saison_club_joueur`
+-- AUTO_INCREMENT pour la table `season_team_player`
 --
-ALTER TABLE `saison_club_joueur`
-  MODIFY `id_saison_club_joueur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
+ALTER TABLE `season_team_player`
+  MODIFY `id_season_team_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
 --
--- AUTO_INCREMENT pour la table `valeurs`
+-- AUTO_INCREMENT pour la table `team`
 --
-ALTER TABLE `valeurs`
-  MODIFY `id_valeur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+ALTER TABLE `team`
+  MODIFY `id_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+--
+-- AUTO_INCREMENT pour la table `teamOfTheWeek`
+--
+ALTER TABLE `teamOfTheWeek`
+  MODIFY `id_teamOfTheWeek` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=309;
 --
 -- Contraintes pour les tables exportées
 --
 
 --
--- Contraintes pour la table `criteres`
+-- Contraintes pour la table `criterion`
 --
-ALTER TABLE `criteres`
+ALTER TABLE `criterion`
   ADD CONSTRAINT `CriteresMatch` FOREIGN KEY (`id_match`) REFERENCES `matchs` (`id_match`);
-
---
--- Contraintes pour la table `equipes`
---
-ALTER TABLE `equipes`
-  ADD CONSTRAINT `EquipeJoueur` FOREIGN KEY (`id_joueur`) REFERENCES `joueurs` (`id_joueur`);
 
 --
 -- Contraintes pour la table `matchs`
 --
 ALTER TABLE `matchs`
-  ADD CONSTRAINT `Equipe1` FOREIGN KEY (`equipe_1`) REFERENCES `clubs` (`id_club`),
-  ADD CONSTRAINT `Equipe2` FOREIGN KEY (`equipe_2`) REFERENCES `clubs` (`id_club`);
+  ADD CONSTRAINT `Equipe1` FOREIGN KEY (`team_1`) REFERENCES `team` (`id_team`),
+  ADD CONSTRAINT `Equipe2` FOREIGN KEY (`team_2`) REFERENCES `team` (`id_team`);
 
 --
--- Contraintes pour la table `saison_club_joueur`
+-- Contraintes pour la table `season_team_player`
 --
-ALTER TABLE `saison_club_joueur`
-  ADD CONSTRAINT `Club` FOREIGN KEY (`id_club`) REFERENCES `clubs` (`id_club`),
-  ADD CONSTRAINT `ClubCascade` FOREIGN KEY (`id_club`) REFERENCES `clubs` (`id_club`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `Joueur` FOREIGN KEY (`id_joueur`) REFERENCES `joueurs` (`id_joueur`),
-  ADD CONSTRAINT `JoueurCascade` FOREIGN KEY (`id_joueur`) REFERENCES `joueurs` (`id_joueur`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `Saison` FOREIGN KEY (`id_saison`) REFERENCES `saisons` (`id_saison`),
-  ADD CONSTRAINT `SaisonCascade` FOREIGN KEY (`id_saison`) REFERENCES `saisons` (`id_saison`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `season_team_player`
+  ADD CONSTRAINT `Club` FOREIGN KEY (`id_team`) REFERENCES `team` (`id_team`),
+  ADD CONSTRAINT `ClubCascade` FOREIGN KEY (`id_team`) REFERENCES `team` (`id_team`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Joueur` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`),
+  ADD CONSTRAINT `JoueurCascade` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Saison` FOREIGN KEY (`id_season`) REFERENCES `season` (`id_season`),
+  ADD CONSTRAINT `SaisonCascade` FOREIGN KEY (`id_season`) REFERENCES `season` (`id_season`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `teamOfTheWeek`
+--
+ALTER TABLE `teamOfTheWeek`
+  ADD CONSTRAINT `EquipeJoueur` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

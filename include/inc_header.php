@@ -8,5 +8,5 @@
 <body>
 
 <header>
-    <h1><a href="/"><?php echo "$title ".$_SESSION['nomSaison'];?></a></h1>
+    <h1><a href="/"><?php echo "$title_site ".$_SESSION['seasonName'];?></a></h1>
 </header>

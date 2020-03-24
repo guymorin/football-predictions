@@ -10,32 +10,32 @@ include("include/inc_connection.php");
 include("include/inc_classes.php");
 include("include/inc_functions.php");
 
-// Popup if there is a posted value
+// Popup if needed
     // Season selected
-    if(isset($_POST['choixSaison'])) {
-        $v=explode(",",$_POST['choixSaison']);
-        $_SESSION['idSaison']=$v[0];
-        $_SESSION['nomSaison']=$v[1];
+    if(isset($_POST['seasonSelect'])) {
+        $v=explode(",",$_POST['seasonSelect']);
+        $_SESSION['seasonId']=$v[0];
+        $_SESSION['seasonName']=$v[1];
         echo "<section>\n";
-        popup("$season : ".$_SESSION['nomSaison'].".","/");
+        popup("$title_season ".$_SESSION['seasonName'],"/");
         echo "</section>\n";
     }
     // Championship selected
-    if(isset($_POST['choixChampionnat'])) {
-        $v=explode(",",$_POST['choixChampionnat']);
-        $_SESSION['idChampionnat']=$v[0];
-        $_SESSION['nomChampionnat']=$v[1];
+    if(isset($_POST['championshipSelect'])) {
+        $v=explode(",",$_POST['championshipSelect']);
+        $_SESSION['championshipId']=$v[0];
+        $_SESSION['championshipName']=$v[1];
         echo "<section>\n";
-        popup("$championship : ".$_SESSION['nomChampionnat'].".","/");
+        popup($_SESSION['championshipName'],"/");
         echo "</section>\n";
     }
     // Matchday selected
-    if(isset($_POST['choixJournee'])&&(!isset($_SESSION['idJournee']))) {
-        $v=explode(",",$_POST['choixJournee']);
-        $_SESSION['idJournee']=$v[0];
-        $_SESSION['numJournee']=$v[1];
+    if(isset($_POST['matchdaySelect'])&&(!isset($_SESSION['matchdayId']))) {
+        $v=explode(",",$_POST['matchdaySelect']);
+        $_SESSION['matchdayId']=$v[0];
+        $_SESSION['matchdayNum']=$v[1];
         echo "<section>\n";
-        popup("$matchday : J".$_SESSION['numJournee'].".","/");
+        popup("$title_matchday ".$_SESSION['matchdayNum'],"/");
         echo "</section>\n";
     }
 // Check the page value
@@ -45,74 +45,74 @@ if(isset($_GET['page'])){
     if($page=="home") $_SESSION = array();
 }
 // Choose a season, a championship...
-if((empty($_SESSION['idSaison']))or(empty($_SESSION['idChampionnat']))) include("home.php");
+if((empty($_SESSION['seasonId']))or(empty($_SESSION['championshipId']))) include("include/inc_home.php");
 // ...or display the index page
 else {
     if($page!="") include($page.".php");
     else {
         // Navigation
         echo "<nav>\n";
-        echo "  <a href=\"index.php?page=home\">".$_SESSION['nomSaison']." &#10060;</a>\n";
-        echo "  <a href=\"index.php?page=championship&exit=1\">".$_SESSION['nomChampionnat']." &#10060;</a>\n";
-        if(isset($_SESSION['idJournee'])) {
-            echo "  	<a href=\"index.php?page=matchday&exit=1\">J".$_SESSION['numJournee']." &#10060;</a>\n"; // Sortir
+        echo "  <a href='index.php?page=home'>".$_SESSION['seasonName']." &#10060;</a>\n";
+        echo "  <a href='index.php?page=championship&exit=1'>".$_SESSION['championshipName']." &#10060;</a>\n";
+        if(isset($_SESSION['matchdayId'])) {
+            echo "  	<a href='index.php?page=matchday&exit=1'>J".$_SESSION['matchdayNum']." &#10060;</a>\n"; // Sortir
         }
-        echo "	<a href=\"index.php?page=season\">&#127937; $season</a>\n";
-        echo "	<a href=\"index.php?page=dashboard\">&#127942; $championship</a>\n";
-        echo "	<a href=\"index.php?page=matchday\">&#128198; $matchday</a>\n";
-        echo "	<a href=\"index.php?page=value\">&#9876; $team</a>\n";
-        echo "	<a href=\"index.php?page=player\">&#127939; $player</a>\n";
+        echo "	<a href='index.php?page=season'>&#127937; $title_season</a>\n";
+        echo "	<a href='index.php?page=dashboard'>&#127942; $title_championship</a>\n";
+        echo "	<a href='index.php?page=matchday'>&#128198; $title_matchday</a>\n";
+        echo "	<a href='index.php?page=marketValue'>&#9876; $title_team</a>\n";
+        echo "	<a href='index.php?page=player'>&#127939; $title_player</a>\n";
         echo "</nav>\n";
         
         // Section with menu
         echo "<section>\n";
             
-        echo "        <ul class=\"menu\">\n";
+        echo "        <ul class='menu'>\n";
         echo "            <li><h2>";
-        echo $_SESSION['nomChampionnat'];
+        echo $_SESSION['championshipName'];
         echo "</h2>\n                <ul>\n";
-        echo "                    <li><a href=\"index.php?page=dashboard\">$dashboard<br /><big>&#127942;</big></a></li>\n";
-        echo "                    <li><a href=\"index.php?page=championship\">$standing<br /><big>&#127942;</big></a></li>\n";
+        echo "                    <li><a href='index.php?page=dashboard'>$title_dashboard<br /><big>&#127942;</big></a></li>\n";
+        echo "                    <li><a href='index.php?page=championship'>$title_standing<br /><big>&#127942;</big></a></li>\n";
         echo "               </ul>\n";
         echo "            </li>\n";
-        if(isset($_SESSION['idJournee'])){
-            echo "            <li><h2>$matchday ".$_SESSION['numJournee']."</h2>\n";
+        if(isset($_SESSION['matchdayId'])){
+            echo "            <li><h2>$title_MD".$_SESSION['matchdayNum']."</h2>\n";
             echo "                <ul>\n";
-            echo "                    <li><a href=\"index.php?page=matchday\">$statistics<br /><big>&#128198;</big></a></li>\n";
-            echo "                    <li><a href=\"index.php?page=teamOfTheWeek\">$teamOfTheWeek<br /><big>&#128198;</big></a></li>\n";
-            echo "                    <li><a href=\"index.php?page=predictions\">$predictions<br /><big>&#128198;</big></a></li>\n";
-            echo "                    <li><a href=\"index.php?page=results\">$results<br /><big>&#128198;</big></a></li>\n";
+            echo "                    <li><a href='index.php?page=matchday'>$title_statistics<br /><big>&#128198;</big></a></li>\n";
+            echo "                    <li><a href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek<br /><big>&#128198;</big></a></li>\n";
+            echo "                    <li><a href='index.php?page=prediction'>$title_predictions<br /><big>&#128198;</big></a></li>\n";
+            echo "                    <li><a href='index.php?page=results'>$title_results<br /><big>&#128198;</big></a></li>\n";
             echo "                </ul>\n";
             echo "            </li>\n";
         } else {
-            echo "            <li><h2>$matchday</h2>\n";
+            echo "            <li><h2>$title_matchday</h2>\n";
             echo "                <ul>\n";
-            echo "   <form action=\"index.php\" method=\"POST\">\n";
-            echo "    <label>$selectTheMatchday :</label>\n";        
+            echo "   <form action='index.php' method='POST'>\n";
+            echo "    <label>$title_selectTheMatchday :</label>\n";        
             include("matchday_select.php");
-            echo "      <noscript><input type=\"submit\"></noscript>\n";
+            echo "      <noscript><input type='submit'></noscript>\n";
             echo "	 </form>\n";
             
-            $reponse = $bdd->query("SELECT DISTINCT j.numero FROM journees j 
-            LEFT JOIN matchs m ON m.id_journee=j.id_journee 
-            WHERE m.resultat='' AND j.id_saison=".$_SESSION['idSaison']." AND j.id_championnat=".$_SESSION['idChampionnat']." ORDER BY j.numero;"); 
-            $donnees = $reponse->fetch();
-            echo "  	<form action=\"index.php\" method=\"POST\">";
-            echo "<input type=\"hidden\" name=\"choixJournee\" value=\"".$donnees['num_journee'].",".$donnees['numero']."\">";
-            echo "<input type=\"submit\" value=\"J".$donnees['numero']."\">";
+            $response = $db->query("SELECT DISTINCT j.number FROM matchday j 
+            LEFT JOIN matchs m ON m.id_matchday=j.id_matchday 
+            WHERE m.result='' AND j.id_season=".$_SESSION['seasonId']." AND j.id_championship=".$_SESSION['championshipId']." ORDER BY j.number;"); 
+            $data = $response->fetch();
+            echo "  	<form action='index.php' method='POST'>";
+            echo "<input type='hidden' name='matchdaySelect' value='".$data['id_matchday'].",".$data['number']."'>";
+            echo "<input type='submit' value='$title_MD".$data['number']."'>";
             echo "</form>\n";
             
             echo "                </ul>\n";
             echo "            </li>\n";
         }   
-        echo "            <li><h2>$team</h2>\n";
+        echo "            <li><h2>$title_team</h2>\n";
         echo "                <ul>\n";
-        echo "                    <li><a href=\"index.php?page=value\">$marketValue<br /><big>&#9876;</big></a></li>\n";
+        echo "                    <li><a href='index.php?page=marketValue'>$title_marketValue<br /><big>&#9876;</big></a></li>\n";
         echo "                </ul>\n";
         echo "            </li>\n";
-        echo "            <li><h2>$player</h2>\n";
+        echo "            <li><h2>$title_player</h2>\n";
         echo "                <ul>\n";
-        echo "                    <li><a href=\"index.php?page=player\">$bestPlayers<br /><big>&#127939;</big></a></li>\n";
+        echo "                    <li><a href='index.php?page=player'>$title_bestPlayers<br /><big>&#127939;</big></a></li>\n";
         echo "                </ul>\n";
         echo "            </li>\n";
         echo "        </ul>\n";

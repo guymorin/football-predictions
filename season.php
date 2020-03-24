@@ -1,117 +1,87 @@
 <?php
-// NAVIGATION SAISON
-echo "  <nav>\n";
-$reponse = $bdd->query("SELECT * FROM saisons ORDER BY nom;");
-echo "  	<a href=\"/\">&#8617</a>\n";                                   // Retour
-echo "  	<a href=\"index.php?page=saisons&cree=1\">Créer une saison</a>\n"; // Créer
+/* This is the Football Predictions season section page */
+/* Author : Guy Morin */
 
-echo "  	<form action=\"index.php?page=saisons\" method=\"POST\">\n";             // Modifier
-echo "      <input type=\"hidden\" name=\"modifie\" value=\"1\">\n"; 
-echo "    <label>Modifier une saison :</label>\n";                                    
-echo "  	<select name=\"id_saison\" onchange=\"submit()\">\n";
-echo "  		<option value=\"0\">...</option>\n";
-// On affiche chaque entrée
-while ($donnees = $reponse->fetch())
-{
-    echo "  		<option value=\"".$donnees['id_saison']."\"";
-    if($donnees['id_saison']==$_SESSION['idSaison']) echo " disabled";
-    echo ">".$donnees['nom']."</option>\n";
+// Files to include
+include("season_nav.php");
+
+echo "<section>\n";
+
+// Values
+$seasonId=0;
+$seasonName="";
+if(isset($_POST['id_season'])) $seasonId=$_POST['id_season'];
+if(isset($_POST['name'])) $seasonName=$_POST['name'];
+$create=0;
+$modify=0;
+$delete=0;
+if(isset($_GET['create'])) $create=$_GET['create'];
+if(isset($_POST['create'])) $create=$_POST['create'];
+if(isset($_POST['modify'])) $modify=$_POST['modify'];
+if(isset($_POST['delete'])) $delete=$_POST['delete'];
+
+// Popup if needed
+// Delete
+if($delete==1){
+        $req="DELETE FROM season WHERE id_season='".$seasonId."';";
+        $db->exec($req);
+        $db->exec("ALTER TABLE season AUTO_INCREMENT=0;");
+        popup($title_deleted,"index.php?page=season");
 }
-echo "	 </select>\n";
-echo "      <noscript><input type=\"submit\"></noscript>\n";
-echo "	 </form>\n";
-echo "      </nav>\n";
-$reponse->closeCursor(); // Termine le traitement de la requête
-
-?>
-
-    <section>
-<?php
-$idSaison=0;
-$nomSaison="";
-if(isset($_POST['id_saison'])) $idSaison=$_POST['id_saison'];
-if(isset($_POST['nom'])) $nomSaison=$_POST['nom'];
-
-$cree=0;
-$modifie=0;
-$supprime=0;
-if(isset($_GET['cree'])) $cree=$_GET['cree'];
-if(isset($_POST['cree'])) $cree=$_POST['cree'];
-if(isset($_POST['modifie'])) $modifie=$_POST['modifie'];
-if(isset($_POST['supprime'])) $supprime=$_POST['supprime'];
-
-// SUPPRIMER
-if($supprime==1){
-        $req="DELETE FROM saisons WHERE id_saison='".$idSaison."';";
-        $bdd->exec($req);
-        $bdd->exec("ALTER TABLE saisons AUTO_INCREMENT=0;");
-        popup("Suppression de la saison.","index.php?page=saisons");
-}
-
-// CREER
-if($cree==1){
-
-    echo "<h2>Créer une saison</h2>\n";
-
-    // S'il y a une création
-    if($nomSaison!="") {
-        $bdd->exec("ALTER TABLE saisons AUTO_INCREMENT=0;");
-        $req="INSERT INTO saisons VALUES(NULL,'".$nomSaison."');";
-        $bdd->exec($req);
-        popup("Création de la saison.","index.php?page=saisons");
-    } else {
-    
-	echo "	    <form action=\"index.php?page=saisons\" method=\"POST\">\n";
-    echo "      <input type=\"hidden\" name=\"cree\" value=\"1\">\n"; 
-	echo "	    <label>Nom</label>\n";
-	echo "     <input type=\"text\" name=\"nom\" value=\"".$nomSaison."\">\n";
-	echo "     <input type=\"submit\" value=\"Créer\">\n";
-
+// Create
+elseif($create==1){
+    echo "<h2>$title_createASeason</h2>\n";
+    // Create popup
+    if($seasonName!="") {
+        $db->exec("ALTER TABLE season AUTO_INCREMENT=0;");
+        $req="INSERT INTO season VALUES(NULL,'".$seasonName."');";
+        $db->exec($req);
+        popup($title_created,"index.php?page=season");
+    }
+    // Create form
+    else {
+	echo "	    <form action='index.php?page=season' method='POST'>\n";
+    echo "      <input type='hidden' name='create' value='1'>\n"; 
+	echo "	    <label>$title_name</label>\n";
+	echo "      <input type='text' name='name' value='".$seasonName."'>\n";
+	echo "      <input type='submit' value='$title_create'>\n";
 	echo "	    </form>\n";   
-
 	}
-	
 }
-// MODIFIER
-elseif($modifie==1){
-
-    echo "<h2>Modifier une saison</h2>\n";
-
-    // S'il y a une modification
-    if($nomSaison!="") {
-        $req="UPDATE saisons SET nom='".$nomSaison."' WHERE id_saison='".$idSaison."';";
-        $bdd->exec($req);
-        popup("Modification de la saison.","index.php?page=saisons");
-    } else {
-    
-    // Affichage de la saison sélectionnée
-
-    $reponse = $bdd->query("SELECT * FROM saisons WHERE id_saison='".$idSaison."';");
-    echo "	 <form action=\"index.php?page=saisons\" method=\"POST\">\n";
-    $donnees = $reponse->fetch();
-
-    echo "      <input type=\"hidden\" name=\"modifie\" value=1>\n";    
-    
+// Modify
+elseif($modify==1){
+    echo "<h2>$title_modifyASeason</h2>\n";
+    // Modify popup
+    if($seasonName!="") {
+        $req="UPDATE season SET name='".$seasonName."' WHERE id_season='".$seasonId."';";
+        $db->exec($req);
+        popup($title_modified,"index.php?page=season");
+    }
+    // Modify form
+    else {
+    $response = $db->query("SELECT * FROM season WHERE id_season='".$seasonId."';");
+    echo "	 <form action='index.php?page=season' method='POST'>\n";
+    $data = $response->fetch();
+    echo "      <input type='hidden' name='modify' value=1>\n";    
     echo "	 <label>Id.</label>\n";
-    echo "      <input type=\"text\" name=\"id_saison\" readonly=\"readonly\" value=\"".$donnees['id_saison']."\">\n";
-
-    echo "	 <label>Nom</label>\n";
-    echo "      <input type=\"text\" name=\"nom\" value=\"".$donnees['nom']."\">\n";
-    echo "      <input type=\"submit\" value=\"Modifier\">\n";
+    echo "      <input type='text' name='id_season' readonly='readonly' value='".$data['id_season']."'>\n";
+    echo "	 <label>$title_name</label>\n";
+    echo "      <input type='text' name='name' value='".$data['name']."'>\n";
+    echo "      <input type='submit' value='$title_modify'>\n";
     echo "	 </form>\n";
-    
-    echo "	 <form action=\"index.php?page=saisons\" method=\"POST\" onsubmit=\"return(confirm('Supprimer ".$donnees['nom']." ?'))\">\n";
-    echo "      <input type=\"hidden\" name=\"supprime\" value=1>\n";
-    echo "      <input type=\"hidden\" name=\"id_saison\" value=$idSaison>\n";
-    echo "      <input type=\"hidden\" name=\"nom\" value=\"".$donnees['nom']."\">\n";
-    echo "      <input type=\"submit\" value=\"&#9888 Supprimer ".$donnees['nom']." &#9888\">\n"; // Bouton Supprimer
+    // Delete form
+    echo "	 <form action='index.php?page=season' method='POST' onsubmit='return confirm()'>\n";
+    echo "      <input type='hidden' name='delete' value=1>\n";
+    echo "      <input type='hidden' name='id_season' value=$seasonId>\n";
+    echo "      <input type='hidden' name='name' value='".$data['name']."'>\n";
+    echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n";
     echo "	 </form>\n";
-    $reponse->closeCursor(); // Termine le traitement de la requête   
+    $response->closeCursor();
     }
 }
 else {
-    echo "<h2>Saisons</h2>\n";
-    echo "<h3>".$_SESSION['nomSaison']."</h3>\n";
+    echo "<h2>$title_season</h2>\n";
+    echo "<h3>".$_SESSION['seasonName']."</h3>\n";
 }
 ?>
     </section>

@@ -1,274 +1,252 @@
 <?php
-// NAVIGATION JOUEUR
-echo "  <nav>\n";
-$reponse = $bdd->query("SELECT * FROM joueurs ORDER BY nom, prenom");
-echo "  	<a href=\"/\">&#8617</a>\n";                                   // Retour
-echo "  	<a href=\"index.php?page=joueurs\">Meilleurs joueurs</a>\n"; // Créer
-echo "  	<a href=\"index.php?page=joueurs&cree=1\">Créer un joueur</a>\n"; // Créer
-echo "  	<a href=\"index.php?page=joueurs&modifie=1\">Modifier un joueur</a>\n"; // Modifier
-echo "      </nav>\n";
-$reponse->closeCursor(); // Termine le traitement de la requête
+/* This is the Football Predictions player section page */
+/* Author : Guy Morin */
 
-?>
+// Files to include
+include("player_nav.php");
 
-    <section>
-<?php
-$idJoueur=0;
-$nomJoueur="";
-$prenomJoueur="";
-$posteJoueur="";
-$idClub=0;
-if(isset($_POST['id_joueur'])) $idJoueur=$_POST['id_joueur'];
-if(isset($_POST['nom'])) $nomJoueur=$_POST['nom'];
-if(isset($_POST['prenom'])) $prenomJoueur=$_POST['prenom'];
-if(isset($_POST['poste'])) $posteJoueur=$_POST['poste'];
-if(isset($_POST['id_club'])) $idClub=$_POST['id_club'];
+echo "<section>\n";
 
-$cree=0;
-$modifie=0;
-$supprime=0;
-if(isset($_GET['cree'])) $cree=$_GET['cree'];
-if(isset($_POST['cree'])) $cree=$_POST['cree'];
-if(isset($_GET['modifie'])) $modifie=$_GET['modifie'];
-if(isset($_POST['modifie'])) $modifie=$_POST['modifie'];
-if(isset($_POST['supprime'])) $supprime=$_POST['supprime'];
+// Values
+$playerId=0;
+$playerName="";
+$playerFirstname="";
+$playerPosition="";
+$teamId=0;
+if(isset($_POST['id_player'])) $playerId=$_POST['id_player'];
+if(isset($_POST['name'])) $playerName=$_POST['name'];
+if(isset($_POST['firstname'])) $playerFirstname=$_POST['firstname'];
+if(isset($_POST['position'])) $playerPosition=$_POST['position'];
+if(isset($_POST['id_team'])) $teamId=$_POST['id_team'];
+$create=0;
+$modify=0;
+$delete=0;
+if(isset($_GET['create'])) $create=$_GET['create'];
+if(isset($_POST['create'])) $create=$_POST['create'];
+if(isset($_GET['modify'])) $modify=$_GET['modify'];
+if(isset($_POST['modify'])) $modify=$_POST['modify'];
+if(isset($_POST['delete'])) $delete=$_POST['delete'];
 
-// SUPPRIMER
-if($supprime==1){
-        $req="DELETE FROM saison_club_joueur WHERE id_saison='".$_SESSION['idSaison']."' AND id_club='".$idClub."' AND id_joueur='".$idJoueur."';";
-        $req.="DELETE FROM joueurs WHERE id_joueur='".$idJoueur."';";
-        $bdd->exec($req);
-        $bdd->exec("ALTER TABLE saison_club_joueur AUTO_INCREMENT=0");
-        $bdd->exec("ALTER TABLE joueurs AUTO_INCREMENT=0");
-        popup("Suppression pour ".mb_strtoupper($nomJoueur,'UTF-8')." ".$prenomJoueur.".","index.php?page=joueurs");
+// Delete
+if($delete==1){
+        $req="DELETE FROM season_team_player WHERE id_season='".$_SESSION['seasonId']."' AND id_team='".$teamId."' AND id_player='".$playerId."';";
+        $req.="DELETE FROM player WHERE id_player='".$playerId."';";
+        $db->exec($req);
+        $db->exec("ALTER TABLE season_team_player AUTO_INCREMENT=0");
+        $db->exec("ALTER TABLE player AUTO_INCREMENT=0");
+        popup($title_deleted,"index.php?page=player");
 }
-
-// CREER
-elseif($cree==1){
-
-    echo "<h2>Créer un joueur</h2>\n";
-
-    // S'il y a une création
-    if($nomJoueur!="") {
-        $bdd->exec("ALTER TABLE saison_club_joueur AUTO_INCREMENT=0;");
-        $bdd->exec("ALTER TABLE joueurs AUTO_INCREMENT=0;");
-        $req1="INSERT INTO joueurs VALUES(NULL,'".$nomJoueur."','".$prenomJoueur."','".$posteJoueur."');";
-        $bdd->exec($req1);
-        $idJoueur=$bdd->lastInsertId();
-        $req2="INSERT INTO saison_club_joueur VALUES(NULL,'".$_SESSION['idSaison']."','".$idClub."','".$idJoueur."');";
-        $bdd->exec($req2);
-        popup("Création pour ".mb_strtoupper($nomJoueur,'UTF-8')." ".$prenomJoueur.".","index.php?page=joueurs");
-    } else {
-    
-	echo "	    <form action=\"index.php?page=joueurs\" method=\"POST\">\n";
-    echo "      <input type=\"hidden\" name=\"cree\" value=\"1\">\n"; 
-    
-	echo "	    <label>Nom</label>\n";
-	echo "     <input type=\"text\" name=\"nom\" value=\"".$nomJoueur."\">\n";
-	echo "	    <label>Prénom</label>\n";
-	echo "     <input type=\"text\" name=\"prenom\" value=\"".$nomJoueur."\">\n";
-	
-	echo "	    <p><label>Poste</label>\n";
-	echo "     <input type=\"radio\" name=\"poste\" id=\"Gardien\" value=\"Gardien\"><label for=\"Gardien\">Gardien</label>\n";
-	echo "     <input type=\"radio\" name=\"poste\" id=\"Défenseur\" value=\"Défenseur\"><label for=\"Défenseur\">Défenseur</label>\n";
-	echo "     <input type=\"radio\" name=\"poste\" id=\"Milieu\" value=\"Milieu\"><label for=\"Milieu\">Milieu</label>\n";
-	echo "     <input type=\"radio\" name=\"poste\" id=\"Attaquant\" value=\"Attaquant\"><label for=\"Attaquant\">Attaquant</label></p>\n";
-	
-    echo "	    <p><label>Club</label>\n";
-    echo "     <select multiple size=\"10\" name=\"id_club\">\n";
-    // On affiche chaque entrée
-    $reponse = $bdd->query("SELECT * FROM clubs ORDER BY nom;");
-    while ($donnees = $reponse->fetch())
-    {
-        echo "  		<option value=\"".$donnees['id_club']."\">".$donnees['nom']."</option>\n";
+// Create
+elseif($create==1){
+    echo "<h2>$title_createAPlayer</h2>\n";
+    // Create popup
+    if($playerName!="") {
+        $db->exec("ALTER TABLE season_team_player AUTO_INCREMENT=0;");
+        $db->exec("ALTER TABLE player AUTO_INCREMENT=0;");
+        $req1="INSERT INTO player VALUES(NULL,'".$playerName."','".$playerFirstname."','".$playerPosition."');";
+        $db->exec($req1);
+        $playerId=$db->lastInsertId();
+        $req2="INSERT INTO season_team_player VALUES(NULL,'".$_SESSION['seasonId']."','".$teamId."','".$playerId."');";
+        $db->exec($req2);
+        popup($title_created,"index.php?page=player");
     }
-    echo "	 </select></p>\n";
-    
-	echo "     <input type=\"submit\" value=\"Créer\">\n";
-	echo "	    </form>\n";   
-
+    // Create form
+    else {    
+    	echo "	 <form action='index.php?page=player' method='POST'>\n";
+        echo "      <input type='hidden' name='create' value='1'>\n"; 
+    	echo "	    <label>$title_name</label>\n";
+    	echo "      <input type='text' name='name' value='".$playerName."'>\n";
+    	echo "	    <label>$title_firstname</label>\n";
+    	echo "      <input type='text' name='firstname' value='".$playerName."'>\n";
+    	echo "	    <p><label>$title_position</label>\n";
+    	echo "      <input type='radio' name='position' id='Goalkeeper' value='Goalkeeper'><label for='Goalkeeper'>$title_goalkeeper</label>\n";
+    	echo "      <input type='radio' name='position' id='Defender' value='Defender'><label for='Defender'>$title_defender</label>\n";
+    	echo "      <input type='radio' name='position' id='Midfield' value='Midfield'><label for='Midfield'>$title_midfielder</label>\n";
+    	echo "      <input type='radio' name='position' id='Forward' value='Forward'><label for='Forward'>$title_forward</label></p>\n";
+        echo "	    <p><label>Club</label>\n";
+        echo "     <select multiple size='10' name='id_team'>\n";
+        $response = $db->query("SELECT * FROM team ORDER BY name;");
+        while ($data = $response->fetch())
+        {
+            echo "  		<option value='".$data['id_team']."'>".$data['name']."</option>\n";
+        }
+        echo "	   </select></p>\n";
+    	echo "     <input type='submit' value='$create'>\n";
+    	echo "	 </form>\n";
 	}
-	
 }
-// MODIFIER
-elseif($modifie==1){
-
-    echo "<h2>Modifier un joueur</h2>\n";
-
-    // S'il y a une modification
-    if($nomJoueur!="") {
-        $req="UPDATE joueurs SET nom='".$nomJoueur."', prenom='".$prenomJoueur."' WHERE id_joueur='".$idJoueur."';";
+// Modify
+elseif($modify==1){
+    echo "<h2>$title_modifyAPlayer</h2>\n";
+    // Modify popup
+    if($playerName!="") {
+        $req="UPDATE player SET name='".$playerName."', firstname='".$playerFirstname."' WHERE id_player='".$playerId."';";
         
-        $reponse = $bdd->query("SELECT COUNT(*) as nb FROM saison_club_joueur WHERE id_saison='".$_SESSION['idSaison']."' AND id_club='".$idClub."' AND id_joueur='".$idJoueur."';");
-        $donnees = $reponse->fetch();
-        $reponse->closeCursor(); // Termine le traitement de la requête
+        $response = $db->query("SELECT COUNT(*) as nb FROM season_team_player WHERE id_season='".$_SESSION['seasonId']."' AND id_team='".$teamId."' AND id_player='".$playerId."';");
+        $data = $response->fetch();
+        $response->closeCursor();
         
-        if($donnees[0]==0){
-            $req.="INSERT INTO saison_club_joueur VALUES(NULL,'".$_SESSION['idSaison']."','".$idClub."','".$idJoueur."');";
+        if($data[0]==0){
+            $req.="INSERT INTO season_team_player VALUES(NULL,'".$_SESSION['seasonId']."','".$teamId."','".$playerId."');";
         }
-        if($donnees[0]==1){
-            $req.="UPDATE saison_club_joueur SET id_saison='".$_SESSION['idSaison']."',id_club='".$idClub."' WHERE id_joueur='".$idJoueur."';";
+        if($data[0]==1){
+            $req.="UPDATE season_team_player SET id_season='".$_SESSION['seasonId']."',id_team='".$teamId."' WHERE id_player='".$playerId."';";
         }
-        $bdd->exec($req);
-        popup("Modification pour ".mb_strtoupper($nomJoueur,'UTF-8')." ".$prenomJoueur.".","index.php?page=joueurs");
-    } elseif($idJoueur!=0) {
-    
-    // Si un joueur est sélectionné alors affichage
-    $req ="SELECT j.id_joueur, j.nom, j.prenom, j.poste, scj.id_club FROM joueurs j LEFT JOIN saison_club_joueur scj ON j.id_joueur=scj.id_joueur LEFT JOIN clubs c ON scj.id_club=c.id_club WHERE j.id_joueur='".$idJoueur."';";
-    $reponse = $bdd->query($req);
-    
-    echo "	 <form action=\"index.php?page=joueurs\" method=\"POST\">\n";
-    $donnees = $reponse->fetch();
-    $idJoueur = $donnees['id_joueur'];
-    $nomJoueur = $donnees['nom'];
-    $prenomJoueur = $donnees['prenom'];
-    $idClub = $donnees['id_club'];
-    
-    echo "      <input type=\"hidden\" name=\"modifie\" value=1>\n";    
-    
-    echo "	 <label>Id.</label>\n";
-    echo "      <input type=\"text\" name=\"id_joueur\" readonly value=\"".$idJoueur."\">\n";
-
-    echo "	 <label>Nom</label>\n";
-    echo "      <input type=\"text\" name=\"nom\" value=\"".$nomJoueur."\">\n";
-    echo "	 <label>Prénom</label>\n";
-    echo "      <input type=\"text\" name=\"prenom\" value=\"".$prenomJoueur."\">\n";
-    
-	echo "	    <p><label>Poste</label>\n";
-	echo "     <input type=\"radio\" name=\"poste\" id=\"Gardien\" value=\"Gardien\"";
-        if ($donnees['poste']=="Gardien") echo " checked";
-	echo "><label for=\"Gardien\">Gardien</label>\n";
-	echo "     <input type=\"radio\" name=\"poste\" id=\"Défenseur\" value=\"Défenseur\"";
-        if ($donnees['poste']=="Défenseur") echo " checked";
-	echo "><label for=\"Défenseur\">Défenseur</label>\n";
-	echo "     <input type=\"radio\" name=\"poste\" id=\"Milieu\" value=\"Milieu\"";
-        if ($donnees['poste']=="Milieu") echo " checked";	
-	echo "><label for=\"Milieu\">Milieu</label>\n";
-	echo "     <input type=\"radio\" name=\"poste\" id=\"Attaquant\" value=\"Attaquant\"";
-        if ($donnees['poste']=="Attaquant") echo " checked";	
-	echo "><label for=\"Attaquant\">Attaquant</label></p>\n";
-	
-    echo "	    <p><label>Club</label>\n";
-    echo "     <select multiple size=\"10\" name=\"id_club\">\n";
-    // On affiche chaque entrée
-    $reponse = $bdd->query("SELECT * FROM clubs ORDER BY nom;");
-    while ($donnees = $reponse->fetch())
-    {
-        echo "  		<option value=\"".$donnees['id_club']."\"";
-        if($donnees['id_club']==$idClub) echo " selected";
-        echo ">".$donnees['nom']."</option>\n";
+        $db->exec($req);
+        popup($title_modified,"index.php?page=player");
     }
-    echo "	 </select></p>\n";
-	
-    echo "      <input type=\"submit\" value=\"Modifier\">\n";
-    echo "	 </form>\n";
-    
-    echo "	 <form action=\"index.php?page=joueurs\" method=\"POST\" onsubmit=\"return(confirm('Supprimer ".mb_strtoupper($nomJoueur,'UTF-8')." ".$prenomJoueur." ?'))\">\n";
-    echo "      <input type=\"hidden\" name=\"supprime\" value=1>\n";
-    echo "      <input type=\"hidden\" name=\"id_club\" value=$idClub>\n";
-    echo "      <input type=\"hidden\" name=\"id_joueur\" value=$idJoueur>\n";
-    echo "      <input type=\"hidden\" name=\"nom\" value=\"".$nomJoueur."\">\n";
-    echo "      <input type=\"hidden\" name=\"prenom\" value=\"".$prenomJoueur."\">\n";
-    echo "      <input type=\"submit\" value=\"&#9888 Supprimer ".mb_strtoupper($nomJoueur,'UTF-8')." ".$prenomJoueur." &#9888\">\n"; // Bouton Supprimer
-    echo "	 </form>\n";
-    $reponse->closeCursor(); // Termine le traitement de la requête   
-    
-    } else {
-    
-    // Sinon affichage de tous les joueurs
-    echo "  	<form action=\"index.php?page=joueurs\" method=\"POST\">\n";             // Modifier
-    echo "      <input type=\"hidden\" name=\"modifie\" value=\"1\">\n"; 
-    echo "    <label>Choisir un joueur :</label>\n";                                    
-    echo "  	<select multiple size=\"10\" name=\"id_joueur\">\n";
-    // On affiche chaque entrée
-    $reponse = $bdd->query("SELECT * FROM joueurs ORDER BY nom, prenom");
-    while ($donnees = $reponse->fetch())
-    {
-        echo "  		<option value=\"".$donnees['id_joueur']."\">".mb_strtoupper($donnees['nom'],'UTF-8')." ".$donnees['prenom']."</option>\n";
-    }
-    echo "	 </select>\n";
-    echo "      <input type=\"submit\">\n";
-    echo "	 </form>\n";
-    }
-} else {
-
-echo "<h2>Joueurs</h2>\n";
-echo "<h3>Meilleurs joueurs du championnat</h3>\n";
-
-$req = "SELECT COUNT(e.note) as nb,AVG(e.note) as note,c.nom as club,j.nom,j.prenom 
-FROM joueurs j
-LEFT JOIN saison_club_joueur scj ON j.id_joueur=scj.id_joueur 
-LEFT JOIN clubs c ON  c.id_club=scj.id_club 
-LEFT JOIN equipes e ON e.id_joueur=j.id_joueur 
-GROUP BY club, j.nom,j.prenom 
-ORDER BY nb DESC, note DESC,j.nom,j.prenom LIMIT 0,3";
-$reponse = $bdd->query($req);
-echo "  <p><table>\n";
-echo "      <tr><th></th><th>Joueur</th><th>Club</th><th>&Eacute;quipe type</th><th>Note moyenne</th></tr>\n";
-$compteurPodium = 0;
-$icone = "&#129351;"; // or
-while ($donnees = $reponse->fetch())
-    {
-    $compteurPodium++;
-    if($compteurPodium==2) $icone="&#129352;"; // argent
-    else $icone="&#129353;"; // bronze
-    
-        echo "      <td><strong>".$compteurPodium."</strong></td>\n";
-        echo "      <td>".$icone." <strong>".mb_strtoupper($donnees['nom'],'UTF-8')." ".$donnees['prenom']."</strong></td>\n";
-        echo "      <td>".$donnees['club']."</td>\n";
-        echo "      <td>".$donnees['nb']."</td>\n";
-        echo "      <td>".round($donnees['note'],1)."</td>\n";
-        echo "  </tr>\n";
-    }
-echo "  </table></p>\n";
-$reponse->closeCursor(); // Termine le traitement de la requête   
-
-echo "<h3>Meilleurs joueurs par club</h3>\n";
-
-$req = "SELECT COUNT(e.note) as nb,AVG(e.note) as note,c.nom as club,j.nom,j.prenom 
-FROM joueurs j
-LEFT JOIN saison_club_joueur scj ON j.id_joueur=scj.id_joueur 
-LEFT JOIN clubs c ON  c.id_club=scj.id_club 
-LEFT JOIN equipes e ON e.id_joueur=j.id_joueur 
-GROUP BY club,j.nom,j.prenom 
-ORDER BY club ASC, nb DESC, note DESC, j.nom,j.prenom ASC";
-$reponse = $bdd->query($req);
-echo "  <table>\n";
-echo "      <tr><th>Club</th><th>Joueur</th><th>&Eacute;quipe type</th><th>Note moyenne</th></tr>\n";
-$compteur = "";
-while ($donnees = $reponse->fetch())
-    {
-        echo "      <td>";
-        if($compteur!=$donnees['club']){
-            $compteurPodium = 0;
-            echo "<strong>".$donnees['club']."</strong>";
-        }
+    // Modify form
+    elseif($playerId!=0) {
+        $req ="SELECT j.id_player, j.name, j.firstname, j.position, scj.id_team FROM player j LEFT JOIN season_team_player scj ON j.id_player=scj.id_player LEFT JOIN team c ON scj.id_team=c.id_team WHERE j.id_player='".$playerId."';";
+        $response = $db->query($req);
+        echo "	 <form action='index.php?page=player' method='POST'>\n";
+        $data = $response->fetch();
+        $playerId = $data['id_player'];
+        $playerName = $data['name'];
+        $playerFirstname = $data['firstname'];
+        $teamId = $data['id_team'];
+        echo "      <input type='hidden' name='modify' value=1>\n";    
         
-        $compteurPodium++;
-        switch($compteurPodium){
-            case 1:
-                $icone = "&#129351;"; // or
-                break;
-            case 2:
-                $icone="&#129352;"; // argent
-                break;
-            case 3:
-                $icone="&#129353;"; // bronze
-                break;
-            default:
-                $icone="";
-        }
+        echo "	    <label>Id.</label>\n";
+        echo "      <input type='text' name='id_player' readonly value='".$playerId."'>\n";
+    
+        echo "	    <label>$title_name</label>\n";
+        echo "      <input type='text' name='name' value='".$playerName."'>\n";
+        echo "	    <label>Prénom</label>\n";
+        echo "      <input type='text' name='firstname' value='".$playerFirstname."'>\n";
         
-        echo "</td><td>";
-        if($icone!="") echo $icone." <strong>".mb_strtoupper($donnees['nom'],'UTF-8')." ".$donnees['prenom']."</strong>";
-        else echo mb_strtoupper($donnees['nom'],'UTF-8')." ".$donnees['prenom'];
-        echo "</td><td>".$donnees['nb']."</td><td>".round($donnees['note'],1)."</td>\n";
-        echo "  </tr>\n";
-        $compteur=$donnees['club'];
+    	echo "	    <p><label>Poste</label>\n";
+    	echo "      <input type='radio' name='position' id='Gardien' value='Gardien'";
+            if ($data['position']=="Gardien") echo " checked";
+    	echo "><label for='Gardien'>$title_goalkeeper</label>\n";
+    	echo "     <input type='radio' name='position' id='Défenseur' value='Défenseur'";
+            if ($data['position']=="Défenseur") echo " checked";
+    	echo "><label for='Défenseur'>$title_defender</label>\n";
+    	echo "     <input type='radio' name='position' id='Milieu' value='Milieu'";
+            if ($data['position']=="Milieu") echo " checked";	
+    	echo "><label for='Milieu'>$title_midfielder</label>\n";
+    	echo "     <input type='radio' name='position' id='Attaquant' value='Attaquant'";
+            if ($data['position']=="Attaquant") echo " checked";	
+    	echo "><label for='Attaquant'>$title_forward</label></p>\n";
+    	
+        echo "	    <p><label>$title_team</label>\n";
+        echo "      <select multiple size='10' name='id_team'>\n";
+        $response = $db->query("SELECT * FROM team ORDER BY name;");
+        while ($data = $response->fetch())
+        {
+            echo "  		<option value='".$data['id_team']."'";
+            if($data['id_team']==$teamId) echo " selected";
+            echo ">".$data['name']."</option>\n";
+        }
+        echo "	    </select></p>\n";
+        echo "      <input type='submit' value='$title_modify'>\n";
+        echo "	 </form>\n";
+        // Delete form
+        echo "	 <form action='index.php?page=player' method='POST' onsubmit='return confirm()'>\n";
+        echo "      <input type='hidden' name='delete' value=1>\n";
+        echo "      <input type='hidden' name='id_team' value=$teamId>\n";
+        echo "      <input type='hidden' name='id_player' value=$playerId>\n";
+        echo "      <input type='hidden' name='name' value='".$playerName."'>\n";
+        echo "      <input type='hidden' name='firstname' value='".$playerFirstname."'>\n";
+        echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n";
+        echo "	 </form>\n";
+        $response->closeCursor();  
     }
-$reponse->closeCursor(); // Termine le traitement de la requête   
-echo "  </table>\n";
+    // Select form
+    else {
+        echo "   <form action='index.php?page=player' method='POST'>\n";             // Modifier
+        echo "      <input type='hidden' name='modify' value='1'>\n"; 
+        echo "      <label>$title_selectThePlayer :</label>\n";                                    
+        echo "  	<select multiple size='10' name='id_player'>\n";
+        $response = $db->query("SELECT * FROM player ORDER BY name, firstname");
+        while ($data = $response->fetch())
+        {
+            echo "  		<option value='".$data['id_player']."'>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']."</option>\n";
+        }
+        echo "	    </select>\n";
+        echo "      <input type='submit'>\n";
+        echo "	 </form>\n";
+    }
 }
+// Default page (best players)
+else {
+    
+    echo "<h2>$title_player</h2>\n";
+    echo "<h3>$title_bestPlayers</h3>\n";
+    
+    $req = "SELECT COUNT(e.rating) as nb,AVG(e.rating) as rating,c.name as team,j.name,j.firstname 
+    FROM player j
+    LEFT JOIN season_team_player scj ON j.id_player=scj.id_player 
+    LEFT JOIN team c ON  c.id_team=scj.id_team 
+    LEFT JOIN teamOfTheWeek e ON e.id_player=j.id_player 
+    GROUP BY team, j.name,j.firstname 
+    ORDER BY nb DESC, rating DESC,j.name,j.firstname LIMIT 0,3";
+    $response = $db->query($req);
+    echo "  <p><table>\n";
+    echo "      <tr><th></th><th>$title_player</th><th>$title_team</th><th>$title_teamOfTheWeek</th><th>$title_ratingAverage</th></tr>\n";
+    $counterPodium = 0;
+    $icon = "&#129351;"; // Gold medal
+    while ($data = $response->fetch())
+        {
+        $counterPodium++;
+        if($counterPodium==2) $icon="&#129352;"; // Silver medal
+        else $icon="&#129353;"; // Bronze medal
+        
+            echo "      <td><strong>".$counterPodium."</strong></td>\n";
+            echo "      <td>".$icon." <strong>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']."</strong></td>\n";
+            echo "      <td>".$data['team']."</td>\n";
+            echo "      <td>".$data['nb']."</td>\n";
+            echo "      <td>".round($data['rating'],1)."</td>\n";
+            echo "  </tr>\n";
+        }
+    echo "  </table></p>\n";
+    $response->closeCursor(); 
+    
+    echo "<h3>$title_bestPlayersByTeam</h3>\n";
+    
+    $req = "SELECT COUNT(e.rating) as nb,AVG(e.rating) as rating,c.name as team,j.name,j.firstname 
+    FROM player j
+    LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
+    LEFT JOIN team c ON  c.id_team=scj.id_team 
+    LEFT JOIN teamOfTheWeek e ON e.id_player=j.id_player 
+    GROUP BY team,j.name,j.firstname 
+    ORDER BY team ASC, nb DESC, rating DESC, j.name,j.firstname ASC";
+    $response = $db->query($req);
+    echo "  <table>\n";
+    echo "      <tr><th>$title_team</th><th>$title_player</th><th>$title_teamOfTheWeek</th><th>$title_ratingAverage</th></tr>\n";
+    $counter = "";
+    while ($data = $response->fetch())
+        {
+            echo "      <td>";
+            if($counter!=$data['team']){
+                $counterPodium = 0;
+                echo "<strong>".$data['team']."</strong>";
+            }
+            
+            $counterPodium++;
+            switch($counterPodium){
+                case 1:
+                    $icon = "&#129351;"; // gold medal
+                    break;
+                case 2:
+                    $icon="&#129352;"; // silver medal
+                    break;
+                case 3:
+                    $icon="&#129353;"; // bronze medal
+                    break;
+                default:
+                    $icon="";
+            }
+            
+            echo "</td><td>";
+            if($icon!="") echo $icon." <strong>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']."</strong>";
+            else echo mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname'];
+            echo "</td><td>".$data['nb']."</td><td>".round($data['rating'],1)."</td>\n";
+            echo "  </tr>\n";
+            $counter=$data['team'];
+        }
+    $response->closeCursor();
+    echo "  </table>\n";
+}
+echo "</section>\n";
 ?>
-    </section>
-    

@@ -1,16 +1,16 @@
 <?php
-// NAVIGATION JOURNEES
-$reponse = $bdd->query("SELECT DISTINCT numero FROM journees 
-        WHERE id_saison=".$_SESSION['idSaison']." AND id_championnat=".$_SESSION['idChampionnat']." ORDER BY numero;");
+// Matchday select include file
+$response = $db->query("SELECT DISTINCT id_matchday, number FROM matchday 
+        WHERE id_season=".$_SESSION['seasonId']." AND id_championship=".$_SESSION['championshipId']." ORDER BY number;");
                             
-echo "  	<select name=\"choixJournee\" onchange=\"submit()\">\n";
-echo "  		<option value=\"0\">...</option>\n";
-// On affiche chaque entrée
-while ($donnees = $reponse->fetch())
+echo "  	<select name='matchdaySelect' onchange='submit()'>\n";
+echo "  		<option value='0'>...</option>\n";
+
+while ($data = $response->fetch())
 {
-    echo "  		<option value=\"".$donnees['id_journee'].",".$donnees['numero']."\">J".$donnees['numero']."</option>\n";
+    echo "  		<option value='".$data['id_matchday'].",".$data['number']."'>".$title_MD.$data['number']."</option>\n";
 }
 echo "	 </select>\n";
-$reponse->closeCursor(); // Termine le traitement de la requête
+$response->closeCursor();
 ?>
     

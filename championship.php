@@ -1,208 +1,198 @@
 <?php
-include("champ_nav.php");
-?>
+/* This is the Football Predictions championship section page */
+/* Author : Guy Morin */
 
-    <section>
-<?php
-$idChampionnat=0;
-$nomChampionnat="";
-if(isset($_POST['id_championnat'])) $idChampionnat=$_POST['id_championnat'];
-if(isset($_POST['nom'])) $nomChampionnat=$_POST['nom'];
+// Files to include
+include("championship_nav.php");
 
-$cree=0;
-$modifie=0;
-$supprime=0;
-$sortie=0;
-if(isset($_GET['cree'])) $cree=$_GET['cree'];
-if(isset($_POST['cree'])) $cree=$_POST['cree'];
-if(isset($_POST['modifie'])) $modifie=$_POST['modifie'];
-if(isset($_POST['supprime'])) $supprime=$_POST['supprime'];
-if(isset($_GET['sortie'])) $sortie=$_GET['sortie'];
+echo "<section>\n";
 
-$domicile=$exterieur=0;
-if(isset($_GET['domicile'])) $domicile=$_GET['domicile'];
-if(isset($_GET['exterieur'])) $exterieur=$_GET['exterieur'];
+// Values
+$championshipId=0;
+$championshipName="";
+if(isset($_POST['id_championship'])) $championshipId=$_POST['id_championship'];
+if(isset($_POST['name'])) $championshipName=$_POST['name'];
+$create=0;
+$modify=0;
+$delete=0;
+$exit=0;
+if(isset($_GET['create'])) $create=$_GET['create'];
+if(isset($_POST['create'])) $create=$_POST['create'];
+if(isset($_POST['modify'])) $modify=$_POST['modify'];
+if(isset($_POST['delete'])) $delete=$_POST['delete'];
+if(isset($_GET['exit'])) $exit=$_GET['exit'];
+$standhome=$standaway=0;
+if(isset($_GET['standhome'])) $standhome=$_GET['standhome'];
+if(isset($_GET['exterieur'])) $standaway=$_GET['exterieur'];
 
-// SORTIR DU CHAMPIONNAT
-if($sortie==1){
-    unset($_SESSION['idChampionnat']);
-    unset($_SESSION['nomChampionnat']);
-    unset($_SESSION['idJournee']);
-    unset($_SESSION['numJournee']);
-    popup("Sortie du championnat.","index.php?page=championnats");
+/* Popups or page */
+// Exited popup
+if($exit==1){
+    unset($_SESSION['championshipId']);
+    unset($_SESSION['championshipName']);
+    unset($_SESSION['matchdayId']);
+    unset($_SESSION['matchdayNum']);
+    popup($title_exited,"index.php?page=championship");
 }
-
-// SUPPRIMER
-elseif($supprime==1){
-        $req="DELETE FROM championnats WHERE id_championnat='".$idChampionnat."';";
-        $bdd->exec($req);
-        $bdd->exec("ALTER TABLE championnats AUTO_INCREMENT=0;");
-        popup("Suppression du championnat.","index.php?page=championnats");
+// Deleted popup
+elseif($delete==1){
+        $req="DELETE FROM championship WHERE id_championship='".$championshipId."';";
+        $db->exec($req);
+        $db->exec("ALTER TABLE championnats AUTO_INCREMENT=0;");
+        popup($title_deleted,"index.php?page=championship");
 }
-
-// CREER
-elseif($cree==1){
-
-    echo "<h2>Créer un championnat</h2>\n";
-
-    // S'il y a une création
-    if($nomChampionnat!="") {
-        $bdd->exec("ALTER TABLE championnats AUTO_INCREMENT=0;");
-        $req="INSERT INTO championnats VALUES(NULL,'".$nomChampionnat."');";
-        $bdd->exec($req);
-        popup("Création du championnat.","index.php?page=championnats");
-    } else {
-    
-	echo "	    <form action=\"index.php?page=championnats\" method=\"POST\">\n";
-    echo "      <input type=\"hidden\" name=\"cree\" value=\"1\">\n"; 
-	echo "	    <label>Nom</label>\n";
-	echo "     <input type=\"text\" name=\"nom\" value=\"".$nomChampionnat."\">\n";
-	echo "     <input type=\"submit\" value=\"Créer\">\n";
-
-	echo "	    </form>\n";   
-
+// Created popup or create form
+elseif($create==1){
+    echo "<h2>$title_createAChampionship</h2>\n";
+    // Created popup
+    if($championshipName!="") {
+        $db->exec("ALTER TABLE championnats AUTO_INCREMENT=0;");
+        $req="INSERT INTO championnats VALUES(NULL,'".$championshipName."');";
+        $db->exec($req);
+        popup($title_created,"index.php?page=championship");
+    }
+    // Create form
+    else { 
+    	echo "	 <form action='index.php?page=championship' method='POST'>\n";
+        echo "     <input type='hidden' name='create' value='1'>\n"; 
+    	echo "	   <label>$title_name</label>\n";
+    	echo "     <input type='text' name='name' value='$championshipName'>\n";
+    	echo "     <input type='submit' value='$title_create'>\n";
+    	echo "	 </form>\n";   
 	}
-	
 }
-// MODIFIER
-elseif($modifie==1){
-
-    echo "<h2>Modifier un championnat</h2>\n";
-
-    // S'il y a une modification
-    if($nomChampionnat!="") {
-        $req="UPDATE championnats SET nom='".$nomChampionnat."' WHERE id_championnat='".$idChampionnat."';";
-        $bdd->exec($req);
-        popup("Modification du championnat.","index.php?page=championnats");
-    } else {
-    
-    // Affichage du championnat sélectionnée
-    
-
-    $reponse = $bdd->query("SELECT * FROM championnats WHERE id_championnat='".$idChampionnat."';");
-    echo "	 <form action=\"index.php?page=championnats\" method=\"POST\">\n";
-    $donnees = $reponse->fetch();
-
-    echo "      <input type=\"hidden\" name=\"modifie\" value=1>\n";    
-    
-    echo "	 <label>Id.</label>\n";
-    echo "      <input type=\"text\" name=\"id_championnat\" readonly=\"readonly\" value=\"".$donnees['id_championnat']."\">\n";
-
-    echo "	 <label>Nom</label>\n";
-    echo "      <input type=\"text\" name=\"nom\" value=\"".$donnees['nom']."\">\n";
-    echo "      <input type=\"submit\" value=\"Modifier\">\n";
-    echo "	 </form>\n";
-    
-    echo "	 <form action=\"index.php?page=championnats\" method=\"POST\" onsubmit=\"return(confirm('Supprimer ".$donnees['nom']." ?'))\">\n";
-    echo "      <input type=\"hidden\" name=\"supprime\" value=1>\n";
-    echo "      <input type=\"hidden\" name=\"id_championnat\" value=$idChampionnat>\n";
-    echo "      <input type=\"hidden\" name=\"nom\" value=\"".$donnees['nom']."\">\n";
-    echo "      <input type=\"submit\" value=\"&#9888 Supprimer ".$donnees['nom']." &#9888\">\n"; // Bouton Supprimer
-    echo "	 </form>\n";
-    $reponse->closeCursor(); // Termine le traitement de la requête   
+// Modified popup or modify form
+elseif($modify==1){
+    echo "<h2>$title_modifyAChampionship</h2>\n";
+    // Modify popup
+    if($championshipName!="") {
+        $req="UPDATE championnats SET name='$championshipName' WHERE id_championship='$championshipId';";
+        $db->exec($req);
+        popup($title_modified,"index.php?page=championship");
+    }
+    // Modify form
+    else {
+        $response = $db->query("SELECT * FROM championship WHERE id_championship='$championshipId';");
+        echo "	 <form action='index.php?page=championship' method='POST'>\n";
+        $data = $response->fetch();
+        echo "      <input type='hidden' name='modify' value='1'>\n";    
+        echo "	    <label>Id.</label>\n";
+        echo "      <input type='text' name='id_championship' readonly='readonly' value='".$data['id_championship']."'>\n";
+        echo "	    <label>$title_name</label>\n";
+        echo "      <input type='text' name='name' value='".$data['name']."'>\n";
+        echo "      <input type='submit' value='$title_modify'>\n";
+        echo "	 </form>\n";
+        
+        echo "	 <form action='index.php?page=championship' method='POST' onsubmit='return confirm()'>\n";
+        echo "      <input type='hidden' name='delete' value=1>\n";
+        echo "      <input type='hidden' name='id_championship' value=$championshipId>\n";
+        echo "      <input type='hidden' name='name' value='".$data['name']."'>\n";
+        echo "      <input type='submit' value='&#9888 $title_delete ".$data['name']." &#9888'>\n"; // Bouton Supprimer
+        echo "	 </form>\n";
+        $response->closeCursor();   
     }
 }
-elseif(isset($_SESSION['idChampionnat'])&&($sortie==0)){
-
-    echo "<h2>Championnats</h2>\n";
-    echo "<h3>Classement de ".$_SESSION['nomChampionnat']."</h3>\n";
-    echo "<div id=\"classement\">\n";
-    echo "<ul>";
+// Default page
+elseif(isset($_SESSION['championshipId'])&&($exit==0)){
+    echo "<h2>$title_championship</h2>\n";
+    echo "<h3>".$_SESSION['championshipName']." : $title_standing</h3>\n";
+    echo "<div id='classement'>\n";
+    echo "<ul>\n";
     echo "  <li>";
-    if($domicile+$exterieur==0) echo "<p>Général</p>";
-    else echo "<a href=\"index.php?page=championnats\">Général</a>";
+    if($standhome+$standaway==0) echo "<p>$title_general</p>";
+    else echo "<a href='index.php?page=championship'>$title_general</a>";
     echo "  </li>\n\t<li>";
-    if($domicile==1) echo "<p>Domicile</p>";
-    else echo "<a href=\"index.php?page=championnats&domicile=1\">Domicile</a>";
+    if($standhome==1) echo "<p>$title_home</p>";
+    else echo "<a href='index.php?page=championship&standhome=1'>$title_home</a>";
     echo "  </li>\n\t<li>";
-    if($exterieur==1) echo "<p>Extérieur</p>";
-    else echo "<a href=\"index.php?page=championnats&exterieur=1\">Extérieur</a>\n";
-    echo "  </li>\n</ul>\n";
+    if($standaway==1) echo "<p>$title_away</p>";
+    else echo "<a href='index.php?page=championship&standaway=1'>$title_away</a>\n";
+    echo "  </li>\n";
+    echo "</ul>\n";
     
     echo "    <table>\n";
     echo "      <tr>\n";
     echo "            <th> </th>\n";
-    echo "            <th>&Eacute;quipe</th>\n";
-    echo "            <th>Pts</th>\n";
-    echo "            <th>J</th>\n";
-    echo "            <th>G</th>\n";
-    echo "            <th>N</th>\n";
-    echo "            <th>P</th>\n";
+    echo "            <th>$title_team</th>\n";
+    echo "            <th>$title_pts</th>\n";
+    echo "            <th>$title_MD</th>\n";
+    echo "            <th>$title_win</th>\n";
+    echo "            <th>$title_draw</th>\n";
+    echo "            <th>$title_lose</th>\n";
     echo "      </tr>\n";
-
-    $req="SELECT c.id_club, c.nom, COUNT(m.id_match) as matchs,
-		SUM(";
-    if($exterieur==0){
-            $req.="CASE WHEN m.resultat = '1' AND m.equipe_1=c.id_club THEN 3 ELSE 0 END +
-			CASE WHEN m.resultat = 'N' AND m.equipe_1=c.id_club THEN 1 ELSE 0 END +";
-	}
-	if($domicile==0){
-			$req.="CASE WHEN m.resultat = '2' AND m.equipe_2=c.id_club THEN 3 ELSE 0 END +
-			CASE WHEN m.resultat = 'N' AND m.equipe_2=c.id_club THEN 1 ELSE 0 END +";
+    
+    $req="SELECT c.id_team, c.name, COUNT(m.id_match) as matchs,
+    	SUM(";
+    if($standaway==0){
+            $req.="CASE WHEN m.result = '1' AND m.team_1=c.id_team THEN 3 ELSE 0 END +
+    		CASE WHEN m.result = 'D' AND m.team_1=c.id_team THEN 1 ELSE 0 END +";
+    }
+    if($standhome==0){
+    		$req.="CASE WHEN m.result = '2' AND m.team_2=c.id_team THEN 3 ELSE 0 END +
+    		CASE WHEN m.result = 'D' AND m.team_2=c.id_team THEN 1 ELSE 0 END +";
     }
     $req.="0) as points,";
-	$req.="	SUM(";
-	if($exterieur==0){
-            $req.="CASE WHEN m.resultat = '1' AND m.equipe_1=c.id_club THEN 1 ELSE 0 END +
+    $req.="	SUM(";
+    if($standaway==0){
+            $req.="CASE WHEN m.result = '1' AND m.team_1=c.id_team THEN 1 ELSE 0 END +
             ";
     }
-    if($domicile==0){
-        	$req.="CASE WHEN m.resultat = '2' AND m.equipe_2=c.id_club THEN 1 ELSE 0 END +";
+    if($standhome==0){
+        	$req.="CASE WHEN m.result = '2' AND m.team_2=c.id_team THEN 1 ELSE 0 END +";
     }
     $req.="0) as gagne,";
     $req.="SUM(";
-    if($exterieur==0){
-			$req.="CASE WHEN m.resultat = 'N' AND m.equipe_1=c.id_club THEN 1 ELSE 0 END +";
+    if($standaway==0){
+    		$req.="CASE WHEN m.result = 'D' AND m.team_1=c.id_team THEN 1 ELSE 0 END +";
     }
-    if($domicile==0){
-			$req.="CASE WHEN m.resultat = 'N' AND m.equipe_2=c.id_club THEN 1 ELSE 0 END +";
+    if($standhome==0){
+    		$req.="CASE WHEN m.result = 'D' AND m.team_2=c.id_team THEN 1 ELSE 0 END +";
     }
     $req.="0) as nul,";
-	$req.="SUM(";
-    if($exterieur==0){
-        	$req.="CASE WHEN m.resultat = '2' AND m.equipe_1=c.id_club THEN 1 ELSE 0 END +";
+    $req.="SUM(";
+    if($standaway==0){
+        	$req.="CASE WHEN m.result = '2' AND m.team_1=c.id_team THEN 1 ELSE 0 END +";
     }
-	if($domicile==0){
-			$req.="CASE WHEN m.resultat = '1' AND m.equipe_2=c.id_club THEN 1 ELSE 0 END +";
+    if($standhome==0){
+    		$req.="CASE WHEN m.result = '1' AND m.team_2=c.id_team THEN 1 ELSE 0 END +";
     }
     $req.="0) as perdu 
-    FROM clubs c 
-    LEFT JOIN saison_championnat_club scc ON c.id_club=scc.id_club 
-    LEFT JOIN journees j ON (scc.id_saison=j.id_saison AND scc.id_championnat=j.id_championnat) 
-    LEFT JOIN matchs m ON m.id_journee=j.id_journee 
-    WHERE scc.id_saison='".$_SESSION['idSaison']."' 
-    AND scc.id_championnat='".$_SESSION['idChampionnat']."' 
-    AND (c.id_club=m.equipe_1 OR c.id_club=m.equipe_2) 
-    AND m.resultat<>'' 
-    GROUP BY c.id_club,c.nom 
-    ORDER BY points DESC, c.nom ASC;";
-    $reponse = $bdd->query($req);
-    $compteur=0;
-    $pointsPrec=0;
-    // On affiche chaque entrée
-    while ($donnees = $reponse->fetch())
+    FROM team c 
+    LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
+    LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship) 
+    LEFT JOIN matchs m ON m.id_matchday=j.id_matchday 
+    WHERE scc.id_season='".$_SESSION['seasonId']."' 
+    AND scc.id_championship='".$_SESSION['championshipId']."' 
+    AND (c.id_team=m.team_1 OR c.id_team=m.team_2) 
+    AND m.result<>'' 
+    GROUP BY c.id_team,c.name 
+    ORDER BY points DESC, c.name ASC;";
+    $response = $db->query($req);
+    $counter=0;
+    $previousPoints=0;
+    
+    while ($data = $response->fetch())
     {
         echo "        <tr>\n";
         echo "          <td>";
-        if($donnees['points']!=$pointsPrec){
-            $compteur++;
-            echo $compteur;
-            $pointsPrec=$donnees['points'];
+        if($data['points']!=$previousPoints){
+            $counter++;
+            echo $counter;
+            $previousPoints=$data['points'];
         }
         echo "</td>\n";
-        echo "          <td>".$donnees['nom']."</td>\n";
-        echo "          <td>".$donnees['points']."</td>\n";
-        echo "          <td>".$donnees['matchs']."</td>\n";
-        echo "          <td>".$donnees['gagne']."</td>\n";
-        echo "          <td>".$donnees['nul']."</td>\n";
-        echo "          <td>".$donnees['perdu']."</td>\n";
+        echo "          <td>".$data['name']."</td>\n";
+        echo "          <td>".$data['points']."</td>\n";
+        echo "          <td>".$data['matchs']."</td>\n";
+        echo "          <td>".$data['gagne']."</td>\n";
+        echo "          <td>".$data['nul']."</td>\n";
+        echo "          <td>".$data['perdu']."</td>\n";
         echo "        </tr>\n";
     }
-    $reponse->closeCursor(); // Termine le traitement de la requête   
-    
+    $response->closeCursor();
 }
+echo "   </table>\n";
+echo "</div>\n";
+echo "</section>\n";
 ?>
-        </table>
-    </div>
-    </section>
-    
+     

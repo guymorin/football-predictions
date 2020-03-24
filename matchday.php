@@ -1,390 +1,330 @@
 <?php
-include("inc_changeMD.php");
-// NAVIGATION JOURNEES
+/* This is the Football Predictions matchday section page */
+/* Author : Guy Morin */
+
+// Files to include
+include("include/inc_changeMD.php");
 include("matchday_nav.php");
-?>
 
-    <section>
-<?php
+echo "<section>\n";
 
-$idJournee=0;
-$numJournee="";
-
-if(isset($_POST['choixJournee'])){
-        $v=explode(",",$_POST['choixJournee']);
-        $idJournee=$v[0];
+// Values
+$matchdayId=0;
+$matchdayNumber="";
+if(isset($_POST['matchdaySelect'])){
+        $v=explode(",",$_POST['matchdaySelect']);
+        $matchdayId=$v[0];
 }
-if(isset($_POST['id_journee'])) $idJournee=$_POST['id_journee'];
-if(isset($_POST['numero'])) $numJournee=$_POST['numero'];
-
-$cree=0;
-$modifie=0;
-$supprime=0;
+if(isset($_POST['id_matchday'])) $matchdayId=$_POST['id_matchday'];
+if(isset($_POST['number'])) $matchdayNumber=$_POST['number'];
+$create=0;
+$modify=0;
+$delete=0;
 $equipe=0;
-$sortie=0;
-if(isset($_GET['cree'])) $cree=$_GET['cree'];
-if(isset($_POST['cree'])) $cree=$_POST['cree'];
-if(isset($_POST['modifie'])) $modifie=$_POST['modifie'];
-if(isset($_POST['supprime'])) $supprime=$_POST['supprime'];
+$exit=0;
+if(isset($_GET['create'])) $create=$_GET['create'];
+if(isset($_POST['create'])) $create=$_POST['create'];
+if(isset($_POST['modify'])) $modify=$_POST['modify'];
+if(isset($_POST['delete'])) $delete=$_POST['delete'];
 if(isset($_POST['equipe'])) $equipe=$_POST['equipe'];
-if(isset($_GET['sortie'])) $sortie=$_GET['sortie'];
+if(isset($_GET['exit'])) $exit=$_GET['exit'];
+$idPlayer=0;
+$ratingPlayer=0;
+$deletePlayer=0;
+if(isset($_POST['id_player'])) $idPlayer=$_POST['id_player'];
+if(isset($_POST['rating'])) $ratingPlayer=$_POST['rating'];
+if(isset($_POST['delete'])) $deletePlayer=$_POST['delete'];
+$val=array_combine($idPlayer,$ratingPlayer);
 
-$idJoueur=0;
-$noteJoueur=0;
-$delJoueur=0;
-if(isset($_POST['id_joueur'])) $idJoueur=$_POST['id_joueur'];
-if(isset($_POST['note'])) $noteJoueur=$_POST['note'];
-if(isset($_POST['delete'])) $delJoueur=$_POST['delete'];
-$val=array_combine($idJoueur,$noteJoueur);
-
-
-
-// SORTIR DE LA JOURNEE
-if($sortie==1){
-    unset($_SESSION['idJournee']);
-    unset($_SESSION['numJournee']);
-    popup("Sortie de la journée","index.php");
+// Exit popup
+if($exit==1){
+    unset($_SESSION['matchdayId']);
+    unset($_SESSION['matchdayNum']);
+    popup($title_exited,"index.php");
 }
+// Only if there is a matchday selected
+elseif(isset($_SESSION['matchdayId'])){
 
-// STATISTIQUES
-if(isset($_SESSION['idJournee'])){
-
-
-    // MAJ DES NOTES
+    // Modify popup
     if($equipe==1){
-        // On met à jour
-        $bdd->exec("ALTER TABLE equipes AUTO_INCREMENT=0;");
+        $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
         $req="";
-
-        foreach($delJoueur as $d){
-            $req="DELETE FROM equipes WHERE id_journee='".$_SESSION['idJournee']."' AND id_joueur='".$d."';";
-            $bdd->exec($req);
+        foreach($deletePlayer as $d){
+            $req="DELETE FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$d."';";
+            $db->exec($req);
         }
-        
-        $bdd->exec("ALTER TABLE equipes AUTO_INCREMENT=0;");
+        $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
         $req="";
         foreach($val as $k=>$v){
-            if(($v!="")&&(!in_array($k,$delJoueur))){
-            
-                $reponse = $bdd->query("SELECT COUNT(*) as nb FROM equipes WHERE id_journee='".$_SESSION['idJournee']."' AND id_joueur='".$k."';");
-                $donnees = $reponse->fetch();
-                $reponse->closeCursor(); // Termine le traitement de la requête
+            if(($v!="")&&(!in_array($k,$deletePlayer))){
+                $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';");
+                $data = $response->fetch();
+                $response->closeCursor();
                 
-                if($donnees[0]==0) {
-                    $req.="INSERT INTO equipes VALUES(NULL,'".$_SESSION['idJournee']."','".$k."','".$v."');";
+                if($data[0]==0) {
+                    $req.="INSERT INTO teamOfTheWeek VALUES(NULL,'".$_SESSION['matchdayId']."','".$k."','".$v."');";
                 }
-                if($donnees[0]==1) {
-                    $req.="UPDATE equipes SET note='".$v."' WHERE id_journee='".$_SESSION['idJournee']."' AND id_joueur='".$k."';";
+                if($data[0]==1) {
+                    $req.="UPDATE teamOfTheWeek SET rating='".$v."' WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';";
                 }
-            
             }
         } 
-        $bdd->exec($req);
-        popup("Modification de l'équipe type.","index.php?matchday");
+        $db->exec($req);
+        popup($title_modified,"index.php?matchday");
+    }
+    // Default page
+    else {
     
-    } else {
-        
-        // STATISTIQUES
-        
-        
-
-changeJ($bdd,"Statistiques","journees");
-
-
+        changeMD($db,$title_statistics." ".$title_MD,"matchday");
 
         $req="SELECT m.id_match,
-        cr.motivation_confiance1,cr.motivation_confiance2,
-        cr.serie_en_cours1,cr.serie_en_cours2,
-        cr.forme_physique1,cr.forme_physique2,
-        cr.meteo1,cr.meteo2,
-        cr.joueurs_cles1,cr.joueurs_cles2,
-        cr.valeur_marchande1,cr.valeur_marchande2,
-        cr.domicile_exterieur1,cr.domicile_exterieur2,
-        c1.nom as nom1,c2.nom as nom2,c1.id_club as eq1,c2.id_club as eq2,
-        m.resultat, m.date, m.cote1, m.coteN, m.cote2 FROM matchs m 
-        LEFT JOIN clubs c1 ON m.equipe_1=c1.id_club 
-        LEFT JOIN clubs c2 ON m.equipe_2=c2.id_club 
-        LEFT JOIN criteres cr ON cr.id_match=m.id_match 
-        WHERE m.id_journee='".$_SESSION['idJournee']."' ORDER BY m.date 
+        cr.motivation1,cr.motivation2,
+        cr.currentForm1,cr.currentForm2,
+        cr.physicalForm1,cr.physicalForm2,
+        cr.weather1,cr.weather2,
+        cr.bestPlayers1,cr.bestPlayers2,
+        cr.marketValue1,cr.marketValue2,
+        cr.home_away1,cr.home_away2,
+        c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
+        m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchs m 
+        LEFT JOIN team c1 ON m.team_1=c1.id_team 
+        LEFT JOIN team c2 ON m.team_2=c2.id_team 
+        LEFT JOIN criterion cr ON cr.id_match=m.id_match 
+        WHERE m.id_matchday='".$_SESSION['matchdayId']."' ORDER BY m.date 
         ;";
-        $reponse = $bdd->query($req);
+        $response = $db->query($req);
 
-        $table="	 <table class=\"stats\">\n";
+        $table="	 <table class='stats'>\n";
            
         $table.="  		<tr>\n";
-        $table.="  		  <th>Matchs</th>\n";
-        $table.="         <th>Pronostic</th>\n";
-        $table.="         <th>Résultat</th>\n";
-        $table.="         <th>Cote jouée</th>\n";
-        $table.="         <th>Succ&egrave;s</th>\n";
+        $table.="  		  <th>$title_match</th>\n";
+        $table.="         <th>$title_prediction</th>\n";
+        $table.="         <th>$title_result</th>\n";
+        $table.="         <th>$title_odds</th>\n";
+        $table.="         <th>$title_success</th>\n";
         $table.="       </tr>\n";
         
-        $matchs=$succes=$totalGains=$totalJouee=0;
+        $matchs=$success=$earningSum=$totalJouee=0;
         
-        while ($donnees = $reponse->fetch())
+        while ($data = $response->fetch())
         {
             
-            // Calcul de la VM
-            $v1=criteres("v1",$donnees,$bdd);
-            $v2=criteres("v2",$donnees,$bdd);
-            $vm1 = round(sqrt($v1/$v2));
-            $vm2 = round(sqrt($v2/$v1));
+            // Marketvalue
+            $v1=criterion("v1",$data,$db);
+            $v2=criterion("v2",$data,$db);
+            $mv1 = round(sqrt($v1/$v2));
+            $mv2 = round(sqrt($v2/$v1));
             
-            $dom = $donnees['domicile_exterieur1']; 
-            $ext = $donnees['domicile_exterieur2']; 
+            $dom = $data['home_away1']; 
+            $ext = $data['home_away2']; 
             
-            // Calcul des matchs similaires
-                $req="SELECT SUM(CASE WHEN m.resultat = '1' THEN 1 ELSE 0 END) AS Dom,
-                SUM(CASE WHEN m.resultat = 'N' THEN 1 ELSE 0 END) AS Nul,
-                SUM(CASE WHEN m.resultat = '2' THEN 1 ELSE 0 END) AS Ext
+            // Predictions history
+                $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
+                SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
+                SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
                 FROM matchs m 
-                LEFT JOIN criteres cr ON cr.id_match=m.id_match 
-                WHERE cr.motivation_confiance1='".$donnees['motivation_confiance1']."' 
-                AND cr.motivation_confiance2='".$donnees['motivation_confiance2']."' 
-                AND cr.serie_en_cours1='".$donnees['serie_en_cours1']."' 
-                AND cr.serie_en_cours2='".$donnees['serie_en_cours2']."' 
-                AND cr.forme_physique1='".$donnees['forme_physique1']."' 
-                AND cr.forme_physique2='".$donnees['forme_physique2']."' 
-                AND cr.meteo1='".$donnees['meteo1']."' 
-                AND cr.meteo2='".$donnees['meteo2']."' 
-                AND cr.joueurs_cles1='".$donnees['joueurs_cles1']."' 
-                AND cr.joueurs_cles2='".$donnees['joueurs_cles2']."' 
-                AND cr.valeur_marchande1='".$donnees['valeur_marchande1']."' 
-                AND cr.valeur_marchande2='".$donnees['valeur_marchande2']."' 
-                AND cr.domicile_exterieur1='".$donnees['domicile_exterieur1']."' 
-                AND cr.domicile_exterieur2='".$donnees['domicile_exterieur2']."' 
-                AND m.date<'".$donnees['date']."'";
-                $r = $bdd->query($req)->fetch();
-                $similairesDom=criteres("msDom",$r,$bdd);
-                $similairesExt=criteres("msExt",$r,$bdd);
+                LEFT JOIN criterion cr ON cr.id_match=m.id_match 
+                WHERE cr.motivation1='".$data['motivation1']."' 
+                AND cr.motivation2='".$data['motivation2']."' 
+                AND cr.currentForm1='".$data['currentForm1']."' 
+                AND cr.currentForm2='".$data['currentForm2']."' 
+                AND cr.physicalForm1='".$data['physicalForm1']."' 
+                AND cr.physicalForm2='".$data['physicalForm2']."' 
+                AND cr.weather1='".$data['weather1']."' 
+                AND cr.weather2='".$data['weather2']."' 
+                AND cr.bestPlayers1='".$data['bestPlayers1']."' 
+                AND cr.bestPlayers2='".$data['bestPlayers2']."' 
+                AND cr.marketValue1='".$data['marketValue1']."' 
+                AND cr.marketValue2='".$data['marketValue2']."' 
+                AND cr.home_away1='".$data['home_away1']."' 
+                AND cr.home_away2='".$data['home_away2']."' 
+                AND m.date<'".$data['date']."'";
+                $r = $db->query($req)->fetch();
+                $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
+                $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
                 
             // Calcul du total
-            $gagne="";
+            $win="";
 
-            $total1=
-                $donnees['motivation_confiance1']
-                +$donnees['serie_en_cours1']
-                +$donnees['forme_physique1']
-                +$donnees['meteo1']
-                +$donnees['joueurs_cles1']
-                +$vm1
+            $sum1=
+                $data['motivation1']
+                +$data['currentForm1']
+                +$data['physicalForm1']
+                +$data['weather1']
+                +$data['bestPlayers1']
+                +$mv1
                 +$dom
-                +$similairesDom;
-            $total2=
-                $donnees['motivation_confiance2']
-                +$donnees['serie_en_cours2']
-                +$donnees['forme_physique2']
-                +$donnees['meteo2']
-                +$donnees['joueurs_cles2']
-                +$vm2
+                +$predictionsHistoryHome;
+            $sum2=
+                $data['motivation2']
+                +$data['currentForm2']
+                +$data['physicalForm2']
+                +$data['weather2']
+                +$data['bestPlayers2']
+                +$mv2
                 +$ext
-                +$similairesExt;
-            if($total1>$total2) $prono="1";
-            elseif($total1==$total2) $prono="N";
-            elseif($total1<$total2) $prono="2";
+                +$predictionsHistoryAway;
+            if($sum1>$sum2) $prediction="1";
+            elseif($sum1==$sum2) $prediction=$title_draw;
+            elseif($sum1<$sum2) $prediction="2";
             
             $matchs++;
             
-            $coteJouee=0;
-            switch($prono){
+            $playedOdds=0;
+            switch($prediction){
                 case "1":
-                    $coteJouee = $donnees['cote1'];
+                    $playedOdds = $data['odds1'];
                     break;
                 case "N":
-                    $coteJouee = $donnees['coteN'];
+                    $playedOdds = $data['oddsD'];
                     break;
                 case "2":
-                    $coteJouee = $donnees['cote2'];
+                    $playedOdds = $data['odds2'];
                     break;
             }
             
-            if($prono==$donnees['resultat']){
-                $gagne="<big style=\"color:green\">&#x2714;</big>";
-                $succes++;
-                $totalGains+=$coteJouee;
-            } elseif ($donnees['resultat']!="") $gagne="<small style=\"color:gray\">&times;</small>";
-            $totalJouee+=$coteJouee;
+            if($prediction==$data['result']){
+                $win="<big style='color:green'>&#x2714;</big>";
+                $success++;
+                $earningSum+=$playedOdds;
+            } elseif ($data['result']!="") $win="<small style='color:gray'>&times;</small>";
+            $totalJouee+=$playedOdds;
             
-       // On affiche chaque entrée
-                
             $table.="  		<tr>\n";
-            $table.="  		  <td>".$donnees['nom1']." - ".$donnees['nom2']."</td>\n";
-            $table.="  		  <td>".$prono."</td>\n";
-            $table.="  		  <td>".$donnees['resultat']."</td>\n";
-            $table.="  		  <td>".$coteJouee."</td>\n";
-            $table.="  		  <td>".$gagne."</td>\n";
+            $table.="  		  <td>".$data['name1']." - ".$data['name2']."</td>\n";
+            $table.="  		  <td>".$prediction."</td>\n";
+            $table.="  		  <td>";
+            if($data['result']=='D') $table.=$title_draw;
+            else $table.=$data['result'];
+            $table.="</td>\n";
+            $table.="  		  <td>".$playedOdds."</td>\n";
+            $table.="  		  <td>".$win."</td>\n";
             $table.="       </tr>\n";
 
         }
-        $reponse->closeCursor(); // Termine le traitement de la requête
+        $response->closeCursor();
         $table.="	 </table>\n";
         
-        // Calculs
-        $benef=money_format('%i',$totalGains-$matchs);
+        // Values
+        $benef=money_format('%i',$earningSum-$matchs);
         $roi = round(($benef/$matchs)*100);
-        $tauxReussite = (($succes/$matchs)*100);
-        $gains = money_format('%i',$totalGains);
-        $gainParMise = (round($totalGains/$matchs,2));
+        $successRate = (($success/$matchs)*100);
+        $earning = money_format('%i',$earningSum);
+        $earningByBet = (round($earningSum/$matchs,2));
         
-        echo "<p>\n<table class=\"stats\">\n";
-        echo "  <tr><th colspan=\"6\">En résumé</th></tr>\n";
-        echo "  <tr>\n";
-        echo "      <td>Mises</td><td>".$matchs."</td>\n";
+        echo "<p>\n";
+        echo "  <table class='stats'>\n";
         
-        // Bénéfice
-        echo "      <td>Bénéfice</td><td><span style=\"color:".valColor($benef)."\">";
+        echo "    <tr>\n";
+        echo "          <th colspan='6'>$title_statistics</th>\n";
+        echo "    </tr>\n";
+        
+        echo "    <tr>\n";
+        echo "      <td>$title_bet</td>\n";
+        echo "      <td>".$matchs."</td>\n";
+        echo "      <td>$title_profit</td>\n";
+        echo "      <td><span style='color:".valColor($benef)."'>";
         if($benef>0) echo "+";
         echo $benef."&nbsp;&euro;</span></td>\n";
-
-        
-        // ROI
-        echo "      <td>ROI</td>\n";
-        echo "<td>";
-        echo "<span style=\"color:".valColor($roi)."\">";
+        echo "      <td>$title_ROI</td>\n";
+        echo "      <td>";
+        echo "<span style='color:".valColor($roi)."'>";
         if($roi>0) echo "+";
         echo $roi."&nbsp;%</span>";
-        echo "&nbsp;<a href=\"#\" class=\"infobulle\">&#128172;<span>Le&nbsp;ROI&nbsp;est&nbsp;";
-        switch($roi){
-            case($roi<0):
-                echo "perdant";
-                break;
-            case($roi==0):
-                echo "neutre";
-                break;
-            case($roi>0&&$roi<15):
-                echo "gagnant";
-                break;
-            case($roi>=15):
-                echo "excellent";
-                break;
-        }
-        echo "&nbsp;!</span></a>";
+        echo "&nbsp;<a href='#' class='infobulle'>&#128172;".valRoi($roi)."</a>";
         echo "</td>\n";
-
-        echo "  <tr>\n";
-        echo " </tr>\n";
+        echo "    </tr>\n";
+  
+        echo "    <tr>\n";
+        echo "      <td>$title_success</td>\n";
+        echo "      <td>$success</td>\n";
+        echo "      <td>$title_earning</td>\n";
+        echo "      <td>".$earning."&nbsp;&euro;</td>\n";
+        echo "      <td>$title_earningByBet</td>\n";
+        echo "      <td>$earningByBet</td>\n";
+        echo "    </tr>\n";
         
-        // Succès
-        echo "      <td>Succ&egrave;s</td><td>".$succes."</td>\n";
-        
-        // Gains
-        echo "      <td>Gains</td><td>".$gains."&nbsp;&euro;</td>\n";
-        
-        // Gains par mise
-        echo "      <td>Gains&nbsp;par&nbsp;mise</td><td>".$gainParMise."</td>\n";
-    
-
-        echo " </tr>\n";
-        echo "</td>\n";
-        echo " </tr>\n";
-        echo " </tr>\n";
-        
-        // Taux de réussite
-        echo "<td>Taux&nbsp;de&nbsp;réussite</td><td>";
-        if($matchs>0) echo $tauxReussite;
+        echo "    <tr>\n";
+        echo "      <td>$title_successRate</td>\n";
+        echo "      <td>";
+        if($matchs>0) echo $successRate;
         else echo 0;
-        echo "&nbsp;%</td>";
-
-        // Cote moyenne jouée
-        $coteMoy=(round($totalJouee/$matchs,2));
-        echo "      <td>Cote&nbsp;moyenne&nbsp;jouée</td><td>".$coteMoy;
-        if(($coteMoy<1.8)||($coteMoy>2.3)){
-            echo "&nbsp;<a href=\"#\" class=\"infobulle\">&#128172;<span>Jeu&nbsp;";
-            switch($coteMoy){
-                case($coteMoy<1.5):
-                    echo "trop prudent";
-                    break;
-                case($coteMoy<1.8):
-                    echo "prudent";
-                    break;
-                case($coteMoy>3):
-                    echo "trop spéculateur";
-                    break;
-                case($coteMoy>2.3):
-                    echo "spéculateur";
-                    break;
-            }
-            echo "&nbsp;!</span></a>";
+        echo "&nbsp;%</td>\n";
+        $averageOdds=(round($totalJouee/$matchs,2));
+        echo "      <td>$title_oddsAveragePlayed</td>\n";
+        echo "      <td>".$averageOdds;
+        if(($averageOdds<1.8)||($averageOdds>2.3)){
+            echo "&nbsp;<a href='#' class='infobulle'>&#128172;".valOdds($averageOdds)."</a>";
         }
         echo "</td>\n";
-
-        echo "      <td></td><td></td>\n";
-        echo " </tr>\n";
-        echo "</table>\n</p>";
-        echo $table;      
+        echo "      <td></td>\n";
+        echo "      <td></td>\n";
+        echo "    </tr>\n";
         
+        echo "  </table>\n";
+        echo "</p>\n";
+        
+        echo $table;
     }
 }
 
-// SUPPRIMER
-elseif($supprime==1){
-        $req="DELETE FROM journees WHERE id_journee='".$idJournee."';";
-        $bdd->exec($req);
-        $bdd->exec("ALTER TABLE journees AUTO_INCREMENT=0;");
-        popup("Suppression pour J".$numJournee.".","index.php?page=journees");
+// Delete popup
+elseif($delete==1){
+    $req="DELETE FROM matchday WHERE id_matchday='".$matchdayId."';";
+    $db->exec($req);
+    $db->exec("ALTER TABLE matchday AUTO_INCREMENT=0;");
+    popup($title_deleted,"index.php?page=matchday");
 }
-
-// CREER
-elseif($cree==1){
-
-echo "<h2>Créer une journée</h2>\n";
-
-    // S'il y a une création
-    if($numJournee!="") {
-        $bdd->exec("ALTER TABLE journees AUTO_INCREMENT=0;");
-        $req="INSERT INTO journees VALUES(NULL,'".$_SESSION['idSaison']."','".$_SESSION['idChampionnat']."','".$numJournee."');";
-        $bdd->exec($req);
-        popup("Création pour J".$numJournee.".","index.php?page=journees");
-    } else {
-    
-	echo "	    <form action=\"index.php?page=journees\" method=\"POST\" onsubmit=\"return confirm('Attention, vous allez modifier les données !');\">\n";
-    echo "      <input type=\"hidden\" name=\"cree\" value=\"1\">\n"; 
-	echo "	    <label>Numéro</label>\n";
-	echo "     <input type=\"text\" name=\"numero\" value=\"".$numJournee."\">\n";
-	echo "     <input type=\"submit\" value=\"Créer\">\n";
-
-	echo "	    </form>\n";   
-
+// Create
+elseif($create==1){
+    echo "<h2>$title_createAMatchday</h2>\n";
+    // Create popup
+    if($matchdayNumber!="") {
+        $db->exec("ALTER TABLE matchday AUTO_INCREMENT=0;");
+        $req="INSERT INTO matchday VALUES(NULL,'".$_SESSION['seasonId']."','".$_SESSION['championshipId']."','".$matchdayNumber."');";
+        $db->exec($req);
+        popup($title_created,"index.php?page=matchday");
+    }
+    // Create form
+    else {
+    	echo "	    <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+        echo "          <input type='hidden' name='create' value='1'>\n"; 
+    	echo "	        <label>$title_number</label>\n";
+    	echo "         <input type='text' name='number' value='".$matchdayNumber."'>\n";
+    	echo "         <input type='submit' value='$title_create'>\n";
+    	echo "	    </form>\n";   
 	}
-	
 }
-// MODIFIER
-elseif($modifie==1){
-
-echo "<h2>Modifier une journée</h2>\n";
-
-    // S'il y a une modification
-    if($numJournee!="") {
-        $req="UPDATE journees SET numero='".$numJournee."' WHERE id_journee='".$idJournee."';";
-        $bdd->exec($req);
-        popup("Modification pour J".$numJournee.".","index.php?page=journees");
-    } else {
-    
-    // Affichage de la journée sélectionnée
-
-    $reponse = $bdd->query("SELECT * FROM journees WHERE id_journee='".$idJournee."';");
-    echo "	 <form action=\"index.php?page=journees\" method=\"POST\" onsubmit=\"return confirm('Attention, vous allez modifier les données !');\">\n";
-    $donnees = $reponse->fetch();
-
-    echo "      <input type=\"hidden\" name=\"modifie\" value=1>\n";    
-    
-    echo "	 <label>Id.</label>\n";
-    echo "      <input type=\"text\" name=\"id_journee\" readonly=\"readonly\" value=\"".$donnees['id_journee']."\">\n";
-
-    echo "	 <label>Numéo</label>\n";
-    echo "      <input type=\"text\" name=\"numero\" value=\"".$donnees['numero']."\">\n";
-    echo "      <input type=\"submit\" value=\"Modifier\">\n";
-    echo "	 </form>\n";
-    
-    echo "	 <form action=\"index.php?page=journees\" method=\"POST\" onsubmit=\"return(confirm('Supprimer J".$donnees['numero']." ?'))\">\n";
-    echo "      <input type=\"hidden\" name=\"supprime\" value=1>\n";
-    echo "      <input type=\"hidden\" name=\"id_journee\" value=$idJournee>\n";
-    echo "      <input type=\"hidden\" name=\"numero\" value=\"".$donnees['numero']."\">\n";
-    echo "      <input type=\"submit\" value=\"&#9888 Supprimer J".$donnees['numero']." &#9888\">\n"; // Bouton Supprimer
-    echo "	 </form>\n";
-    $reponse->closeCursor(); // Termine le traitement de la requête   
+// Modify
+elseif($modify==1){
+    echo "<h2>$title_modifyAMatchday</h2>\n";
+    // Modify popup
+    if($matchdayNumber!="") {
+        $req="UPDATE matchday SET number='".$matchdayNumber."' WHERE id_matchday='".$matchdayId."';";
+        $db->exec($req);
+        popup($title_modified,"index.php?page=matchday");
+    }
+    // Modify form
+    else {
+        $response = $db->query("SELECT * FROM matchday WHERE id_matchday='".$matchdayId."';");
+        echo "	 <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+        $data = $response->fetch();
+        echo "      <input type='hidden' name='modify' value=1>\n";    
+        echo "	    <label>Id.</label>\n";
+        echo "      <input type='text' name='id_matchday' readonly='readonly' value='".$data['id_matchday']."'>\n";
+        echo "	    <label>$title_number</label>\n";
+        echo "      <input type='text' name='number' value='".$data['number']."'>\n";
+        echo "      <input type='submit' value='$title_modify'>\n";
+        echo "	 </form>\n";
+        // Delete form
+        echo "	 <form action='index.php?page=matchday' method='POST' onsubmit='return confirm()'>\n";
+        echo "      <input type='hidden' name='supprime' value=1>\n";
+        echo "      <input type='hidden' name='id_matchday' value=$matchdayId>\n";
+        echo "      <input type='hidden' name='number' value='".$data['number']."'>\n";
+        echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n";
+        echo "	 </form>\n";
+        $response->closeCursor();
     }
 }
+echo "</section>\n";
 ?>
-    </section>
-    
