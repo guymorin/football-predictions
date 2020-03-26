@@ -158,17 +158,17 @@ function changeMD($db,$titre,$page){
         {
             $cpt++;
             
-            if($data['number']==$_SESSION['matchdayNum']-1) $cpt="&#x3008;";// Previous
-            if($data['number']==$_SESSION['matchdayNum']+1) $cpt="&#x3009;";// Next
+            if($data['number']==$_SESSION['matchdayNum']-1) $cpt="&#x3008;   ";// Previous
+            if($data['number']==$_SESSION['matchdayNum']+1) $cpt="   &#x3009;";// Next
             
             if($data['number']==$_SESSION['matchdayNum']) {
                 if($cpt==1) echo $add;
                 echo "<h2>".$titre.$_SESSION['matchdayNum']."</h2>\n"; 
                 if($nb==1)   echo $add;
             } else {
-                echo "<form action='index.php?page=".$page."' method='POST'>\n";
+                echo "<form action='index.php?page=$page' method='POST'>\n";
                 echo "  <input type='hidden' name='matchdaySelect' value='".$data['id_matchday'].",".$data['number']."'>\n";
-                echo "  <input type='submit' value='".$cpt."'>\n"; // Arrow button
+                echo "  <input type='submit' value='$cpt'>\n"; // Arrow button
                 echo "</form>\n";
             }
             $nb--;

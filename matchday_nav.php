@@ -1,7 +1,7 @@
 <?php
 // Matchday navigation include file
 echo "  <nav>\n";
-echo "  	<a href='/'>&#8617</a>\n"; // Back
+echo "  	<a href='/'>&#127968; $title_homepage</a>\n"; // Back
 if(isset($_SESSION['matchdayId'])) {
     echo "  	<a href='index.php?page=matchday&exit=1'>$title_MD".$_SESSION['matchdayNum']." &#10060;</a>\n";
     echo "  	<a href='index.php?page=matchday'>$title_statistics</a>\n";
@@ -12,5 +12,6 @@ if(isset($_SESSION['matchdayId'])) {
     echo "  	<a href='index.php?page=match&modify=1'>$title_modifyAMatch</a>\n";
 } else echo "  	<a href='index.php?page=matchday&create=1'>$title_createAMatchday</a>\n";
 echo "  </nav>\n";
+include("include/inc_fp-menu.php");
 ?>
 

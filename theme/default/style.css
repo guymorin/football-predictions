@@ -1,20 +1,33 @@
+/* This is the Football Predictions CSS page */
+/* Default theme */
+/* Author : Guy Morin */
+
+@font-face {
+font-family: 'hemi';
+src: url('hemi head bd it.ttf') format('truetype');
+font-weight: normal;
+font-style: normal;
+}	
+
 html, body {
  margin: 0;
  padding: 0;
  background:#efd;
+ overflow:auto;
  }
 body {
  font-family: Verdana, sans-serif; 
  font-size: 0.8em;
  }
 h1 {
- font: 120% sans-serif; 
+ font: 280% hemi, sans-serif; 
  text-transform:uppercase;
  text-align: center;
  }
 h2 {
  font: 110% sans-serif; 
  font-weight:bold;
+ font-style:italic;
  }
 h3 {
  font: 100% sans-serif; 
@@ -28,32 +41,109 @@ th,td {padding:0 0.5em;}
 a{color:#095;text-decoration:none}
 a:hover{text-decoration:underline}
 
-table{font-size:0.9em;margin:0 auto;border:2px solid #582;border-radius:3px;box-shadow:1px 1px 10px 0 #9c6}
-td{border:0.1em solid #ad7}
+table{font-size:0.9em;margin:0 auto;border:1px solid #583;border-radius:3px;}
+td{border:0.1em solid #ad7;}
 tr{background:#dec}
 tr:nth-child(2n) {background:#efd}
-th{padding:.4em;background:#7a5;color:white;}
+th{padding:.4em;background:#fff;;color:#000;font-weight:bold;}
 input[type='date'] {font-size:1.2em}
 input[type='number'] {width:6em;padding:1em 0}
 
-header{width:100%;padding:0;}
-header, header h1 {margin:0;}
-header h1 {background:#371;padding:.2em;border-bottom:1px solid #564}
+/* Header and nav */
+
+header{position:fixed;width:100%;height:3.5em;padding:.4em 0 0 0;background:#371 linear-gradient(#482,#260);}
+header, header h1 {margin:0;padding:0}
 header a {text-decoration:none;color:white;}
 header a:hover {text-decoration:none}
 
-nav {text-align:center;background:linear-gradient(#bf7,#9d6);color:#564;margin:0;text-transform:uppercase;}
-nav a {display:inline-block;background:#5b3;color:white;padding:1em;text-decoration:none;margin:.2em 0}
+nav {position:fixed;top:3.5em;width:100%;height:3.5em;text-align:center;background:linear-gradient(#bf7,#9d6);color:#231;margin:0;text-transform:uppercase;}
+nav a {display:inline-block;background:#4a2;color:white;padding:1em;text-decoration:none;margin:.1em 0;transition:.5s background}
 nav a:hover {background:#fff;padding:1em;color:#231;text-decoration:none}
 nav form {display:inline}
 nav form, nav select, nav label, nav input {margin:0 .5em;padding:0}
 nav label {margin-right:0.2em}
 
+/* FP menu */
+nav#fp {
+	background:none;
+	position:fixed;
+	left:0;
+	top:0;
+	height:none;
+	padding:.6em 0;
+	text-align:left;
+}
+#fp input {display: none;}
+#fp label{
+	font-size:2em;
+	color:black;
+	cursor: pointer;
+	z-index: 2;
+	transition:.5s color;
+}
+#fp input:checked + label,
+#fp label:focus,
+#fp label:hover{color:white;}
+
+#fp-menu {
+  position:fixed;
+  left:0;
+  top:1em;
+  z-index:0;
+  width:100vw;
+  height:calc(100vh - 3.5em);
+  background: #0009;
+  margin-top:2.5em;
+  padding:0;
+  list-style-type: none;
+  transform-origin: 0% 0%;
+  transform: translate(-100%, 0);
+  opacity:0;
+  transition:.5s opacity;
+}
+#fp-menu li {
+  transform: translate(-100%, 0);
+  transition:.5s transform;
+}
+#fp-menu li a,
+#fp-menu li a:focus,
+#fp-menu li a:hover {
+  display: block;
+  text-decoration: none;
+  font-size: 1em;
+  margin:0;
+  border-left:1px solid #aff371;
+  border-right:1px solid #aff371;
+  border-top:1px solid #aff371;
+  text-align:left;
+  width:20vw;
+}
+#fp-menu li:last-child a,
+#fp-menu li:last-child a:hover,
+#fp-menu li:last-child a:focus {
+  border-bottom:100vh solid #aff371;
+}
+#fp input:checked ~ ul {
+  transform: none;
+  opacity:1;
+  overflow:hidden;
+  transition:.5s opacity;
+}
+#fp input:checked ~ ul li {
+  transform: none;
+  transition:.5s transform;
+}
+#fp input:not(:checked) li {
+  transform: translate(-100%, 0);
+  transition:.5s transform;
+}
+
+
+
+
+/* Section */
+section {text-align:center;margin:1em 0;padding:6em 1em 1em 1em;}
 section ul li {display:inline}
-
-section {clear:both;text-align:center;margin:1em 0;padding:0 1em 1em 1em;}
-
-
 
 #overlay {
   position: fixed;
@@ -61,7 +151,7 @@ section {clear:both;text-align:center;margin:1em 0;padding:0 1em 1em 1em;}
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: #0009;
   transition: opacity 500ms;
   visibility: visible;
   opacity: 1;
@@ -79,8 +169,8 @@ section {clear:both;text-align:center;margin:1em 0;padding:0 1em 1em 1em;}
   color:black;
 }
 
-.update a {background:linear-gradient(#ad7,#8b6);color:white;border-radius:5px;border:1px solid #9c6;text-decoration:none;padding:.5em 1em}
-.update a:hover {background:#361;color:white;border-color:#361;text-decoration:none;padding:.5em 1em}
+.update a {padding:.5em 1em}
+.update a:hover {padding:.5em 1em}
 .update p {margin:1em;}
 
 .update .close {
@@ -132,13 +222,23 @@ section #criterion table.expert tr{background:#fd3}
 section #criterion table.expert tr:nth-child(2n) {background:#fe9}
 
 section ul {list-style:none;padding:.2em 0 0 0;margin:0}
-section .menu {display:inline-flex;text-align:center}
-section .menu:first-child {background:#dec;border-radius:4px;box-shadow:1px 1px 10px 0 #9c6;padding-left:.1em}
-section .menu:last-child {padding-right:.1em}
-section .menu li ul li a {display:grid;background:linear-gradient(#be8,#9c7);color:green;border-radius:6px;text-decoration:none;padding:.3em 1em;margin:0 .1em .2em .1em;width:12em;height:6em}
+section .menu {
+	display:inline-block;
+	text-align:center;
+	background:#dec;
+	border-radius:4px;
+	box-shadow:1px 1px 10px 0 #9c6;
+}
+section .menu li {display:inline-block;vertical-align:top;}
+section .menu li ul li a {
+	width:10em;
+	display:block;
+	padding:.5em 1em;
+	margin:.2em;
+}
 section .menu li ul li a big {font-size:2.5em}
 section .menu li ul:last-child {margin-bottom:1em}
-section .menu li ul li a:hover {background:linear-gradient(#4a2,#6c4);color:white;}
+section .menu li ul li a:hover {background:linear-gradient(#4a2,#6c4);border:1px solid green;color:white;}
 
 section #classement ul {display:inline;}
 /* Onglet autres */
@@ -172,4 +272,25 @@ section .infobulle:hover span,.infobulle:focus span{
 footer {clear:both;font-size:0.9em;color:#564;padding:0.5em;margin-top:1em;text-align:center}
 footer strong {color:#231}
 
-
+.update a,
+section .menu li ul li a,
+input[type=button], input[type=submit], input[type=reset] {
+	background:linear-gradient(#4a2,#6c4);
+	color:white;
+	border:1px outset #4a2;
+	border-radius:5px;
+	font-size:.9em;
+	text-decoration:none;
+ 	cursor: pointer;
+}
+.update a:hover,.update a:focus,
+section .menu li ul li a:hover,section .menu li ul li a:focus,
+input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover,
+input[type=button]:focus, input[type=submit]:focus, input[type=reset]:focus {
+	background:#fff;
+	border:1px outset #6c4;
+	border-radius:5px;
+	color:#231;
+ 	text-decoration: none;
+ 	cursor: pointer;
+}

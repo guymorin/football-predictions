@@ -1,8 +1,10 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 
 <head>
-    <link rel="stylesheet" type="text/css" media="all"
-      href="style.css" />
+	<meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" media="all" 
+    href="theme/default/style.css" />
 </head>
 
 <body>

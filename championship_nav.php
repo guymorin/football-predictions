@@ -2,7 +2,7 @@
 // Championship navigation include file
 echo "<nav>\n";
 $response = $db->query("SELECT c.id_championship, c.name FROM championship c ORDER BY c.name;");
-echo "  	<a href='/'>&#8617</a>\n"; // Back
+echo "  	<a href='/'>&#127968; $title_homepage</a>\n"; // Back
 echo "  	<a href='index.php?page=championship&exit=1'>".$_SESSION['championshipName']." &#10060;</a>\n";
 echo "  	<a href='index.php?page=dashboard'>$title_dashboard</a>\n";
 echo "  	<a href='index.php?page=championship'>$title_standing</a>\n";
@@ -26,4 +26,5 @@ echo "	    </form>\n";
 
 echo "</nav>\n";
 $response->closeCursor();
+include("include/inc_fp-menu.php");
 ?>

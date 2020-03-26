@@ -50,19 +50,7 @@ if((empty($_SESSION['seasonId']))or(empty($_SESSION['championshipId']))) include
 else {
     if($page!="") include($page.".php");
     else {
-        // Navigation
-        echo "<nav>\n";
-        echo "  <a href='index.php?page=home'>".$_SESSION['seasonName']." &#10060;</a>\n";
-        echo "  <a href='index.php?page=championship&exit=1'>".$_SESSION['championshipName']." &#10060;</a>\n";
-        if(isset($_SESSION['matchdayId'])) {
-            echo "  	<a href='index.php?page=matchday&exit=1'>J".$_SESSION['matchdayNum']." &#10060;</a>\n"; // Sortir
-        }
-        echo "	<a href='index.php?page=season'>&#127937; $title_season</a>\n";
-        echo "	<a href='index.php?page=dashboard'>&#127942; $title_championship</a>\n";
-        echo "	<a href='index.php?page=matchday'>&#128198; $title_matchday</a>\n";
-        echo "	<a href='index.php?page=marketValue'>&#9876; $title_team</a>\n";
-        echo "	<a href='index.php?page=player'>&#127939; $title_player</a>\n";
-        echo "</nav>\n";
+        include("index_nav.php"); // Navigation
         
         // Section with menu
         echo "<section>\n";
@@ -107,7 +95,7 @@ else {
         }   
         echo "            <li><h2>$title_team</h2>\n";
         echo "                <ul>\n";
-        echo "                    <li><a href='index.php?page=marketValue'>$title_marketValue<br /><big>&#9876;</big></a></li>\n";
+        echo "                    <li><a href='index.php?page=marketValue'>$title_marketValue<br /><big>&#127933;</big></a></li>\n";
         echo "                </ul>\n";
         echo "            </li>\n";
         echo "            <li><h2>$title_player</h2>\n";
