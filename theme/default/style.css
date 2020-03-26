@@ -66,7 +66,7 @@ nav label {margin-right:0.2em}
 /* FP menu */
 nav#fp {
 	background:none;
-	position:fixed;
+	position:absolute;
 	left:0;
 	top:0;
 	height:none;
@@ -89,7 +89,7 @@ nav#fp {
   position:fixed;
   left:0;
   top:1em;
-  z-index:0;
+  z-index:1;
   width:100vw;
   height:calc(100vh - 3.5em);
   background: #0009;
@@ -133,12 +133,6 @@ nav#fp {
   transform: none;
   transition:.5s transform;
 }
-#fp input:not(:checked) li {
-  transform: translate(-100%, 0);
-  transition:.5s transform;
-}
-
-
 
 
 /* Section */
@@ -250,14 +244,14 @@ section #classement li p {background:linear-gradient(#8b6,#582);color:white;bord
 section #classement li a:hover{text-decoration:none;background:white;color:#583}
 section #classement th {min-width:2em}
 
-section .infobulle span{
+section .tooltip span{
   display:none; 
 }
-section .infobulle{
+section .tooltip{
   text-decoration:none; 
-  position:relative;                
+  position:relative;
 }
-section .infobulle:hover span,.infobulle:focus span{
+section .tooltip:hover span,.tooltip:focus span{
   display:block; 
   position:absolute; 
   top:.3em; 

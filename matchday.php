@@ -231,7 +231,7 @@ elseif(isset($_SESSION['matchdayId'])){
         echo "<span style='color:".valColor($roi)."'>";
         if($roi>0) echo "+";
         echo $roi."&nbsp;%</span>";
-        echo "&nbsp;<a href='#' class='infobulle'>&#128172;".valRoi($roi)."</a>";
+        echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($roi)."</a>";
         echo "</td>\n";
         echo "    </tr>\n";
   
@@ -254,7 +254,7 @@ elseif(isset($_SESSION['matchdayId'])){
         echo "      <td>$title_oddsAveragePlayed</td>\n";
         echo "      <td>".$averageOdds;
         if(($averageOdds<1.8)||($averageOdds>2.3)){
-            echo "&nbsp;<a href='#' class='infobulle'>&#128172;".valOdds($averageOdds)."</a>";
+            echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valOdds($averageOdds)."</a>";
         }
         echo "</td>\n";
         echo "      <td></td>\n";
