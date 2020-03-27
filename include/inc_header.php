@@ -10,5 +10,6 @@
 <body>
 
 <header>
+	<?php include("include/inc_fp-menu.php");?>
     <h1><a href="/"><?php echo "$title_site ".$_SESSION['seasonName'];?></a></h1>
 </header>

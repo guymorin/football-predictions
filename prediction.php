@@ -20,7 +20,7 @@ if(isset($_GET['expert'])) $expert=$_GET['expert'];
 if($modify==1){
 
     $rMatch="";
-    if(isset($_POST['id_match'])) $idMatch=$_POST['id_match'];
+    if(isset($_POST['id_matchgame'])) $idMatch=$_POST['id_matchgame'];
     if(isset($_POST['result'])) $rMatch=$_POST['result'];
     if(isset($_POST['motivation1'])) $moMatch1=array_filter($_POST['motivation1']);
     if(isset($_POST['currentForm1'])) $seMatch1=array_filter($_POST['currentForm1']);
@@ -42,7 +42,7 @@ if($modify==1){
     
     foreach($idMatch as $k){
         if($rMatch[$k]!=""){
-            $req.="UPDATE matchs SET result='".$rMatch[$k]."' WHERE id_match='".$k."';";
+            $req.="UPDATE matchgame SET result='".$rMatch[$k]."' WHERE id_match='".$k."';";
         }
         $response = $db->query("SELECT COUNT(*) as nb FROM criterion WHERE id_match='".$k."';");
         $data = $response->fetch();

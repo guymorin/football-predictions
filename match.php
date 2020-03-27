@@ -32,7 +32,7 @@ else {
     $idMatch=$team1=$team2=0;
     $result=$date="";
     $odds1=$oddsD=$odds2=0;
-    if(isset($_POST['id_match'])) $idMatch=$_POST['id_match'];
+    if(isset($_POST['id_matchgame'])) $idMatch=$_POST['id_matchgame'];
     if(isset($_POST['team_1'])) $team1=$_POST['team_1'];
     if(isset($_POST['team_2'])) $team2=$_POST['team_2'];
     if(isset($_POST['result'])) $result=$_POST['result'];
@@ -61,9 +61,9 @@ else {
     }
     // Delete
     elseif($delete==1){
-            $req="DELETE FROM matchs WHERE id_match='".$idMatch."';";
+            $req="DELETE FROM matchgame WHERE id_match='".$idMatch."';";
             $db->exec($req);
-            $db->exec("ALTER TABLE matchs AUTO_INCREMENT=0;");
+            $db->exec("ALTER TABLE matchgame AUTO_INCREMENT=0;");
             popup($title_deleted,"index.php?page=match");
     }
     // Create
@@ -71,8 +71,8 @@ else {
         echo "<h2>$title_createAMatch</h2>\n";
         // Create popup
         if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
-            $db->exec("ALTER TABLE matchs AUTO_INCREMENT=0;");
-            $req="INSERT INTO matchs VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0,0,0);";
+            $db->exec("ALTER TABLE matchgame AUTO_INCREMENT=0;");
+            $req="INSERT INTO matchgame VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0,0,0);";
             $db->exec($req);
             popup($title_created,"index.php?page=match&create=1");
         }
@@ -126,13 +126,13 @@ else {
         echo "<h2>$title_modifyAMatch $title_MD".$_SESSION['matchdayNum']."</h2>\n";
         // Modify popup
         if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
-            $req="UPDATE matchs SET id_matchday='".$_SESSION['matchdayId']."', team_1='".$team1."', team_2='".$team2."', result='".$result."' WHERE id_match='".$idMatch."';";
+            $req="UPDATE matchgame SET id_matchday='".$_SESSION['matchdayId']."', team_1='".$team1."', team_2='".$team2."', result='".$result."' WHERE id_match='".$idMatch."';";
             $db->exec($req);
             popup($title_modifyAMatch,"index.php?page=match");
         } 
         // Modify form
         elseif($idMatch>0) {
-            $req="SELECT m.id_match,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchs m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_match='".$idMatch."';";
+            $req="SELECT m.id_matchgame,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_match='".$idMatch."';";
             $response = $db->query($req);
             $data = $response->fetch();
             $name1=$data['name1'];
@@ -148,7 +148,7 @@ else {
             echo "	 <form action='index.php?page=match' method='POST'>\n";
             echo "      <input type='hidden' name='modify' value=1>\n";    
             echo "	    <p><label>Id.</label>\n";
-            echo "      <input type='text' name='id_match' readonly value='".$data['id_match']."'></p>\n";
+            echo "      <input type='text' name='id_matchgame' readonly value='".$data['id_matchgame']."'></p>\n";
             echo "	    <label>$title_team 1</label>\n";
             echo "  	<select name='team_1'>\n";
             echo "  		<option value='0'>...</option>\n";
@@ -197,7 +197,7 @@ else {
             
             echo "	 <form action='index.php?page=match' method='POST' onsubmit='return confirm()'>\n";
             echo "      <input type='hidden' name='delete' value=1>\n";
-            echo "      <input type='hidden' name='id_match' value=$idMatch>\n";
+            echo "      <input type='hidden' name='id_matchgame' value=$idMatch>\n";
             echo "      <input type='submit' value='&#9888 $title_delete $name1 - $name2 &#9888'>\n";
             echo "	 </form>\n";
             $response->closeCursor();  
@@ -208,11 +208,11 @@ else {
             echo "  <form action='index.php?page=match' method='POST'>\n";             // Modifier
             echo "      <input type='hidden' name='modify' value='1'>\n"; 
             echo "      <label>$title_modifyAMatch :</label>\n";                                    
-            echo "  	<select multiple size='10' name='id_match'>\n";
-            $response = $db->query("SELECT m.id_match,c1.name as name1,c2.name as name2, m.result FROM matchs m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_matchday='".$_SESSION['matchdayId']."';");
+            echo "  	<select multiple size='10' name='id_matchgame'>\n";
+            $response = $db->query("SELECT m.id_matchgame,c1.name as name1,c2.name as name2, m.result FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_matchday='".$_SESSION['matchdayId']."';");
             while ($data = $response->fetch())
             {
-                echo "  		<option value='".$data['id_match']."'>";
+                echo "  		<option value='".$data['id_matchgame']."'>";
                 if($data['result']!=""){
                     if($data['result']=="D") echo "[$title_draw] ";
                     else echo "[".$data['result']."] ";

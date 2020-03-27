@@ -82,7 +82,7 @@ else {
             echo "	 </form>\n";
             
             $response = $db->query("SELECT DISTINCT j.number FROM matchday j 
-            LEFT JOIN matchs m ON m.id_matchday=j.id_matchday 
+            LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday 
             WHERE m.result='' AND j.id_season=".$_SESSION['seasonId']." AND j.id_championship=".$_SESSION['championshipId']." ORDER BY j.number;"); 
             $data = $response->fetch();
             echo "  	<form action='index.php' method='POST'>";

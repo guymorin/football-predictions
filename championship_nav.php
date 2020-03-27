@@ -26,5 +26,5 @@ echo "	    </form>\n";
 
 echo "</nav>\n";
 $response->closeCursor();
-include("include/inc_fp-menu.php");
+
 ?>

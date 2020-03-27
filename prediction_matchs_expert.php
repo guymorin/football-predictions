@@ -1,5 +1,5 @@
 <?php
-// Predictions matchs expert include file
+// Predictions matchgame expert include file
 
 // Switch form
 echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";             // Basculer
@@ -14,7 +14,7 @@ echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsu
 echo "  <input type='hidden' name='modify' value='1'>\n"; 
 echo "  <input type='hidden' name='expert' value='1'>\n";
 
-$req="SELECT m.id_match,
+$req="SELECT m.id_matchgame,
 cr.motivation1,cr.motivation2,
 cr.currentForm1,cr.currentForm2,
 cr.physicalForm1,cr.physicalForm2,
@@ -23,10 +23,10 @@ cr.bestPlayers1,cr.bestPlayers2,
 cr.marketValue1,cr.marketValue2,
 cr.home_away1,cr.home_away2,
 c1.name as name1,c2.name as name2,
-m.result, m.date FROM matchs m 
+m.result, m.date FROM matchgame m 
 LEFT JOIN team c1 ON m.team_1=c1.id_team 
 LEFT JOIN team c2 ON m.team_2=c2.id_team 
-LEFT JOIN criterion cr ON cr.id_match=m.id_match 
+LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
 WHERE m.id_matchday='".$_SESSION['matchdayId']."' ORDER BY m.date;";
 $response = $db->query($req);
 
@@ -34,7 +34,7 @@ $response = $db->query($req);
 while ($data = $response->fetch())
 {
     $win="";
-    $id=$data['id_match'];
+    $id=$data['id_matchgame'];
     $sum1=
         $data['motivation1']
         +$data['currentForm1']
@@ -61,7 +61,7 @@ while ($data = $response->fetch())
     echo "  		<tr>\n";
     echo "  		  <th></th>\n";
     echo "            <th>".$data['name1']."</th>\n";
-    echo "            <th><input type='hidden' name='id_match[]' value='".$data['id_match']."'></th>\n";
+    echo "            <th><input type='hidden' name='id_match[]' value='".$data['id_matchgame']."'></th>\n";
     echo "            <th>".$data['name2']."</th>\n";
     echo "          </tr>\n";
     

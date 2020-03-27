@@ -13,7 +13,7 @@ if(isset($_POST['modify'])) $modify=$_POST['modify'];
 // Modify
 // Modify popup
 if($modify==1){
-    if(isset($_POST['id_match'])) $idMatch=$_POST['id_match'];
+    if(isset($_POST['id_matchgame'])) $idMatch=$_POST['id_matchgame'];
     if(isset($_POST['result'])) $rMatch=$_POST['result'];
     if(isset($_POST['date'])) $dMatch=$_POST['date'];
     if(isset($_POST['odds1'])) $c1Match=$_POST['odds1'];
@@ -24,7 +24,7 @@ if($modify==1){
     $cpt=0;
     $req="";
     foreach($idMatch as $k){
-        $req.="UPDATE matchs SET ";
+        $req.="UPDATE matchgame SET ";
         $req.="result='".$rMatch[$k]."'";
         $cpt=1;
         if($dMatch[$k]!=""){
@@ -87,9 +87,9 @@ else {
     changeMD($db,$title_results." ".$title_MD,"results");
     echo "<form id='results' action='index.php?page=results' method='POST' onsubmit='return confirm();'>\n";
     echo "      <input type='hidden' name='modify' value='1'>\n";
-    $req="SELECT m.id_match,
+    $req="SELECT m.id_matchgame,
         c1.name as name1,c2.name as name2,
-        m.result, m.date, m.odds1, m.oddsD, m.odds2, m.red1, m.red2 FROM matchs m
+        m.result, m.date, m.odds1, m.oddsD, m.odds2, m.red1, m.red2 FROM matchgame m
         LEFT JOIN team c1 ON m.team_1=c1.id_team
         LEFT JOIN team c2 ON m.team_2=c2.id_team
         WHERE m.id_matchday='".$_SESSION['matchdayId']."' ORDER BY m.date;";
@@ -110,8 +110,8 @@ else {
     
     while ($data = $response->fetch())
     {
-        $id=$data['id_match'];
-        echo "<input type='hidden' name='id_match[]' value='".$data['id_match']."'>\n";
+        $id=$data['id_matchgame'];
+        echo "<input type='hidden' name='id_match[]' value='".$data['id_matchgame']."'>\n";
         echo "  		<tr>\n";
         echo "  		  <td><input type='date' name='date[$id]' value='".$data['date']."'></td>";
         echo "  		  <td><input type='radio' name='result[$id]' value=''";

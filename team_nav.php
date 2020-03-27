@@ -15,5 +15,5 @@ echo "	       </select>\n";
 echo "         <noscript><input type='submit'></noscript>\n";
 echo "	    </form>\n";
 echo "  </nav>\n";
-include("include/inc_fp-menu.php");
+
 ?>

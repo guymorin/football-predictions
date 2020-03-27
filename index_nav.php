@@ -7,7 +7,7 @@ if(isset($_SESSION['matchdayId'])) {
     echo "  	<a href='index.php?page=matchday&exit=1'>J".$_SESSION['matchdayNum']." &#10060;</a>\n"; // Sortir
 }
 echo "</nav>\n";
-include("include/inc_fp-menu.php");
+
 ?>
 
 </nav>

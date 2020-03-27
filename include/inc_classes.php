@@ -67,7 +67,7 @@ function criterion($type,$data,$db){
                 elseif(($_SESSION['matchdayNum']-1)>0) {
                     $num = ($_SESSION['matchdayNum']-1);
                     $req="
-                    SELECT m.team_1 as team FROM matchs m
+                    SELECT m.team_1 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_1
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
                     WHERE j.number='".$num."'
@@ -76,7 +76,7 @@ function criterion($type,$data,$db){
                     AND s.id_championship='".$_SESSION['championshipId']."'
                     AND s.id_season='".$_SESSION['seasonId']."'
                     UNION
-                    SELECT m.team_2 as team FROM matchs m
+                    SELECT m.team_2 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_2
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
                     WHERE j.number='".$num."'
@@ -94,7 +94,7 @@ function criterion($type,$data,$db){
                 elseif(($_SESSION['matchdayNum']-1)>0) {
                     $num = ($_SESSION['matchdayNum']-1);
                     $req="
-                    SELECT m.team_1 as team FROM matchs m
+                    SELECT m.team_1 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_1
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
                     WHERE j.number='".$num."'
@@ -103,7 +103,7 @@ function criterion($type,$data,$db){
                     AND s.id_championship='".$_SESSION['championshipId']."'
                     AND s.id_season='".$_SESSION['seasonId']."'
                     UNION
-                    SELECT m.team_2 as team FROM matchs m
+                    SELECT m.team_2 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_2
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
                     WHERE j.number='".$num."'

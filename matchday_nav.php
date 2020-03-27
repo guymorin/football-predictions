@@ -12,6 +12,6 @@ if(isset($_SESSION['matchdayId'])) {
     echo "  	<a href='index.php?page=match&modify=1'>$title_modifyAMatch</a>\n";
 } else echo "  	<a href='index.php?page=matchday&create=1'>$title_createAMatchday</a>\n";
 echo "  </nav>\n";
-include("include/inc_fp-menu.php");
+
 ?>
 

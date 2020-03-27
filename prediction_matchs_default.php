@@ -1,5 +1,5 @@
 <?php
-// Predictions matchs default include file
+// Predictions matchgame default include file
 
 changeMD($db,$title_predictions." ".$title_MD,"prediction"); // Arrows to change MD
 
@@ -13,7 +13,7 @@ echo "</form>\n";
 echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";
 echo "  <input type='hidden' name='modify' value='1'>\n";
 
-$req="SELECT m.id_match,
+$req="SELECT m.id_matchgame,
 cr.motivation1,cr.motivation2,
 cr.currentForm1,cr.currentForm2,
 cr.physicalForm1,cr.physicalForm2,
@@ -23,17 +23,17 @@ cr.marketValue1,cr.marketValue2,
 cr.home_away1,cr.home_away2,
 c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
 c1.weather_code,
-m.result, m.date FROM matchs m 
+m.result, m.date FROM matchgame m 
 LEFT JOIN team c1 ON m.team_1=c1.id_team 
 LEFT JOIN team c2 ON m.team_2=c2.id_team 
-LEFT JOIN criterion cr ON cr.id_match=m.id_match 
+LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
 WHERE m.id_matchday='".$_SESSION['matchdayId']."' ORDER BY m.date;";
 $response = $db->query($req);
 
 /* Requests */
 // Best teams home
 $req="
-SELECT c.id_team, c.name, COUNT(m.id_match) as matchs,
+SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchs,
 SUM(
     CASE WHEN m.result = '1' AND m.team_1=c.id_team THEN 3 ELSE 0 END +
     CASE WHEN m.result = 'D' AND m.team_1=c.id_team THEN 1 ELSE 0 END 
@@ -41,7 +41,7 @@ SUM(
 FROM team c 
 LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
 LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship) 
-LEFT JOIN matchs m ON m.id_matchday=j.id_matchday 
+LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday 
 WHERE scc.id_season='".$_SESSION['seasonId']."' 
 AND scc.id_championship='".$_SESSION['championshipId']."' 
 AND (c.id_team=m.team_1 OR c.id_team=m.team_2) 
@@ -54,7 +54,7 @@ while($data=$r->fetchColumn(0))   $domBonus[] = $data;
     
 // Worst teams home
 $req="
-SELECT c.id_team, c.name, COUNT(m.id_match) as matchs,
+SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchs,
 SUM(
     CASE WHEN m.result = '1' AND m.team_1=c.id_team THEN 3 ELSE 0 END +
     CASE WHEN m.result = 'D' AND m.team_1=c.id_team THEN 1 ELSE 0 END 
@@ -62,7 +62,7 @@ SUM(
 FROM team c 
 LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
 LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship) 
-LEFT JOIN matchs m ON m.id_matchday=j.id_matchday 
+LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday 
 WHERE scc.id_season='".$_SESSION['seasonId']."' 
 AND scc.id_championship='".$_SESSION['championshipId']."' 
 AND (c.id_team=m.team_1 OR c.id_team=m.team_2) 
@@ -75,7 +75,7 @@ while($data=$r->fetchColumn(0))   $domMalus[] = $data;
     
 // Best teams away
 $req="
-SELECT c.id_team, c.name, COUNT(m.id_match) as matchs,
+SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchs,
 SUM(
     CASE WHEN m.result = '1' AND m.team_2=c.id_team THEN 3 ELSE 0 END +
     CASE WHEN m.result = 'D' AND m.team_2=c.id_team THEN 1 ELSE 0 END 
@@ -83,7 +83,7 @@ SUM(
 FROM team c 
 LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
 LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship) 
-LEFT JOIN matchs m ON m.id_matchday=j.id_matchday 
+LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday 
 WHERE scc.id_season='".$_SESSION['seasonId']."' 
 AND scc.id_championship='".$_SESSION['championshipId']."' 
 AND (c.id_team=m.team_1 OR c.id_team=m.team_2) 
@@ -96,7 +96,7 @@ while($data=$r->fetchColumn(0))   $extBonus[] = $data;
     
 // Worst teams away
 $req="
-SELECT c.id_team, c.name, COUNT(m.id_match) as matchs,
+SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchs,
 SUM(
     CASE WHEN m.result = '1' AND m.team_2=c.id_team THEN 3 ELSE 0 END +
     CASE WHEN m.result = 'D' AND m.team_2=c.id_team THEN 1 ELSE 0 END 
@@ -104,7 +104,7 @@ SUM(
 FROM team c 
 LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
 LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship) 
-LEFT JOIN matchs m ON m.id_matchday=j.id_matchday 
+LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday 
 WHERE scc.id_season='".$_SESSION['seasonId']."' 
 AND scc.id_championship='".$_SESSION['championshipId']."' 
 AND (c.id_team=m.team_1 OR c.id_team=m.team_2) 
@@ -213,8 +213,8 @@ while ($data = $response->fetch())
     $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
     SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
     SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
-    FROM matchs m 
-    LEFT JOIN criterion cr ON cr.id_match=m.id_match 
+    FROM matchgame m 
+    LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
     WHERE cr.motivation1='".$data['motivation1']."' 
     AND cr.motivation2='".$data['motivation2']."' 
     AND cr.currentForm1='".$data['currentForm1']."' 
@@ -237,7 +237,7 @@ while ($data = $response->fetch())
     
     // Criterion sum
     $win="";
-    $id=$data['id_match'];
+    $id=$data['id_matchgame'];
     $sum1=
         $data['motivation1']
         +$serieC1
@@ -262,7 +262,7 @@ while ($data = $response->fetch())
     if(($historyDraw>$sum1)&&($historyDraw>$sum2)) $prediction="N";
     
     // Display table
-    if($data['result']=="") echo "<input type='hidden' name='id_match[]' value='".$data['id_match']."'>";
+    if($data['result']=="") echo "<input type='hidden' name='id_match[]' value='".$data['id_matchgame']."'>";
     echo $history[0];
     echo "	 <table>\n";
    

@@ -8,5 +8,5 @@ echo "  	<a href='index.php?page=player&create=1'>$title_createAPlayer</a>\n";
 echo "  	<a href='index.php?page=player&modify=1'>$title_modifyAPlayer</a>\n";
 echo "  </nav>\n";
 $response->closeCursor();
-include("include/inc_fp-menu.php");
+
 ?>
