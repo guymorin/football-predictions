@@ -121,7 +121,7 @@ elseif(isset($_SESSION['championshipId'])&&($exit==0)){
     echo "            <th>$title_lose</th>\n";
     echo "      </tr>\n";
     
-    $req="SELECT c.id_team, c.name, COUNT(m.id_match) as matchs,
+    $req="SELECT c.id_team, c.name, COUNT(m.id_match) as match,
     	SUM(";
     if($standaway==0){
             $req.="CASE WHEN m.result = '1' AND m.team_1=c.id_team THEN 3 ELSE 0 END +
@@ -160,7 +160,7 @@ elseif(isset($_SESSION['championshipId'])&&($exit==0)){
     FROM team c 
     LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
     LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship) 
-    LEFT JOIN matchs m ON m.id_matchday=j.id_matchday 
+    LEFT JOIN match m ON m.id_matchday=j.id_matchday 
     WHERE scc.id_season='".$_SESSION['seasonId']."' 
     AND scc.id_championship='".$_SESSION['championshipId']."' 
     AND (c.id_team=m.team_1 OR c.id_team=m.team_2) 
@@ -183,7 +183,7 @@ elseif(isset($_SESSION['championshipId'])&&($exit==0)){
         echo "</td>\n";
         echo "          <td>".$data['name']."</td>\n";
         echo "          <td>".$data['points']."</td>\n";
-        echo "          <td>".$data['matchs']."</td>\n";
+        echo "          <td>".$data['match']."</td>\n";
         echo "          <td>".$data['gagne']."</td>\n";
         echo "          <td>".$data['nul']."</td>\n";
         echo "          <td>".$data['perdu']."</td>\n";
