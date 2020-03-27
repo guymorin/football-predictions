@@ -38,7 +38,7 @@ if($exit==1){
 elseif($delete==1){
         $req="DELETE FROM championship WHERE id_championship='".$championshipId."';";
         $db->exec($req);
-        $db->exec("ALTER TABLE championnats AUTO_INCREMENT=0;");
+        $db->exec("ALTER TABLE championship AUTO_INCREMENT=0;");
         popup($title_deleted,"index.php?page=championship");
 }
 // Created popup or create form
@@ -46,8 +46,8 @@ elseif($create==1){
     echo "<h2>$title_createAChampionship</h2>\n";
     // Created popup
     if($championshipName!="") {
-        $db->exec("ALTER TABLE championnats AUTO_INCREMENT=0;");
-        $req="INSERT INTO championnats VALUES(NULL,'".$championshipName."');";
+        $db->exec("ALTER TABLE championship AUTO_INCREMENT=0;");
+        $req="INSERT INTO championship VALUES(NULL,'".$championshipName."');";
         $db->exec($req);
         popup($title_created,"index.php?page=championship");
     }
@@ -66,7 +66,7 @@ elseif($modify==1){
     echo "<h2>$title_modifyAChampionship</h2>\n";
     // Modify popup
     if($championshipName!="") {
-        $req="UPDATE championnats SET name='$championshipName' WHERE id_championship='$championshipId';";
+        $req="UPDATE championship SET name='$championshipName' WHERE id_championship='$championshipId';";
         $db->exec($req);
         popup($title_modified,"index.php?page=championship");
     }
