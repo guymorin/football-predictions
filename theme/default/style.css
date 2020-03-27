@@ -60,6 +60,7 @@ header h1 {margin:0;padding:0}
 header h1 a {
 	font-family:hemi, sans-serif;
 	text-decoration:none;
+	text-shadow:1px 1px #0003;
 	color:white;
 }
 header h1 a:hover {text-decoration:none}
@@ -107,7 +108,7 @@ nav label {margin-right:.2em}
 	display:inline-block;
 	padding:.2em 0;
 	font-size:2em;
-	color:black;
+	color:#fff9;
 	cursor: pointer;
 	transition:.5s color;
 }
@@ -119,6 +120,7 @@ nav label {margin-right:.2em}
   position:absolute;
   left:0;
   top:3.5em;
+  z-index:1;
   width:100%;
   height:calc(100% - 3.5em);
   background:#0009;
@@ -218,14 +220,17 @@ section ul li {display:inline}
 .update .close:hover {background:none;border:none;color:#361;padding:.1em .3em;}
 
 
-section #changeMD {display:inline-block;margin:0 auto;text-align:center;height:3em}
-section #changeMD input[type=submit] {min-width:0;width:4em;text-align:center;margin:0 .5em}
-section #changeMD input[type=submit]:first-child{float:left}
-section #changeMD input[type=submit]:last-child{float:right}
-section #changeMD form,
-section #changeMD input,
-section #changeMD h2 {display:inline-block;margin:0;padding:0}
-section #changeMD h2 {position:relative;top:-1em;padding:1em;}
+section #changeMD {display:inline-block;margin:0 auto;text-align:center;}
+section #changeMD input[type=submit] {
+	height:2em;
+	min-width:0;
+	width:2em;
+	margin:0 .5em
+}
+section #changeMD form {
+	display:inline-block;
+	width:3em;
+}
 
 section table.stats th,
 section table.stats td{width:1.5em;height:2em}
