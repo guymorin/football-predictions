@@ -148,33 +148,44 @@ function changeMD($db,$page){
     include("lang/fr.php");
     // Arrows to change matchday
     echo "<div id='changeMD'>\n";
-        $req="SELECT id_matchday, number FROM matchday WHERE number>=".($_SESSION['matchdayNum']-1)." AND number<=".($_SESSION['matchdayNum']+1)." AND id_season='".$_SESSION['seasonId']."' AND id_championship='".$_SESSION['championshipId']."' ORDER BY number;";
+        $req="SELECT id_matchday, number FROM matchday 
+        WHERE number>=".($_SESSION['matchdayNum']-1)." 
+        AND number<>".$_SESSION['matchdayNum']." 
+        AND number<=".($_SESSION['matchdayNum']+1)." 
+        AND id_season='".$_SESSION['seasonId']."' 
+        AND id_championship='".$_SESSION['championshipId']."' 
+        ORDER BY number;";
         $response = $db->query($req);
         $nb=sizeof($response->fetchAll());
-        if($nb==2) $add="<input type='submit' value='' readonly>\n";
-        $cpt=0;
-        
+
         $response = $db->query($req);
         while ($data = $response->fetch())
         {
-            $cpt++;
-            
-            if($data['number']==$_SESSION['matchdayNum']-1) $cpt="&#x3008;   ";// Previous
-            if($data['number']==$_SESSION['matchdayNum']+1) $cpt="   &#x3009;";// Next
-            
-            if($data['number']==$_SESSION['matchdayNum']) {
-                if($cpt==1) echo $add;
-                echo "<h2>$title_matchday ".$_SESSION['matchdayNum']."</h2>\n"; 
-                if($nb==1)   echo $add;
-            } else {
-                echo "<form action='index.php?page=$page' method='POST'>\n";
-                echo "  <input type='hidden' name='matchdaySelect' value='".$data['id_matchday'].",".$data['number']."'>\n";
-                echo "  <input type='submit' value='$cpt'>\n"; // Arrow button
-                echo "</form>\n";
+            switch($nb){
+                case 1:
+                case 2:
+                    // Previous button
+                    if($data['number']==$_SESSION['matchdayNum']-1){
+                        $button1="  <input type='submit' value='<'>\n";
+                        $button1.="<input type='hidden' name='matchdaySelect' ";
+                        $button1.="value='".$data['id_matchday'].",".$data['number']."'>\n";
+                    }
+                    // Next button
+                    if($data['number']==$_SESSION['matchdayNum']+1){
+                        $button2="  <input type='submit' value='>'>\n";
+                        $button2.="<input type='hidden' name='matchdaySelect' ";
+                        $button2.="value='".$data['id_matchday'].",".$data['number']."'>\n";
+                    }
+                    break;
             }
             $nb--;
         }
-        
+        echo "<form action='index.php?page=$page' method='POST'>\n";
+        echo $button1;
+        echo "</form>\n";
+        echo "<form action='index.php?page=$page' method='POST'>\n";
+        echo $button2;
+        echo "</form>\n";
     echo "</div>\n";
     $response->closeCursor();
 }

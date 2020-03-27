@@ -12,7 +12,7 @@ echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 // Only if a matchday is selected
 if(isset($_SESSION['matchdayId'])){
 
-    changeMD($db,$title_teamOfTheWeek." ".$title_MD,"teamOfTheWeek");
+    changeMD($db,"teamOfTheWeek");
     
     // Popup modified
     if($teamOfTheWeek==1){

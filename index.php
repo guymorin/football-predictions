@@ -62,7 +62,7 @@ else {
         echo "                    <li><a href='index.php?page=championship'>$title_standing<br /><big>$icon_championship</big></a></li>\n";
         echo "               </ul>\n";
         echo "            </li>\n";
-        echo "            <li><h2>$icon_matchday $title_matchday</h2>\n";
+        echo "            <li><h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
         if(isset($_SESSION['matchdayId'])){
             echo "                <ul>\n";
             echo "                    <li><a href='index.php?page=matchday'>$title_statistics<br /><big>$icon_matchday</big></a></li>\n";

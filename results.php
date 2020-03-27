@@ -86,7 +86,7 @@ if($modify==1){
 }
 // Modify form    
 else {    
-    changeMD($db,$title_results." ".$title_MD,"results");
+    changeMD($db,"results");
     echo "<h3>$title_results</h3>\n";
     echo "<form id='results' action='index.php?page=results' method='POST' onsubmit='return confirm();'>\n";
     echo "      <input type='hidden' name='modify' value='1'>\n";

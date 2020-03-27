@@ -29,7 +29,7 @@ if(empty($_SESSION['matchdayId'])) {
 // Matchday selected
 else {
     echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
-    
+
     // Values
     $idMatch=$team1=$team2=0;
     $result=$date="";
@@ -61,6 +61,7 @@ else {
     }
     // Create
     elseif($create==1){
+
         echo "<h3>$title_createAMatch</h3>\n";
         // Create popup
         if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
@@ -115,7 +116,7 @@ else {
     	}
     }
     // Modify
-    else{
+    else {
         echo "<h3>$title_modifyAMatch</h3>\n";
         // Modify popup
         if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
