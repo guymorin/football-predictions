@@ -20,7 +20,7 @@ body {
  font-size: 0.8em;
  }
 h1 {
- font: 280% hemi, sans-serif; 
+ font: 280% sans-serif; 
  text-transform:uppercase;
  text-align: center;
  }
@@ -51,34 +51,48 @@ input[type='number'] {width:6em;padding:1em 0}
 
 /* Header and nav */
 
-header{position:fixed;width:100%;height:3.5em;padding:.4em 0 0 0;background:#371 linear-gradient(#482,#260);}
-header, header h1 {margin:0;padding:0}
-header a {text-decoration:none;color:white;}
-header a:hover {text-decoration:none}
+header{
+	height:3.5em;
+	overflow:hidden;
+	padding:0;
+	background:#371 linear-gradient(#482,#260);
+}
+header h1 {margin:0;padding:0}
+header h1 a {
+	font-family:hemi, sans-serif;
+	text-decoration:none;
+	color:white;
+}
+header h1 a:hover {text-decoration:none}
 
-nav {position:fixed;top:3.5em;width:100%;height:3.5em;text-align:center;background:linear-gradient(#bf7,#9d6);color:#231;margin:0;text-transform:uppercase;}
+nav {
+	height:3.5em;
+	text-align:center;
+	background:linear-gradient(#bf7,#9d6);
+	color:#231;
+	text-transform:uppercase;
+}
 nav a {display:inline-block;background:#4a2;color:white;padding:1em;text-decoration:none;margin:.1em 0;transition:.5s background}
 nav a:hover {background:#fff;padding:1em;color:#231;text-decoration:none}
 nav form {display:inline}
 nav form, nav select, nav label, nav input {margin:0 .5em;padding:0}
-nav label {margin-right:0.2em}
+nav label {margin-right:.2em}
 
 /* FP menu */
-nav#fp {
+#fp {
 	background:none;
-	position:absolute;
-	left:0;
-	top:0;
-	height:none;
-	padding:.6em 0;
-	text-align:left;
+	padding:0;
+	display:block;
+	width:2em;
+	float:left;
 }
 #fp input {display: none;}
 #fp label{
+	display:inline-block;
+	padding:.2em 0;
 	font-size:2em;
 	color:black;
 	cursor: pointer;
-	z-index: 2;
 	transition:.5s color;
 }
 #fp input:checked + label,
@@ -86,25 +100,36 @@ nav#fp {
 #fp label:hover{color:white;}
 
 #fp-menu {
-  position:fixed;
+  position:absolute;
   left:0;
-  top:1em;
-  z-index:1;
-  width:100vw;
-  height:calc(100vh - 3.5em);
-  background: #0009;
-  margin-top:2.5em;
+  top:3.5em;
+  width:100%;
+  height:calc(100% - 3.5em);
+  background:#0009;
   padding:0;
   list-style-type: none;
-  transform-origin: 0% 0%;
-  transform: translate(-100%, 0);
   opacity:0;
+  visibility:hidden;
   transition:.5s opacity;
 }
-#fp-menu li {
-  transform: translate(-100%, 0);
-  transition:.5s transform;
+#fp input:checked ~ #fp-menu {
+  opacity:1;
+  visibility:visible;
+  overflow:hidden;
+  transition:.5s opacity;
 }
+#fp-menu ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+  transform: translate(-100%, 0);
+  transition:.7s transform;
+}
+#fp input:checked ~ #fp-menu ul {
+  transform: none;
+  transition:.7s transform;
+}
+
 #fp-menu li a,
 #fp-menu li a:focus,
 #fp-menu li a:hover {
@@ -123,20 +148,9 @@ nav#fp {
 #fp-menu li:last-child a:focus {
   border-bottom:100vh solid #aff371;
 }
-#fp input:checked ~ ul {
-  transform: none;
-  opacity:1;
-  overflow:hidden;
-  transition:.5s opacity;
-}
-#fp input:checked ~ ul li {
-  transform: none;
-  transition:.5s transform;
-}
-
 
 /* Section */
-section {text-align:center;margin:1em 0;padding:6em 1em 1em 1em;}
+section {text-align:center;margin:1em 0;padding:1em;}
 section ul li {display:inline}
 
 #overlay {
@@ -149,6 +163,7 @@ section ul li {display:inline}
   transition: opacity 500ms;
   visibility: visible;
   opacity: 1;
+  z-index: 1;
 }
 
 .update {
