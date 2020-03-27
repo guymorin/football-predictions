@@ -6,6 +6,7 @@
 include("team_nav.php");
 
 echo "<section>\n";
+echo "<h2>$icon_team $title_team</h2>\n";
 
 // Values
 $teamId=0;
@@ -31,7 +32,7 @@ if($delete==1){
 }
 // Create
 if($create==1){
-    echo "<h2>$title_createATeam</h2>\n";
+    echo "<h3>$title_createATeam</h3>\n";
     // Create popup
     if($teamName!="") {
         $db->exec("ALTER TABLE team AUTO_INCREMENT=0;");
@@ -52,7 +53,7 @@ if($create==1){
 // Modify
 elseif($modify==1){
 
-    echo "<h2>$title_modifyATeam</h2>\n";
+    echo "<h3>$title_modifyATeam</h3>\n";
 
     // Modify popup
     if($teamName!="") {
@@ -66,11 +67,13 @@ elseif($modify==1){
     echo "	 <form action='index.php?page=team' method='POST'>\n";
     $data = $response->fetch();
     echo "      <input type='hidden' name='modify' value=1>\n";    
+    /* Team ID for debugging
     echo "	    <label>Id.</label>\n";
     echo "      <input type='text' name='id_team' readonly='readonly' value='".$data['id_team']."'>\n";
+    */
     echo "	    <label>$title_name</label>\n";
     echo "      <input type='text' name='name' value='".$data['name']."'>\n";
-    echo "	    <label>Code Insee</label>\n";
+    echo "	    <label>$title_weathercode</label>\n";
     echo "      <input type='text' name='weather_code' value='".$data['weather_code']."'>\n";
     echo "      <input type='submit' value='$title_modify'>\n";
     echo "	 </form>\n";

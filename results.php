@@ -8,6 +8,8 @@ include("matchday_nav.php");
 
 echo "<section>\n";
 
+echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
+
 $modify=0;
 if(isset($_POST['modify'])) $modify=$_POST['modify'];
 // Modify
@@ -85,6 +87,7 @@ if($modify==1){
 // Modify form    
 else {    
     changeMD($db,$title_results." ".$title_MD,"results");
+    echo "<h3>$title_results</h3>\n";
     echo "<form id='results' action='index.php?page=results' method='POST' onsubmit='return confirm();'>\n";
     echo "      <input type='hidden' name='modify' value='1'>\n";
     $req="SELECT m.id_matchgame,

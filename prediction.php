@@ -7,6 +7,7 @@ include("include/inc_changeMD.php");
 include("matchday_nav.php");
 
 echo "<section>\n";
+echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $modify=0;

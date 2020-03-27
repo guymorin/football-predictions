@@ -7,6 +7,7 @@ include("include/inc_changeMD.php");
 include("matchday_nav.php");
 
 echo "<section>\n";
+echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Only if a matchday is selected
 if(isset($_SESSION['matchdayId'])){
@@ -44,6 +45,7 @@ if(isset($_SESSION['matchdayId'])){
     }
     // Modify form
     else {
+        echo "<h3>$title_teamOfTheWeek</h3>\n";
         $counter=0;
         $req = "SELECT j.id_player,j.name,j.firstname,e.rating FROM teamOfTheWeek e LEFT JOIN player j ON e.id_player=j.id_player WHERE id_matchday='".$_SESSION['matchdayId']."' ORDER BY j.position,j.name,j.firstname;";
         $response = $db->query($req); 

@@ -6,7 +6,7 @@
 include("championship_nav.php");
 
 echo "<section>\n";
-echo "<h2>$title_championship</h2>\n";
+echo "<h2>$icon_championship $title_championship</h2>\n";
 echo "<h3>$title_dashboard</h3>\n";
 
 $graph=array(0=>0);

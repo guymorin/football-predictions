@@ -6,7 +6,7 @@ if(empty($_SESSION['seasonId'])){
     $response = $db->query("SELECT * FROM season ORDER BY name;"); 
     echo "  <section>\n";
     echo "  	<form action='index.php' method='POST'>\n";             // Choisir
-    echo "      <h1><big>&#127937;</big></h1><label>$title_selectTheSeason :</label>\n";                                    
+    echo "      <h1><big>$icon_season</big></h1><label>$title_selectTheSeason :</label>\n";                                    
     echo "  	<select name='seasonSelect' onchange='submit()'>\n";
     echo "  		<option value='0'>...</option>\n";
 
@@ -34,7 +34,7 @@ if($_SESSION['seasonId']>0){
     LEFT JOIN season_championship_team scc ON c.id_championship=scc.id_championship WHERE scc.id_season=".$_SESSION['seasonId']." ORDER BY c.name;"); 
     echo "  <section>\n";
     echo "  	<form action='index.php' method='POST'>\n";             // Choisir
-    echo "    <h1><big>&#127942;</big></h1><label>$title_selectTheChampionship :</label>\n";                                    
+    echo "    <h1><big>$icon_championship</big></h1><label>$title_selectTheChampionship :</label>\n";                                    
     echo "  	<select name='championshipSelect' onchange='submit()'>\n";
     echo "  		<option value='0'>...</option>\n";
 

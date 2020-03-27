@@ -93,5 +93,6 @@ $title_team = "&Eacute;quipe";
 $title_teamOfTheWeek = "&Eacute;quipe type";
 $title_site = "Football Predictions";
 $title_weather = "Météo";
+$title_weathercode = "Code météo";
 $title_win = "G";
 ?>

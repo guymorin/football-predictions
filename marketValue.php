@@ -6,6 +6,7 @@
 include("team_nav.php");
 
 echo "<section>\n";
+echo "<h2>$icon_team $title_team</h2>\n";
 
 // Values
 $teamId=0;
@@ -18,7 +19,7 @@ if(isset($_POST['modify'])) $modify=$_POST['modify'];
 
 // Modify
 if($modify==1){
-    echo "<h2>$title_marketValue</h2>\n";
+    echo "<h3>$title_marketValue</h3>\n";
     // Modify popup
     if(isset($val)) {
         $db->exec("ALTER TABLE marketValue AUTO_INCREMENT=0;");

@@ -6,7 +6,7 @@
 include("player_nav.php");
 
 echo "<section>\n";
-
+echo "<h2>$icon_player $title_player</h2>\n";
 // Values
 $playerId=0;
 $playerName="";
@@ -38,7 +38,7 @@ if($delete==1){
 }
 // Create
 elseif($create==1){
-    echo "<h2>$title_createAPlayer</h2>\n";
+    echo "<h3>$title_createAPlayer</h3>\n";
     // Create popup
     if($playerName!="") {
         $db->exec("ALTER TABLE season_team_player AUTO_INCREMENT=0;");
@@ -77,7 +77,7 @@ elseif($create==1){
 }
 // Modify
 elseif($modify==1){
-    echo "<h2>$title_modifyAPlayer</h2>\n";
+    echo "<h3>$title_modifyAPlayer</h3>\n";
     // Modify popup
     if($playerName!="") {
         $req="UPDATE player SET name='".$playerName."', firstname='".$playerFirstname."' WHERE id_player='".$playerId."';";
@@ -170,8 +170,7 @@ elseif($modify==1){
 }
 // Default page (best players)
 else {
-    
-    echo "<h2>$title_player</h2>\n";
+
     echo "<h3>$title_bestPlayers</h3>\n";
     
     $req = "SELECT COUNT(e.rating) as nb,AVG(e.rating) as rating,c.name as team,j.name,j.firstname 

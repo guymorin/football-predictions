@@ -24,13 +24,13 @@ h1 {
  text-align: center;
  }
 h2 {
+ font: 100% sans-serif; 
+ text-transform:uppercase;
+ }
+h3 {
  font: 110% sans-serif; 
  font-weight:bold;
  font-style:italic;
- }
-h3 {
- font: 100% sans-serif; 
- text-transform:uppercase;
  }
 h4 {
  font: 90% sans-serif; 
@@ -66,13 +66,31 @@ header h1 a:hover {text-decoration:none}
 
 nav {
 	height:3.5em;
+	overflow:hidden;
 	text-align:center;
-	background:linear-gradient(#bf7,#9d6);
+	background:#bf7;
 	color:#231;
 	text-transform:uppercase;
 }
-nav a {display:inline-block;background:#4a2;color:white;padding:1em;text-decoration:none;margin:.1em 0;transition:.5s background}
-nav a:hover {background:#fff;padding:1em;color:#231;text-decoration:none}
+
+nav a {
+	display:inline-block;
+	background:#4a2;
+	border-left:1px solid #bf7;
+	color:white;
+	margin:.1em 0;
+	padding:1em;
+	text-decoration:none;
+	transition:.5s background
+}
+nav a:last-child {border-right:1px solid #bf7}
+nav a:hover {
+	background:#fff;
+	padding:1em;
+	color:#231;
+	text-decoration:none
+}
+
 nav form {display:inline}
 nav form, nav select, nav label, nav input {margin:0 .5em;padding:0}
 nav label {margin-right:.2em}
@@ -82,7 +100,6 @@ nav label {margin-right:.2em}
 	background:none;
 	padding:0;
 	display:block;
-	width:2em;
 	float:left;
 }
 #fp input {display: none;}
@@ -136,16 +153,16 @@ nav label {margin-right:.2em}
   text-decoration: none;
   font-size: 1em;
   margin:0;
-  border-left:1px solid #aff371;
-  border-right:1px solid #aff371;
-  border-top:1px solid #aff371;
+  border-left:1px solid #bf7;
+  border-right:1px solid #bf7;
+  border-top:1px solid #bf7;
   text-align:left;
   width:20vw;
 }
 #fp-menu li:last-child a,
 #fp-menu li:last-child a:hover,
 #fp-menu li:last-child a:focus {
-  border-bottom:100vh solid #aff371;
+  border-bottom:100vh solid #bf7;
 }
 
 /* Section */

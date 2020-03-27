@@ -7,6 +7,7 @@ include("include/inc_changeMD.php");
 include("matchday_nav.php");
 
 echo "<section>\n";
+echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $matchdayId=0;
@@ -67,8 +68,8 @@ if(isset($_SESSION['matchdayId'])){
     // Default page
     else {
     
-        changeMD($db,$title_statistics." ".$title_MD,"matchday");
-
+        changeMD($db,"matchday");
+        echo "<h3>$title_statistics</h3>";
         $req="SELECT m.id_matchgame,
         cr.motivation1,cr.motivation2,
         cr.currentForm1,cr.currentForm2,
@@ -135,7 +136,7 @@ if(isset($_SESSION['matchdayId'])){
                 $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
                 $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
                 
-            // Calcul du total
+            // Sum
             $win="";
 
             $sum1=
@@ -206,10 +207,6 @@ if(isset($_SESSION['matchdayId'])){
         
         echo "<p>\n";
         echo "  <table class='stats'>\n";
-        
-        echo "    <tr>\n";
-        echo "          <th colspan='6'>$title_statistics</th>\n";
-        echo "    </tr>\n";
         
         echo "    <tr>\n";
         echo "      <td>$title_bet</td>\n";

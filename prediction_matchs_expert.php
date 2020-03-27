@@ -1,5 +1,6 @@
 <?php
 // Predictions matchgame expert include file
+echo "<h3>$title_prediction</h3>\n";
 
 // Switch form
 echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";             // Basculer

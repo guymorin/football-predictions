@@ -2,7 +2,7 @@
 // Predictions matchgame default include file
 
 changeMD($db,$title_predictions." ".$title_MD,"prediction"); // Arrows to change MD
-
+echo "<h3>$title_prediction</h3>\n";
 // Switch form
 echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
 echo "  <input type='hidden' name='expert' value='1'>\n";

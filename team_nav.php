@@ -1,9 +1,9 @@
 <?php
 // Team navigation include file
 echo "  <nav>\n";
-echo "  	<a href='/'>&#127968; $title_homepage</a>\n"; // Back
-echo "	    <a href='index.php?page=marketValue'>$title_marketValue</a>\n";
-echo "  	<a href='index.php?page=team&create=1'>$title_createATeam</a>\n";
+echo "  	<a href='/'>$icon_homepage $title_homepage</a>";
+echo "<a href='index.php?page=marketValue'>$title_marketValue</a>";
+echo "<a href='index.php?page=team&create=1'>$title_createATeam</a>\n";
 echo "  	<form action='index.php?page=team' method='POST'>\n";
 echo "          <input type='hidden' name='modify' value='1'>\n"; 
 echo "          <label>$title_modifyATeam :</label>\n";                                    

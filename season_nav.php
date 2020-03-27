@@ -2,7 +2,7 @@
 // Season navigation include file
 echo "  <nav>\n";
 $response = $db->query("SELECT * FROM season ORDER BY name;");
-echo "  	<a href='/'>&#127968; $title_homepage</a>\n"; // Back
+echo "  	<a href='/'>$icon_homepage $title_homepage</a>\n";
 echo "  	<a href='index.php?page=season&create=1'>$title_createASeason</a>\n";
 echo "  	<form action='index.php?page=season' method='POST'>\n";
 echo "      <input type='hidden' name='modify' value='1'>\n"; 

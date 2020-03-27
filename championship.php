@@ -6,7 +6,7 @@
 include("championship_nav.php");
 
 echo "<section>\n";
-
+echo "<h2>$icon_championship $title_championship</h2>\n";
 // Values
 $championshipId=0;
 $championshipName="";
@@ -33,7 +33,7 @@ if($delete==1){
 }
 // Created popup or create form
 elseif($create==1){
-    echo "<h2>$title_createAChampionship</h2>\n";
+    echo "<h3>$title_createAChampionship</h3>\n";
     // Created popup
     if($championshipName!="") {
         $db->exec("ALTER TABLE championship AUTO_INCREMENT=0;");
@@ -53,7 +53,7 @@ elseif($create==1){
 }
 // Modified popup or modify form
 elseif($modify==1){
-    echo "<h2>$title_modifyAChampionship</h2>\n";
+    echo "<h3>$title_modifyAChampionship</h3>\n";
     // Modify popup
     if($championshipName!="") {
         $req="UPDATE championship SET name='$championshipName' WHERE id_championship='$championshipId';";
@@ -84,7 +84,6 @@ elseif($modify==1){
 }
 // Default page
 elseif(isset($_SESSION['championshipId'])&&($exit==0)){
-    echo "<h2>$title_championship</h2>\n";
     echo "<h3>".$_SESSION['championshipName']." : $title_standing</h3>\n";
     echo "<div id='classement'>\n";
     echo "<ul>\n";

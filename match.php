@@ -9,6 +9,7 @@ echo "<section>\n";
 
 // No matchday selected
 if(empty($_SESSION['matchdayId'])) {
+
     // Popup matchday
     if(isset($_POST['matchdaySelect'])){
         $v=explode(",",$_POST['matchdaySelect']);
@@ -27,7 +28,8 @@ if(empty($_SESSION['matchdayId'])) {
 }
 // Matchday selected
 else {
-
+    echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
+    
     // Values
     $idMatch=$team1=$team2=0;
     $result=$date="";
@@ -59,7 +61,7 @@ else {
     }
     // Create
     elseif($create==1){
-        echo "<h2>$title_createAMatch</h2>\n";
+        echo "<h3>$title_createAMatch</h3>\n";
         // Create popup
         if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
             $db->exec("ALTER TABLE matchgame AUTO_INCREMENT=0;");
@@ -114,7 +116,7 @@ else {
     }
     // Modify
     else{
-        echo "<h2>$title_modifyAMatch $title_MD".$_SESSION['matchdayNum']."</h2>\n";
+        echo "<h3>$title_modifyAMatch</h3>\n";
         // Modify popup
         if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
             $req="UPDATE matchgame SET id_matchday='".$_SESSION['matchdayId']."', team_1='".$team1."', team_2='".$team2."', result='".$result."' WHERE id_match='".$idMatch."';";

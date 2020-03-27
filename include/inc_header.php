@@ -3,8 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" media="all" 
-    href="theme/default/style.css" />
+    <?php include("theme/default/theme.php");?>
 </head>
 
 <body>

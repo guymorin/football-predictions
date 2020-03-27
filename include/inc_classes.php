@@ -144,7 +144,8 @@ function popup($texte,$lien){
     echo "  <div id='overlay'><div class='update'><a class='close' href='".$lien."'>&times;</a><p>".$texte."</p><p><a href='".$lien."'>Ok</a></p></div></div>\n";
 
 }
-function changeMD($db,$titre,$page){
+function changeMD($db,$page){
+    include("lang/fr.php");
     // Arrows to change matchday
     echo "<div id='changeMD'>\n";
         $req="SELECT id_matchday, number FROM matchday WHERE number>=".($_SESSION['matchdayNum']-1)." AND number<=".($_SESSION['matchdayNum']+1)." AND id_season='".$_SESSION['seasonId']."' AND id_championship='".$_SESSION['championshipId']."' ORDER BY number;";
@@ -163,7 +164,7 @@ function changeMD($db,$titre,$page){
             
             if($data['number']==$_SESSION['matchdayNum']) {
                 if($cpt==1) echo $add;
-                echo "<h2>".$titre.$_SESSION['matchdayNum']."</h2>\n"; 
+                echo "<h2>$title_matchday ".$_SESSION['matchdayNum']."</h2>\n"; 
                 if($nb==1)   echo $add;
             } else {
                 echo "<form action='index.php?page=$page' method='POST'>\n";
