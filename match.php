@@ -43,24 +43,15 @@ else {
     $create=0;
     $modify=0;
     $delete=0;
-    $exit=0;
     if(isset($_GET['create'])) $create=$_GET['create'];
     if(isset($_POST['create'])) $create=$_POST['create'];
     if(isset($_GET['modify'])) $modify=$_GET['modify'];
     if(isset($_POST['modify'])) $modify=$_POST['modify'];
     if(isset($_POST['delete'])) $delete=$_POST['delete'];
-    if(isset($_GET['exit'])) $exit=$_GET['exit'];
 
-    
 // Popup if needed
-    // Exit
-    if($exit==1){
-        unset($_SESSION['matchdayId']);
-        unset($_SESSION['matchdayNum']);
-        popup($title_exited,"index.php?page=matchday");
-    }
     // Delete
-    elseif($delete==1){
+    if($delete==1){
             $req="DELETE FROM matchgame WHERE id_match='".$idMatch."';";
             $db->exec($req);
             $db->exec("ALTER TABLE matchgame AUTO_INCREMENT=0;");

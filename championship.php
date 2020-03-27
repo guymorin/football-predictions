@@ -15,27 +15,17 @@ if(isset($_POST['name'])) $championshipName=$_POST['name'];
 $create=0;
 $modify=0;
 $delete=0;
-$exit=0;
 if(isset($_GET['create'])) $create=$_GET['create'];
 if(isset($_POST['create'])) $create=$_POST['create'];
 if(isset($_POST['modify'])) $modify=$_POST['modify'];
 if(isset($_POST['delete'])) $delete=$_POST['delete'];
-if(isset($_GET['exit'])) $exit=$_GET['exit'];
 $standhome=$standaway=0;
 if(isset($_GET['standhome'])) $standhome=$_GET['standhome'];
 if(isset($_GET['exterieur'])) $standaway=$_GET['exterieur'];
 
 /* Popups or page */
-// Exited popup
-if($exit==1){
-    unset($_SESSION['championshipId']);
-    unset($_SESSION['championshipName']);
-    unset($_SESSION['matchdayId']);
-    unset($_SESSION['matchdayNum']);
-    popup($title_exited,"index.php?page=championship");
-}
 // Deleted popup
-elseif($delete==1){
+if($delete==1){
         $req="DELETE FROM championship WHERE id_championship='".$championshipId."';";
         $db->exec($req);
         $db->exec("ALTER TABLE championship AUTO_INCREMENT=0;");

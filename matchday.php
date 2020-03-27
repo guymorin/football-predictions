@@ -21,13 +21,11 @@ $create=0;
 $modify=0;
 $delete=0;
 $equipe=0;
-$exit=0;
 if(isset($_GET['create'])) $create=$_GET['create'];
 if(isset($_POST['create'])) $create=$_POST['create'];
 if(isset($_POST['modify'])) $modify=$_POST['modify'];
 if(isset($_POST['delete'])) $delete=$_POST['delete'];
 if(isset($_POST['equipe'])) $equipe=$_POST['equipe'];
-if(isset($_GET['exit'])) $exit=$_GET['exit'];
 $idPlayer=0;
 $ratingPlayer=0;
 $deletePlayer=0;
@@ -36,14 +34,8 @@ if(isset($_POST['rating'])) $ratingPlayer=$_POST['rating'];
 if(isset($_POST['delete'])) $deletePlayer=$_POST['delete'];
 $val=array_combine($idPlayer,$ratingPlayer);
 
-// Exit popup
-if($exit==1){
-    unset($_SESSION['matchdayId']);
-    unset($_SESSION['matchdayNum']);
-    popup($title_exited,"index.php");
-}
 // Only if there is a matchday selected
-elseif(isset($_SESSION['matchdayId'])){
+if(isset($_SESSION['matchdayId'])){
 
     // Modify popup
     if($equipe==1){
