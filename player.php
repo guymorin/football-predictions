@@ -71,7 +71,7 @@ elseif($create==1){
             echo "  		<option value='".$data['id_team']."'>".$data['name']."</option>\n";
         }
         echo "	   </select></p>\n";
-    	echo "     <input type='submit' value='$create'>\n";
+    	echo "     <input type='submit' value='$title_create'>\n";
     	echo "	 </form>\n";
 	}
 }
@@ -106,9 +106,8 @@ elseif($modify==1){
         $playerFirstname = $data['firstname'];
         $teamId = $data['id_team'];
         echo "      <input type='hidden' name='modify' value=1>\n";    
-        
-        echo "	    <label>Id.</label>\n";
-        echo "      <input type='text' name='id_player' readonly value='".$playerId."'>\n";
+
+        echo "      <input type='hidden' name='id_player' readonly value='".$playerId."'>\n";
     
         echo "	    <label>$title_name</label>\n";
         echo "      <input type='text' name='name' value='".$playerName."'>\n";
@@ -116,18 +115,18 @@ elseif($modify==1){
         echo "      <input type='text' name='firstname' value='".$playerFirstname."'>\n";
         
     	echo "	    <p><label>Poste</label>\n";
-    	echo "      <input type='radio' name='position' id='Gardien' value='Gardien'";
-            if ($data['position']=="Gardien") echo " checked";
-    	echo "><label for='Gardien'>$title_goalkeeper</label>\n";
-    	echo "     <input type='radio' name='position' id='Défenseur' value='Défenseur'";
-            if ($data['position']=="Défenseur") echo " checked";
-    	echo "><label for='Défenseur'>$title_defender</label>\n";
-    	echo "     <input type='radio' name='position' id='Milieu' value='Milieu'";
-            if ($data['position']=="Milieu") echo " checked";	
-    	echo "><label for='Milieu'>$title_midfielder</label>\n";
-    	echo "     <input type='radio' name='position' id='Attaquant' value='Attaquant'";
-            if ($data['position']=="Attaquant") echo " checked";	
-    	echo "><label for='Attaquant'>$title_forward</label></p>\n";
+    	echo "      <input type='radio' name='position' id='Goalkeeper' value='Goalkeeper'";
+            if ($data['position']=="Goalkeeper") echo " checked";
+    	echo "><label for='Goalkeeper'>$title_goalkeeper</label>\n";
+    	echo "     <input type='radio' name='position' id='Defender' value='Defender'";
+            if ($data['position']=="Defender") echo " checked";
+    	echo "><label for='Defender'>$title_defender</label>\n";
+    	echo "     <input type='radio' name='position' id='Midfielder' value='Midfielder'";
+            if ($data['position']=="Midfielder") echo " checked";	
+    	echo "><label for='Midfielder'>$title_midfielder</label>\n";
+    	echo "     <input type='radio' name='position' id='Forward' value='Forward'";
+            if ($data['position']=="Forward") echo " checked";	
+    	echo "><label for='Forward'>$title_forward</label></p>\n";
     	
         echo "	    <p><label>$title_team</label>\n";
         echo "      <select multiple size='10' name='id_team'>\n";
@@ -164,7 +163,7 @@ elseif($modify==1){
             echo "  		<option value='".$data['id_player']."'>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']."</option>\n";
         }
         echo "	    </select>\n";
-        echo "      <input type='submit'>\n";
+        echo "      <input type='submit' value='$title_select'>\n";
         echo "	 </form>\n";
     }
 }
