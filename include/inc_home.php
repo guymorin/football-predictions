@@ -5,7 +5,7 @@
 if(empty($_SESSION['seasonId'])){
     $response = $db->query("SELECT * FROM season ORDER BY name;"); 
     echo "  <section>\n";
-    echo "  	<form action='index.php' method='POST'>\n";             // Choisir
+    echo "  	<form action='index.php' method='POST'>\n";
     echo "      <h1><big>$icon_season</big></h1><label>$title_selectTheSeason :</label>\n";                                    
     echo "  	<select name='seasonSelect' onchange='submit()'>\n";
     echo "  		<option value='0'>...</option>\n";

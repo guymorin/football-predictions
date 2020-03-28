@@ -16,27 +16,21 @@ include("include/inc_functions.php");
         $v=explode(",",$_POST['seasonSelect']);
         $_SESSION['seasonId']=$v[0];
         $_SESSION['seasonName']=$v[1];
-        echo "<section>\n";
         popup("$title_season ".$_SESSION['seasonName'],"/");
-        echo "</section>\n";
     }
     // Championship selected
     if(isset($_POST['championshipSelect'])) {
         $v=explode(",",$_POST['championshipSelect']);
         $_SESSION['championshipId']=$v[0];
         $_SESSION['championshipName']=$v[1];
-        echo "<section>\n";
         popup($_SESSION['championshipName'],"/");
-        echo "</section>\n";
     }
     // Matchday selected
     if(isset($_POST['matchdaySelect'])&&(!isset($_SESSION['matchdayId']))) {
         $v=explode(",",$_POST['matchdaySelect']);
         $_SESSION['matchdayId']=$v[0];
         $_SESSION['matchdayNum']=$v[1];
-        echo "<section>\n";
         popup("$title_matchday ".$_SESSION['matchdayNum'],"/");
-        echo "</section>\n";
     }
 // Check the page value
 $page="";
