@@ -109,6 +109,7 @@ nav label {margin-right:.2em}
 	padding:.2em 0;
 	font-size:2em;
 	color:#fff9;
+	text-shadow:1px 1px #0003;
 	cursor: pointer;
 	transition:.5s color;
 }
@@ -195,6 +196,7 @@ section ul li {display:inline}
   background: white;
   border:1px solid #cfa;
   border-radius: 6px;
+  text-align:center;
   width: 30%;
   position: relative;
   transition: all 5s ease-in-out;

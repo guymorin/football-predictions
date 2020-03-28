@@ -1,7 +1,7 @@
 <?php
 function valOdds($val){
     include("lang/fr.php");
-    $odds = "<span>$title_game&nbsp;";
+    $odds = "<span>";
     switch($val){
         case($val<1.5):
             $odds .= $title_carefulToo;
