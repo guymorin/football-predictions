@@ -74,6 +74,8 @@ nav {
 	text-transform:uppercase;
 }
 
+/* Submenu */
+
 nav a {
 	display:inline-block;
 	background:#4a2;
@@ -96,7 +98,7 @@ nav form {display:inline}
 nav form, nav select, nav label, nav input {margin:0 .5em;padding:0}
 nav label {margin-right:.2em}
 
-/* FP menu */
+/* Main menu */
 #fp {
 	background:none;
 	padding:0;
@@ -169,6 +171,7 @@ nav label {margin-right:.2em}
 }
 
 /* Section */
+
 section {
 	height:calc(100% - 7em);
 	text-align:center;
@@ -202,11 +205,9 @@ section ul li {display:inline}
   transition: all 5s ease-in-out;
   color:black;
 }
-
 .update a {padding:.5em 1em}
 .update a:hover {padding:.5em 1em}
 .update p {margin:1em;}
-
 .update .close {
   position: absolute;
   top: 0;
@@ -221,6 +222,7 @@ section ul li {display:inline}
 }
 .update .close:hover {background:none;border:none;color:#361;padding:.1em .3em;}
 
+.error {color:red}
 
 section #changeMD {display:inline-block;margin:0 auto;text-align:center;}
 section #changeMD input[type=submit] {

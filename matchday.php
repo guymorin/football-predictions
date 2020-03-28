@@ -22,18 +22,18 @@ $create=0;
 $modify=0;
 $delete=0;
 $equipe=0;
-if(isset($_GET['create'])) $create=$_GET['create'];
-if(isset($_POST['create'])) $create=$_POST['create'];
-if(isset($_POST['modify'])) $modify=$_POST['modify'];
-if(isset($_POST['delete'])) $delete=$_POST['delete'];
+if((isset($_GET['create']))&&($_GET['create']==1)) $create=$_GET['create'];
+if((isset($_POST['create']))&&($_POST['create']==1)) $create=$_POST['create'];
+if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
+if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$_POST['delete'];
 if(isset($_POST['equipe'])) $equipe=$_POST['equipe'];
-if(isset($_GET['exit'])) $exit=$_GET['exit'];
+if((isset($_GET['exit']))&&($_GET['exit']==1)) $exit=$_GET['exit'];
 $idPlayer=0;
 $ratingPlayer=0;
 $deletePlayer=0;
 if(isset($_POST['id_player'])) $idPlayer=$_POST['id_player'];
 if(isset($_POST['rating'])) $ratingPlayer=$_POST['rating'];
-if(isset($_POST['delete'])) $deletePlayer=$_POST['delete'];
+if((isset($_POST['delete']))&&($_POST['delete']==1)) $deletePlayer=$_POST['delete'];
 $val=array_combine($idPlayer,$ratingPlayer);
 
 // Exit popup

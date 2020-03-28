@@ -8,21 +8,23 @@ include("championship_nav.php");
 echo "<section>\n";
 echo "<h2>$icon_championship $title_championship</h2>\n";
 // Values
+$error="";
 $championshipId=0;
 $championshipName="";
-if(isset($_POST['id_championship'])) $championshipId=$_POST['id_championship'];
-if(isset($_POST['name'])) $championshipName=$_POST['name'];
-$create=0;
-$modify=0;
-$delete=0;
-if(isset($_GET['create'])) $create=$_GET['create'];
-if(isset($_POST['create'])) $create=$_POST['create'];
-if(isset($_POST['modify'])) $modify=$_POST['modify'];
-if(isset($_POST['delete'])) $delete=$_POST['delete'];
-if(isset($_GET['exit'])) $exit=$_GET['exit'];
+if((isset($_POST['id_championship']))&&(ctype_digit($_POST['id_championship']))) $championshipId=$_POST['id_championship'];
+if(isset($_POST['name'])){
+    if(ctype_alnum(str_replace(' ','',($_POST['name'])))) $championshipName=$_POST['name'];
+    else $error=$title_errorAlnum;
+}
+$create=$modify=$delete=0;
+if((isset($_GET['create']))&&($_GET['create']==1)) $create=$_GET['create'];
+if((isset($_POST['create']))&&($_POST['create']==1)) $create=$_POST['create'];
+if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
+if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$_POST['delete'];
+if((isset($_GET['exit']))&&($_GET['exit']==1)) $exit=$_GET['exit'];
 $standhome=$standaway=0;
-if(isset($_GET['standhome'])) $standhome=$_GET['standhome'];
-if(isset($_GET['exterieur'])) $standaway=$_GET['exterieur'];
+if((isset($_GET['standhome']))&&($_GET['standhome']==1)) $standhome=$_GET['standhome'];
+if((isset($_GET['standaway']))&&($_GET['standaway']==1)) $standaway=$_GET['standaway'];
 
 /* Popups or page */
 // Exited popup
@@ -35,51 +37,58 @@ if($exit==1){
 }
 // Deleted popup
 elseif($delete==1){
+    if($championshipId==0){
+        popup($title_error,"index.php?page=championship");
+    } else {
         $req="DELETE FROM championship WHERE id_championship='".$championshipId."';";
         $db->exec($req);
         $db->exec("ALTER TABLE championship AUTO_INCREMENT=0;");
         popup($title_deleted,"index.php?page=championship");
+    }
 }
 // Created popup or create form
 elseif($create==1){
     echo "<h3>$title_createAChampionship</h3>\n";
+    // Create form
+    if($championshipName=="") {
+        echo "<div class='error'>$error</div>\n";
+        echo "	 <form action='index.php?page=championship' method='POST'>\n";
+        echo "     <input type='hidden' name='create' value='1'>\n";
+        echo "	   <label>$title_name</label>\n";
+        echo "     <input type='text' name='name' value='";
+        if($_POST['name']) echo $_POST['name'];
+        else echo $championshipName;
+        echo "'>\n";
+        echo "     <input type='submit' value='$title_create'>\n";
+        echo "	 </form>\n";   
+    }
     // Created popup
-    if($championshipName!="") {
+    else {
         $db->exec("ALTER TABLE championship AUTO_INCREMENT=0;");
         $req="INSERT INTO championship VALUES(NULL,'".$championshipName."');";
         $db->exec($req);
         popup($title_created,"index.php?page=championship");
     }
-    // Create form
-    else { 
-    	echo "	 <form action='index.php?page=championship' method='POST'>\n";
-        echo "     <input type='hidden' name='create' value='1'>\n"; 
-    	echo "	   <label>$title_name</label>\n";
-    	echo "     <input type='text' name='name' value='$championshipName'>\n";
-    	echo "     <input type='submit' value='$title_create'>\n";
-    	echo "	 </form>\n";   
-	}
 }
 // Modified popup or modify form
 elseif($modify==1){
     echo "<h3>$title_modifyAChampionship</h3>\n";
-    // Modify popup
-    if($championshipName!="") {
-        $req="UPDATE championship SET name='$championshipName' WHERE id_championship='$championshipId';";
-        $db->exec($req);
-        popup($title_modified,"index.php?page=championship");
+    if($championshipId==0) {
+        popup($title_error,"index.php?page=championship");
     }
     // Modify form
-    else {
+    elseif($championshipName=="") {
         $response = $db->query("SELECT * FROM championship WHERE id_championship='$championshipId';");
+        echo "<div class='error'>$error</div>\n";
         echo "	 <form action='index.php?page=championship' method='POST'>\n";
         $data = $response->fetch();
-        echo "      <input type='hidden' name='modify' value='1'>\n";    
-        echo "	    <label>Id.</label>\n";
-        echo "      <input type='text' name='id_championship' readonly='readonly' value='".$data['id_championship']."'>\n";
+        echo "      <input type='hidden' name='modify' value='1'>\n";
+        echo "      <input type='hidden' name='id_championship' readonly='readonly' value='".$data['id_championship']."'>\n";
         echo "	    <label>$title_name</label>\n";
-        echo "      <input type='text' name='name' value='".$data['name']."'>\n";
-        echo "      <input type='submit' value='$title_modify'>\n";
+        echo "     <input type='text' name='name' value='";
+        if($_POST['name']) echo $_POST['name'];
+        else echo $data['name'];
+        echo "'>\n";echo "      <input type='submit' value='$title_modify'>\n";
         echo "	 </form>\n";
         
         echo "	 <form action='index.php?page=championship' method='POST' onsubmit='return confirm()'>\n";
@@ -88,7 +97,13 @@ elseif($modify==1){
         echo "      <input type='hidden' name='name' value='".$data['name']."'>\n";
         echo "      <input type='submit' value='&#9888 $title_delete ".$data['name']." &#9888'>\n"; // Bouton Supprimer
         echo "	 </form>\n";
-        $response->closeCursor();   
+        $response->closeCursor();
+    }
+    // Modify popup
+    else {
+        $req="UPDATE championship SET name='$championshipName' WHERE id_championship='$championshipId';";
+        $db->exec($req);
+        popup($title_modified,"index.php?page=championship");
     }
 }
 // Default page

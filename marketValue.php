@@ -15,7 +15,7 @@ if(isset($_POST['id_team'])) $teamId=$_POST['id_team'];
 if(isset($_POST['marketValue'])) $valClub=$_POST['marketValue'];
 $val=array_combine($teamId,$valClub);
 $modify=1;
-if(isset($_POST['modify'])) $modify=$_POST['modify'];
+if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
 
 // Modify
 if($modify==1){

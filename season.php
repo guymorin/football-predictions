@@ -15,10 +15,10 @@ if(isset($_POST['name'])) $seasonName=$_POST['name'];
 $create=0;
 $modify=0;
 $delete=0;
-if(isset($_GET['create'])) $create=$_GET['create'];
-if(isset($_POST['create'])) $create=$_POST['create'];
-if(isset($_POST['modify'])) $modify=$_POST['modify'];
-if(isset($_POST['delete'])) $delete=$_POST['delete'];
+if((isset($_GET['create']))&&($_GET['create']==1)) $create=$_GET['create'];
+if((isset($_POST['create']))&&($_POST['create']==1)) $create=$_POST['create'];
+if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
+if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$_POST['delete'];
 
 // Popup if needed
 // Delete

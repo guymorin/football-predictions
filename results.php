@@ -11,7 +11,7 @@ echo "<section>\n";
 echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 $modify=0;
-if(isset($_POST['modify'])) $modify=$_POST['modify'];
+if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
 // Modify
 // Modify popup
 if($modify==1){
