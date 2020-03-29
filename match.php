@@ -7,14 +7,17 @@ include("matchday_nav.php");
 
 echo "<section>\n";
 
+// Values
+$error = new Errors();
+
 // No matchday selected
 if(empty($_SESSION['matchdayId'])) {
 
     // Popup matchday
     if(isset($_POST['matchdaySelect'])){
         $v=explode(",",$_POST['matchdaySelect']);
-        $_SESSION['matchdayId']=$v[0];
-        $_SESSION['matchdayNum']=$v[1];
+        $_SESSION['matchdayId']=$error->check("Digit",$v[0],"");
+        $_SESSION['matchdayNum']=$error->check("Digit",$v[1],"");
         popup($title_MD.$_SESSION['matchdayNum'],"index.php?page=match");
     }
     // Form select
@@ -31,14 +34,15 @@ else {
     echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
     // Values
-    $date="";
-    $idMatch=checkDigit($_POST['id_matchgame']);
-    $team1=checkDigit($_POST['team_1']);
-    $team2=checkDigit($_POST['team_2']);
-    $result=checkResult($_POST['result']);
-    $odds1=checkDigit($_POST['odds1']);
-    $oddsD=checkDigit($_POST['oddsD']);
-    $odds2=checkDigit($_POST['odds2']);
+    $date=$result="";
+    $idMatch=$team1=$team2=$odds1=$oddsD=$odds2=0;
+    if(isset($_POST['id_matchgame'])) $idMatch=$error->check("Digit",$_POST['id_matchgame'],"","");
+    if(isset($_POST['team_1'])) $team1=$error->check("Digit",$_POST['team_1'],"");
+    if(isset($_POST['team_2'])) $team2=$error->check("Digit",$_POST['team_2'],"");
+    if(isset($_POST['result'])) $result=$error->check("Result",$_POST['result'],"");
+    if(isset($_POST['odds1'])) $odds1=$error->check("Digit",$_POST['odds1'],"");
+    if(isset($_POST['oddsD'])) $oddsD=$error->check("Digit",$_POST['oddsD'],"");
+    if(isset($_POST['odds2'])) $odds2=$error->check("Digit",$_POST['odds2'],"");
     if(isset($_POST['date'])) $date=$_POST['date'];
     $create=$modify=$delete=0;
     if((isset($_GET['create']))&&($_GET['create']==1)) $create=$_GET['create'];
@@ -120,7 +124,7 @@ else {
         } 
         // Modify form
         elseif($idMatch>0) {
-            $req="SELECT m.id_matchgame,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_match='".$idMatch."';";
+            $req="SELECT m.id_matchgame,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_matchgame='".$idMatch."';";
             $response = $db->query($req);
             $data = $response->fetch();
             $name1=$data['name1'];

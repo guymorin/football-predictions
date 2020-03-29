@@ -26,6 +26,7 @@ $title_earning = "Earning";
 $title_earningByBet = "Earning&nbsp;by&nbsp;bet";
 $title_error = "Error";
 $title_errorAlnum = "Alphanumeric characters only";
+$title_errorDigit = "Numeric characters only";
 $title_exit = "Exit";
 $title_exited = "Exited";
 $title_firstname = "Firstname";

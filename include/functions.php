@@ -1,22 +1,4 @@
 <?php
-function checkAlnum($val,$error){
-    if(isset($val)){
-        if(ctype_alnum(str_replace(' ','',($val)))) return $val;
-        else $error->addError($title_errorAlnum);
-    }
-}
-function checkDigit($val){
-    if((isset($val))&&(ctype_digit($val))) return $val;
-    else return 0;
-}
-function checkResult($val){
-    $array=array('1','D','2');
-    if((isset($val))&&(in_array($array, $val))) return $val;
-}
-function checkAction($val){
-    if((isset($val))&&($val==1)) return $val;
-    else return 0;
-}
 function valOdds($val){
     include("lang/fr.php");
     $odds = "<span>";
@@ -175,7 +157,7 @@ function changeMD($db,$page){
         ORDER BY number;";
     $response = $db->query($req);
     $nb=sizeof($response->fetchAll());
-    
+    $button1=$button2="";
     $response = $db->query($req);
     while ($data = $response->fetch())
     {
@@ -207,4 +189,22 @@ function changeMD($db,$page){
     echo "</div>\n";
     $response->closeCursor();
 }
+if (!function_exists('array_key_first')) {
+    function array_key_first(array $arr) {
+        foreach($arr as $key => $unused) {
+            return $key;
+        }
+        return NULL;
+    }
+}
+if (! function_exists("array_key_last")) {
+    function array_key_last($array) {
+        if (!is_array($array) || empty($array)) {
+            return NULL;
+        }
+       
+        return array_keys($array)[count($array)-1];
+    }
+}
 ?>
+ 

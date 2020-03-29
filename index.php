@@ -5,10 +5,12 @@
 
 // Files to include
 include("lang/fr.php");
-include("class/errors.php");
 include("include/header.php");
 include("include/connection.php");
 include("include/functions.php");
+
+// Class
+require "class/errors.php";
 
 // Popup if needed
     // Season selected
