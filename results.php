@@ -91,6 +91,7 @@ else {
     changeMD($db,"results");
     echo "<h3>$title_results</h3>\n";
     echo "<form id='results' action='index.php?page=results' method='POST' onsubmit='return confirm();'>\n";
+    echo "      <div class='error'>".$error->getError()."</div>\n";
     echo "      <input type='hidden' name='modify' value='1'>\n";
     $req="SELECT m.id_matchgame,
         c1.name as name1,c2.name as name2,

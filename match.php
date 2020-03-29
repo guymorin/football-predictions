@@ -45,11 +45,11 @@ else {
     if(isset($_POST['odds2'])) $odds2=$error->check("Digit",$_POST['odds2'],"");
     if(isset($_POST['date'])) $date=$_POST['date'];
     $create=$modify=$delete=0;
-    if((isset($_GET['create']))&&($_GET['create']==1)) $create=$_GET['create'];
-    if((isset($_POST['create']))&&($_POST['create']==1)) $create=$_POST['create'];
-    if((isset($_GET['modify']))&&($_GET['modify']==1)) $modify=$_GET['modify'];
-    if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
-    if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$_POST['delete'];
+    if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create'],"");
+    elseif(isset($_POST['create'])) $create=$error->check("Action",$_POST['create'],"");
+    if(isset($_GET['modify'])) $modify=$error->check("Action",$_GET['modify'],"");
+    elseif(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify'],"");
+    if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete'],"");
 
 // Popup if needed
     // Delete
@@ -73,6 +73,7 @@ else {
         // Create form 
         else {
             echo "	  <form action='index.php?page=match' method='POST'>\n";
+            echo "      <div class='error'>".$error->getError()."</div>\n";
             echo "      <input type='hidden' name='create' value='1'>\n"; 
             echo "      <input type='hidden' readonly name='matchdayId' value='".$_SESSION['matchdayId']."'></p>\n"; 
             
@@ -138,6 +139,7 @@ else {
             $odds2=$data['odds2'];
             
             echo "	 <form action='index.php?page=match' method='POST'>\n";
+            echo "      <div class='error'>".$error->getError()."</div>\n";
             echo "      <input type='hidden' name='modify' value=1>\n";    
             echo "      <input type='hidden' name='id_matchgame' readonly value='".$data['id_matchgame']."'></p>\n";
             echo "	    <label>$title_team 1</label>\n";
@@ -197,6 +199,7 @@ else {
         else {
 
             echo "  <form action='index.php?page=match' method='POST'>\n";             // Modifier
+            echo "      <div class='error'>".$error->getError()."</div>\n";
             echo "      <input type='hidden' name='modify' value='1'>\n"; 
             echo "      <label>$title_modifyAMatch :</label>\n";                                    
             echo "  	<select multiple size='10' name='id_matchgame'>\n";

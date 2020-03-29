@@ -281,8 +281,9 @@ elseif($create==1){
     // Create form
     else {
     	echo "	    <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
-        echo "          <input type='hidden' name='create' value='1'>\n"; 
-    	echo "	        <label>$title_number</label>\n";
+    	echo "         <div class='error'>".$error->getError()."</div>\n";
+    	echo "         <input type='hidden' name='create' value='1'>\n"; 
+    	echo "	       <label>$title_number</label>\n";
     	echo "         <input type='text' name='number' value='".$matchdayNumber."'>\n";
     	echo "         <input type='submit' value='$title_create'>\n";
     	echo "	    </form>\n";   
@@ -302,6 +303,7 @@ elseif($modify==1){
         $response = $db->query("SELECT * FROM matchday WHERE id_matchday='".$matchdayId."';");
         echo "	 <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
         $data = $response->fetch();
+        echo "      <div class='error'>".$error->getError()."</div>\n";
         echo "      <input type='hidden' name='modify' value=1>\n";    
         echo "	    <label>Id.</label>\n";
         echo "      <input type='text' name='id_matchday' readonly='readonly' value='".$data['id_matchday']."'>\n";

@@ -9,19 +9,18 @@ echo "<section>\n";
 echo "<h2>$icon_team $title_team</h2>\n";
 
 // Values
-$teamId=0;
+$error = new Errors();
 $teamName="";
-$weatherCode=0;
-if(isset($_POST['id_team'])) $teamId=$_POST['id_team'];
-if(isset($_POST['name'])) $teamName=$_POST['name'];
-if(isset($_POST['weather_code'])) $weatherCode=$_POST['weather_code'];
-$create=0;
-$modify=0;
-$delete=0;
-if((isset($_GET['create']))&&($_GET['create']==1)) $create=$_GET['create'];
-if((isset($_POST['create']))&&($_POST['create']==1)) $create=$_POST['create'];
-if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
-if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$_POST['delete'];
+$teamId=$weatherCode=0;
+if(isset($_POST['name'])) $teamName=$error->check("Alnum",$_POST['name'],"");
+if(isset($_POST['id_team'])) $teamId=$error->check("Digit",$_POST['id_team'],"");
+if(isset($_POST['weather_code'])) $weatherCode=$error->check("Digit",$_POST['weather_code'],"");
+
+$create=$modify=$delete=0;
+if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create'],"");
+elseif(isset($_POST['create'])) $create=$error->check("Action",$_POST['create'],"");
+if(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify'],"");
+if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete'],"");
 
 // Delete
 if($delete==1){
