@@ -8,12 +8,9 @@ include("player_nav.php");
 echo "<section>\n";
 echo "<h2>$icon_player $title_player</h2>\n";
 // Values
-$playerId=0;
-$playerName="";
-$playerFirstname="";
-$playerPosition="";
-$teamId=0;
-if(isset($_POST['id_player'])) $playerId=$_POST['id_player'];
+$playerId=$teamId=0;
+$playerName=$playerFirstname=$playerPosition="";
+$playerId=checkDigit($_POST['id_player']);
 if(isset($_POST['name'])) $playerName=$_POST['name'];
 if(isset($_POST['firstname'])) $playerFirstname=$_POST['firstname'];
 if(isset($_POST['position'])) $playerPosition=$_POST['position'];

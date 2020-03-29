@@ -8,23 +8,18 @@ include("championship_nav.php");
 echo "<section>\n";
 echo "<h2>$icon_championship $title_championship</h2>\n";
 // Values
-$error="";
-$championshipId=0;
+$error = new Error(); 
 $championshipName="";
-if((isset($_POST['id_championship']))&&(ctype_digit($_POST['id_championship']))) $championshipId=$_POST['id_championship'];
-if(isset($_POST['name'])){
-    if(ctype_alnum(str_replace(' ','',($_POST['name'])))) $championshipName=$_POST['name'];
-    else $error=$title_errorAlnum;
-}
+$championshipId=checkDigit($_POST['id_championship']);
+$championshipName=checkAlnum($_POST['name'],$error);
 $create=$modify=$delete=0;
-if((isset($_GET['create']))&&($_GET['create']==1)) $create=$_GET['create'];
-if((isset($_POST['create']))&&($_POST['create']==1)) $create=$_POST['create'];
-if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
-if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$_POST['delete'];
-if((isset($_GET['exit']))&&($_GET['exit']==1)) $exit=$_GET['exit'];
-$standhome=$standaway=0;
-if((isset($_GET['standhome']))&&($_GET['standhome']==1)) $standhome=$_GET['standhome'];
-if((isset($_GET['standaway']))&&($_GET['standaway']==1)) $standaway=$_GET['standaway'];
+$create=checkAction($_GET['create']);
+if($create==0) $create=checkAction($_POST['create']);
+$modify=checkAction($_POST['modify']);
+$delete=checkAction($_POST['delete']);
+$exit=checkAction($_GET['exit']);
+$standhome=checkAction($_GET['standhome']);
+$standaway=checkAction($_GET['standaway']);
 
 /* Popups or page */
 // Exited popup
@@ -51,7 +46,7 @@ elseif($create==1){
     echo "<h3>$title_createAChampionship</h3>\n";
     // Create form
     if($championshipName=="") {
-        echo "<div class='error'>$error</div>\n";
+        echo "<div class='error'>".$error->error()."</div>\n";
         echo "	 <form action='index.php?page=championship' method='POST'>\n";
         echo "     <input type='hidden' name='create' value='1'>\n";
         echo "	   <label>$title_name</label>\n";

@@ -19,7 +19,7 @@ if(empty($_SESSION['matchdayId'])) {
     }
     // Form select
     else {
-        echo "   <form action='index.php?page=match' method='POST'>\n";             // Modifier
+        echo "   <form action='index.php?page=match' method='POST'>\n";
         echo "    <label>$title_matchday</label>\n";        
         include("matchday_select.php");
         echo "      <noscript><input type='submit'></noscript>\n";
@@ -31,23 +31,19 @@ else {
     echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
     // Values
-    $idMatch=$team1=$team2=0;
-    $result=$date="";
-    $odds1=$oddsD=$odds2=0;
-    if(isset($_POST['id_matchgame'])) $idMatch=$_POST['id_matchgame'];
-    if(isset($_POST['team_1'])) $team1=$_POST['team_1'];
-    if(isset($_POST['team_2'])) $team2=$_POST['team_2'];
-    if(isset($_POST['result'])) $result=$_POST['result'];
-    if(isset($_POST['odds1'])) $odds1=$_POST['odds1'];
-    if(isset($_POST['oddsD'])) $oddsD=$_POST['oddsD'];
-    if(isset($_POST['odds2'])) $odds2=$_POST['odds2'];
+    $date="";
+    $idMatch=checkDigit($_POST['id_matchgame']);
+    $team1=checkDigit($_POST['team_1']);
+    $team2=checkDigit($_POST['team_2']);
+    $result=checkResult($_POST['result']);
+    $odds1=checkDigit($_POST['odds1']);
+    $oddsD=checkDigit($_POST['oddsD']);
+    $odds2=checkDigit($_POST['odds2']);
     if(isset($_POST['date'])) $date=$_POST['date'];
-    $create=0;
-    $modify=0;
-    $delete=0;
+    $create=$modify=$delete=0;
     if((isset($_GET['create']))&&($_GET['create']==1)) $create=$_GET['create'];
     if((isset($_POST['create']))&&($_POST['create']==1)) $create=$_POST['create'];
-    if(isset($_GET['modify'])) $modify=$_GET['modify'];
+    if((isset($_GET['modify']))&&($_GET['modify']==1)) $modify=$_GET['modify'];
     if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
     if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$_POST['delete'];
 
@@ -74,9 +70,7 @@ else {
         else {
             echo "	  <form action='index.php?page=match' method='POST'>\n";
             echo "      <input type='hidden' name='create' value='1'>\n"; 
-            
-            echo "	    <p><label>Id.</label>\n";
-            echo "      <input type='text' readonly name='matchdayId' value='".$_SESSION['matchdayId']."'></p>\n"; 
+            echo "      <input type='hidden' readonly name='matchdayId' value='".$_SESSION['matchdayId']."'></p>\n"; 
             
             $req="SELECT c.id_team, c.name FROM team c LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team WHERE scc.id_season='".$_SESSION['seasonId']."' AND scc.id_championship='".$_SESSION['championshipId']."' ORDER BY c.name;";
             $response = $db->query($req);
@@ -104,11 +98,11 @@ else {
             
             echo "	    <p><label>$title_result :</label>\n";
             echo "      <input type='radio' name='result' id='1' value='1'";
-            echo "><label for='1'>$title_home</label>\n";
+            echo "><label for='1'>1</label>\n";
             echo "      <input type='radio' name='result' id='D' value='D'";
             echo "><label for='D'>$title_draw</label>\n";
             echo "      <input type='radio' name='result' id='2' value='2'";
-            echo "><label for='2'>$title_away</label>\n";
+            echo "><label for='2'>2</label>\n";
             
             echo "      <input type='submit' value='$title_create'>\n";
     
@@ -141,8 +135,7 @@ else {
             
             echo "	 <form action='index.php?page=match' method='POST'>\n";
             echo "      <input type='hidden' name='modify' value=1>\n";    
-            echo "	    <p><label>Id.</label>\n";
-            echo "      <input type='text' name='id_matchgame' readonly value='".$data['id_matchgame']."'></p>\n";
+            echo "      <input type='hidden' name='id_matchgame' readonly value='".$data['id_matchgame']."'></p>\n";
             echo "	    <label>$title_team 1</label>\n";
             echo "  	<select name='team_1'>\n";
             echo "  		<option value='0'>...</option>\n";
@@ -171,20 +164,20 @@ else {
             echo "      </p>\n";
             echo "	    <p><label>$title_odds :</label>\n";
             echo "         1<input type='number' step='0.01' size='2' name='odds1' value='".$odds1."'>\n";
-            echo "         N<input type='number' step='0.01' size='2' name='oddsD' value='".$oddsD."'>\n";
+            echo "         $title_draw<input type='number' step='0.01' size='2' name='oddsD' value='".$oddsD."'>\n";
             echo "         2<input type='number' step='0.01' size='2' name='odds2' value='".$odds2."'>\n";
             echo "      </p>\n";
             
             echo "	    <p><label>$title_result :</label>\n";
             echo "     <input type='radio' name='result' id='1' value='1'";
             if($result=="1") echo " checked";
-            echo "><label for='1'>$title_home</label>\n";
+            echo "><label for='1'>1</label>\n";
             echo "     <input type='radio' name='result' id='D' value='D'";
             if($result=="D") echo " checked";
             echo "><label for='D'>$title_draw</label>\n";
             echo "     <input type='radio' name='result' id='2' value='2'";
             if($result=="2") echo " checked";
-            echo "><label for='2'>$title_away</label>\n";
+            echo "><label for='2'>2</label>\n";
             
             echo "      <input type='submit' value='$title_modify'>\n";
             echo "	 </form>\n";
@@ -214,7 +207,7 @@ else {
                 echo $data['name1']." - ".$data['name2']."</option>\n";
             }
             echo "	    </select>\n";
-            echo "      <input type='submit'>\n";
+            echo "      <input type='submit' value='$title_select'>\n";
             echo "	 </form>\n";
             $response->closeCursor();
         }

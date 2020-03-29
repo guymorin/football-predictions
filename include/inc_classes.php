@@ -1,4 +1,22 @@
 <?php
+function checkAlnum($val,$error){
+    if(isset($val)){
+        if(ctype_alnum(str_replace(' ','',($val)))) return $val;
+        else $error->addError($title_errorAlnum);
+    }
+}
+function checkDigit($val){
+    if((isset($val))&&(ctype_digit($val))) return $val;
+    else return 0;
+}
+function checkResult($val){
+    $array=array('1','D','2');
+    if((isset($val))&&(in_array($array, $val))) return $val;
+}
+function checkAction($val){
+    if((isset($val))&&($val==1)) return $val;
+    else return 0;
+}
 function valOdds($val){
     include("lang/fr.php");
     $odds = "<span>";

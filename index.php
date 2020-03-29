@@ -5,6 +5,7 @@
 
 // Files to include
 include("lang/fr.php");
+include("class/errors.php");
 include("include/inc_header.php");
 include("include/inc_connection.php");
 include("include/inc_classes.php");
@@ -73,7 +74,7 @@ else {
             echo "      <noscript><input type='submit'></noscript>\n";
             echo "	 </form>\n";
             
-            $response = $db->query("SELECT DISTINCT j.number FROM matchday j 
+            $response = $db->query("SELECT DISTINCT j.id_matchday, j.number FROM matchday j 
             LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday 
             WHERE m.result='' AND j.id_season=".$_SESSION['seasonId']." AND j.id_championship=".$_SESSION['championshipId']." ORDER BY j.number;"); 
             $data = $response->fetch();
