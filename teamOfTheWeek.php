@@ -3,7 +3,7 @@
 /* Author : Guy Morin */
 
 // Files to include
-include("include/inc_changeMD.php");
+include("include/changeMD.php");
 include("matchday_nav.php");
 
 echo "<section>\n";

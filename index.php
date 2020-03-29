@@ -6,10 +6,9 @@
 // Files to include
 include("lang/fr.php");
 include("class/errors.php");
-include("include/inc_header.php");
-include("include/inc_connection.php");
-include("include/inc_classes.php");
-include("include/inc_functions.php");
+include("include/header.php");
+include("include/connection.php");
+include("include/functions.php");
 
 // Popup if needed
     // Season selected
@@ -40,7 +39,7 @@ if(isset($_GET['page'])){
     if($page=="home") $_SESSION = array();
 }
 // Choose a season, a championship...
-if((empty($_SESSION['seasonId']))or(empty($_SESSION['championshipId']))) include("include/inc_home.php");
+if((empty($_SESSION['seasonId']))or(empty($_SESSION['championshipId']))) include("include/home.php");
 // ...or display the index page
 else {
     if($page!="") include($page.".php");
@@ -101,4 +100,4 @@ else {
     }
 }
 ?>
-<?php include("include/inc_footer.php");?>
+<?php include("include/footer.php");?>
