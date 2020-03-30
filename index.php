@@ -18,28 +18,49 @@ require "class/errors.php";
         $v=explode(",",$_POST['seasonSelect']);
         $_SESSION['seasonId']=$v[0];
         $_SESSION['seasonName']=$v[1];
-        popup("$title_season ".$_SESSION['seasonName'],"/");
+        header('Location:index.php');
     }
     // Championship selected
     if(isset($_POST['championshipSelect'])) {
         $v=explode(",",$_POST['championshipSelect']);
         $_SESSION['championshipId']=$v[0];
         $_SESSION['championshipName']=$v[1];
-        popup($_SESSION['championshipName'],"/");
+        header('Location:index.php');
     }
     // Matchday selected
     if(isset($_POST['matchdaySelect'])&&(!isset($_SESSION['matchdayId']))) {
         $v=explode(",",$_POST['matchdaySelect']);
         $_SESSION['matchdayId']=$v[0];
         $_SESSION['matchdayNum']=$v[1];
-        popup("$title_matchday ".$_SESSION['matchdayNum'],"/");
+        header('Location:index.php');
     }
 // Check the page value
+$error = new Errors();
 $page="";
-if(isset($_GET['page'])){
-    $page=$_GET['page'];
-    if($page=="home") $_SESSION = array();
+$exit=0;
+if(isset($_GET['page'])) $page=$error->check("Alnum",$_GET['page']);
+if(isset($_GET['exit'])) $exit=$error->check("Action",$_GET['exit']);
+if($exit==1){
+    switch($page){
+        case "home":
+            $_SESSION = array();
+            header('Location:index.php');
+            break;
+        case "championship":
+            unset($_SESSION['championshipId']);
+            unset($_SESSION['championshipName']);
+            unset($_SESSION['matchdayId']);
+            unset($_SESSION['matchdayNum']);
+            header('Location:index.php');
+            break;
+        case "matchday":
+            unset($_SESSION['matchdayId']);
+            unset($_SESSION['matchdayNum']);
+            header('Location:index.php');
+            break;
+    }    
 }
+
 // Choose a season, a championship...
 if((empty($_SESSION['seasonId']))or(empty($_SESSION['championshipId']))) include("include/home.php");
 // ...or display the index page

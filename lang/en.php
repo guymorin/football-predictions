@@ -55,6 +55,7 @@ $title_modifyAMatchday = "Modify a matchday";
 $title_motivation = "Motivation";
 $title_name = "Name";
 $title_notPlayed = "Not played";
+$title_noChampionship = "No championship!";
 $title_number = "Number";
 $title_odds = "Odds";
 $title_oddsAveragePlayed = "Average played odds";

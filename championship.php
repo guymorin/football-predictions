@@ -9,7 +9,7 @@ echo "<section>\n";
 echo "<h2>$icon_championship $title_championship</h2>\n";
 // Values
 $error = new Errors();
-$championshipId=$create=$modify=$delete=$exit=$standaway=$standhome=0;
+$championshipId=$create=$modify=$delete=$standaway=$standhome=0;
 if(isset($_POST['id_championship'])) $championshipId=$error->check("Digit",$_POST['id_championship']);
 if(isset($_POST['name'])) $championshipName=$error->check("Alnum",$_POST['name'],$error);
 
@@ -17,21 +17,12 @@ if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create']);
 elseif(isset($_POST['create'])) $create=$error->check("Action",$_POST['create']);
 if(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify']);
 if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete']);
-if(isset($_GET['exit'])) $exit=$error->check("Action",$_GET['exit']);
 if(isset($_GET['standhome'])) $standhome=$error->check("Action",$_GET['standhome']);
 if(isset($_GET['standaway'])) $standaway=$error->check("Action",$_GET['standaway']);
 
 /* Popups or page */
-// Exited popup
-if($exit==1){
-    unset($_SESSION['championshipId']);
-    unset($_SESSION['championshipName']);
-    unset($_SESSION['matchdayId']);
-    unset($_SESSION['matchdayNum']);
-    popup($title_exited,"index.php?page=championship");
-}
 // Deleted popup
-elseif($delete==1){
+if($delete==1){
     if($championshipId==0){
         popup($title_error,"index.php?page=championship");
     } else {
