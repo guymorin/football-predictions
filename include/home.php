@@ -6,7 +6,7 @@ if(empty($_SESSION['seasonId'])){
     $response = $db->query("SELECT * FROM season ORDER BY name;");
     echo "  <section>\n";
     echo "  	<form action='index.php' method='POST'>\n";
-    echo "      <h1><big>$icon_season</big></h1><label>$title_selectTheSeason :</label>\n";                                    
+    echo "      <h1><big>$icon_season</big></h1><label>$title_selectTheSeason :</label><br />\n";                                    
     echo "  	<select name='seasonSelect' onchange='submit()'>\n";
     echo "  		<option value='0'>...</option>\n";
 
@@ -15,7 +15,7 @@ if(empty($_SESSION['seasonId'])){
         echo "  		<option value='".$data->id_season.",".$data->name."'>".$data->name."</option>\n";
     }
     echo "	     </select>\n";
-    echo "       <noscript><input type='submit'></noscript>\n";
+    echo "       <br /><noscript><input type='submit' value='$title_select'></noscript>\n";
     echo "	     </form>\n";
     
     $response = $db->query("SELECT * FROM season ORDER BY id_season DESC;"); 
@@ -53,7 +53,7 @@ elseif($_SESSION['seasonId']>0){
         echo "      <h2>$icon_championship $title_championship</h2>\n";
 
         
-        echo "        <label>$title_selectTheChampionship :</label>\n";                                    
+        echo "        <label>$title_selectTheChampionship :</label><br />\n";                                    
         echo "  	  <select name='championshipSelect' onchange='submit()'>\n";
         echo "        		<option value='0'>...</option>\n";
         
@@ -62,7 +62,7 @@ elseif($_SESSION['seasonId']>0){
             echo "        		<option value='".$data->id_championship.",".$data->name."'>".$data->name."</option>\n";
         }
         echo "  	  </select>\n";
-        echo "        <noscript><input type='submit'></noscript>\n";
+        echo "        <br /><noscript><input type='submit' value='$title_select'></noscript>\n";
         echo "  	 </form>\n";
         
         $response->execute([

@@ -3,7 +3,7 @@
 /* Author : Guy Morin */
 
 // Files to include
-include("season_nav.php");
+require("season_nav.php");
 
 echo "<section>\n";
 

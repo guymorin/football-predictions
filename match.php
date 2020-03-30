@@ -3,7 +3,7 @@
 /* Author : Guy Morin */
 
 // Files to include
-include("matchday_nav.php");
+require("matchday_nav.php");
 
 echo "<section>\n";
 
@@ -74,12 +74,12 @@ else {
             
             echo "	    <label>$title_team 1</label>\n";
             echo "  	<select name='team_1'>\n";
-            include("team_select.php");
+            require("team_select.php");
             echo "  	</select>\n";
             echo "	    <label>$title_team 2</label>\n";
             $response = $db->query($req);
             echo "  	<select name='team_2'>\n";
-            include("team_select.php");
+            require("team_select.php");
             echo "  	</select>\n";
             
             $response->closeCursor();

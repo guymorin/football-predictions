@@ -3,7 +3,7 @@
 /* Author : Guy Morin */
 
 // Files to include
-include("team_nav.php");
+require("team_nav.php");
 
 echo "<section>\n";
 echo "<h2>$icon_team $title_team</h2>\n";

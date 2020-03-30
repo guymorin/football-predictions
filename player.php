@@ -3,7 +3,7 @@
 /* Author : Guy Morin */
 
 // Files to include
-include("player_nav.php");
+require("player_nav.php");
 
 echo "<section>\n";
 echo "<h2>$icon_player $title_player</h2>\n";

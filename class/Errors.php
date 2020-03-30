@@ -29,7 +29,7 @@ class Errors
     
     public function check($check,$val)
     {
-        include("lang/fr.php");
+        require("lang/fr.php");
         switch($check) {
             case "Action":
                 if($val==1) return $val;

@@ -1,6 +1,6 @@
 <?php
 function valOdds($val){
-    include("lang/fr.php");
+    require("lang/fr.php");
     $odds = "<span>";
     switch($val){
         case($val<1.5):
@@ -20,7 +20,7 @@ function valOdds($val){
     return $odds;
 }
 function valRoi($val){
-    include("lang/fr.php");
+    require("lang/fr.php");
     $roi="<span>";
     switch($val){
         case($val<0):
@@ -145,7 +145,7 @@ function popup($texte,$lien){
     
 }
 function changeMD($db,$page){
-    include("lang/fr.php");
+    require("lang/fr.php");
     // Arrows to change matchday
     echo "<div id='changeMD'>\n";
     $req="SELECT id_matchday, number FROM matchday

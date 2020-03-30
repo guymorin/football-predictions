@@ -4,10 +4,10 @@
 /* Author : Guy Morin */
 
 // Files to include
-include("lang/fr.php");
-include("include/header.php");
-include("include/connection.php");
-include("include/functions.php");
+require("lang/fr.php");
+require("include/header.php");
+require("include/connection.php");
+require("include/functions.php");
 
 // Class
 require "class/Errors.php";
@@ -68,16 +68,16 @@ if($exit==1){
 }
 
 // Choose a season, a championship...
-if(empty($_SESSION['seasonId'])) include("include/home.php");
+if(empty($_SESSION['seasonId'])) require("include/home.php");
 // ...or display the index page
 elseif(empty($_SESSION['championshipId'])) {
-    if(($page=="championship")&&($create==1)) include($page.".php");
-    else include("include/home.php");
+    if(($page=="championship")&&($create==1)) require($page.".php");
+    else require("include/home.php");
     // ...or display the index page
 } else {
-    if($page!="") include($page.".php");
+    if($page!="") require($page.".php");
     else {
-        include("index_nav.php"); // Navigation
+        require("index_nav.php"); // Navigation
         
         // Section with menu
         echo "<section>\n";
@@ -100,7 +100,7 @@ elseif(empty($_SESSION['championshipId'])) {
         } else {
             echo "        <ul>\n";
 
-            include("matchday_select.php");
+            require("matchday_select.php");
             
             echo "        </ul>\n";
             echo "    </li>\n";
@@ -121,4 +121,4 @@ elseif(empty($_SESSION['championshipId'])) {
     }
 }
 ?>
-<?php include("include/footer.php");?>
+<?php require("include/footer.php");?>

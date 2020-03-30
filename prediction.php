@@ -3,8 +3,8 @@
 /* Author : Guy Morin */
 
 // Files to include
-include("include/changeMD.php");
-include("matchday_nav.php");
+require("include/changeMD.php");
+require("matchday_nav.php");
 
 echo "<section>\n";
 echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
@@ -133,8 +133,8 @@ if($modify==1){
 // Default page or expert page
 else {
     
-    if($expert==1) include("prediction_matchs_expert.php");
-    else include("prediction_matchs_default.php");
+    if($expert==1) require("prediction_matchs_expert.php");
+    else require("prediction_matchs_default.php");
     
 }
 echo "</section>\n";

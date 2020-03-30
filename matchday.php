@@ -3,8 +3,8 @@
 /* Author : Guy Morin */
 
 // Files to include
-include("include/changeMD.php");
-include("matchday_nav.php");
+require("include/changeMD.php");
+require("matchday_nav.php");
 
 echo "<section>\n";
 echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
@@ -317,7 +317,7 @@ elseif($modify==1){
 // Form select
 else {
     echo "   <form action='index.php?page=matchday' method='POST'>\n";
-    include("matchday_select.php");
+    require("matchday_select.php");
     echo "      <noscript><input type='submit'></noscript>\n";
     echo "	 </form>\n";
 }
