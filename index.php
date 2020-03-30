@@ -10,7 +10,7 @@ include("include/connection.php");
 include("include/functions.php");
 
 // Class
-require "class/errors.php";
+require "class/Errors.php";
 
 // Popup if needed
     // Season selected
