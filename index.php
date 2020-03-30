@@ -78,10 +78,10 @@ else {
             $response = $db->query("SELECT DISTINCT j.id_matchday, j.number FROM matchday j 
             LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday 
             WHERE m.result='' AND j.id_season=".$_SESSION['seasonId']." AND j.id_championship=".$_SESSION['championshipId']." ORDER BY j.number;"); 
-            $data = $response->fetch();
+            $data = $response->fetch(PDO::FETCH_OBJ);
             echo "  	<form action='index.php' method='POST'>";
-            echo "<input type='hidden' name='matchdaySelect' value='".$data['id_matchday'].",".$data['number']."'>";
-            echo "<input type='submit' value='$title_MD".$data['number']."'>";
+            echo "<input type='hidden' name='matchdaySelect' value='".$data->id_matchday.",".$data->number."'>";
+            echo "<input type='submit' value='$title_MD".$data->number."'>";
             echo "</form>\n";
             
             echo "                </ul>\n";

@@ -56,14 +56,14 @@ function criterion($type,$data,$db){
     $v=0;
     switch($type){
         case "motivC1":
-            if($data['motivation1']!="") $v=$data['motivation1'];
+            if($data->motivation1!="") $v=$data->motivation1;
             else $v=1; // Avantage à domicile
             break;
         case "motivC2":
-            if($data['motivation2']!="") $v=$data['motivation2'];
+            if($data->motivation2!="") $v=$data->motivation2;
             break;
         case "serieC1":
-            if($data['currentForm1']!="") $v=$data['currentForm1'];
+            if($data->currentForm1!="") $v=$data->currentForm1;
             elseif(($_SESSION['matchdayNum']-1)>0) {
                 $num = ($_SESSION['matchdayNum']-1);
                 $req="
@@ -71,7 +71,7 @@ function criterion($type,$data,$db){
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_1
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
                     WHERE j.number='".$num."'
-                    AND m.team_1='".$data['eq1']."'
+                    AND m.team_1='".$data->eq1."'
                     AND m.result='1'
                     AND s.id_championship='".$_SESSION['championshipId']."'
                     AND s.id_season='".$_SESSION['seasonId']."'
@@ -80,17 +80,17 @@ function criterion($type,$data,$db){
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_2
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
                     WHERE j.number='".$num."'
-                    AND m.team_2='".$data['eq1']."'
+                    AND m.team_2='".$data->eq1."'
                     AND m.result='2'
                     AND s.id_championship='".$_SESSION['championshipId']."'
                     AND s.id_season='".$_SESSION['seasonId']."'";
                 $r = $db->query($req);
                 while($data=$r->fetchColumn(0))   $res[] = $data;
-                if(in_array($data['eq1'],$res)) $v=1;
+                if(in_array($data->eq1,$res)) $v=1;
             }
             break;
         case "serieC2":
-            if($data['currentForm2']!="") $v=$data['currentForm2'];
+            if($data->currentForm2!="") $v=$data->currentForm2;
             elseif(($_SESSION['matchdayNum']-1)>0) {
                 $num = ($_SESSION['matchdayNum']-1);
                 $req="
@@ -98,7 +98,7 @@ function criterion($type,$data,$db){
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_1
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
                     WHERE j.number='".$num."'
-                    AND m.team_1='".$data['eq2']."'
+                    AND m.team_1='".$data->eq2."'
                     AND m.result='1'
                     AND s.id_championship='".$_SESSION['championshipId']."'
                     AND s.id_season='".$_SESSION['seasonId']."'
@@ -107,33 +107,33 @@ function criterion($type,$data,$db){
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_2
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
                     WHERE j.number='".$num."'
-                    AND m.team_2='".$data['eq2']."'
+                    AND m.team_2='".$data->eq2."'
                     AND m.result='2'
                     AND s.id_championship='".$_SESSION['championshipId']."'
                     AND s.id_season='".$_SESSION['seasonId']."'";
                 $r = $db->query($req);
                 while($data=$r->fetchColumn(0))   $res[] = $data;
-                if(in_array($data['eq2'],$res)) $v=1;
+                if(in_array($data->eq2,$res)) $v=1;
             }
             break;
         case "v1":
-            $req="SELECT marketValue FROM marketValue WHERE id_team='".$data['eq1']."' AND id_season='".$_SESSION['seasonId']."';";
-            $r = $db->query($req)->fetch();
+            $req="SELECT marketValue FROM marketValue WHERE id_team='".$data->eq1."' AND id_season='".$_SESSION['seasonId']."';";
+            $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
             $v = $r[0];
             break;
         case "v2":
-            $req="SELECT marketValue FROM marketValue WHERE id_team='".$data['eq2']."' AND id_season='".$_SESSION['seasonId']."';";
-            $r = $db->query($req)->fetch();
+            $req="SELECT marketValue FROM marketValue WHERE id_team='".$data->eq2."' AND id_season='".$_SESSION['seasonId']."';";
+            $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
             $v = $r[0];
             break;
         case "predictionsHistoryHome":
-            if(isset($data['Dom'])) $v=$data['Dom'];
+            if(isset($data->Dom)) $v=$data->Dom;
             break;
         case "msNul":
-            if(isset($data['Nul'])) $v=$data['Nul'];
+            if(isset($data->Nul)) $v=$data->Nul;
             break;
         case "predictionsHistoryAway":
-            if(isset($data['Ext'])) $v=$data['Ext'];
+            if(isset($data->Ext)) $v=$data->Ext;
             break;
     }
     return $v;
@@ -159,22 +159,22 @@ function changeMD($db,$page){
     $nb=sizeof($response->fetchAll());
     $button1=$button2="";
     $response = $db->query($req);
-    while ($data = $response->fetch())
+    while ($data = $response->fetch(PDO::FETCH_OBJ))
     {
         switch($nb){
             case 1:
             case 2:
                 // Previous button
-                if($data['number']==$_SESSION['matchdayNum']-1){
+                if($data->number==$_SESSION['matchdayNum']-1){
                     $button1="  <input type='submit' value='<'>\n";
                     $button1.="<input type='hidden' name='matchdaySelect' ";
-                    $button1.="value='".$data['id_matchday'].",".$data['number']."'>\n";
+                    $button1.="value='".$data->id_matchday.",".$data->number."'>\n";
                 }
                 // Next button
-                if($data['number']==$_SESSION['matchdayNum']+1){
+                if($data->number==$_SESSION['matchdayNum']+1){
                     $button2="  <input type='submit' value='>'>\n";
                     $button2.="<input type='hidden' name='matchdaySelect' ";
-                    $button2.="value='".$data['id_matchday'].",".$data['number']."'>\n";
+                    $button2.="value='".$data->id_matchday.",".$data->number."'>\n";
                 }
                 break;
         }

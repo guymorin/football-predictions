@@ -63,9 +63,9 @@ elseif($create==1){
         echo "	    <p><label>Club</label>\n";
         echo "     <select multiple size='10' name='id_team'>\n";
         $response = $db->query("SELECT * FROM team ORDER BY name;");
-        while ($data = $response->fetch())
+        while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
-            echo "  		<option value='".$data['id_team']."'>".$data['name']."</option>\n";
+            echo "  		<option value='".$data->id_team."'>".$data->name."</option>\n";
         }
         echo "	   </select></p>\n";
     	echo "     <input type='submit' value='$title_create'>\n";
@@ -80,7 +80,7 @@ elseif($modify==1){
         $req="UPDATE player SET name='".$playerName."', firstname='".$playerFirstname."' WHERE id_player='".$playerId."';";
         
         $response = $db->query("SELECT COUNT(*) as nb FROM season_team_player WHERE id_season='".$_SESSION['seasonId']."' AND id_team='".$teamId."' AND id_player='".$playerId."';");
-        $data = $response->fetch();
+        $data = $response->fetch(PDO::FETCH_OBJ);
         $response->closeCursor();
         
         if($data[0]==0){
@@ -97,11 +97,11 @@ elseif($modify==1){
         $req ="SELECT j.id_player, j.name, j.firstname, j.position, scj.id_team FROM player j LEFT JOIN season_team_player scj ON j.id_player=scj.id_player LEFT JOIN team c ON scj.id_team=c.id_team WHERE j.id_player='".$playerId."';";
         $response = $db->query($req);
         echo "	 <form action='index.php?page=player' method='POST'>\n";
-        $data = $response->fetch();
-        $playerId = $data['id_player'];
-        $playerName = $data['name'];
-        $playerFirstname = $data['firstname'];
-        $teamId = $data['id_team'];
+        $data = $response->fetch(PDO::FETCH_OBJ);
+        $playerId = $data->id_player;
+        $playerName = $data->name;
+        $playerFirstname = $data->firstname;
+        $teamId = $data->id_team;
         echo "      <input type='hidden' name='modify' value=1>\n";    
 
         echo "      <input type='hidden' name='id_player' readonly value='".$playerId."'>\n";
@@ -113,26 +113,26 @@ elseif($modify==1){
         
     	echo "	    <p><label>Poste</label>\n";
     	echo "      <input type='radio' name='position' id='Goalkeeper' value='Goalkeeper'";
-            if ($data['position']=="Goalkeeper") echo " checked";
+            if ($data->position=="Goalkeeper") echo " checked";
     	echo "><label for='Goalkeeper'>$title_goalkeeper</label>\n";
     	echo "     <input type='radio' name='position' id='Defender' value='Defender'";
-            if ($data['position']=="Defender") echo " checked";
+            if ($data->position=="Defender") echo " checked";
     	echo "><label for='Defender'>$title_defender</label>\n";
     	echo "     <input type='radio' name='position' id='Midfielder' value='Midfielder'";
-            if ($data['position']=="Midfielder") echo " checked";	
+            if ($data->position=="Midfielder") echo " checked";	
     	echo "><label for='Midfielder'>$title_midfielder</label>\n";
     	echo "     <input type='radio' name='position' id='Forward' value='Forward'";
-            if ($data['position']=="Forward") echo " checked";	
+            if ($data->position=="Forward") echo " checked";	
     	echo "><label for='Forward'>$title_forward</label></p>\n";
     	
         echo "	    <p><label>$title_team</label>\n";
         echo "      <select multiple size='10' name='id_team'>\n";
         $response = $db->query("SELECT * FROM team ORDER BY name;");
-        while ($data = $response->fetch())
+        while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
-            echo "  		<option value='".$data['id_team']."'";
-            if($data['id_team']==$teamId) echo " selected";
-            echo ">".$data['name']."</option>\n";
+            echo "  		<option value='".$data->id_team."'";
+            if($data->id_team==$teamId) echo " selected";
+            echo ">".$data->name."</option>\n";
         }
         echo "	    </select></p>\n";
         echo "      <input type='submit' value='$title_modify'>\n";
@@ -155,9 +155,9 @@ elseif($modify==1){
         echo "      <label>$title_selectThePlayer :</label>\n";                                    
         echo "  	<select multiple size='10' name='id_player'>\n";
         $response = $db->query("SELECT * FROM player ORDER BY name, firstname");
-        while ($data = $response->fetch())
+        while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
-            echo "  		<option value='".$data['id_player']."'>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']."</option>\n";
+            echo "  		<option value='".$data->id_player."'>".mb_strtoupper($data->name,'UTF-8')." ".$data->firstname."</option>\n";
         }
         echo "	    </select>\n";
         echo "      <input type='submit' value='$title_select'>\n";
@@ -181,17 +181,17 @@ else {
     echo "      <tr><th></th><th>$title_player</th><th>$title_team</th><th>$title_teamOfTheWeek</th><th>$title_ratingAverage</th></tr>\n";
     $counterPodium = 0;
     $icon = "&#129351;"; // Gold medal
-    while ($data = $response->fetch())
+    while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
         $counterPodium++;
         if($counterPodium==2) $icon="&#129352;"; // Silver medal
         else $icon="&#129353;"; // Bronze medal
         
             echo "      <td><strong>".$counterPodium."</strong></td>\n";
-            echo "      <td>".$icon." <strong>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']."</strong></td>\n";
-            echo "      <td>".$data['team']."</td>\n";
-            echo "      <td>".$data['nb']."</td>\n";
-            echo "      <td>".round($data['rating'],1)."</td>\n";
+            echo "      <td>".$icon." <strong>".mb_strtoupper($data->name,'UTF-8')." ".$data->firstname."</strong></td>\n";
+            echo "      <td>".$data->team."</td>\n";
+            echo "      <td>".$data->nb."</td>\n";
+            echo "      <td>".round($data->rating,1)."</td>\n";
             echo "  </tr>\n";
         }
     echo "  </table></p>\n";
@@ -210,12 +210,12 @@ else {
     echo "  <table>\n";
     echo "      <tr><th>$title_team</th><th>$title_player</th><th>$title_teamOfTheWeek</th><th>$title_ratingAverage</th></tr>\n";
     $counter = "";
-    while ($data = $response->fetch())
+    while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
             echo "      <td>";
-            if($counter!=$data['team']){
+            if($counter!=$data->team){
                 $counterPodium = 0;
-                echo "<strong>".$data['team']."</strong>";
+                echo "<strong>".$data->team."</strong>";
             }
             
             $counterPodium++;
@@ -234,11 +234,11 @@ else {
             }
             
             echo "</td><td>";
-            if($icon!="") echo $icon." <strong>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']."</strong>";
-            else echo mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname'];
-            echo "</td><td>".$data['nb']."</td><td>".round($data['rating'],1)."</td>\n";
+            if($icon!="") echo $icon." <strong>".mb_strtoupper($data->name,'UTF-8')." ".$data->firstname."</strong>";
+            else echo mb_strtoupper($data->name,'UTF-8')." ".$data->firstname;
+            echo "</td><td>".$data->nb."</td><td>".round($data->rating,1)."</td>\n";
             echo "  </tr>\n";
-            $counter=$data['team'];
+            $counter=$data->team;
         }
     $response->closeCursor();
     echo "  </table>\n";

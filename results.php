@@ -114,32 +114,32 @@ else {
     echo "            <th colspan='2'>$title_redCards</th>\n";
     echo "          </tr>\n";
     
-    while ($data = $response->fetch())
+    while ($data = $response->fetch(PDO::FETCH_OBJ))
     {
-        $id=$data['id_matchgame'];
-        echo "<input type='hidden' name='id_match[]' value='".$data['id_matchgame']."'>\n";
+        $id=$data->id_matchgame;
+        echo "<input type='hidden' name='id_match[]' value='".$data->id_matchgame."'>\n";
         echo "  		<tr>\n";
-        echo "  		  <td><input type='date' name='date[$id]' value='".$data['date']."'></td>";
+        echo "  		  <td><input type='date' name='date[$id]' value='".$data->date."'></td>";
         echo "  		  <td><input type='radio' name='result[$id]' value=''";
-        if($data['result']=="") echo " checked";
+        if($data->result=="") echo " checked";
         echo "></td>\n";
-        echo "  		  <td>".$data['name1']." - ".$data['name2']."</td>";
+        echo "  		  <td>".$data->name1." - ".$data->name2."</td>";
         echo "<td>";
-        echo "1<input type='number' step='0.01' name='odds1[$id]' size='2' value='".$data['odds1']."'>\n";
-        echo "$title_draw<input type='number' step='0.01' name='oddsD[$id]' size='2' value='".$data['oddsD']."'>\n";
-        echo "2<input type='number' step='0.01' name='odds2[$id]' size='2' value='".$data['odds2']."'>\n";
+        echo "1<input type='number' step='0.01' name='odds1[$id]' size='2' value='".$data->odds1."'>\n";
+        echo "$title_draw<input type='number' step='0.01' name='oddsD[$id]' size='2' value='".$data->oddsD."'>\n";
+        echo "2<input type='number' step='0.01' name='odds2[$id]' size='2' value='".$data->odds2."'>\n";
         echo "</td>\n";
         echo "  		  <td><input type='radio' id='1' name='result[$id]' value='1'";
-        if($data['result']=="1") echo " checked";
+        if($data->result=="1") echo " checked";
         echo "></td>\n";
         echo "  		  <td><input type='radio' id='D' name='result[$id]' value='D'";
-        if($data['result']=="D") echo " checked";
+        if($data->result=="D") echo " checked";
         echo "></td>\n";
         echo "  		  <td><input type='radio' id='2' name='result[$id]' value='2'";
-        if($data['result']=="2") echo " checked";
+        if($data->result=="2") echo " checked";
         echo "></td>\n";
-        echo "<td><input type='number' name='red1[$id]' value='".$data['red1']."'></td>\n";
-        echo "<td><input type='number' name='red2[$id]' value='".$data['red2']."'></td>\n";
+        echo "<td><input type='number' name='red1[$id]' value='".$data->red1."'></td>\n";
+        echo "<td><input type='number' name='red2[$id]' value='".$data->red2."'></td>\n";
         echo "          </tr>\n";
         
     }

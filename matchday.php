@@ -55,7 +55,7 @@ elseif(isset($_SESSION['matchdayId'])){
         foreach($val as $k=>$v){
             if(($v!="")&&(!in_array($k,$deletePlayer))){
                 $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';");
-                $data = $response->fetch();
+                $data = $response->fetch(PDO::FETCH_OBJ);
                 $response->closeCursor();
                 
                 if($data[0]==0) {
@@ -103,7 +103,7 @@ elseif(isset($_SESSION['matchdayId'])){
         
         $matchs=$success=$earningSum=$totalJouee=0;
         
-        while ($data = $response->fetch())
+        while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
             
             // Marketvalue
@@ -112,8 +112,8 @@ elseif(isset($_SESSION['matchdayId'])){
             $mv1 = round(sqrt($v1/$v2));
             $mv2 = round(sqrt($v2/$v1));
             
-            $dom = $data['home_away1']; 
-            $ext = $data['home_away2']; 
+            $dom = $data->home_away1; 
+            $ext = $data->home_away2; 
             
             // Predictions history
                 $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
@@ -121,22 +121,22 @@ elseif(isset($_SESSION['matchdayId'])){
                 SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
                 FROM matchgame m 
                 LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
-                WHERE cr.motivation1='".$data['motivation1']."' 
-                AND cr.motivation2='".$data['motivation2']."' 
-                AND cr.currentForm1='".$data['currentForm1']."' 
-                AND cr.currentForm2='".$data['currentForm2']."' 
-                AND cr.physicalForm1='".$data['physicalForm1']."' 
-                AND cr.physicalForm2='".$data['physicalForm2']."' 
-                AND cr.weather1='".$data['weather1']."' 
-                AND cr.weather2='".$data['weather2']."' 
-                AND cr.bestPlayers1='".$data['bestPlayers1']."' 
-                AND cr.bestPlayers2='".$data['bestPlayers2']."' 
-                AND cr.marketValue1='".$data['marketValue1']."' 
-                AND cr.marketValue2='".$data['marketValue2']."' 
-                AND cr.home_away1='".$data['home_away1']."' 
-                AND cr.home_away2='".$data['home_away2']."' 
-                AND m.date<'".$data['date']."'";
-                $r = $db->query($req)->fetch();
+                WHERE cr.motivation1='".$data->motivation1."' 
+                AND cr.motivation2='".$data->motivation2."' 
+                AND cr.currentForm1='".$data->currentForm1."' 
+                AND cr.currentForm2='".$data->currentForm2."' 
+                AND cr.physicalForm1='".$data->physicalForm1."' 
+                AND cr.physicalForm2='".$data->physicalForm2."' 
+                AND cr.weather1='".$data->weather1."' 
+                AND cr.weather2='".$data->weather2."' 
+                AND cr.bestPlayers1='".$data->bestPlayers1."' 
+                AND cr.bestPlayers2='".$data->bestPlayers2."' 
+                AND cr.marketValue1='".$data->marketValue1."' 
+                AND cr.marketValue2='".$data->marketValue2."' 
+                AND cr.home_away1='".$data->home_away1."' 
+                AND cr.home_away2='".$data->home_away2."' 
+                AND m.date<'".$data->date."'";
+                $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
                 $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
                 $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
                 
@@ -144,20 +144,20 @@ elseif(isset($_SESSION['matchdayId'])){
             $win="";
 
             $sum1=
-                $data['motivation1']
-                +$data['currentForm1']
-                +$data['physicalForm1']
-                +$data['weather1']
-                +$data['bestPlayers1']
+                $data->motivation1
+                +$data->currentForm1
+                +$data->physicalForm1
+                +$data->weather1
+                +$data->bestPlayers1
                 +$mv1
                 +$dom
                 +$predictionsHistoryHome;
             $sum2=
-                $data['motivation2']
-                +$data['currentForm2']
-                +$data['physicalForm2']
-                +$data['weather2']
-                +$data['bestPlayers2']
+                $data->motivation2
+                +$data->currentForm2
+                +$data->physicalForm2
+                +$data->weather2
+                +$data->bestPlayers2
                 +$mv2
                 +$ext
                 +$predictionsHistoryAway;
@@ -170,29 +170,29 @@ elseif(isset($_SESSION['matchdayId'])){
             $playedOdds=0;
             switch($prediction){
                 case "1":
-                    $playedOdds = $data['odds1'];
+                    $playedOdds = $data->odds1;
                     break;
                 case "N":
-                    $playedOdds = $data['oddsD'];
+                    $playedOdds = $data->oddsD;
                     break;
                 case "2":
-                    $playedOdds = $data['odds2'];
+                    $playedOdds = $data->odds2;
                     break;
             }
             
-            if($prediction==$data['result']){
+            if($prediction==$data->result){
                 $win="<big style='color:green'>&#x2714;</big>";
                 $success++;
                 $earningSum+=$playedOdds;
-            } elseif ($data['result']!="") $win="<small style='color:gray'>&times;</small>";
+            } elseif ($data->result!="") $win="<small style='color:gray'>&times;</small>";
             $totalJouee+=$playedOdds;
             
             $table.="  		<tr>\n";
-            $table.="  		  <td>".$data['name1']." - ".$data['name2']."</td>\n";
+            $table.="  		  <td>".$data->name1." - ".$data->name2."</td>\n";
             $table.="  		  <td>".$prediction."</td>\n";
             $table.="  		  <td>";
-            if($data['result']=='D') $table.=$title_draw;
-            else $table.=$data['result'];
+            if($data->result=='D') $table.=$title_draw;
+            else $table.=$data->result;
             $table.="</td>\n";
             $table.="  		  <td>".$playedOdds."</td>\n";
             $table.="  		  <td>".$win."</td>\n";
@@ -302,20 +302,20 @@ elseif($modify==1){
     else {
         $response = $db->query("SELECT * FROM matchday WHERE id_matchday='".$matchdayId."';");
         echo "	 <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
-        $data = $response->fetch();
+        $data = $response->fetch(PDO::FETCH_OBJ);
         echo "      <div class='error'>".$error->getError()."</div>\n";
         echo "      <input type='hidden' name='modify' value=1>\n";    
         echo "	    <label>Id.</label>\n";
-        echo "      <input type='text' name='id_matchday' readonly='readonly' value='".$data['id_matchday']."'>\n";
+        echo "      <input type='text' name='id_matchday' readonly='readonly' value='".$data->id_matchday."'>\n";
         echo "	    <label>$title_number</label>\n";
-        echo "      <input type='text' name='number' value='".$data['number']."'>\n";
+        echo "      <input type='text' name='number' value='".$data->number."'>\n";
         echo "      <input type='submit' value='$title_modify'>\n";
         echo "	 </form>\n";
         // Delete form
         echo "	 <form action='index.php?page=matchday' method='POST' onsubmit='return confirm()'>\n";
         echo "      <input type='hidden' name='supprime' value=1>\n";
         echo "      <input type='hidden' name='id_matchday' value=$matchdayId>\n";
-        echo "      <input type='hidden' name='number' value='".$data['number']."'>\n";
+        echo "      <input type='hidden' name='number' value='".$data->number."'>\n";
         echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n";
         echo "	 </form>\n";
         $response->closeCursor();

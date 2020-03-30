@@ -76,21 +76,21 @@ elseif($modify==1){
         $response = $db->query("SELECT * FROM championship WHERE id_championship='$championshipId';");
         echo "<div class='error'>".$error->getError()."</div>\n";
         echo "	 <form action='index.php?page=championship' method='POST'>\n";
-        $data = $response->fetch();
+        $data = $response->fetch(PDO::FETCH_OBJ);
         echo "      <input type='hidden' name='modify' value='1'>\n";
-        echo "      <input type='hidden' name='id_championship' readonly='readonly' value='".$data['id_championship']."'>\n";
+        echo "      <input type='hidden' name='id_championship' readonly='readonly' value='".$data->id_championship."'>\n";
         echo "	    <label>$title_name</label>\n";
         echo "     <input type='text' name='name' value='";
         if($_POST['name']) echo $_POST['name'];
-        else echo $data['name'];
+        else echo $data->name;
         echo "'>\n";echo "      <input type='submit' value='$title_modify'>\n";
         echo "	 </form>\n";
         
         echo "	 <form action='index.php?page=championship' method='POST' onsubmit='return confirm()'>\n";
         echo "      <input type='hidden' name='delete' value=1>\n";
         echo "      <input type='hidden' name='id_championship' value=$championshipId>\n";
-        echo "      <input type='hidden' name='name' value='".$data['name']."'>\n";
-        echo "      <input type='submit' value='&#9888 $title_delete ".$data['name']." &#9888'>\n"; // Bouton Supprimer
+        echo "      <input type='hidden' name='name' value='".$data->name."'>\n";
+        echo "      <input type='submit' value='&#9888 $title_delete ".$data->name." &#9888'>\n"; // Bouton Supprimer
         echo "	 </form>\n";
         $response->closeCursor();
     }
@@ -179,22 +179,22 @@ elseif(isset($_SESSION['championshipId'])&&($exit==0)){
     $counter=0;
     $previousPoints=0;
     
-    while ($data = $response->fetch())
+    while ($data = $response->fetch(PDO::FETCH_OBJ))
     {
         echo "        <tr>\n";
         echo "          <td>";
-        if($data['points']!=$previousPoints){
+        if($data->points!=$previousPoints){
             $counter++;
             echo $counter;
-            $previousPoints=$data['points'];
+            $previousPoints=$data->points;
         }
         echo "</td>\n";
-        echo "          <td>".$data['name']."</td>\n";
-        echo "          <td>".$data['points']."</td>\n";
-        echo "          <td>".$data['matchgame']."</td>\n";
-        echo "          <td>".$data['gagne']."</td>\n";
-        echo "          <td>".$data['nul']."</td>\n";
-        echo "          <td>".$data['perdu']."</td>\n";
+        echo "          <td>".$data->name."</td>\n";
+        echo "          <td>".$data->points."</td>\n";
+        echo "          <td>".$data->matchgame."</td>\n";
+        echo "          <td>".$data->gagne."</td>\n";
+        echo "          <td>".$data->nul."</td>\n";
+        echo "          <td>".$data->perdu."</td>\n";
         echo "        </tr>\n";
     }
     $response->closeCursor();

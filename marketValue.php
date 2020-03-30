@@ -26,7 +26,7 @@ if(isset($val)) {
         $v=$error->check("Digit",$v);
         if($v>0){     
             $response = $db->query("SELECT COUNT(*) as nb FROM marketValue WHERE id_season='".$_SESSION['seasonId']."' AND id_team='".$k."';");
-            $data = $response->fetch();
+            $data = $response->fetch(PDO::FETCH_OBJ);
             $response->closeCursor();
             echo $data[0];
             if($data[0]==0) {
@@ -55,9 +55,9 @@ else {
     echo "      <label>$title_modifyAMarketValue :</label>\n";  
     echo "      <table>\n";
     echo "          <tr><th>Club</th><th>$title_marketValue (M €)</th></tr>\n";
-        while ($data = $response->fetch())
+        while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
-            echo "          <tr><td><input type='hidden' name='id_team[]' readonly  value='".$data['id_team']."'>".$data['name']."</td><td><input type='text' name='marketValue[]' value='".$data['marketValue']."'></td></tr>\n";
+            echo "          <tr><td><input type='hidden' name='id_team[]' readonly  value='".$data->id_team."'>".$data->name."</td><td><input type='text' name='marketValue[]' value='".$data->marketValue."'></td></tr>\n";
         }
     echo "  </table>\n";
     echo "      <input type='submit'>\n";

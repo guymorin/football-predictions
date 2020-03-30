@@ -127,30 +127,30 @@ else {
         elseif($idMatch>0) {
             $req="SELECT m.id_matchgame,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_matchgame='".$idMatch."';";
             $response = $db->query($req);
-            $data = $response->fetch();
-            $name1=$data['name1'];
-            $name2=$data['name2'];
-            $id1=$data['id1'];
-            $id2=$data['id2'];
-            $result=$data['result'];
-            $date=$data['date'];
-            $odds1=$data['odds1'];
-            $oddsD=$data['oddsD'];
-            $odds2=$data['odds2'];
+            $data = $response->fetch(PDO::FETCH_OBJ);
+            $name1=$data->name1;
+            $name2=$data->name2;
+            $id1=$data->id1;
+            $id2=$data->id2;
+            $result=$data->result;
+            $date=$data->date;
+            $odds1=$data->odds1;
+            $oddsD=$data->oddsD;
+            $odds2=$data->odds2;
             
             echo "	 <form action='index.php?page=match' method='POST'>\n";
             echo "      <div class='error'>".$error->getError()."</div>\n";
             echo "      <input type='hidden' name='modify' value=1>\n";    
-            echo "      <input type='hidden' name='id_matchgame' readonly value='".$data['id_matchgame']."'></p>\n";
+            echo "      <input type='hidden' name='id_matchgame' readonly value='".$data->id_matchgame."'></p>\n";
             echo "	    <label>$title_team 1</label>\n";
             echo "  	<select name='team_1'>\n";
             echo "  		<option value='0'>...</option>\n";
             $response = $db->query("SELECT c.* FROM team c LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team WHERE scc.id_season='".$_SESSION['seasonId']."' AND scc.id_championship='".$_SESSION['championshipId']."' ORDER BY name;");
-            while ($data = $response->fetch())
+            while ($data = $response->fetch(PDO::FETCH_OBJ))
             {
-                echo "  		<option value='".$data['id_team']."'";
-                if($data['id_team']==$id1) echo " selected";
-                echo ">".$data['name']."</option>\n";
+                echo "  		<option value='".$data->id_team."'";
+                if($data->id_team==$id1) echo " selected";
+                echo ">".$data->name."</option>\n";
             }
             echo "  	</select>\n";
             
@@ -158,11 +158,11 @@ else {
             echo "  	<select name='team_2'>\n";
             $response = $db->query("SELECT c.* FROM team c LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team WHERE scc.id_season='".$_SESSION['seasonId']."' AND scc.id_championship='".$_SESSION['championshipId']."' ORDER BY name;");      
             echo "  		<option value='0'>...</option>\n";
-            while ($data = $response->fetch())
+            while ($data = $response->fetch(PDO::FETCH_OBJ))
             {
-                 echo "  		<option value='".$data['id_team']."'";
-                if($data['id_team']==$id2) echo " selected";
-                echo ">".$data['name']."</option>\n";        }
+                 echo "  		<option value='".$data->id_team."'";
+                if($data->id_team==$id2) echo " selected";
+                echo ">".$data->name."</option>\n";        }
             echo "  	</select>\n";
     
             echo "	    <p><label>$title_date :</label>\n";
@@ -204,14 +204,14 @@ else {
             echo "      <label>$title_modifyAMatch :</label>\n";                                    
             echo "  	<select multiple size='10' name='id_matchgame'>\n";
             $response = $db->query("SELECT m.id_matchgame,c1.name as name1,c2.name as name2, m.result FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_matchday='".$_SESSION['matchdayId']."';");
-            while ($data = $response->fetch())
+            while ($data = $response->fetch(PDO::FETCH_OBJ))
             {
-                echo "  		<option value='".$data['id_matchgame']."'>";
-                if($data['result']!=""){
-                    if($data['result']=="D") echo "[$title_draw] ";
-                    else echo "[".$data['result']."] ";
+                echo "  		<option value='".$data->id_matchgame."'>";
+                if($data->result!=""){
+                    if($data->result=="D") echo "[$title_draw] ";
+                    else echo "[".$data->result."] ";
                 }
-                echo $data['name1']." - ".$data['name2']."</option>\n";
+                echo $data->name1." - ".$data->name2."</option>\n";
             }
             echo "	    </select>\n";
             echo "      <input type='submit' value='$title_select'>\n";

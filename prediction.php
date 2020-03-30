@@ -46,7 +46,7 @@ if($modify==1){
             $req.="UPDATE matchgame SET result='".$rMatch[$k]."' WHERE id_match='".$k."';";
         }
         $response = $db->query("SELECT COUNT(*) as nb FROM criterion WHERE id_match='".$k."';");
-        $data = $response->fetch();
+        $data = $response->fetch(PDO::FETCH_OBJ);
         $response->closeCursor();
         
         if($data[0]==0) {

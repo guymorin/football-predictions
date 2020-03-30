@@ -64,18 +64,18 @@ elseif($modify==1){
     $response = $db->query("SELECT * FROM season WHERE id_season='".$seasonId."';");
     echo "	 <form action='index.php?page=season' method='POST'>\n";
     echo "      <div class='error'>".$error->getError()."</div>\n";
-    $data = $response->fetch();
+    $data = $response->fetch(PDO::FETCH_OBJ);
     echo "      <input type='hidden' name='modify' value=1>\n";    
-    echo "      <input type='hidden' name='id_season' readonly='readonly' value='".$data['id_season']."'>\n";
+    echo "      <input type='hidden' name='id_season' readonly='readonly' value='".$data->id_season."'>\n";
     echo "	 <label>$title_name</label>\n";
-    echo "      <input type='text' name='name' value='".$data['name']."'>\n";
+    echo "      <input type='text' name='name' value='".$data->name."'>\n";
     echo "      <input type='submit' value='$title_modify'>\n";
     echo "	 </form>\n";
     // Delete form
     echo "	 <form action='index.php?page=season' method='POST' onsubmit='return confirm()'>\n";
     echo "      <input type='hidden' name='delete' value=1>\n";
     echo "      <input type='hidden' name='id_season' value=$seasonId>\n";
-    echo "      <input type='hidden' name='name' value='".$data['name']."'>\n";
+    echo "      <input type='hidden' name='name' value='".$data->name."'>\n";
     echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n";
     echo "	 </form>\n";
     $response->closeCursor();

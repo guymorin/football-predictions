@@ -66,16 +66,16 @@ elseif($modify==1){
         $response = $db->query("SELECT * FROM team WHERE id_team='".$teamId."';");
     echo "	 <form action='index.php?page=team' method='POST'>\n";
     echo "      <div class='error'>".$error->getError()."</div>\n";
-    $data = $response->fetch();
+    $data = $response->fetch(PDO::FETCH_OBJ);
     echo "      <input type='hidden' name='modify' value=1>\n";    
     /* Team ID for debugging
     echo "	    <label>Id.</label>\n";
-    echo "      <input type='text' name='id_team' readonly='readonly' value='".$data['id_team']."'>\n";
+    echo "      <input type='text' name='id_team' readonly='readonly' value='".$data->id_team."'>\n";
     */
     echo "	    <label>$title_name</label>\n";
-    echo "      <input type='text' name='name' value='".$data['name']."'>\n";
+    echo "      <input type='text' name='name' value='".$data->name."'>\n";
     echo "	    <label>$title_weathercode</label>\n";
-    echo "      <input type='text' name='weather_code' value='".$data['weather_code']."'>\n";
+    echo "      <input type='text' name='weather_code' value='".$data->weather_code."'>\n";
     echo "      <input type='submit' value='$title_modify'>\n";
     echo "	 </form>\n";
     // Delete
@@ -83,7 +83,7 @@ elseif($modify==1){
     echo "      <div class='error'>".$error->getError()."</div>\n";
     echo "      <input type='hidden' name='delete' value=1>\n";
     echo "      <input type='hidden' name='id_team' value=$teamId>\n";
-    echo "      <input type='hidden' name='name' value='".$data['name']."'>\n";
+    echo "      <input type='hidden' name='name' value='".$data->name."'>\n";
     echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n"; // Bouton Supprimer
     echo "	 </form>\n";
     $response->closeCursor(); 

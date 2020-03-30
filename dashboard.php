@@ -45,16 +45,16 @@ $table.="         <th>$title_profit<br />total</th>\n";
 $table.="       </tr>\n";
 
 $matchdayBetSum=$matchdaySuccessSum=$matchdayEarningSum;$matchdayPlayedOddsSum;$matchdayProfitSum=0;
-while ($data = $response->fetch())
+while ($data = $response->fetch(PDO::FETCH_OBJ))
 {
     $PlayedOdds=0;         
 
     // Marketvalue
-    $mv1 = $data['marketValue1']; 
-    $mv2 = $data['marketValue2']; 
+    $mv1 = $data->marketValue1; 
+    $mv2 = $data->marketValue2; 
     
-    $home = $data['home_away1']; 
-    $away = $data['home_away2']; 
+    $home = $data->home_away1; 
+    $away = $data->home_away2; 
     
     // Predictions history
         $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
@@ -62,43 +62,43 @@ while ($data = $response->fetch())
         SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
         FROM matchgame m 
         LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
-        WHERE cr.motivation1='".$data['motivation1']."' 
-        AND cr.motivation2='".$data['motivation2']."' 
-        AND cr.currentForm1='".$data['currentForm1']."' 
-        AND cr.currentForm2='".$data['currentForm2']."' 
-        AND cr.physicalForm1='".$data['physicalForm1']."' 
-        AND cr.physicalForm2='".$data['physicalForm2']."' 
-        AND cr.weather1='".$data['weather1']."' 
-        AND cr.weather2='".$data['weather2']."' 
-        AND cr.bestPlayers1='".$data['bestPlayers1']."' 
-        AND cr.bestPlayers2='".$data['bestPlayers2']."' 
-        AND cr.marketValue1='".$data['marketValue1']."' 
-        AND cr.marketValue2='".$data['marketValue2']."' 
-        AND cr.home_away1='".$data['home_away1']."' 
-        AND cr.home_away2='".$data['home_away2']."' 
-        AND m.date<'".$data['date']."'";
-        $r = $db->query($req)->fetch();
+        WHERE cr.motivation1='".$data->motivation1."' 
+        AND cr.motivation2='".$data->motivation2."' 
+        AND cr.currentForm1='".$data->currentForm1."' 
+        AND cr.currentForm2='".$data->currentForm2."' 
+        AND cr.physicalForm1='".$data->physicalForm1."' 
+        AND cr.physicalForm2='".$data->physicalForm2."' 
+        AND cr.weather1='".$data->weather1."' 
+        AND cr.weather2='".$data->weather2."' 
+        AND cr.bestPlayers1='".$data->bestPlayers1."' 
+        AND cr.bestPlayers2='".$data->bestPlayers2."' 
+        AND cr.marketValue1='".$data->marketValue1."' 
+        AND cr.marketValue2='".$data->marketValue2."' 
+        AND cr.home_away1='".$data->home_away1."' 
+        AND cr.home_away2='".$data->home_away2."' 
+        AND m.date<'".$data->date."'";
+        $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
         $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
         $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
     
     // Sum
     $win="";
-    $id=$data['id_matchgame'];
+    $id=$data->id_matchgame;
     $sum1=
-        $data['motivation1']
-        +$data['currentForm1']
-        +$data['physicalForm1']
-        +$data['weather1']
-        +$data['bestPlayers1']
+        $data->motivation1
+        +$data->currentForm1
+        +$data->physicalForm1
+        +$data->weather1
+        +$data->bestPlayers1
         +$predictionsHistoryHome
         +$mv1
         +$home;
     $sum2=
-        $data['motivation2']
-        +$data['currentForm2']
-        +$data['physicalForm2']
-        +$data['weather2']
-        +$data['bestPlayers2']
+        $data->motivation2
+        +$data->currentForm2
+        +$data->physicalForm2
+        +$data->weather2
+        +$data->bestPlayers2
         +$predictionsHistoryAway
         +$mv2
         +$away;
@@ -109,17 +109,17 @@ while ($data = $response->fetch())
     $playedOdds=0;
     switch($prediction){
         case "1":
-            $PlayedOdds = $data['odds1'];
+            $PlayedOdds = $data->odds1;
             break;
         case "D":
-            $PlayedOdds = $data['oddsD'];
+            $PlayedOdds = $data->oddsD;
             break;
         case "2":
-            $PlayedOdds = $data['odds2'];
+            $PlayedOdds = $data->odds2;
             break;
     }
     
-    if($prediction==$data['result']){
+    if($prediction==$data->result){
         $matchdaySuccess++;
         $jGains+=$PlayedOdds;
     }
@@ -137,7 +137,7 @@ while ($data = $response->fetch())
         $matchdayEarningSum+=$jGains;
         $matchdayPlayedOddsSum+=$matchdayPlayedOdds;
         $table.="       <tr>\n";
-        $table.="           <td><strong>".$data['number']."</strong></td>\n";
+        $table.="           <td><strong>".$data->number."</strong></td>\n";
         $table.="           <td>".$matchdayMatchs."</td>\n";
         $table.="           <td>".$matchdaySuccess."</td>\n";
         $averageOdds=(round($matchdayPlayedOdds/$matchdayMatchs,2));
@@ -152,7 +152,7 @@ while ($data = $response->fetch())
         $table.="       </tr>\n";
         
         $matchdayMatchs=$matchdaySuccess=$matchdayPlayedOdds=$jGains=$matchdayProfit=0;
-        $graph[$data['number']]=$matchdayProfitSum;
+        $graph[$data->number]=$matchdayProfitSum;
     }
 }
 $response->closeCursor();

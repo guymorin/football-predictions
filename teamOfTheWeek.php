@@ -29,7 +29,7 @@ if(isset($_SESSION['matchdayId'])){
             if(($v>0)&&(!in_array($k,$deletePlayer))){
                 
                 $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';");
-                $data = $response->fetch();
+                $data = $response->fetch(PDO::FETCH_OBJ);
                 $response->closeCursor();
                 
                 if($data[0]==0) {
@@ -58,12 +58,12 @@ if(isset($_SESSION['matchdayId'])){
         echo "   <table id='teamOfTheWeek'>\n";
         echo "    <tr><th> </th><th>$title_player</th><th>$title_rating</th><th>&#10060;</th></tr>\n";
 
-        while ($data = $response->fetch())
+        while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
             $counter++;
             echo "  	<tr><td>".$counter."</td>";
-            echo "<td><input type='hidden' name='id_player[]' value='".$data['id_player']."'>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']."</td>";
-            echo "<td><input type='text' name='rating[]' size='3' value='".$data['rating']."'</td><td><input type='checkbox' name='delete[]' value='".$data['id_player']."'></td></tr>\n";
+            echo "<td><input type='hidden' name='id_player[]' value='".$data->id_player."'>".mb_strtoupper($data->name,'UTF-8')." ".$data->firstname."</td>";
+            echo "<td><input type='text' name='rating[]' size='3' value='".$data->rating."'</td><td><input type='checkbox' name='delete[]' value='".$data->id_player."'></td></tr>\n";
         }
         
         $req = "SELECT j.id_player, j.name, j.firstname, j.position, c.name as team 
@@ -83,10 +83,10 @@ if(isset($_SESSION['matchdayId'])){
             echo "<td>".$counter."</td>";
             echo "<td><select name='id_player[]'>\n";
             echo "  <option value=''>...</option>\n";
-            while ($data = $response->fetch())
+            while ($data = $response->fetch(PDO::FETCH_OBJ))
             {
 
-                echo "  <option value='".$data['id_player']."'>".mb_strtoupper($data['name'],'UTF-8')." ".$data['firstname']." [".$data['team']."]";
+                echo "  <option value='".$data->id_player."'>".mb_strtoupper($data->name,'UTF-8')." ".$data->firstname." [".$data->team."]";
                 echo "</option>\n";
             }
             echo "</select>\n";

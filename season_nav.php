@@ -9,11 +9,11 @@ echo "      <input type='hidden' name='modify' value='1'>\n";
 echo "    <label>$title_modifyASeason :</label>\n";                                    
 echo "  	<select name='id_season' onchange='submit()'>\n";
 echo "  		<option value='0'>...</option>\n";
-while ($data = $response->fetch())
+while ($data = $response->fetch(PDO::FETCH_OBJ))
 {
-    echo "  		<option value='".$data['id_season']."'";
-    if($data['id_season']==$_SESSION['seasonId']) echo " disabled";
-    echo ">".$data['name']."</option>\n";
+    echo "  		<option value='".$data->id_season."'";
+    if($data->id_season==$_SESSION['seasonId']) echo " disabled";
+    echo ">".$data->name."</option>\n";
 }
 echo "	 </select>\n";
 echo "      <noscript><input type='submit'></noscript>\n";
