@@ -56,6 +56,7 @@ $title_motivation = "Motivation";
 $title_name = "Nom";
 $title_notPlayed = "Non joué";
 $title_noChampionship = "Aucun championnat&nbsp;!";
+$title_noMatchday = "Aucune journée&nbsp;!";
 $title_number = "Numéro";
 $title_odds = "Cote";
 $title_oddsAveragePlayed = "Cote moyenne jouée";

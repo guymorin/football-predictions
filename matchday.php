@@ -317,7 +317,6 @@ elseif($modify==1){
 // Form select
 else {
     echo "   <form action='index.php?page=matchday' method='POST'>\n";
-    echo "    <label>$title_matchday</label>\n";
     include("matchday_select.php");
     echo "      <noscript><input type='submit'></noscript>\n";
     echo "	 </form>\n";

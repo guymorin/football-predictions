@@ -34,7 +34,7 @@ elseif($_SESSION['seasonId']>0){
 
 // Display nav
     echo "<nav>\n";
-    echo "  <a href='index.php?page=home&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
+    echo "  <a href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
     echo "<a href='index.php?page=championship&create=1'>$title_createAChampionship</a>\n";
     echo "</nav>\n";
     echo "</nav>\n";
@@ -43,15 +43,9 @@ elseif($_SESSION['seasonId']>0){
     echo "      <ul class='menu'>\n";
 
     // Display form
-    $response = $db->prepare("SELECT DISTINCT c.id_championship, c.name
+    $response = $db->query("SELECT DISTINCT c.id_championship, c.name
     FROM championship c
-    LEFT JOIN season_championship_team scc
-    ON c.id_championship=scc.id_championship
-    WHERE scc.id_season= :id_season
     ORDER BY c.name;");
-    $response->execute([
-        'id_season' => $_SESSION['seasonId']
-    ]);
     
     if($response->rowCount()>0){
          

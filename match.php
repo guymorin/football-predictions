@@ -20,14 +20,6 @@ if(empty($_SESSION['matchdayId'])) {
         $_SESSION['matchdayNum']=$error->check("Digit",$v[1]);
         popup($title_MD.$_SESSION['matchdayNum'],"index.php?page=match");
     }
-    // Form select
-    else {
-        echo "   <form action='index.php?page=match' method='POST'>\n";
-        echo "    <label>$title_matchday</label>\n";        
-        include("matchday_select.php");
-        echo "      <noscript><input type='submit'></noscript>\n";
-        echo "	 </form>\n";
-    }
 }
 // Matchday selected
 else {
