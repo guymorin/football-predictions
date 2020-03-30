@@ -4,8 +4,8 @@ try
 {
 	$db = new PDO('mysql:host=localhost;dbname=phpmyadmin;charset=utf8', 'phpmyadmin', 'master');
 }
-catch (Exception $e)
+catch (PDOException $e)
 {
-        die('Erreur : ' . $e->getMessage());
+        die("<div class='error'>".$title_error." : ". $e->getMessage()."</div>");
 }
 ?>

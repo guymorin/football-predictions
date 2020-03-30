@@ -25,8 +25,9 @@ if(isset($_SESSION['matchdayId'])){
         $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
         $req="";
         foreach($val as $k=>$v){
-            if(($v!="")&&(!in_array($k,$deletePlayer))){
-            
+            $v=$error->check("Digit",$v);
+            if(($v>0)&&(!in_array($k,$deletePlayer))){
+                
                 $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';");
                 $data = $response->fetch();
                 $response->closeCursor();
@@ -51,6 +52,7 @@ if(isset($_SESSION['matchdayId'])){
         $response = $db->query($req); 
         
         echo "	 <form action='index.php?page=teamOfTheWeek' method='POST' onsubmit='return confirm();'>\n";
+        echo "      <div class='error'>".$error->getError()."</div>\n";
         echo "      <input type='hidden' name='teamOfTheWeek' value='1'>\n";
         
         echo "   <table id='teamOfTheWeek'>\n";

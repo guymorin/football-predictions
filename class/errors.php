@@ -27,7 +27,7 @@ class Errors
     
     // Check function
     
-    public function check($check,$val,$error)
+    public function check($check,$val)
     {
         include("lang/fr.php");
         switch($check) {
@@ -35,7 +35,7 @@ class Errors
                 if($val==1) return $val;
                 break;
             case "Alnum":
-                if(ctype_alnum(str_replace(' ','',($val)))) return $val;
+                if(ctype_alnum(str_replace('-','',str_replace(' ','',($val))))) return $val;
                 else $this->addError($title_errorAlnum);
                 break;
             case "Digit":

@@ -17,20 +17,20 @@ if(isset($_POST['matchdaySelect'])){
     $v=explode(",",$_POST['matchdaySelect']);
     $matchdayId=$v[0];
 }
-if(isset($_POST['id_matchday'])) $matchdayId=$error->check("Digit",$_POST['id_matchday'],"");
-if(isset($_POST['number'])) $matchdayNumber=$error->check("Digit",$_POST['number'],"");
+if(isset($_POST['id_matchday'])) $matchdayId=$error->check("Digit",$_POST['id_matchday']);
+if(isset($_POST['number'])) $matchdayNumber=$error->check("Digit",$_POST['number']);
 
 $create=$modify=$delete=$exit=0;
-if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create'],"");
-if(isset($_POST['create'])) $create=$error->check("Action",$_POST['create'],"");
-if(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify'],"");
-if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete'],"");
-if(isset($_GET['exit'])) $exit=$error->check("Action",$_GET['exit'],"");
+if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create']);
+if(isset($_POST['create'])) $create=$error->check("Action",$_POST['create']);
+if(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify']);
+if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete']);
+if(isset($_GET['exit'])) $exit=$error->check("Action",$_GET['exit']);
 $equipe=$idPlayer=$ratingPlayer=$deletePlayer=0;
-if(isset($_POST['equipe'])) $equipe=$error->check("Digit",$_POST['equipe'],"");
-if(isset($_POST['id_player'])) $idPlayer=$error->check("Digit",$_POST['id_player'],"");
-if(isset($_POST['rating'])) $ratingPlayer=$error->check("Digit",$_POST['rating'],"");
-if(isset($_POST['delete'])) $deletePlayer=$error->check("Digit",$_POST['delete'],"");
+if(isset($_POST['equipe'])) $equipe=$error->check("Digit",$_POST['equipe']);
+if(isset($_POST['id_player'])) $idPlayer=$error->check("Digit",$_POST['id_player']);
+if(isset($_POST['rating'])) $ratingPlayer=$error->check("Digit",$_POST['rating']);
+if(isset($_POST['delete'])) $deletePlayer=$error->check("Digit",$_POST['delete']);
 $val=array_combine($idPlayer,$ratingPlayer);
 
 // Exit popup

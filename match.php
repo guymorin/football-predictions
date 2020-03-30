@@ -16,8 +16,8 @@ if(empty($_SESSION['matchdayId'])) {
     // Popup matchday
     if(isset($_POST['matchdaySelect'])){
         $v=explode(",",$_POST['matchdaySelect']);
-        $_SESSION['matchdayId']=$error->check("Digit",$v[0],"");
-        $_SESSION['matchdayNum']=$error->check("Digit",$v[1],"");
+        $_SESSION['matchdayId']=$error->check("Digit",$v[0]);
+        $_SESSION['matchdayNum']=$error->check("Digit",$v[1]);
         popup($title_MD.$_SESSION['matchdayNum'],"index.php?page=match");
     }
     // Form select
@@ -36,20 +36,20 @@ else {
     // Values
     $date=$result="";
     $idMatch=$team1=$team2=$odds1=$oddsD=$odds2=0;
-    if(isset($_POST['id_matchgame'])) $idMatch=$error->check("Digit",$_POST['id_matchgame'],"","");
-    if(isset($_POST['team_1'])) $team1=$error->check("Digit",$_POST['team_1'],"");
-    if(isset($_POST['team_2'])) $team2=$error->check("Digit",$_POST['team_2'],"");
-    if(isset($_POST['result'])) $result=$error->check("Result",$_POST['result'],"");
-    if(isset($_POST['odds1'])) $odds1=$error->check("Digit",$_POST['odds1'],"");
-    if(isset($_POST['oddsD'])) $oddsD=$error->check("Digit",$_POST['oddsD'],"");
-    if(isset($_POST['odds2'])) $odds2=$error->check("Digit",$_POST['odds2'],"");
+    if(isset($_POST['id_matchgame'])) $idMatch=$error->check("Digit",$_POST['id_matchgame']);
+    if(isset($_POST['team_1'])) $team1=$error->check("Digit",$_POST['team_1']);
+    if(isset($_POST['team_2'])) $team2=$error->check("Digit",$_POST['team_2']);
+    if(isset($_POST['result'])) $result=$error->check("Result",$_POST['result']);
+    if(isset($_POST['odds1'])) $odds1=$error->check("Digit",$_POST['odds1']);
+    if(isset($_POST['oddsD'])) $oddsD=$error->check("Digit",$_POST['oddsD']);
+    if(isset($_POST['odds2'])) $odds2=$error->check("Digit",$_POST['odds2']);
     if(isset($_POST['date'])) $date=$_POST['date'];
     $create=$modify=$delete=0;
-    if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create'],"");
-    elseif(isset($_POST['create'])) $create=$error->check("Action",$_POST['create'],"");
-    if(isset($_GET['modify'])) $modify=$error->check("Action",$_GET['modify'],"");
-    elseif(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify'],"");
-    if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete'],"");
+    if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create']);
+    elseif(isset($_POST['create'])) $create=$error->check("Action",$_POST['create']);
+    if(isset($_GET['modify'])) $modify=$error->check("Action",$_GET['modify']);
+    elseif(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify']);
+    if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete']);
 
 // Popup if needed
     // Delete

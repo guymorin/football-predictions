@@ -222,7 +222,7 @@ section ul li {display:inline}
 }
 .update .close:hover {background:none;border:none;color:#361;padding:.1em .3em;}
 
-.error {color:red}
+.error {color:red;margin:.2em;display:block;text-align: center;}
 
 section #changeMD {display:inline-block;margin:0 auto;text-align:center;}
 section #changeMD input[type=submit] {
@@ -267,6 +267,7 @@ section .menu {
 	background:#dec;
 	border-radius:4px;
 	box-shadow:1px 1px 10px 0 #9c6;
+	padding:.5em 1em;
 }
 section .menu li {display:inline-block;vertical-align:top;}
 section .menu li ul li a {

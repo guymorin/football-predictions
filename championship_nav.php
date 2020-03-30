@@ -5,6 +5,7 @@ $response = $db->query("SELECT c.id_championship, c.name FROM championship c ORD
 echo "  	<a href='/'>$icon_homepage $title_homepage</a>";
 echo "<a href='index.php?page=dashboard'>$title_dashboard</a>";
 echo "<a href='index.php?page=championship'>$title_standing</a>";
+
 echo "<a href='index.php?page=championship&create=1'>$title_createAChampionship</a>\n";
 
 echo "  	<form action='index.php?page=championship' method='POST'>\n";            

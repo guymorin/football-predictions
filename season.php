@@ -8,10 +8,11 @@ include("season_nav.php");
 echo "<section>\n";
 
 // Values
+$error = new Errors();
 $seasonId=0;
 $seasonName="";
-if(isset($_POST['id_season'])) $seasonId=$_POST['id_season'];
-if(isset($_POST['name'])) $seasonName=$_POST['name'];
+if(isset($_POST['id_season'])) $seasonId=$error->check("Digit",$_POST['id_season']);
+if(isset($_POST['name'])) $seasonName=$error->check("Alnum",$_POST['name']);
 $create=0;
 $modify=0;
 $delete=0;
@@ -41,6 +42,7 @@ elseif($create==1){
     // Create form
     else {
 	echo "	    <form action='index.php?page=season' method='POST'>\n";
+	echo "      <div class='error'>".$error->getError()."</div>\n";
     echo "      <input type='hidden' name='create' value='1'>\n"; 
 	echo "	    <label>$title_name</label>\n";
 	echo "      <input type='text' name='name' value='".$seasonName."'>\n";
@@ -61,10 +63,10 @@ elseif($modify==1){
     else {
     $response = $db->query("SELECT * FROM season WHERE id_season='".$seasonId."';");
     echo "	 <form action='index.php?page=season' method='POST'>\n";
+    echo "      <div class='error'>".$error->getError()."</div>\n";
     $data = $response->fetch();
     echo "      <input type='hidden' name='modify' value=1>\n";    
-    echo "	 <label>Id.</label>\n";
-    echo "      <input type='text' name='id_season' readonly='readonly' value='".$data['id_season']."'>\n";
+    echo "      <input type='hidden' name='id_season' readonly='readonly' value='".$data['id_season']."'>\n";
     echo "	 <label>$title_name</label>\n";
     echo "      <input type='text' name='name' value='".$data['name']."'>\n";
     echo "      <input type='submit' value='$title_modify'>\n";
