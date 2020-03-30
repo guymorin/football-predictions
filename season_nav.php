@@ -1,14 +1,19 @@
 <?php
 // Season navigation include file
 echo "  <nav>\n";
-$response = $db->query("SELECT * FROM season ORDER BY name;");
-echo "  	<a href='/'>$icon_homepage $title_homepage</a>\n";
+
+if(isset($_SESSION['seasonId'])){
+    echo "  	<a href='/'>$icon_homepage $title_homepage</a>\n";
+}
+
 echo "  	<a href='index.php?page=season&create=1'>$title_createASeason</a>\n";
 echo "  	<form action='index.php?page=season' method='POST'>\n";
 echo "      <input type='hidden' name='modify' value='1'>\n"; 
 echo "    <label>$title_modifyASeason :</label>\n";                                    
 echo "  	<select name='id_season' onchange='submit()'>\n";
 echo "  		<option value='0'>...</option>\n";
+
+$response = $db->query("SELECT * FROM season ORDER BY name;");
 while ($data = $response->fetch(PDO::FETCH_OBJ))
 {
     echo "  		<option value='".$data->id_season."'";

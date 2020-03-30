@@ -6,10 +6,11 @@
 require("championship_nav.php");
 
 echo "<section>\n";
-echo "<h2>$icon_championship $title_championship</h2>\n";
+
 // Values
 $error = new Errors();
 $championshipId=$create=$modify=$delete=$standaway=$standhome=0;
+$championshipName="";
 if(isset($_POST['id_championship'])) $championshipId=$error->check("Digit",$_POST['id_championship']);
 if(isset($_POST['name'])) $championshipName=$error->check("Alnum",$_POST['name'],$error);
 
@@ -20,9 +21,57 @@ if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete']);
 if(isset($_GET['standhome'])) $standhome=$error->check("Action",$_GET['standhome']);
 if(isset($_GET['standaway'])) $standaway=$error->check("Action",$_GET['standaway']);
 
+// First, select a championship
+if(
+    (empty($_SESSION['championshipId']))
+    &&($create==0)
+    &&($modify==0)
+    &&($delete==0)
+    ){
+    echo "      <ul class='menu'>\n";
+    $response = $db->query("SELECT DISTINCT c.id_championship, c.name
+    FROM championship c
+    ORDER BY c.name;");
+    $list="";
+    if($response->rowCount()>0){
+        // Select form
+        $list.="  	<form action='index.php' method='POST'>\n";
+        $list.="      <h2>$icon_championship $title_championship</h2>\n";
+        $list.="        <label>$title_selectTheChampionship :</label><br />\n";
+        $list.="  	  <select name='championshipSelect' onchange='submit()'>\n";
+        $list.="        		<option value='0'>...</option>\n";
+        while ($data = $response->fetch(PDO::FETCH_OBJ))
+        {
+            $list.="        		<option value='".$data->id_championship.",".$data->name."'>".$data->name."</option>\n";
+        }
+        $list.="  	  </select>\n";
+        $list.="        <br /><noscript><input type='submit' value='$title_select'></noscript>\n";
+        $list.="  	</form>\n";
+        
+        // Quick nav button
+        $response->execute([
+            'id_season' => $_SESSION['seasonId']
+        ]);
+        $data = $response->fetch(PDO::FETCH_OBJ);
+        echo "  	<form action='index.php' method='POST'>\n";
+        echo "      <label>$title_quickNav :</label><br />\n";
+        echo "          <input type='hidden' name='championshipSelect' value='".$data->id_championship.",".$data->name."'>\n";
+        echo "          <input type='submit' value='$icon_quicknav ".$data->name."'>\n";
+        echo "      </form>\n";
+        
+        echo $list;
+    }
+    // No championship
+    else {
+        echo "      <h2>$title_noChampionship</h2>\n";
+    }
+    echo "      </ul>\n";
+    
+    $response->closeCursor();
+}
 /* Popups or page */
 // Deleted popup
-if($delete==1){
+elseif($delete==1){
     if($championshipId==0){
         popup($title_error,"index.php?page=championship");
     } else {

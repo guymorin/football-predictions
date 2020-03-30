@@ -1,11 +1,13 @@
 <?php
 // Championship navigation include file
 echo "<nav>\n";
-echo "  	<a href='/'>$icon_homepage $title_homepage</a>";
+
 if(isset($_SESSION['championshipId'])){
+    echo "  	<a href='/'>$icon_homepage $title_homepage</a>";
     echo "<a href='index.php?page=dashboard'>$title_dashboard</a>";
     echo "<a href='index.php?page=championship'>$title_standing</a>";
-}
+} else echo "      <a href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
+
 echo "<a href='index.php?page=championship&create=1'>$title_createAChampionship</a>\n";
 
 $response = $db->query("SELECT DISTINCT c.id_championship, c.name 

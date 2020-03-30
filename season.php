@@ -21,9 +21,56 @@ if((isset($_POST['create']))&&($_POST['create']==1)) $create=$_POST['create'];
 if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
 if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$_POST['delete'];
 
+
+// First, select a season
+if(
+    (empty($_SESSION['seasonId']))
+    &&($create==0)
+    &&($modify==0)
+    &&($delete==0)
+){
+    echo "      <ul class='menu'>\n";
+    $response = $db->query("SELECT * FROM season ORDER BY name;");
+    $list="";
+    if($response->rowCount()>0){
+        // Select form
+    $list.="  	<form action='index.php' method='POST'>\n";
+    $list.="        <h2>$icon_season $title_season</h2>\n";
+    $list.="        <label>$title_selectTheSeason :</label><br />\n";
+    $list.="  	  <select name='seasonSelect' onchange='submit()'>\n";
+    $list.="  		<option value='0'>...</option>\n";
+    
+
+    while ($data = $response->fetch(PDO::FETCH_OBJ))
+    {
+        $list.="  		<option value='".$data->id_season.",".$data->name."'>".$data->name."</option>\n";
+    }
+    $list.="	       </select>\n";
+    $list.="         <br /><noscript><input type='submit' value='$title_select'></noscript>\n";
+    $list.="	     </form>\n";
+    
+    // Quick nav button
+    $response = $db->query("SELECT * FROM season ORDER BY id_season DESC;");
+    
+    $data = $response->fetch(PDO::FETCH_OBJ);
+    echo "  	<form action='index.php' method='POST'>\n";
+    echo "      <label>$title_quickNav :</label><br />\n";
+    echo "          <input type='hidden' name='seasonSelect' value='".$data->id_season.",".$data->name."'>\n";
+    echo "          <input type='submit' value='$icon_quicknav ".$data->name."'>\n";
+    echo "      </form>\n";
+    
+    echo $list;
+    }
+    // No season
+    else {
+        echo "      <h2>$title_noSeason</h2>\n";
+    }
+    echo "      </ul>\n";
+    $response->closeCursor();
+}
 // Popup if needed
 // Delete
-if($delete==1){
+elseif($delete==1){
         $req="DELETE FROM season WHERE id_season='".$seasonId."';";
         $db->exec($req);
         $db->exec("ALTER TABLE season AUTO_INCREMENT=0;");
@@ -67,7 +114,7 @@ elseif($modify==1){
     $data = $response->fetch(PDO::FETCH_OBJ);
     echo "      <input type='hidden' name='modify' value=1>\n";    
     echo "      <input type='hidden' name='id_season' readonly='readonly' value='".$data->id_season."'>\n";
-    echo "	 <label>$title_name</label>\n";
+    echo "	    <label>$title_name</label>\n";
     echo "      <input type='text' name='name' value='".$data->name."'>\n";
     echo "      <input type='submit' value='$title_modify'>\n";
     echo "	 </form>\n";

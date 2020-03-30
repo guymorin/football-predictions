@@ -35,13 +35,14 @@ h3 {
 h4 {
  font: 90% sans-serif; 
  }
-select, input {font-size:0.8em;}
-th,td {padding:0 0.5em;}
+select, input {font-size:.8em;}
+select {margin-bottom:1em}
+th,td {padding:0 .5em;}
 a{color:#095;text-decoration:none}
 a:hover{text-decoration:underline}
 
-table{font-size:0.9em;margin:0 auto;border:1px solid #583;border-radius:3px;}
-td{border:0.1em solid #ad7;}
+table{font-size:.9em;margin:0 auto;border:1px solid #583;border-radius:3px;}
+td{border:.1em solid #ad7;}
 tr{background:#dec}
 tr:nth-child(2n) {background:#efd}
 th{padding:.4em;background:#fff;;color:#000;font-weight:bold;}
@@ -268,6 +269,7 @@ section .menu {
 	border-radius:4px;
 	box-shadow:1px 1px 10px 0 #9c6;
 	padding:.5em 1em;
+	min-width: 20%;
 }
 section .menu li {display:inline-block;vertical-align:top;}
 section .menu li ul li a {
@@ -309,7 +311,7 @@ section .tooltip:hover span,.tooltip:focus span{
   padding:.5em;
 }
 
-footer {clear:both;font-size:0.9em;color:#564;padding:0.5em;margin-top:1em;text-align:center}
+footer {clear:both;font-size:.9em;color:#564;padding:.5em;margin-top:1em;text-align:center}
 footer strong {color:#231}
 
 .update a,

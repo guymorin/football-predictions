@@ -10,4 +10,5 @@ $icon_matchday="&#x1f4c6;";
 $icon_player="&#127939;";
 $icon_season="&#127937;";
 $icon_team="&#127933;";
+$icon_quicknav="&#128640;";
 ?>
