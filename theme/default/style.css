@@ -41,11 +41,11 @@ th,td {padding:0 .5em;}
 a{color:#095;text-decoration:none}
 a:hover{text-decoration:underline}
 
-table{font-size:.9em;margin:0 auto;border:1px solid #583;border-radius:3px;min-width:20%;}
-td{border:.1em solid #ad7;}
-tr{background:#dec}
-tr:nth-child(2n) {background:#efd}
-th{padding:.4em;background:#fff;;color:#000;font-weight:bold;}
+table{font-size:.9em;margin:0 auto;border:2px solid #ccc;border-radius:3px;min-width:20%;}
+td{border:.1em solid #aaa;}
+tr:nth-child(odd){background:#ddd}
+tr:nth-child(even) {background:#eee}
+th{padding:.4em;background:white;;color:#000;font-weight:bold;}
 input[type='date'] {font-size:1.2em}
 input[type='number'] {width:6em;padding:1em 0}
 
@@ -86,12 +86,12 @@ nav a {
 	margin:.1em 0;
 	padding:1em;
 	text-decoration:none;
-	transition:.5s background
+	transition:background .5s;
 }
 nav a:last-child {border-right:1px solid #bf7}
 nav a:focus, nav a:hover,
 #fp a:focus, #fp a:hover {
-	background:#fff;
+	background:white;
 	padding:1em;
 	color:#231;
 	text-decoration:none
@@ -117,7 +117,7 @@ nav label {margin-right:.2em}
 	color:#fff9;
 	text-shadow:1px 1px #0003;
 	cursor: pointer;
-	transition:.5s color;
+	transition:color .5s;
 }
 #fp input:checked + label,
 #fp label:focus,
@@ -141,7 +141,7 @@ nav label {margin-right:.2em}
 #fp input:checked ~ #fp-menu {
 	opacity:1;
 	visibility:visible;
-	transition:.5s opacity;
+	transition:opacity .5s;
 }
 #fp-menu ul {
 	list-style:none;
@@ -157,7 +157,7 @@ nav label {margin-right:.2em}
 }
 #fp input:checked ~ #fp-menu ul {
 	transform: none;
-	transition:.5s transform;
+	transition:transform .5s;
 }
 .layer {
 	position:absolute;
@@ -212,7 +212,6 @@ section ul li {display:inline}
   margin: 7em auto;
   padding: .2em;
   background: white;
-  border:1px solid #cfa;
   border-radius: 6px;
   text-align:center;
   width: 30%;
@@ -271,7 +270,7 @@ section #criterion table input[type='radio'] {margin-bottom:.3em}
 
 section input[type='submit'] {margin:.5em;min-width:10em;height:3em}
 section #criterion table.expert {border-color:#9c6;}
-section #criterion table.expert th {background:#fff;color:#f30;border-color:#f60;}
+section #criterion table.expert th {background:white;color:#f30;border-color:#f60;}
 section #criterion table.expert tr{background:#fd3}
 section #criterion table.expert tr:nth-child(2n) {background:#fe9}
 
@@ -293,13 +292,23 @@ section .menu li ul:last-child {margin-bottom:1em}
 section .menu li ul li a:hover {background:linear-gradient(#4a2,#6c4);border:1px solid green;color:white;}
 
 section #classement ul {display:inline;}
-/* Onglet autres */
+/* Others button */
 section #classement li a,
-section #classement li p {display:inline;background:linear-gradient(#ad7,#8b6);color:white;padding:0 1em;margin:0;border-top:1px solid #99c;border-right:1px solid #9c6;border-left:1px solid #9c6;border-top-left-radius:3px;border-top-right-radius:3px}
-/* Onglet en cours */
-section #classement li p {background:linear-gradient(#8b6,#582);color:white;border-color:#583}
-/* Onglet au survol */
-section #classement li a:hover{text-decoration:none;background:white;color:#583}
+section #classement li p {
+	font-size:1em;
+	display:inline;
+	background:linear-gradient(#eee,#fff);
+	color:#2229;
+	padding:0 1em;
+	margin:0;
+	border:1px solid #999;
+	border-bottom:none;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px}
+/* Current button */
+section #classement li p {background:white;color:#729;}
+/* Hover button */
+section #classement li a:hover{text-decoration:none;background:white;color:#7299}
 section #classement th {min-width:2em}
 
 section .tooltip span{
@@ -324,26 +333,31 @@ section .tooltip:hover span,.tooltip:focus span{
 footer {clear:both;font-size:.9em;color:#564;padding:.5em;margin-top:1em;text-align:center}
 footer strong {color:#231}
 
+/* Buttons */
 .update a,
 section .menu li ul li a,
 input[type=button], input[type=submit], input[type=reset] {
-	background:linear-gradient(#4a2,#6c4);
-	color:white;
-	border:1px outset #4a2;
+	background:white;
+	background:linear-gradient(#eee,#fff);
+	color:#222;
+	border:1px outset #ccc;
 	border-radius:5px;
 	font-size:.9em;
 	margin:0 .5em;
 	text-decoration:none;
+	text-shadow:1px 1px #fff9;
+	transition: background .5s, text-shadow .5s;
  	cursor: pointer;
 }
 .update a:hover,.update a:focus,
 section .menu li ul li a:hover,section .menu li ul li a:focus,
 input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover,
 input[type=button]:focus, input[type=submit]:focus, input[type=reset]:focus {
-	background:#fff;
-	border:1px outset #6c4;
+	background:white;
+	border:1px outset #999;
 	border-radius:5px;
-	color:#231;
+	color:#729;
  	text-decoration: none;
+ 	text-shadow:none;
  	cursor: pointer;
 }
