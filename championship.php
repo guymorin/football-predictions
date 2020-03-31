@@ -144,7 +144,7 @@ elseif($modify==1){
 // Default page
 elseif(isset($_SESSION['championshipId'])&&($exit==0)){
     echo "<h3>".$_SESSION['championshipName']." : $title_standing</h3>\n";
-    echo "<div id='classement'>\n";
+    echo "<div id='standing'>\n";
     echo "<ul>\n";
     echo "  <li>";
     if($standhome+$standaway==0) echo "<p>$title_general</p>";

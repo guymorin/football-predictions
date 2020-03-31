@@ -30,7 +30,6 @@ h2 {
 h3 {
  font: 110% sans-serif; 
  font-weight:bold;
- font-style:italic;
  }
 h4 {
  font: 90% sans-serif; 
@@ -43,9 +42,9 @@ a:hover{text-decoration:underline}
 
 table{font-size:.9em;margin:0 auto;border:2px solid #ccc;border-radius:3px;min-width:20%;}
 td{border:.1em solid #aaa;}
-tr:nth-child(odd){background:#ddd}
-tr:nth-child(even) {background:#eee}
-th{padding:.4em;background:white;;color:#000;font-weight:bold;}
+tr:nth-child(odd){background:#efefef}
+tr:nth-child(even) {background:#fff}
+th{padding:.4em;background:#bf7;color:#231;font-weight:bold;}
 input[type='date'] {font-size:1.2em}
 input[type='number'] {width:6em;padding:1em 0}
 
@@ -86,6 +85,7 @@ nav a {
 	margin:.1em 0;
 	padding:1em;
 	text-decoration:none;
+	text-shadow:1px 1px #0003;
 	transition:background .5s;
 }
 nav a:last-child {border-right:1px solid #bf7}
@@ -291,10 +291,11 @@ section .menu li ul li a big {font-size:2.5em}
 section .menu li ul:last-child {margin-bottom:1em}
 section .menu li ul li a:hover {background:linear-gradient(#4a2,#6c4);border:1px solid green;color:white;}
 
-section #classement ul {display:inline;}
+/* Standing table buttons */
+section #standing ul {display:inline;}
 /* Others button */
-section #classement li a,
-section #classement li p {
+section #standing li a,
+section #standing li p {
 	font-size:1em;
 	display:inline;
 	background:linear-gradient(#eee,#fff);
@@ -306,10 +307,10 @@ section #classement li p {
 	border-top-left-radius:3px;
 	border-top-right-radius:3px}
 /* Current button */
-section #classement li p {background:white;color:#729;}
+section #standing li p {background:#ff7;color:#333;}
 /* Hover button */
-section #classement li a:hover{text-decoration:none;background:white;color:#7299}
-section #classement th {min-width:2em}
+section #standing li a:hover{text-decoration:none;background:#ff79;color:#3339}
+section #standing th {min-width:2em}
 
 section .tooltip span{
   display:none; 
@@ -338,25 +339,25 @@ footer strong {color:#231}
 section .menu li ul li a,
 input[type=button], input[type=submit], input[type=reset] {
 	background:white;
-	background:linear-gradient(#eee,#fff);
-	color:#222;
+	background:linear-gradient(#ddd,#eee);
+	color:#444;
 	border:1px outset #ccc;
 	border-radius:5px;
 	font-size:.9em;
 	margin:0 .5em;
 	text-decoration:none;
-	text-shadow:1px 1px #fff9;
-	transition: background .5s, text-shadow .5s;
+	text-shadow:1px 1px #fff;
+	transition: background .5s;
  	cursor: pointer;
 }
 .update a:hover,.update a:focus,
 section .menu li ul li a:hover,section .menu li ul li a:focus,
 input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover,
 input[type=button]:focus, input[type=submit]:focus, input[type=reset]:focus {
-	background:white;
+	background:#fff;
 	border:1px outset #999;
 	border-radius:5px;
-	color:#729;
+	color:#333;
  	text-decoration: none;
  	text-shadow:none;
  	cursor: pointer;
