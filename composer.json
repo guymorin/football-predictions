@@ -1,0 +1,7 @@
+{
+    "name": "guymorin/football-predictions",
+    "description": "Football predictions help predict football matches",
+    "type": "project",
+    "license": "GNU GPL",
+    "require": {}
+}
