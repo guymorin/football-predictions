@@ -118,12 +118,12 @@ function criterion($type,$data,$db){
             break;
         case "v1":
             $req="SELECT marketValue FROM marketValue WHERE id_team='".$data->eq1."' AND id_season='".$_SESSION['seasonId']."';";
-            $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
+            $r = $db->query($req)->fetch();
             $v = $r[0];
             break;
         case "v2":
             $req="SELECT marketValue FROM marketValue WHERE id_team='".$data->eq2."' AND id_season='".$_SESSION['seasonId']."';";
-            $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
+            $r = $db->query($req)->fetch();
             $v = $r[0];
             break;
         case "predictionsHistoryHome":
