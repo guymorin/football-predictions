@@ -6,7 +6,7 @@
 require("championship_nav.php");
 
 echo "<section>\n";
-
+echo "      <h2>$icon_championship $title_championship</h2>\n";
 // Values
 $error = new Errors();
 $championshipId=$create=$modify=$delete=$standaway=$standhome=0;
@@ -34,9 +34,9 @@ if(
     ORDER BY c.name;");
     $list="";
     if($response->rowCount()>0){
+
         // Select form
         $list.="  	<form action='index.php' method='POST'>\n";
-        $list.="      <h2>$icon_championship $title_championship</h2>\n";
         $list.="        <label>$title_selectTheChampionship :</label><br />\n";
         $list.="  	  <select name='championshipSelect' onchange='submit()'>\n";
         $list.="        		<option value='0'>...</option>\n";
@@ -53,6 +53,7 @@ if(
             'id_season' => $_SESSION['seasonId']
         ]);
         $data = $response->fetch(PDO::FETCH_OBJ);
+
         echo "  	<form action='index.php' method='POST'>\n";
         echo "      <label>$title_quickNav :</label><br />\n";
         echo "          <input type='hidden' name='championshipSelect' value='".$data->id_championship.",".$data->name."'>\n";

@@ -30,12 +30,13 @@ if(
     &&($delete==0)
 ){
     echo "      <ul class='menu'>\n";
+    echo "        <h2>$icon_season $title_season</h2>\n";
+    
     $response = $db->query("SELECT * FROM season ORDER BY name;");
     $list="";
     if($response->rowCount()>0){
         // Select form
     $list.="  	<form action='index.php?page=championship' method='POST'>\n";
-    $list.="        <h2>$icon_season $title_season</h2>\n";
     $list.="        <label>$title_selectTheSeason :</label><br />\n";
     $list.="  	  <select name='seasonSelect' onchange='submit()'>\n";
     $list.="  		<option value='0'>...</option>\n";
