@@ -27,6 +27,7 @@ $title_earningByBet = "Gain&nbsp;par&nbsp;mise";
 $title_error = "Erreur";
 $title_errorAlnum = "Caractères alphanumériques uniquement";
 $title_errorDigit = "Caractères numériques uniquement";
+$title_errorPosition = "Poste invalide";
 $title_errorResult = "Résultat invalide";
 $title_exit = "Sortir";
 $title_exited = "Sortie";

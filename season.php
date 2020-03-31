@@ -16,10 +16,10 @@ if(isset($_POST['name'])) $seasonName=$error->check("Alnum",$_POST['name']);
 $create=0;
 $modify=0;
 $delete=0;
-if((isset($_GET['create']))&&($_GET['create']==1)) $create=$_GET['create'];
-if((isset($_POST['create']))&&($_POST['create']==1)) $create=$_POST['create'];
-if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
-if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$_POST['delete'];
+if(isset($_GET['create'])) $create=$error->check("Digit",$_GET['create']);
+if((isset($_POST['create']))&&($_POST['create']==1)) $create=$error->check("Digit",$_POST['create']);
+if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$error->check("Digit",$_POST['modify']);
+if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$error->check("Digit",$_POST['delete']);
 
 
 // First, select a season
@@ -92,7 +92,7 @@ elseif($create==1){
 	echo "	    <form action='index.php?page=season' method='POST'>\n";
 	echo "      <div class='error'>".$error->getError()."</div>\n";
     echo "      <input type='hidden' name='create' value='1'>\n"; 
-	echo "	    <label>$title_name</label>\n";
+	echo "	    <label>$title_name :</label>\n";
 	echo "      <input type='text' name='name' value='".$seasonName."'>\n";
 	echo "      <input type='submit' value='$title_create'>\n";
 	echo "	    </form>\n";   
@@ -115,7 +115,7 @@ elseif($modify==1){
     $data = $response->fetch(PDO::FETCH_OBJ);
     echo "      <input type='hidden' name='modify' value=1>\n";    
     echo "      <input type='hidden' name='id_season' readonly='readonly' value='".$data->id_season."'>\n";
-    echo "	    <label>$title_name</label>\n";
+    echo "	    <label>$title_name :</label>\n";
     echo "      <input type='text' name='name' value='".$data->name."'>\n";
     echo "      <input type='submit' value='$title_modify'>\n";
     echo "	 </form>\n";

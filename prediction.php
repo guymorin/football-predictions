@@ -11,18 +11,18 @@ echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $modify=0;
-if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$_POST['modify'];
+if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$error->check("Digit",$_POST['modify']);
 $expert=0;
-if(isset($_POST['expert'])) $expert=$_POST['expert'];
-if(isset($_GET['expert'])) $expert=$_GET['expert'];
+if(isset($_POST['expert'])) $expert=$error->check("Digit",$_POST['expert']);
+if(isset($_GET['expert'])) $expert=$error->check("Digit",$_GET['expert']);
 
 /* Popups or page */
 // Modified popup
 if($modify==1){
 
     $rMatch="";
-    if(isset($_POST['id_matchgame'])) $idMatch=$_POST['id_matchgame'];
-    if(isset($_POST['result'])) $rMatch=$_POST['result'];
+    if(isset($_POST['id_matchgame'])) $idMatch=$error->check("Digit",$_POST['id_matchgame']);
+    if(isset($_POST['result'])) $rMatch=$error->check("Digit",$_POST['result']);
     if(isset($_POST['motivation1'])) $moMatch1=array_filter($_POST['motivation1']);
     if(isset($_POST['currentForm1'])) $seMatch1=array_filter($_POST['currentForm1']);
     if(isset($_POST['physicalForm1'])) $foMatch1=array_filter($_POST['physicalForm1']);

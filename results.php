@@ -17,14 +17,14 @@ if(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify']);
 // Modify
 // Modify popup
 if($modify==1){
-    if(isset($_POST['id_matchgame'])) $idMatch=$_POST['id_matchgame'];
-    if(isset($_POST['result'])) $rMatch=$_POST['result'];
-    if(isset($_POST['date'])) $dMatch=$_POST['date'];
-    if(isset($_POST['odds1'])) $c1Match=$_POST['odds1'];
-    if(isset($_POST['oddsD'])) $cNMatch=$_POST['oddsD'];
-    if(isset($_POST['odds2'])) $c2Match=$_POST['odds2'];
-    if(isset($_POST['red1'])) $r1Match=$_POST['red1'];
-    if(isset($_POST['red2'])) $r2Match=$_POST['red2'];
+    if(isset($_POST['id_matchgame'])) $idMatch=$error->check("Digit",$_POST['id_matchgame']);
+    if(isset($_POST['result'])) $rMatch=$error->check("Digit",$_POST['result']);
+    if(isset($_POST['date'])) $dMatch=$error->check("Digit",$_POST['date']);
+    if(isset($_POST['odds1'])) $c1Match=$error->check("Digit",$_POST['odds1']);
+    if(isset($_POST['oddsD'])) $cNMatch=$error->check("Digit",$_POST['oddsD']);
+    if(isset($_POST['odds2'])) $c2Match=$error->check("Digit",$_POST['odds2']);
+    if(isset($_POST['red1'])) $r1Match=$error->check("Digit",$_POST['red1']);
+    if(isset($_POST['red2'])) $r2Match=$error->check("Digit",$_POST['red2']);
     $cpt=0;
     $req="";
     foreach($idMatch as $k){

@@ -180,10 +180,10 @@ function changeMD($db,$page){
         }
         $nb--;
     }
-    echo "<form action='index.php?page=$page' method='POST'>\n";
+    echo "<form id='leftArrow' action='index.php?page=$page' method='POST'>\n";
     echo $button1;
     echo "</form>\n";
-    echo "<form action='index.php?page=$page' method='POST'>\n";
+    echo "<form id='rightArrow' action='index.php?page=$page' method='POST'>\n";
     echo $button2;
     echo "</form>\n";
     echo "</div>\n";

@@ -90,9 +90,9 @@ elseif($create==1){
         echo "<div class='error'>".$error->getError()."</div>\n";
         echo "	 <form action='index.php?page=championship' method='POST'>\n";
         echo "     <input type='hidden' name='create' value='1'>\n";
-        echo "	   <label>$title_name</label>\n";
+        echo "	   <label>$title_name :</label>\n";
         echo "     <input type='text' name='name' value='";
-        if($_POST['name']) echo $_POST['name'];
+        if($_POST['name']) echo $error->check("Digit",$_POST['name']);
         else echo $championshipName;
         echo "'>\n";
         echo "     <input type='submit' value='$title_create'>\n";
@@ -120,9 +120,9 @@ elseif($modify==1){
         $data = $response->fetch(PDO::FETCH_OBJ);
         echo "      <input type='hidden' name='modify' value='1'>\n";
         echo "      <input type='hidden' name='id_championship' readonly='readonly' value='".$data->id_championship."'>\n";
-        echo "	    <label>$title_name</label>\n";
+        echo "	    <label>$title_name :</label>\n";
         echo "     <input type='text' name='name' value='";
-        if($_POST['name']) echo $_POST['name'];
+        if($_POST['name']) echo $error->check("Digit",$_POST['name']);
         else echo $data->name;
         echo "'>\n";echo "      <input type='submit' value='$title_modify'>\n";
         echo "	 </form>\n";

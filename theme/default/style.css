@@ -49,7 +49,8 @@ h3 {
 h4 {
  font: 90% sans-serif; 
  }
-select, input {font-size:.8em;min-width:10em;}
+select {min-width:10em;}
+select, input {font-size:.8em;}
 table input {min-width:0}
 select {margin-bottom:1em}
 th,td {padding:.5em;}
@@ -245,10 +246,12 @@ section #changeMD input[type=submit] {
 	width:2em;
 	margin:0 .5em
 }
-section #changeMD form {
-	display:inline-block;
-	width:3em;
+section #changeMD {
+	display:block;
+	width:100%;
 }
+section #leftArrow {float:left;}
+section #rightArrow {float:right;}
 
 section table.stats th,
 section table.stats td{width:1.5em;height:2em}
@@ -268,6 +271,7 @@ section #criterion table td:nth-child(4){width:10em;text-align:center}
 section #criterion table td:nth-child(3){width:3em}
 section #criterion table input[type='radio'] {margin-bottom:.3em}
 
+section form label {vertical-align: middle;}
 section input[type='submit'] {margin:.5em;height:3em}
 section #criterion table.expert {border-color:#9c6;}
 section #criterion table.expert th {background:white;color:#f30;border-color:#f60;}
@@ -373,7 +377,7 @@ input[type=button], input[type=submit], input[type=reset] {
 	color:#444;
 	border:1px outset #ccc;
 	border-radius:5px;
-	font-size:.9em;
+	font-size:1em;
 	margin:0 .5em;
 	text-decoration:none;
 	text-shadow:1px 1px #fff;

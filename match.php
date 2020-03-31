@@ -35,7 +35,7 @@ else {
     if(isset($_POST['odds1'])) $odds1=$error->check("Digit",$_POST['odds1']);
     if(isset($_POST['oddsD'])) $oddsD=$error->check("Digit",$_POST['oddsD']);
     if(isset($_POST['odds2'])) $odds2=$error->check("Digit",$_POST['odds2']);
-    if(isset($_POST['date'])) $date=$_POST['date'];
+    if(isset($_POST['date'])) $date=$error->check("Digit",$_POST['date']);
     $create=$modify=$delete=0;
     if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create']);
     elseif(isset($_POST['create'])) $create=$error->check("Action",$_POST['create']);
