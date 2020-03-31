@@ -34,7 +34,7 @@ if(
     $list="";
     if($response->rowCount()>0){
         // Select form
-    $list.="  	<form action='index.php' method='POST'>\n";
+    $list.="  	<form action='index.php?page=championship' method='POST'>\n";
     $list.="        <h2>$icon_season $title_season</h2>\n";
     $list.="        <label>$title_selectTheSeason :</label><br />\n";
     $list.="  	  <select name='seasonSelect' onchange='submit()'>\n";
@@ -53,7 +53,7 @@ if(
     $response = $db->query("SELECT * FROM season ORDER BY id_season DESC;");
     
     $data = $response->fetch(PDO::FETCH_OBJ);
-    echo "  	<form action='index.php' method='POST'>\n";
+    echo "  	<form action='index.php?page=championship' method='POST'>\n";
     echo "      <label>$title_quickNav :</label><br />\n";
     echo "          <input type='hidden' name='seasonSelect' value='".$data->id_season.",".$data->name."'>\n";
     echo "          <input type='submit' value='$icon_quicknav ".$data->name."'>\n";
@@ -129,8 +129,30 @@ elseif($modify==1){
     }
 }
 else {
-    echo "<h2>$title_season</h2>\n";
+    echo "<h2>$icon_season $title_season</h2>\n";
     echo "<h3>".$_SESSION['seasonName']."</h3>\n";
+    $response = $db->prepare("SELECT c.name, COUNT(*) as nb 
+    FROM championship c
+    LEFT JOIN season_championship_team scc ON c.id_championship=scc.id_championship
+    WHERE scc.id_season=:id_season
+    GROUP BY c.name
+    ORDER BY c.name");
+    $response->execute([
+        'id_season' => $_SESSION['seasonId']
+    ]);
+    echo "<table>\n";
+    echo "  <tr>\n";
+    echo "      <th>$title_championship</th>\n";
+    echo "      <th>$title_teams</th>\n";
+    echo "  </tr>\n";
+    while ($data = $response->fetch(PDO::FETCH_OBJ))
+    {
+        echo "  <tr>\n";
+        echo "      <td>$data->name</td>\n";
+        echo "      <td>$data->nb</td>\n";
+        echo "  </tr>\n";
+    }
+    echo "</table>\n";
 }
 ?>
     </section>

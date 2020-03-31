@@ -69,7 +69,10 @@ if($exit==1){
 
 // Choose a season, a championship...
 if(empty($_SESSION['seasonId'])) $page="season";
-elseif(empty($_SESSION['championshipId'])) $page="championship";
+elseif(
+    (empty($_SESSION['championshipId']))
+    &&($page=="")
+)$page="championship";
 
 if($page!="") require($page.".php");
 else {

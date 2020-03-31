@@ -3,7 +3,7 @@
 echo "<nav>\n";
 
 if(isset($_SESSION['championshipId'])){
-    echo "  	<a href='/'>$icon_homepage $title_homepage</a>";
+    echo "  	<a href='/'>$title_homepage</a>";
     echo "<a href='index.php?page=dashboard'>$title_dashboard</a>";
     echo "<a href='index.php?page=championship'>$title_standing</a>";
 } else echo "      <a href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";

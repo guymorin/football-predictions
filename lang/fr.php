@@ -97,6 +97,7 @@ $title_successRate = "Taux de réussite";
 $title_swithToDefault = "Basculer en mode normal";
 $title_swithToExpert = "Basculer en mode expert";
 $title_team = "&Eacute;quipe";
+$title_teams = "&Eacute;quipes";
 $title_teamOfTheWeek = "&Eacute;quipe type";
 $title_site = "Football Predictions";
 $title_weather = "Météo";

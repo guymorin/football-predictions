@@ -1,7 +1,7 @@
 <?php
 // Team navigation include file
 echo "  <nav>\n";
-echo "  	<a href='/'>$icon_homepage $title_homepage</a>";
+echo "  	<a href='/'>$title_homepage</a>";
 echo "<a href='index.php?page=marketValue'>$title_marketValue</a>";
 echo "<a href='index.php?page=team&create=1'>$title_createATeam</a>\n";
 echo "  	<form action='index.php?page=team' method='POST'>\n";

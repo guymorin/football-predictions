@@ -19,7 +19,7 @@ body {
  font-size: .8em;
  }
 h1 {
- font: 280% sans-serif; 
+ font: 200% sans-serif; 
  text-transform:uppercase;
  text-align: center;
  }
@@ -41,7 +41,7 @@ th,td {padding:0 .5em;}
 a{color:#095;text-decoration:none}
 a:hover{text-decoration:underline}
 
-table{font-size:.9em;margin:0 auto;border:1px solid #583;border-radius:3px;}
+table{font-size:.9em;margin:0 auto;border:1px solid #583;border-radius:3px;min-width:20%;}
 td{border:.1em solid #ad7;}
 tr{background:#dec}
 tr:nth-child(2n) {background:#efd}
@@ -56,8 +56,9 @@ header{
 	overflow:hidden;
 	padding:0;
 	background:#371 linear-gradient(#482,#260);
+	vertical-align:middle;
 }
-header h1 {margin:0;padding:0}
+header h1 {margin:0;padding:.25em 0}
 header h1 a {
 	font-family:hemi, sans-serif;
 	text-decoration:none;
@@ -79,7 +80,7 @@ nav {
 
 nav a {
 	display:inline-block;
-	background:#4a2;
+	background:#4a29;
 	border-left:1px solid #bf7;
 	color:white;
 	margin:.1em 0;
@@ -88,7 +89,8 @@ nav a {
 	transition:.5s background
 }
 nav a:last-child {border-right:1px solid #bf7}
-nav a:hover {
+nav a:focus, nav a:hover,
+#fp a:focus, #fp a:hover {
 	background:#fff;
 	padding:1em;
 	color:#231;
@@ -96,7 +98,7 @@ nav a:hover {
 }
 
 nav form {display:inline}
-nav form, nav select, nav label, nav input {margin:0 .5em;padding:0}
+nav form, nav select, nav .hamburger, nav input {margin:0 .5em;padding:0}
 nav label {margin-right:.2em}
 
 /* Main menu */
@@ -106,10 +108,11 @@ nav label {margin-right:.2em}
 	display:block;
 	float:left;
 }
+#fp a {background:#4a2;}
 #fp input {display: none;}
-#fp label{
+#fp .hamburger {
 	display:inline-block;
-	padding:.2em 0;
+	padding:.25em 0;
 	font-size:2em;
 	color:#fff9;
 	text-shadow:1px 1px #0003;
@@ -121,37 +124,48 @@ nav label {margin-right:.2em}
 #fp label:hover{color:white;}
 
 #fp-menu {
-  position:absolute;
-  left:0;
-  top:3.5em;
-  z-index:1;
-  width:100%;
-  height:calc(100% - 3.5em);
-  background:#0009;
-  padding:0;
-  list-style-type: none;
-  opacity:0;
-  visibility:hidden;
-  transition:.5s opacity;
+	position:absolute;
+	left:0;top:3.5em;
+	z-index:1;
+	width:100vw;
+	height:100vh;
+	overflow:hidden;
+	padding:0;
+	list-style-type: none;
+	background:#0009;
+}
+#fp input:not(:checked) ~ #fp-menu {
+	opacity:0;
+	visibility:hidden;
 }
 #fp input:checked ~ #fp-menu {
-  opacity:1;
-  visibility:visible;
-  overflow:hidden;
-  transition:.5s opacity;
+	opacity:1;
+	visibility:visible;
+	transition:.5s opacity;
 }
 #fp-menu ul {
-  list-style:none;
-  margin:0;
-  padding:0;
-  transform: translate(-100%, 0);
-  transition:.7s transform;
+	list-style:none;
+	margin:0;
+	padding:0;
+	width:calc(20vw + 2em + 2px);
+	height:100vh;
+	overflow:hidden;
+	background:#bf7;
+}
+#fp input:not(:checked) ~ #fp-menu ul {
+	transform: translate(-100%, 0);*
 }
 #fp input:checked ~ #fp-menu ul {
-  transform: none;
-  transition:.7s transform;
+	transform: none;
+	transition:.5s transform;
 }
-
+.layer {
+	position:absolute;
+	left:calc(20vw + 2em + 2px);
+	top:0;
+	width:100vw;
+	height:100vh;
+}
 #fp-menu li a,
 #fp-menu li a:focus,
 #fp-menu li a:hover {
@@ -168,7 +182,7 @@ nav label {margin-right:.2em}
 #fp-menu li:last-child a,
 #fp-menu li:last-child a:hover,
 #fp-menu li:last-child a:focus {
-  border-bottom:100vh solid #bf7;
+  border-bottom:1px solid #bf7;
 }
 
 /* Section */
@@ -265,11 +279,7 @@ section ul {list-style:none;padding:.2em 0 0 0;margin:0}
 section .menu {
 	display:inline-block;
 	text-align:center;
-	background:#dec;
-	border-radius:4px;
-	box-shadow:1px 1px 10px 0 #9c6;
-	padding:.5em 1em;
-	min-width: 20%;
+	padding:1em 2em;
 }
 section .menu li {display:inline-block;vertical-align:top;}
 section .menu li ul li a {
@@ -322,6 +332,7 @@ input[type=button], input[type=submit], input[type=reset] {
 	border:1px outset #4a2;
 	border-radius:5px;
 	font-size:.9em;
+	margin:0 .5em;
 	text-decoration:none;
  	cursor: pointer;
 }

@@ -2,10 +2,7 @@
 // Season navigation include file
 echo "  <nav>\n";
 
-if(isset($_SESSION['seasonId'])){
-    echo "  	<a href='/'>$icon_homepage $title_homepage</a>\n";
-}
-
+echo "  	<a href='/'>$title_homepage</a>\n";
 echo "  	<a href='index.php?page=season&create=1'>$title_createASeason</a>\n";
 echo "  	<form action='index.php?page=season' method='POST'>\n";
 echo "      <input type='hidden' name='modify' value='1'>\n"; 
