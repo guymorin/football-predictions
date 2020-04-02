@@ -46,7 +46,7 @@ if($delete==1){
 elseif($create==1){
     echo "<h3>$title_createAPlayer</h3>\n";
     // Create popup
-    if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)) {
+    if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)){
         $db->exec("ALTER TABLE season_team_player AUTO_INCREMENT=0;");
         $db->exec("ALTER TABLE player AUTO_INCREMENT=0;");
         $req1="INSERT INTO player VALUES(NULL,'".$playerName."','".$playerFirstname."','".$playerPosition."');";
@@ -86,7 +86,7 @@ elseif($create==1){
 elseif($modify==1){
     echo "<h3>$title_modifyAPlayer</h3>\n";
     // Modify popup
-    if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)) {
+    if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)){
 
         $response = $db->prepare("SELECT COUNT(*) as nb 
         FROM season_team_player 
@@ -125,7 +125,7 @@ elseif($modify==1){
         popup($title_modified,"index.php?page=player");
     }
     // Modify form
-    elseif($playerId!=0) {
+    elseif($playerId!=0){
         $req ="SELECT j.id_player, j.name, j.firstname, j.position, scj.id_team 
         FROM player j 
         LEFT JOIN season_team_player scj ON j.id_player=scj.id_player 

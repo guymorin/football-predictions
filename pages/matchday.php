@@ -68,10 +68,10 @@ if(isset($_SESSION['matchdayId'])){
                 ]);
                 $data = $response->fetch(PDO::FETCH_NUM);
                 
-                if($data[0]==0) {
+                if($data[0]==0){
                     $req.="INSERT INTO teamOfTheWeek VALUES(NULL,:id_matchday,:id_player,:rating);";
                 }
-                if($data[0]==1) {
+                if($data[0]==1){
                     $req.="UPDATE teamOfTheWeek SET rating=:rating WHERE id_matchday=:id_matchday AND id_player=:id_player;";
                 }
                 
@@ -292,7 +292,7 @@ elseif($delete==1){
 elseif($create==1){
     echo "<h2>$title_createAMatchday</h2>\n";
     // Create popup
-    if($matchdayNumber!="") {
+    if($matchdayNumber!=""){
         $db->exec("ALTER TABLE matchday AUTO_INCREMENT=0;");
         $req="INSERT INTO matchday 
         VALUES(NULL,:id_season,:id_championship,:number);";
@@ -319,7 +319,7 @@ elseif($create==1){
 elseif($modify==1){
     echo "<h2>$title_modifyAMatchday</h2>\n";
     // Modify popup
-    if($matchdayNumber!="") {
+    if($matchdayNumber!=""){
         $req="UPDATE matchday 
         SET number=:number  
         WHERE id_matchday=:id_matchday;";

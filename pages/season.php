@@ -74,7 +74,7 @@ elseif($delete==1){
 elseif($create==1){
     echo "<h3>$title_createASeason</h3>\n";
     // Create popup
-    if($seasonName!="") {
+    if($seasonName!=""){
         $db->exec("ALTER TABLE season AUTO_INCREMENT=0;");
         $req="INSERT INTO season VALUES(NULL,'".$seasonName."');";
         $db->exec($req);
@@ -94,7 +94,7 @@ elseif($create==1){
 elseif($modify==1){
     echo "<h3>$title_modifyASeason</h3>\n";
     // Modify popup
-    if($seasonName!="") {
+    if($seasonName!=""){
         $req="UPDATE season SET name='".$seasonName."' WHERE id_season='".$seasonId."';";
         $db->exec($req);
         popup($title_modified,"index.php?page=season");

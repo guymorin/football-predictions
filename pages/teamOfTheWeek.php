@@ -32,10 +32,10 @@ if(isset($_SESSION['matchdayId'])){
                 $data = $response->fetch(PDO::FETCH_OBJ);
                 $response->closeCursor();
                 
-                if($data[0]==0) {
+                if($data[0]==0){
                     $req.="INSERT INTO teamOfTheWeek VALUES(NULL,'".$_SESSION['matchdayId']."','".$k."','".$v."');";
                 }
-                if($data[0]==1) {
+                if($data[0]==1){
                     $req.="UPDATE teamOfTheWeek SET rating='".$v."' WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';";
                 }
             

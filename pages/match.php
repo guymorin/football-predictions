@@ -12,7 +12,7 @@ $error = new Errors();
 $form = new Forms($_POST);
 
 // No matchday selected
-if(empty($_SESSION['matchdayId'])) {
+if(empty($_SESSION['matchdayId'])){
 
     // Popup matchday
     if(isset($_POST['matchdaySelect'])){
@@ -57,7 +57,7 @@ else {
 
         echo "<h3>$title_createAMatch</h3>\n";
         // Create popup
-        if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
+        if(($team1>0)&&($team2>0)&&($team1!=$team2)){
             $db->exec("ALTER TABLE matchgame AUTO_INCREMENT=0;");
             $req="INSERT INTO matchgame VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0,0,0);";
             $db->exec($req);
@@ -111,13 +111,13 @@ else {
     else {
         echo "<h3>$title_modifyAMatch</h3>\n";
         // Modify popup
-        if(($team1>0)&&($team2>0)&&($team1!=$team2)) {
+        if(($team1>0)&&($team2>0)&&($team1!=$team2)){
             $req="UPDATE matchgame SET id_matchday='".$_SESSION['matchdayId']."', team_1='".$team1."', team_2='".$team2."', result='".$result."' WHERE id_match='".$idMatch."';";
             $db->exec($req);
             popup($title_modifyAMatch,"index.php?page=match");
         } 
         // Modify form
-        elseif($idMatch>0) {
+        elseif($idMatch>0){
             $req="SELECT m.id_matchgame,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team WHERE m.id_matchgame='".$idMatch."';";
             $response = $db->query($req);
             $data = $response->fetch(PDO::FETCH_OBJ);

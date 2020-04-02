@@ -49,7 +49,7 @@ if($modify==1){
         $data = $response->fetch(PDO::FETCH_OBJ);
         $response->closeCursor();
         
-        if($data[0]==0) {
+        if($data[0]==0){
             $req.="INSERT INTO criterion VALUES(NULL,'".$k."','";
             if(isset($moMatch1[$k])) $req.=$moMatch1[$k];else $req.=0;
             $req.="','";
@@ -80,7 +80,7 @@ if($modify==1){
             if(isset($doMatch2[$k])) $req.=$doMatch2[$k];else $req.=0;
             $req.="');";
         }
-        if($data[0]==1) {
+        if($data[0]==1){
             $req.="UPDATE criterion SET ";
             $req.="motivation1='";
             if(isset($moMatch1[$k])) $req.=$moMatch1[$k];else $req.=0;

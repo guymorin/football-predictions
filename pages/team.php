@@ -34,7 +34,7 @@ if($delete==1){
 if($create==1){
     echo "<h3>$title_createATeam</h3>\n";
     // Create popup
-    if($teamName!="") {
+    if($teamName!=""){
         $db->exec("ALTER TABLE team AUTO_INCREMENT=0;");
         $req="INSERT INTO team VALUES(NULL,'".$teamName."','".$weatherCode."');";
         $db->exec($req);
@@ -57,7 +57,7 @@ elseif($modify==1){
     echo "<h3>$title_modifyATeam</h3>\n";
 
     // Modify popup
-    if($teamName!="") {
+    if($teamName!=""){
         $req="UPDATE team SET name='".$teamName."', weather_code='".$weatherCode."' WHERE id_team='".$teamId."';";
         $db->exec($req);
         popup($title_modified,"index.php?page=team");

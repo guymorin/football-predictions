@@ -159,7 +159,7 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
             $data = file_get_contents($api);
             $rain=0;
 
-            if ($data !== false) {
+            if ($data !== false){
                 $decoded = json_decode($data);
                 $city = $decoded->city;
                 $forecast = $decoded->forecast;
@@ -173,7 +173,7 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
                     $cloud="&#x1F324;";// Low rain
                     $meteo=1;
                     if(round($v2/10)>round($v1/10)) $team2Weather=$meteo;
-                    elseif(round($v2/10)==round($v1/10)) {
+                    elseif(round($v2/10)==round($v1/10)){
                         $team1Weather=$meteo;
                         $team2Weather=$meteo;
                     }
@@ -186,7 +186,7 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
                     $cloud="&#x1F326;";// Middle rain
                     $meteo=1;
                     if(round($v2/10)>round($v1/10)) $team1Weather=$meteo;
-                    elseif(round($v2/10)==round($v1/10)) {
+                    elseif(round($v2/10)==round($v1/10)){
                         $team1Weather=$meteo;
                         $team2Weather=$meteo;
                     }
@@ -199,7 +199,7 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
                     $cloud="&#x1F327;";//High rain
                     $meteo=2;
                     if(round($v2/10)>round($v1/10)) $team1Weather=$meteo;
-                    elseif(round($v2/10)==round($v1/10)) {
+                    elseif(round($v2/10)==round($v1/10)){
                         $team1Weather=$meteo;
                         $team2Weather=$meteo;
                     }

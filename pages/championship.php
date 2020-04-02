@@ -80,7 +80,7 @@ elseif($delete==1){
 elseif($create==1){
     echo "<h3>$title_createAChampionship</h3>\n";
     // Create popup
-    if($championshipName!="") {
+    if($championshipName!=""){
         $db->exec("ALTER TABLE championship AUTO_INCREMENT=0;");
         $req="INSERT INTO championship VALUES(NULL,'".$championshipName."');";
         $db->exec($req);
@@ -99,11 +99,11 @@ elseif($create==1){
 // Modified popup or modify form
 elseif($modify==1){
     echo "<h3>$title_modifyAChampionship</h3>\n";
-    if($championshipId==0) {
+    if($championshipId==0){
         popup($title_error,"index.php?page=championship");
     }
     // Modify form
-    elseif($championshipName=="") {
+    elseif($championshipName==""){
         $response = $db->query("SELECT * FROM championship WHERE id_championship='$championshipId';");
         echo $error->getError();
         echo "<form action='index.php?page=championship' method='POST'>\n";

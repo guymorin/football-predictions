@@ -22,7 +22,7 @@ class Forms
      * 
      * @param array $data Form or database data 
      */
-    public function __construct($data = array()) {
+    public function __construct($data = array()){
         $this->data = $data;
     }
     
@@ -123,7 +123,7 @@ class Forms
         require("../lang/fr.php");
         $val = "    <select name='$name' onchange='submit()'>\n";
         $val.= "        <option value='0'>...</option>\n";
-        while ($data = $response->fetch(PDO::FETCH_NUM)) {
+        while ($data = $response->fetch(PDO::FETCH_NUM)){
             $val.= "  		<option value='".$data[0].",".$data[1]."'>";
             $name == "matchdaySelect" ? $val.= $title_MD : null;
             $val.= $data[1]."</option>\n";
@@ -138,7 +138,7 @@ class Forms
      * @param string $title Value
      * @return string HTML code
      */
-    public function submit($title) {
+    public function submit($title){
         return "    <button type='submit'>$title</button>\n";
         ;
     }

@@ -2,7 +2,7 @@
 // Matchday navigation include file
 echo "  <nav>\n";
 echo "  	<a href='/'>$title_homepage</a>";
-if(isset($_SESSION['matchdayId'])) {
+if(isset($_SESSION['matchdayId'])){
     echo "<a href='index.php?page=matchday'>$title_statistics</a>";
     echo "<a href='index.php?page=prediction'>$title_predictions</a>";
     echo "<a href='index.php?page=results'>$title_results</a>";

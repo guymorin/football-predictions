@@ -234,7 +234,7 @@ $maxY=end($graph);;
 <g class="layer" transform="translate(40,<?php echo ($height/2);?>)">
   
 <?php
-foreach ($graph as $k => $v) {
+foreach ($graph as $k => $v){
     $cx=$k*10;
     $cy=-$v*2;
     $color=valColor(-($cy));
@@ -250,7 +250,7 @@ foreach ($graph as $k => $v) {
       <line x1="<?php echo -($width-10);?>" y1="0" x2="<?php echo ($width-10);?>" y2="0" stroke="#555" stroke-width="1" />
 <?php
 for($i=-($height/(2*25));$i<($height/(2*25)+1);$i++){
-    if($i!=0) {
+    if($i!=0){
         echo "<text text-anchor='end' x='-6' y='".(($i*20)+4)."' fill='#583'>".-($i*10)."</text>\n";
         echo "<line x1='-2' y1='".($i*20)."' x2='2' y2='".($i*20)."' stroke='#583' stroke-width='2' />\n";
     }

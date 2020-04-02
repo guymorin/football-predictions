@@ -64,7 +64,7 @@ function criterion($type,$data,$db){
             break;
         case "serieC1":
             if($data->currentForm1!="") $v=$data->currentForm1;
-            elseif(($_SESSION['matchdayNum']-1)>0) {
+            elseif(($_SESSION['matchdayNum']-1)>0){
                 $num = ($_SESSION['matchdayNum']-1);
                 $req="
                     SELECT m.team_1 as team FROM matchgame m
@@ -91,7 +91,7 @@ function criterion($type,$data,$db){
             break;
         case "serieC2":
             if($data->currentForm2!="") $v=$data->currentForm2;
-            elseif(($_SESSION['matchdayNum']-1)>0) {
+            elseif(($_SESSION['matchdayNum']-1)>0){
                 $num = ($_SESSION['matchdayNum']-1);
                 $req="
                     SELECT m.team_1 as team FROM matchgame m
@@ -189,17 +189,17 @@ function changeMD($db,$page){
     echo "</div>\n";
     $response->closeCursor();
 }
-if (!function_exists('array_key_first')) {
-    function array_key_first(array $arr) {
-        foreach($arr as $key => $unused) {
+if (!function_exists('array_key_first')){
+    function array_key_first(array $arr){
+        foreach($arr as $key => $unused){
             return $key;
         }
         return NULL;
     }
 }
-if (! function_exists("array_key_last")) {
-    function array_key_last($array) {
-        if (!is_array($array) || empty($array)) {
+if (! function_exists("array_key_last")){
+    function array_key_last($array){
+        if (!is_array($array) || empty($array)){
             return NULL;
         }
        

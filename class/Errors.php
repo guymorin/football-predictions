@@ -15,7 +15,7 @@ class Errors
     /**
      * 
      */
-    public function __construct() {
+    public function __construct(){
         $this->_errorMessage="";
     }
     
@@ -58,7 +58,7 @@ class Errors
     public function check($check,$val)
     {
         require("../lang/fr.php");
-        switch($check) {
+        switch($check){
             case "Action":
                 if($val==1) return $val;
                 else return null;

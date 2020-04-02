@@ -10,31 +10,31 @@ require("../include/functions.php");
 
 // Class
 use \FootballPredictions\Autoloader;
+use FootballPredictions\Database;
 require("../class/Autoloader.php");
 Autoloader::register();
 
-require "../class/Errors.php";
-require "../class/Forms.php";
+$db = new Database($db_name, $db_user, $db_password, $db_host);
 $error = new Errors();
 $form = new Forms($_POST);
 
 // Popup if needed
     // Season selected
-    if(isset($_POST['seasonSelect'])) {
+    if(isset($_POST['seasonSelect'])){
         $v=explode(",",$_POST['seasonSelect']);
         $_SESSION['seasonId']=$error->check("Digit",$v[0]);
         $_SESSION['seasonName']=$error->check("Alnum",$v[1]);
         header('Location:index.php');
     }
     // Championship selected
-    if(isset($_POST['championshipSelect'])) {
+    if(isset($_POST['championshipSelect'])){
         $v=explode(",",$_POST['championshipSelect']);
         $_SESSION['championshipId']=$error->check("Digit",$v[0]);
         $_SESSION['championshipName']=$error->check("Alnum",$v[1]);
         header('Location:index.php');
     }
     // Matchday selected
-    if(isset($_POST['matchdaySelect'])&&(!isset($_SESSION['matchdayId']))) {
+    if(isset($_POST['matchdaySelect'])&&(!isset($_SESSION['matchdayId']))){
         $v=explode(",",$_POST['matchdaySelect']);
         $_SESSION['matchdayId']=$error->check("Digit",$v[0]);
         $_SESSION['matchdayNum']=$error->check("Digit",$v[1]);

@@ -61,7 +61,7 @@ a:hover{text-decoration:underline}
 table{font-size:.9em;margin:0 auto;border:2px solid #ccc;border-radius:3px;min-width:20%;}
 td{border:.1em solid #aaa;}
 tr:nth-child(odd){background:#efefef}
-tr:nth-child(even) {background:#fff}
+tr:nth-child(even){background:#fff}
 th{padding:.4em;background:#bf7;color:#231;font-weight:bold;}
 input[type='date'] {font-size:1.2em}
 input[type='number'] {width:6em;padding:1em 0}
@@ -262,10 +262,10 @@ section table.stats td{width:1.5em;height:2em}
 section table.stats th:first-child{width:15em}
 
 
-section #results td:nth-child(3) {width:20em;}
+section #results td:nth-child(3){width:20em;}
 
 
-section #equipe_type td:nth-child(2) {width:20em;}
+section #equipe_type td:nth-child(2){width:20em;}
 
 section #criterion table {margin-bottom:1em}
 section #criterion table td:first-child {width:20em;}
@@ -280,7 +280,7 @@ section button[type='submit'], section input[type='submit'] {margin:.5em;padding
 section #criterion table.expert {border-color:#9c6;}
 section #criterion table.expert th {background:white;color:#f30;border-color:#f60;}
 section #criterion table.expert tr{background:#fd3}
-section #criterion table.expert tr:nth-child(2n) {background:#fe9}
+section #criterion table.expert tr:nth-child(2n){background:#fe9}
 
 
 /* Standing table buttons */

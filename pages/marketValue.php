@@ -20,7 +20,7 @@ $val=array_combine($teamId,$valClub);
 // Modify
 echo "<h3>$title_marketValue</h3>\n";
 // Modify popup
-if(isset($val)) {
+if(isset($val)){
     $db->exec("ALTER TABLE marketValue AUTO_INCREMENT=0;");
     $req="";
     foreach($val as $k=>$v){
@@ -30,10 +30,10 @@ if(isset($val)) {
             $data = $response->fetch(PDO::FETCH_OBJ);
             $response->closeCursor();
             echo $data[0];
-            if($data[0]==0) {
+            if($data[0]==0){
                 $req.="INSERT INTO marketValue VALUES(NULL,'".$_SESSION['seasonId']."','".$k."','".$v."');";
             }
-            if($data[0]==1) {
+            if($data[0]==1){
                 $req.="UPDATE marketValue SET marketValue='".$v."' WHERE id_season='".$_SESSION['seasonId']."' AND id_team='".$k."';";
             }
         }
