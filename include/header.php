@@ -3,12 +3,12 @@
 
 <head>
 	<meta charset="utf-8">
-    <?php require("theme/default/theme.php");?>
+    <?php require("../theme/default/theme.php");?>
 </head>
 
 <body>
 
 <header>
-	<?php require("include/fp-menu.php");?>
-    <h1><a href="/"><?php echo "$title_site ".$_SESSION['seasonName'];?></a></h1>
+	<?php require("fp-menu.php");?>
+    <h1><a href="/"><?php echo "$title_site ".(isset($_SESSION['seasonName']) ? $_SESSION['seasonName'] : null);?></a></h1>
 </header>
