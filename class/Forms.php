@@ -120,10 +120,13 @@ class Forms
      * @return string HTML code
      */
     public function selectSubmit($name, $response){
+        require("lang/fr.php");
         $val = "    <select name='$name' onchange='submit()'>\n";
         $val.= "        <option value='0'>...</option>\n";
         while ($data = $response->fetch(PDO::FETCH_NUM)) {
-            $val.= "  		<option value='".$data[0].",".$data[1]."'>".$data[1]."</option>\n";
+            $val.= "  		<option value='".$data[0].",".$data[1]."'>";
+            $name == "matchdaySelect" ? $val.= $title_MD : null;
+            $val.= $data[1]."</option>\n";
         }
         $val.= "    </select>\n";
         $val.="<br /><noscript>".$this->submit($title_select)."</noscript>\n";

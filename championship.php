@@ -4,8 +4,10 @@
 // Files to include
 require("championship_nav.php");
 ?>
+
 <section>
-	<h2><?php echo "$icon_championship $title_championship";?></h2>
+<h2><?php echo "$icon_championship $title_championship";?></h2>
+
 <?php
 // Values
 $error = new Errors();
@@ -50,7 +52,7 @@ if(
         $data = $response->fetch(PDO::FETCH_OBJ);
 
         echo "<form action='index.php' method='POST'>\n";
-        echo $form->labelBr($title_quickNav);
+        echo $form->label($title_quickNav);
         echo $form->inputHidden("championshipSelect",$data->id_championship.",".$data->name);
         echo $form->submit($icon_quicknav." ".$data->name);
         echo "</form>\n";

@@ -1,36 +1,41 @@
 <?php
 /* This is the Football Predictions matchday section page */
 /* Author : Guy Morin */
-
 // Files to include
 require("include/changeMD.php");
 require("matchday_nav.php");
+?>
 
-echo "<section>\n";
-echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
+<section>
+<h2><?php echo "$icon_matchday $title_matchday ".$_SESSION['matchdayNum'];?></h2>
 
+<?php
 // Values
 $error = new Errors();
 $form = new Forms($_POST);
 $matchdayId=0;
 $matchdayNumber="";
+
 if(isset($_POST['matchdaySelect'])){
     $v=explode(",",$_POST['matchdaySelect']);
     $matchdayId=$v[0];
 }
-if(isset($_POST['id_matchday'])) $matchdayId=$error->check("Digit",$_POST['id_matchday']);
-if(isset($_POST['number'])) $matchdayNumber=$error->check("Digit",$_POST['number']);
+
+isset($_POST['id_matchday'])   ? $matchdayId=$error->check("Digit",$_POST['id_matchday']) : null;
+isset($_POST['number'])		   ? $matchdayNumber=$error->check("Digit",$_POST['number']) : null;
 
 $create=$modify=$delete=0;
-if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create']);
-if(isset($_POST['create'])) $create=$error->check("Action",$_POST['create']);
-if(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify']);
-if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete']);
+isset($_GET['create'])		   ? $create=$error->check("Action",$_GET['create']) : null;
+isset($_POST['create'])		   ? $create=$error->check("Action",$_POST['create']) : null;
+isset($_POST['modify'])		   ? $modify=$error->check("Action",$_POST['modify']) : null;
+isset($_POST['delete'])		   ? $delete=$error->check("Action",$_POST['delete']) : null;
+
 $equipe=$idPlayer=$ratingPlayer=$deletePlayer=0;
-if(isset($_POST['equipe'])) $equipe=$error->check("Digit",$_POST['equipe']);
-if(isset($_POST['id_player'])) $idPlayer=$error->check("Digit",$_POST['id_player']);
-if(isset($_POST['rating'])) $ratingPlayer=$error->check("Digit",$_POST['rating']);
-if(isset($_POST['delete'])) $deletePlayer=$error->check("Digit",$_POST['delete']);
+isset($_POST['equipe'])		   ? $equipe=$error->check("Digit",$_POST['equipe']) : null;
+isset($_POST['id_player'])	   ? $idPlayer=$error->check("Digit",$_POST['id_player']) : null;
+isset($_POST['rating'])		   ? $ratingPlayer=$error->check("Digit",$_POST['rating']) : null;
+isset($_POST['delete'])		   ? $deletePlayer=$error->check("Digit",$_POST['delete']) : null;
+
 $val=array_combine($idPlayer,$ratingPlayer);
 
 // Only if there is a matchday selected
@@ -41,26 +46,44 @@ if(isset($_SESSION['matchdayId'])){
         $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
         $req="";
         foreach($deletePlayer as $d){
-            $req="DELETE FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$d."';";
-            $db->exec($req);
+            $req="DELETE FROM teamOfTheWeek 
+            WHERE id_matchday=:id_matchday  
+            AND id_player=:id_player;";
+            $response = $db->prepare($req);
+            $response->execute([
+                'id_matchday' => $_SESSION['matchdayId'],
+                'id_player' => $d
+            ]);
         }
         $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
         $req="";
         foreach($val as $k=>$v){
             if(($v!="")&&(!in_array($k,$deletePlayer))){
-                $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';");
-                $data = $response->fetch(PDO::FETCH_OBJ);
-                $response->closeCursor();
+                $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek 
+                WHERE id_matchday=:id_matchday  
+                AND id_player='".$k."';");
+                $response->execute([
+                    'id_matchday' => $_SESSION['matchdayId'],
+                    'id_player' => $k
+                ]);
+                $data = $response->fetch(PDO::FETCH_NUM);
                 
                 if($data[0]==0) {
-                    $req.="INSERT INTO teamOfTheWeek VALUES(NULL,'".$_SESSION['matchdayId']."','".$k."','".$v."');";
+                    $req.="INSERT INTO teamOfTheWeek VALUES(NULL,:id_matchday,:id_player,:rating);";
                 }
                 if($data[0]==1) {
-                    $req.="UPDATE teamOfTheWeek SET rating='".$v."' WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';";
+                    $req.="UPDATE teamOfTheWeek SET rating=:rating WHERE id_matchday=:id_matchday AND id_player=:id_player;";
                 }
+                
+                $response->closeCursor();
             }
         } 
-        $db->exec($req);
+        $response = $db->prepare($req);
+        $response->execute([
+            'id_matchday' => $_SESSION['matchdayId'],
+            'id_player' => $k,
+            'rating' => $v
+        ]);
         popup($title_modified,"index.php?matchday");
     }
     // Default page
@@ -81,9 +104,12 @@ if(isset($_SESSION['matchdayId'])){
         LEFT JOIN team c1 ON m.team_1=c1.id_team 
         LEFT JOIN team c2 ON m.team_2=c2.id_team 
         LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
-        WHERE m.id_matchday='".$_SESSION['matchdayId']."' ORDER BY m.date 
+        WHERE m.id_matchday=:id_matchday ORDER BY m.date 
         ;";
-        $response = $db->query($req);
+        $response = $db->prepare($req);
+        $response->execute([
+            'id_matchday' => $_SESSION['matchdayId']
+        ]);
 
         $table="	 <table class='stats'>\n";
            
@@ -268,8 +294,14 @@ elseif($create==1){
     // Create popup
     if($matchdayNumber!="") {
         $db->exec("ALTER TABLE matchday AUTO_INCREMENT=0;");
-        $req="INSERT INTO matchday VALUES(NULL,'".$_SESSION['seasonId']."','".$_SESSION['championshipId']."','".$matchdayNumber."');";
-        $db->exec($req);
+        $req="INSERT INTO matchday 
+        VALUES(NULL,:id_season,:id_championship,:number);";
+        $response = $db->prepare($req);
+        $response->execute([
+            'id_season' => $_SESSION['seasonId'],
+            'id_championship' => $_SESSION['championshipId'],
+            'number' => $matchdayNumber
+        ]);
         popup($title_created,"index.php?page=matchday");
     }
     // Create form
@@ -288,39 +320,48 @@ elseif($modify==1){
     echo "<h2>$title_modifyAMatchday</h2>\n";
     // Modify popup
     if($matchdayNumber!="") {
-        $req="UPDATE matchday SET number='".$matchdayNumber."' WHERE id_matchday='".$matchdayId."';";
-        $db->exec($req);
+        $req="UPDATE matchday 
+        SET number=:number  
+        WHERE id_matchday=:id_matchday;";
+        $response = $db->prepare($req);
+        $response->execute([
+            'number' => $matchdayNumber,
+            'id_matchday' => $matchdayId
+        ]);
         popup($title_modified,"index.php?page=matchday");
     }
     // Modify form
     else {
-        $response = $db->query("SELECT * FROM matchday WHERE id_matchday='".$matchdayId."';");
-        echo "	 <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+        $response = $db->prepare("SELECT * FROM matchday WHERE id_matchday=:id_matchday;");
+        $response->execute([
+            'id_matchday' => $matchdayId
+        ]);
         $data = $response->fetch(PDO::FETCH_OBJ);
+        $form->setValues($data);
+        
+        echo " <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
         echo $error->getError();
         echo $form->inputAction("modify");    
-        echo "	    <label>Id.</label>\n";
-        echo "      <input type='text' name='id_matchday' readonly='readonly' value='".$data->id_matchday."'>\n";
-        echo "	    <label>$title_number</label>\n";
-        echo "      <input type='text' name='number' value='".$data->number."'>\n";
-        echo "      <input type='submit' value='$title_modify'>\n";
-        echo "	 </form>\n";
+        echo $form->inputHidden("id_matchday", $data->id_matchday);
+        echo $form->input($title_number, "number");
+        echo $form->submit($title_modify);
+        echo " </form>\n";
+        
         // Delete form
-        echo "	 <form action='index.php?page=matchday' method='POST' onsubmit='return confirm()'>\n";
-        echo "      <input type='hidden' name='supprime' value=1>\n";
-        echo "      <input type='hidden' name='id_matchday' value=$matchdayId>\n";
-        echo "      <input type='hidden' name='number' value='".$data->number."'>\n";
-        echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n";
-        echo "	 </form>\n";
+        echo "<form action='index.php?page=matchday' method='POST' onsubmit='return confirm()'>\n";
+        echo $form->inputAction("delete");
+        echo $form->inputHidden("id_matchday", $matchdayId);
+        echo $form->inputHidden("number", "number");
+        echo $form->submit("&#9888 $title_delete &#9888");
+        echo "</form>\n";
         $response->closeCursor();
     }
 }
 // Form select
 else {
-    echo "   <form action='index.php?page=matchday' method='POST'>\n";
+    echo "<form action='index.php?page=matchday' method='POST'>\n";
     require("matchday_select.php");
-    echo "      <noscript><input type='submit'></noscript>\n";
-    echo "	 </form>\n";
+    echo "</form>\n";
 }
 echo "</section>\n";
 ?>
