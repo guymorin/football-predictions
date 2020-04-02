@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Mar 24 Mars 2020 à 23:13
+-- Généré le :  Jeu 02 Avril 2020 à 15:35
 -- Version du serveur :  5.7.29-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.24-0ubuntu0.18.04.3
 
@@ -36,7 +36,8 @@ CREATE TABLE `championship` (
 --
 
 INSERT INTO `championship` (`id_championship`, `name`) VALUES
-(1, 'Ligue 1');
+(1, 'Ligue 1'),
+(5, 'Ligue 3');
 
 -- --------------------------------------------------------
 
@@ -362,6 +363,58 @@ INSERT INTO `criterion` (`id_criteres`, `id_match`, `motivation1`, `currentForm1
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `fp_group`
+--
+
+CREATE TABLE `fp_group` (
+  `id_fp_group` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `fp_group`
+--
+
+INSERT INTO `fp_group` (`id_fp_group`, `name`) VALUES
+(1, 'admin'),
+(2, 'user');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `fp_theme`
+--
+
+CREATE TABLE `fp_theme` (
+  `id_fp_theme` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `directory_name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `fp_theme`
+--
+
+INSERT INTO `fp_theme` (`id_fp_theme`, `name`, `directory_name`) VALUES
+(1, 'Football predictions', 'default');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `fp_user`
+--
+
+CREATE TABLE `fp_user` (
+  `id_fp_user` int(11) NOT NULL,
+  `login` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `registration` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `marketValue`
 --
 
@@ -450,11 +503,11 @@ INSERT INTO `matchday` (`id_matchday`, `id_season`, `id_championship`, `number`)
 -- --------------------------------------------------------
 
 --
--- Structure de la table `matchs`
+-- Structure de la table `matchgame`
 --
 
-CREATE TABLE `matchs` (
-  `id_match` int(11) NOT NULL,
+CREATE TABLE `matchgame` (
+  `id_matchgame` int(11) NOT NULL,
   `id_matchday` int(11) NOT NULL,
   `team_1` int(11) NOT NULL,
   `team_2` int(11) NOT NULL,
@@ -468,10 +521,10 @@ CREATE TABLE `matchs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `matchs`
+-- Contenu de la table `matchgame`
 --
 
-INSERT INTO `matchs` (`id_match`, `id_matchday`, `team_1`, `team_2`, `result`, `odds1`, `oddsD`, `odds2`, `date`, `red1`, `red2`) VALUES
+INSERT INTO `matchgame` (`id_matchgame`, `id_matchday`, `team_1`, `team_2`, `result`, `odds1`, `oddsD`, `odds2`, `date`, `red1`, `red2`) VALUES
 (1, 1, 6, 3, '2', 3.55, 3.35, 2.1, '2019-08-10', 0, 0),
 (2, 1, 9, 17, '2', 1.6, 3.8, 6.1, '2019-08-10', 0, 0),
 (3, 1, 14, 1, '1', 2.18, 2.95, 4, '2019-08-10', 0, 1),
@@ -1114,7 +1167,7 @@ CREATE TABLE `pma__recent` (
 --
 
 INSERT INTO `pma__recent` (`username`, `tables`) VALUES
-('phpmyadmin', '[{\"db\":\"phpmyadmin\",\"table\":\"matchs\"},{\"db\":\"phpmyadmin\",\"table\":\"team\"},{\"db\":\"phpmyadmin\",\"table\":\"criterion\"},{\"db\":\"phpmyadmin\",\"table\":\"marketValue\"},{\"db\":\"phpmyadmin\",\"table\":\"valeurs\"},{\"db\":\"phpmyadmin\",\"table\":\"matchday\"},{\"db\":\"phpmyadmin\",\"table\":\"journees\"},{\"db\":\"phpmyadmin\",\"table\":\"player\"},{\"db\":\"phpmyadmin\",\"table\":\"teamOfTheWeek\"},{\"db\":\"phpmyadmin\",\"table\":\"season\"}]');
+('phpmyadmin', '[{\"db\":\"phpmyadmin\",\"table\":\"season_championship_team\"},{\"db\":\"phpmyadmin\",\"table\":\"championship\"},{\"db\":\"phpmyadmin\",\"table\":\"matchday\"},{\"db\":\"phpmyadmin\",\"table\":\"player\"},{\"db\":\"phpmyadmin\",\"table\":\"season_team_player\"},{\"db\":\"phpmyadmin\",\"table\":\"matchgame\"},{\"db\":\"phpmyadmin\",\"table\":\"match\"},{\"db\":\"phpmyadmin\",\"table\":\"fp_group\"},{\"db\":\"phpmyadmin\",\"table\":\"matchs\"},{\"db\":\"phpmyadmin\",\"table\":\"fp_user\"}]');
 
 -- --------------------------------------------------------
 
@@ -1191,8 +1244,9 @@ CREATE TABLE `pma__table_uiprefs` (
 
 INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
 ('phpmyadmin', 'phpmyadmin', 'criterion', '{\"sorted_col\":\"`id_match` ASC\"}', '2020-03-21 22:19:00'),
-('phpmyadmin', 'phpmyadmin', 'matchs', '{\"sorted_col\":\"`id_match` ASC\"}', '2020-02-09 13:56:39'),
-('phpmyadmin', 'phpmyadmin', 'player', '[]', '2020-03-22 09:49:19'),
+('phpmyadmin', 'phpmyadmin', 'matchgame', '[]', '2020-03-27 14:25:01'),
+('phpmyadmin', 'phpmyadmin', 'player', '{\"sorted_col\":\"`player`.`id_player`  DESC\"}', '2020-03-31 21:17:03'),
+('phpmyadmin', 'phpmyadmin', 'season_championship_team', '{\"sorted_col\":\"`season_championship_team`.`id_season_championship_team`  DESC\"}', '2020-04-02 13:34:24'),
 ('phpmyadmin', 'phpmyadmin', 'teamOfTheWeek', '[]', '2020-03-22 20:47:05');
 
 -- --------------------------------------------------------
@@ -1551,7 +1605,8 @@ INSERT INTO `team` (`id_team`, `name`, `weather_code`) VALUES
 (17, 'Reims', '51454'),
 (18, 'Rennes', '35238'),
 (19, 'Strasbourg', '67482'),
-(20, 'Toulouse', '31555');
+(20, 'Toulouse', '31555'),
+(21, 'Vincennes', '0');
 
 -- --------------------------------------------------------
 
@@ -1897,6 +1952,24 @@ ALTER TABLE `criterion`
   ADD KEY `CriteresMatch` (`id_match`);
 
 --
+-- Index pour la table `fp_group`
+--
+ALTER TABLE `fp_group`
+  ADD PRIMARY KEY (`id_fp_group`);
+
+--
+-- Index pour la table `fp_theme`
+--
+ALTER TABLE `fp_theme`
+  ADD PRIMARY KEY (`id_fp_theme`);
+
+--
+-- Index pour la table `fp_user`
+--
+ALTER TABLE `fp_user`
+  ADD PRIMARY KEY (`id_fp_user`);
+
+--
 -- Index pour la table `marketValue`
 --
 ALTER TABLE `marketValue`
@@ -1909,10 +1982,10 @@ ALTER TABLE `matchday`
   ADD PRIMARY KEY (`id_matchday`);
 
 --
--- Index pour la table `matchs`
+-- Index pour la table `matchgame`
 --
-ALTER TABLE `matchs`
-  ADD PRIMARY KEY (`id_match`),
+ALTER TABLE `matchgame`
+  ADD PRIMARY KEY (`id_matchgame`),
   ADD KEY `Equipe1` (`team_1`),
   ADD KEY `Equipe2` (`team_2`);
 
@@ -2084,12 +2157,27 @@ ALTER TABLE `teamOfTheWeek`
 -- AUTO_INCREMENT pour la table `championship`
 --
 ALTER TABLE `championship`
-  MODIFY `id_championship` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_championship` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `criterion`
 --
 ALTER TABLE `criterion`
   MODIFY `id_criteres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=309;
+--
+-- AUTO_INCREMENT pour la table `fp_group`
+--
+ALTER TABLE `fp_group`
+  MODIFY `id_fp_group` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT pour la table `fp_theme`
+--
+ALTER TABLE `fp_theme`
+  MODIFY `id_fp_theme` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT pour la table `fp_user`
+--
+ALTER TABLE `fp_user`
+  MODIFY `id_fp_user` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `marketValue`
 --
@@ -2101,15 +2189,15 @@ ALTER TABLE `marketValue`
 ALTER TABLE `matchday`
   MODIFY `id_matchday` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
--- AUTO_INCREMENT pour la table `matchs`
+-- AUTO_INCREMENT pour la table `matchgame`
 --
-ALTER TABLE `matchs`
-  MODIFY `id_match` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=291;
+ALTER TABLE `matchgame`
+  MODIFY `id_matchgame` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=291;
 --
 -- AUTO_INCREMENT pour la table `player`
 --
 ALTER TABLE `player`
-  MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
+  MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=189;
 --
 -- AUTO_INCREMENT pour la table `pma__bookmark`
 --
@@ -2154,12 +2242,12 @@ ALTER TABLE `season_championship_team`
 -- AUTO_INCREMENT pour la table `season_team_player`
 --
 ALTER TABLE `season_team_player`
-  MODIFY `id_season_team_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
+  MODIFY `id_season_team_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=186;
 --
 -- AUTO_INCREMENT pour la table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT pour la table `teamOfTheWeek`
 --
@@ -2173,12 +2261,12 @@ ALTER TABLE `teamOfTheWeek`
 -- Contraintes pour la table `criterion`
 --
 ALTER TABLE `criterion`
-  ADD CONSTRAINT `CriteresMatch` FOREIGN KEY (`id_match`) REFERENCES `matchs` (`id_match`);
+  ADD CONSTRAINT `CriteresMatch` FOREIGN KEY (`id_match`) REFERENCES `matchgame` (`id_matchgame`);
 
 --
--- Contraintes pour la table `matchs`
+-- Contraintes pour la table `matchgame`
 --
-ALTER TABLE `matchs`
+ALTER TABLE `matchgame`
   ADD CONSTRAINT `Equipe1` FOREIGN KEY (`team_1`) REFERENCES `team` (`id_team`),
   ADD CONSTRAINT `Equipe2` FOREIGN KEY (`team_2`) REFERENCES `team` (`id_team`);
 
