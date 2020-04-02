@@ -120,7 +120,7 @@ class Forms
      * @return string HTML code
      */
     public function selectSubmit($name, $response){
-        require("lang/fr.php");
+        require("../lang/fr.php");
         $val = "    <select name='$name' onchange='submit()'>\n";
         $val.= "        <option value='0'>...</option>\n";
         while ($data = $response->fetch(PDO::FETCH_NUM)) {

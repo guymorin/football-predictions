@@ -1,7 +1,7 @@
 <?php 
 /* Include to display the theme */
 echo "<link rel='stylesheet' type='text/css' media='all' ";
-echo "href='theme/default/style.css' />\n";
+echo "href='../theme/default/style.css' />\n";
 
 // Icons
 $icon_championship="&#127942;";

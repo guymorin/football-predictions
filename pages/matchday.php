@@ -2,7 +2,7 @@
 /* This is the Football Predictions matchday section page */
 /* Author : Guy Morin */
 // Files to include
-require("include/changeMD.php");
+require("../include/changeMD.php");
 require("matchday_nav.php");
 ?>
 
