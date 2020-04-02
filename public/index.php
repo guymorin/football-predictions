@@ -2,19 +2,22 @@
 <?php 
 /* This is the Football Predictions index page */
 /* Author : Guy Morin */
+
+// Namespaces
+use FootballPredictions\Autoloader;
+use FootballPredictions\Errors;
+use FootballPredictions\Forms;
+
 // Files to include
-require("../lang/fr.php");
-require("../include/header.php");
-require("../include/connection.php");
-require("../include/functions.php");
+require '../lang/fr.php';
+require '../include/header.php';
+require '../include/connection.php';
+require '../include/functions.php';
 
 // Class
-use \FootballPredictions\Autoloader;
-use FootballPredictions\Database;
-require("../class/Autoloader.php");
+require '../class/Autoloader.php';
 Autoloader::register();
 
-$db = new Database($db_name, $db_user, $db_password, $db_host);
 $error = new Errors();
 $form = new Forms($_POST);
 
@@ -81,7 +84,7 @@ elseif(
 
 if($page!="") require("../pages/" . $page . ".php");
 else {
-    require("../pages/index_nav.php"); // Navigation
+    require '../pages/index_nav.php'; // Navigation
     
     // Section with menu
     echo "<section>\n";
@@ -104,7 +107,7 @@ else {
     } else {
         echo "        <ul>\n";
 
-        require("../pages/matchday_select.php");
+        require '../pages/matchday_select.php';
         
         echo "        </ul>\n";
         echo "    </li>\n";
@@ -124,4 +127,4 @@ else {
     echo "</section>\n";
 }
 ?>
-<?php require("../include/footer.php");?>
+<?php require '../include/footer.php';?>

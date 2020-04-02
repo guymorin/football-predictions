@@ -17,7 +17,7 @@ class Database
     private $db_pass;
     private $db;
     
-    public function __construct($db_name="phpmyadmin", $db_user="phpmyadmin", $db_password="master", $db_host="localhost"){
+    public function __construct($db_host, $db_name, $db_user, $db_password){
         $this->db_host = $db_host;
         $this->db_name = $db_name;
         $this->db_user = $db_user;

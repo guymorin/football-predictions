@@ -2,9 +2,13 @@
 /* This is the Football Predictions results section page */
 /* Author : Guy Morin */
 
+// Namespaces
+use FootballPredictions\Errors;
+use FootballPredictions\Forms;
+
 // Files to include
-require("../include/changeMD.php");
-require("matchday_nav.php");
+require '../include/changeMD.php';
+require 'matchday_nav.php';
 
 echo "<section>\n";
 

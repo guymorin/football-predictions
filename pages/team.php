@@ -2,8 +2,12 @@
 /* This is the Football Predictions team section page */
 /* Author : Guy Morin */
 
+// Namespaces
+use FootballPredictions\Errors;
+use FootballPredictions\Forms;
+
 // Files to include
-require("team_nav.php");
+require 'team_nav.php';
 
 echo "<section>\n";
 echo "<h2>$icon_team $title_team</h2>\n";

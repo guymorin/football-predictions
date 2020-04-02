@@ -1,8 +1,13 @@
 <?php
 /* This is the Football Predictions championship section page */
 /* Author : Guy Morin */
+
+// Namespaces
+use FootballPredictions\Errors;
+use FootballPredictions\Forms;
+
 // Files to include
-require("championship_nav.php");
+require 'championship_nav.php';
 ?>
 
 <section>

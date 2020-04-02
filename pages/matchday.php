@@ -1,9 +1,14 @@
 <?php
 /* This is the Football Predictions matchday section page */
 /* Author : Guy Morin */
+
+// Namespaces
+use FootballPredictions\Errors;
+use FootballPredictions\Forms;
+
 // Files to include
-require("../include/changeMD.php");
-require("matchday_nav.php");
+require '../include/changeMD.php';
+require 'matchday_nav.php';
 ?>
 
 <section>
@@ -360,7 +365,7 @@ elseif($modify==1){
 // Form select
 else {
     echo "<form action='index.php?page=matchday' method='POST'>\n";
-    require("matchday_select.php");
+    require 'matchday_select.php';
     echo "</form>\n";
 }
 echo "</section>\n";

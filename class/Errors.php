@@ -4,19 +4,21 @@
  * Class Errors
  * Check values and generate an error message
  */
+namespace FootballPredictions;
+
 class Errors
 {
     /**
      * 
      * @var string
      */
-    private $_errorMessage;
+    private $errorMessage;
 
     /**
      * 
      */
     public function __construct(){
-        $this->_errorMessage="";
+        $this->errorMessage="";
     }
     
     // Getters
@@ -26,7 +28,7 @@ class Errors
      */
     public function getError()
     {
-        return "<div class='error'>".$this->_errorMessage."</div>\n";
+        return "<div class='error'>".$this->errorMessage."</div>\n";
     }
     
     // Setters
@@ -36,7 +38,7 @@ class Errors
      */
     public function setError($error)
     {
-        $this->_errorMessage = $error;
+        $this->errorMessage = $error;
     }
     
     /**
@@ -45,7 +47,7 @@ class Errors
      */
     public function addError($error)
     {
-        $this->_errorMessage .= "$error<br />";
+        $this->errorMessage .= "$error<br />";
     }
     
     // Check function
@@ -57,7 +59,7 @@ class Errors
      */
     public function check($check,$val)
     {
-        require("../lang/fr.php");
+        require '../lang/fr.php';
         switch($check){
             case "Action":
                 if($val==1) return $val;

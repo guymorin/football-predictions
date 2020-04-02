@@ -2,8 +2,12 @@
 /* This is the Football Predictions dashboard section page */
 /* Author : Guy Morin */
 
+// Namespaces
+use FootballPredictions\Errors;
+use FootballPredictions\Forms;
+
 // Files to include
-require("championship_nav.php");
+require 'championship_nav.php';
 
 echo "<section>\n";
 echo "<h2>$icon_championship $title_championship</h2>\n";
