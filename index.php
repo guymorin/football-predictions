@@ -2,7 +2,6 @@
 <?php 
 /* This is the Football Predictions index page */
 /* Author : Guy Morin */
-
 // Files to include
 require("lang/fr.php");
 require("include/header.php");
@@ -10,6 +9,7 @@ require("include/connection.php");
 require("include/functions.php");
 
 // Class
+use \FootballPredictions\Autoloader;
 require("class/Autoloader.php");
 Autoloader::register();
 

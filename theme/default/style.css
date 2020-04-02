@@ -13,6 +13,7 @@ html, body {
  margin: 0;
  padding: 0;
  background:#cdb;
+ overflow-x:hidden;
  }
 body {
  font-family: Verdana, sans-serif; 
@@ -68,6 +69,7 @@ input[type='number'] {width:6em;padding:1em 0}
 /* Header and nav */
 
 header{
+	width:100vw;
 	height:3.5em;
 	overflow:hidden;
 	padding:0;
@@ -84,6 +86,8 @@ header h1 a {
 header h1 a:hover {text-decoration:none}
 
 nav {
+	width:100vw;
+	top:3.5em;
 	height:3.5em;
 	overflow:hidden;
 	text-align:center;
@@ -142,7 +146,7 @@ nav label {margin-right:.2em}
 #fp label:hover{color:white;}
 
 #fp-menu {
-	position:absolute;
+	position:fixed;
 	left:0;top:3.5em;
 	z-index:1;
 	width:100vw;

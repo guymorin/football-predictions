@@ -46,9 +46,9 @@ if(
         $list.="</form>\n";
         
         // Quick nav button
-        $response->execute([
-            'id_season' => $_SESSION['seasonId']
-        ]);
+        $response = $db->query("SELECT c.id_championship, c.name
+        FROM championship c
+        ORDER BY c.name DESC;");
         $data = $response->fetch(PDO::FETCH_OBJ);
 
         echo "<form action='index.php' method='POST'>\n";
