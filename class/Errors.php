@@ -1,36 +1,60 @@
 <?php
-/*
+/**
+ * 
  * Class Errors
  * Check values and generate an error message
  */
 class Errors
 {
+    /**
+     * 
+     * @var string
+     */
     private $_errorMessage;
 
+    /**
+     * 
+     */
     public function __construct() {
         $this->_errorMessage="";
     }
     
     // Getters
+    /**
+     * 
+     * @return string
+     */
     public function getError()
     {
         return "<div class='error'>".$this->_errorMessage."</div>\n";
     }
     
     // Setters
-    
+    /**
+     * 
+     * @param string $error Error message to set
+     */
     public function setError($error)
     {
         $this->_errorMessage = $error;
     }
     
+    /**
+     * 
+     * @param string $error Error message to add
+     */
     public function addError($error)
     {
         $this->_errorMessage .= "$error<br />";
     }
     
     // Check function
-    
+    /**
+     * 
+     * @param string $check Type of check (Action, Alnum, Digit, Position, Result)
+     * @param int|string $val Value to check
+     * @return int|string|NULL Value
+     */
     public function check($check,$val)
     {
         require("lang/fr.php");

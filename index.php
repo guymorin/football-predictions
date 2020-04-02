@@ -10,6 +10,9 @@ require("include/connection.php");
 require("include/functions.php");
 
 // Class
+require("class/Autoloader.php");
+Autoloader::register();
+
 require "class/Errors.php";
 require "class/Forms.php";
 $error = new Errors();
