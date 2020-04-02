@@ -1,13 +1,13 @@
 <?php
 // Season navigation include file
-echo "  <nav>\n";
+echo "  <nav>\n\t";
 
-echo "  	<a href='/'>$title_homepage</a>\n";
-echo "  	<a href='index.php?page=season&create=1'>$title_createASeason</a>\n";
+echo "<a href='/'>$title_homepage</a>";
+echo "<a href='index.php?page=season&create=1'>$title_createASeason</a>\n";
 
 $response = $db->query("SELECT * FROM season ORDER BY name;");
 if($response->rowCount()>1){
-    echo "  	<form action='index.php?page=season' method='POST'>\n";
+    echo "<form action='index.php?page=season' method='POST'>\n";
     echo "      <input type='hidden' name='modify' value='1'>\n"; 
     echo "      <label>$title_modifyASeason :</label>\n";                                    
     echo "  	<select name='id_season' onchange='submit()'>\n";

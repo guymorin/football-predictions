@@ -82,7 +82,7 @@ elseif($modify==1){
     // Delete
     echo "	 <form action='index.php?page=team' method='POST' onsubmit='return confirm()'>\n";
     echo $error->getError();
-    echo "      <input type='hidden' name='delete' value=1>\n";
+   echo $form->inputAction("delete");
     echo "      <input type='hidden' name='id_team' value=$teamId>\n";
     echo "      <input type='hidden' name='name' value='".$data->name."'>\n";
     echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n"; // Bouton Supprimer

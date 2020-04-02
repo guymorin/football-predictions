@@ -182,7 +182,7 @@ else {
             echo "	 </form>\n";
             
             echo "	 <form action='index.php?page=match' method='POST' onsubmit='return confirm()'>\n";
-            echo "      <input type='hidden' name='delete' value=1>\n";
+           echo $form->inputAction("delete");
             echo "      <input type='hidden' name='id_matchgame' value=$idMatch>\n";
             echo "      <input type='submit' value='&#9888 $title_delete $name1 - $name2 &#9888'>\n";
             echo "	 </form>\n";

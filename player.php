@@ -58,7 +58,7 @@ elseif($create==1){
     }
     // Create form
     else {
-        echo "<div class='error'>".$error->getError()."</div>\n";
+        echo $error->getError();
     	echo "	 <form action='index.php?page=player' method='POST'>\n";
         echo "      <input type='hidden' name='create' value='1'>\n"; 
     	echo "	    <label>$title_name :</label>\n";
@@ -135,7 +135,7 @@ elseif($modify==1){
         $response->execute([
             'id_player' => $playerId
         ]);
-        echo "<div class='error'>".$error->getError()."</div>\n";
+        echo $error->getError();
         echo "	 <form action='index.php?page=player' method='POST'>\n";
         $data = $response->fetch(PDO::FETCH_OBJ);
         $playerId = $data->id_player;
@@ -178,7 +178,7 @@ elseif($modify==1){
         echo "	 </form>\n";
         // Delete form
         echo "	 <form action='index.php?page=player' method='POST' onsubmit='return confirm()'>\n";
-        echo "      <input type='hidden' name='delete' value=1>\n";
+       echo $form->inputAction("delete");
         echo "      <input type='hidden' name='id_team' value=$teamId>\n";
         echo "      <input type='hidden' name='id_player' value=$playerId>\n";
         echo "      <input type='hidden' name='name' value='".$playerName."'>\n";
