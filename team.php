@@ -10,6 +10,7 @@ echo "<h2>$icon_team $title_team</h2>\n";
 
 // Values
 $error = new Errors();
+$form = new Forms($_POST);
 $teamName="";
 $teamId=$weatherCode=0;
 if(isset($_POST['name'])) $teamName=$error->check("Alnum",$_POST['name']);
@@ -65,9 +66,9 @@ elseif($modify==1){
     else {
         $response = $db->query("SELECT * FROM team WHERE id_team='".$teamId."';");
     echo "	 <form action='index.php?page=team' method='POST'>\n";
-    echo "      <div class='error'>".$error->getError()."</div>\n";
+    echo $error->getError();
     $data = $response->fetch(PDO::FETCH_OBJ);
-    echo "      <input type='hidden' name='modify' value=1>\n";    
+    echo $form->inputAction("modify");    
     /* Team ID for debugging
     echo "	    <label>Id.</label>\n";
     echo "      <input type='text' name='id_team' readonly='readonly' value='".$data->id_team."'>\n";
@@ -80,7 +81,7 @@ elseif($modify==1){
     echo "	 </form>\n";
     // Delete
     echo "	 <form action='index.php?page=team' method='POST' onsubmit='return confirm()'>\n";
-    echo "      <div class='error'>".$error->getError()."</div>\n";
+    echo $error->getError();
     echo "      <input type='hidden' name='delete' value=1>\n";
     echo "      <input type='hidden' name='id_team' value=$teamId>\n";
     echo "      <input type='hidden' name='name' value='".$data->name."'>\n";

@@ -27,6 +27,7 @@ $title_earningByBet = "Earning&nbsp;by&nbsp;bet";
 $title_error = "Error";
 $title_errorAlnum = "Alphanumeric characters only";
 $title_errorDigit = "Numeric characters only";
+$title_errorFields = "Some fields have not been filled in correctly";
 $title_errorPosition = "Position invalide";
 $title_errorResult = "Invalid result";
 $title_exit = "Exit";

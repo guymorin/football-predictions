@@ -11,7 +11,7 @@ echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $modify=0;
-if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$error->check("Digit",$_POST['modify']);
+isset($_POST['modify']) ? $modify=$error->check("Action",$_POST['modify']) : null;
 $expert=0;
 if(isset($_POST['expert'])) $expert=$error->check("Digit",$_POST['expert']);
 if(isset($_GET['expert'])) $expert=$error->check("Digit",$_GET['expert']);

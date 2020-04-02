@@ -9,6 +9,7 @@ echo "<section>\n";
 echo "<h2>$icon_player $title_player</h2>\n";
 // Values
 $error = new Errors();
+$form = new Forms($_POST);
 $playerId=$teamId=0;
 $playerName=$playerFirstname=$playerPosition="";
 if(isset($_POST['id_player'])) $playerId=$error->check("Digit",$_POST['id_player']);
@@ -26,12 +27,17 @@ if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete']);
 // Delete
 if($delete==1){
         $req="DELETE FROM season_team_player 
-        WHERE id_season='".$_SESSION['seasonId']."' 
-        AND id_team='".$teamId."' 
-        AND id_player='".$playerId."';";
+        WHERE id_season=:id_season 
+        AND id_team=:id_team 
+        AND id_player=:id_player;";
         $req.="DELETE FROM player 
-        WHERE id_player='".$playerId."';";
-        $db->exec($req);
+        WHERE id_player=:id_player;";
+        $response=$db->prepare($req);
+        $response->execute([
+            'id_season' => $_SESSION['seasonId'],
+            'id_team' => $teamId,
+            'id_player' => $playerId
+        ]);
         $db->exec("ALTER TABLE season_team_player AUTO_INCREMENT=0");
         $db->exec("ALTER TABLE player AUTO_INCREMENT=0");
         popup($title_deleted,"index.php?page=player");
@@ -40,7 +46,7 @@ if($delete==1){
 elseif($create==1){
     echo "<h3>$title_createAPlayer</h3>\n";
     // Create popup
-    if(($playerName!="")&&($playerPosition!="")) {
+    if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)) {
         $db->exec("ALTER TABLE season_team_player AUTO_INCREMENT=0;");
         $db->exec("ALTER TABLE player AUTO_INCREMENT=0;");
         $req1="INSERT INTO player VALUES(NULL,'".$playerName."','".$playerFirstname."','".$playerPosition."');";
@@ -62,7 +68,7 @@ elseif($create==1){
     	echo "	    <p><label>$title_position :</label><br />\n";
     	echo "      <input type='radio' name='position' id='Goalkeeper' value='Goalkeeper'><label for='Goalkeeper'>$title_goalkeeper</label>\n";
     	echo "      <input type='radio' name='position' id='Defender' value='Defender'><label for='Defender'>$title_defender</label>\n";
-    	echo "      <input type='radio' name='position' id='Midfield' value='Midfield'><label for='Midfield'>$title_midfielder</label>\n";
+    	echo "      <input type='radio' name='position' id='Midfielder' value='Midfielder'><label for='Midfielder'>$title_midfielder</label>\n";
     	echo "      <input type='radio' name='position' id='Forward' value='Forward'><label for='Forward'>$title_forward</label></p>\n";
         echo "	    <p><label>$title_team :</label><br />\n";
         echo "     <select multiple size='10' name='id_team'>\n";
@@ -80,9 +86,8 @@ elseif($create==1){
 elseif($modify==1){
     echo "<h3>$title_modifyAPlayer</h3>\n";
     // Modify popup
-    if($playerName!="") {
-        $req="UPDATE player SET name='".$playerName."', firstname='".$playerFirstname."' WHERE id_player='".$playerId."';";
-        
+    if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)) {
+
         $response = $db->prepare("SELECT COUNT(*) as nb 
         FROM season_team_player 
         WHERE id_season=:id_season 
@@ -93,16 +98,30 @@ elseif($modify==1){
             'id_team' => $teamId,
             'id_player' => $playerId
         ]);
-        $data = $response->fetch(PDO::FETCH_OBJ);
+        $data = $response->fetch();
         $response->closeCursor();
         
+        $req="UPDATE player 
+        SET name=:name, firstname=:firstname, position=:position  
+        WHERE id_player=:id_player;";
+        
         if($data[0]==0){
-            $req.="INSERT INTO season_team_player VALUES(NULL,'".$_SESSION['seasonId']."','".$teamId."','".$playerId."');";
+            $req.="INSERT INTO season_team_player 
+            VALUES(NULL,:id_season,:id_team,:id_player);";
         }
         if($data[0]==1){
-            $req.="UPDATE season_team_player SET id_season='".$_SESSION['seasonId']."',id_team='".$teamId."' WHERE id_player='".$playerId."';";
+            $req.="UPDATE season_team_player SET id_season=:id_season,id_team=:id_team WHERE id_player=:id_player;";
         }
-        $db->exec($req);
+        $response = $db->prepare($req);
+        $response->execute([
+            'name' => $playerName,
+            'firstname' => $playerFirstname,
+            'position' => $playerPosition,
+            'id_season' => $_SESSION['seasonId'],
+            'id_team' => $teamId,
+            'id_player' => $playerId
+        ]);
+        $response->closeCursor();
         popup($title_modified,"index.php?page=player");
     }
     // Modify form
@@ -123,7 +142,7 @@ elseif($modify==1){
         $playerName = $data->name;
         $playerFirstname = $data->firstname;
         $teamId = $data->id_team;
-        echo "      <input type='hidden' name='modify' value=1>\n";    
+        echo $form->inputAction("modify");    
         echo "      <input type='hidden' name='id_player' readonly value='".$playerId."'>\n";
     
         echo "	    <label>$title_name :</label>\n";

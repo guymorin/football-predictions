@@ -272,7 +272,7 @@ section #criterion table td:nth-child(3){width:3em}
 section #criterion table input[type='radio'] {margin-bottom:.3em}
 
 section form label {vertical-align: middle;}
-section input[type='submit'] {margin:.5em;height:3em}
+section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em}
 section #criterion table.expert {border-color:#9c6;}
 section #criterion table.expert th {background:white;color:#f30;border-color:#f60;}
 section #criterion table.expert tr{background:#fd3}
@@ -371,7 +371,7 @@ footer strong {color:#231}
 /* Buttons */
 .update a,
 section .menu li ul li a,
-input[type=button], input[type=submit], input[type=reset] {
+button[type=submit], input[type=submit], input[type=button], input[type=reset] {
 	background:white;
 	background:linear-gradient(#ddd,#eee);
 	color:#444;
@@ -386,8 +386,8 @@ input[type=button], input[type=submit], input[type=reset] {
 }
 .update a:hover,.update a:focus,
 section .menu li ul li a:hover,section .menu li ul li a:focus,
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover,
-input[type=button]:focus, input[type=submit]:focus, input[type=reset]:focus {
+button[type=submit]:hover, input[type=submit]:hover, input[type=button]:hover, input[type=reset]:hover,
+button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, input[type=reset]:focus {
 	background:#fff;
 	border:1px outset #999;
 	border-radius:5px;

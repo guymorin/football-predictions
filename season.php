@@ -6,21 +6,21 @@
 require("season_nav.php");
 
 echo "<section>\n";
-
+echo "        <h2>$icon_season $title_season</h2>\n";
 // Values
 $error = new Errors();
+$form = new Forms($_POST);
+
 $seasonId=0;
 $seasonName="";
-if(isset($_POST['id_season'])) $seasonId=$error->check("Digit",$_POST['id_season']);
-if(isset($_POST['name'])) $seasonName=$error->check("Alnum",$_POST['name']);
-$create=0;
-$modify=0;
-$delete=0;
-if(isset($_GET['create'])) $create=$error->check("Digit",$_GET['create']);
-if((isset($_POST['create']))&&($_POST['create']==1)) $create=$error->check("Digit",$_POST['create']);
-if((isset($_POST['modify']))&&($_POST['modify']==1)) $modify=$error->check("Digit",$_POST['modify']);
-if((isset($_POST['delete']))&&($_POST['delete']==1)) $delete=$error->check("Digit",$_POST['delete']);
+isset($_POST['id_season']) ? $seasonId=$error->check("Digit",$_POST['id_season']) : null;
+isset($_POST['name']) ? $seasonName=$error->check("Alnum",$_POST['name']) : null;
 
+$create=$modify=$delete=0;
+isset($_GET['create']) ? $create=$error->check("Action",$_GET['create']) : null;
+isset($_POST['create']) ? $create=$error->check("Action",$_POST['create']) : null;
+isset($_POST['modify']) ? $modify=$error->check("Action",$_POST['modify']) : null;
+isset($_POST['delete']) ? $delete=$error->check("Action",$_POST['delete']) : null;
 
 // First, select a season
 if(
@@ -30,7 +30,6 @@ if(
     &&($delete==0)
 ){
     echo "      <ul class='menu'>\n";
-    echo "        <h2>$icon_season $title_season</h2>\n";
     
     $response = $db->query("SELECT * FROM season ORDER BY name;");
     $list="";
@@ -52,19 +51,19 @@ if(
     
     // Quick nav button
     $response = $db->query("SELECT * FROM season ORDER BY id_season DESC;");
-    
     $data = $response->fetch(PDO::FETCH_OBJ);
+    $form->setValues($data);
     echo "  	<form action='index.php?page=championship' method='POST'>\n";
     echo "      <label>$title_quickNav :</label><br />\n";
     echo "          <input type='hidden' name='seasonSelect' value='".$data->id_season.",".$data->name."'>\n";
-    echo "          <input type='submit' value='$icon_quicknav ".$data->name."'>\n";
+    $form->submit($icon_quicknav." ".$data->name);
     echo "      </form>\n";
     
     echo $list;
     }
     // No season
     else {
-        echo "      <h2>$title_noSeason</h2>\n";
+        echo "      <h3>$title_noSeason</h3>\n";
     }
     echo "      </ul>\n";
     $response->closeCursor();
@@ -72,14 +71,17 @@ if(
 // Popup if needed
 // Delete
 elseif($delete==1){
-        $req="DELETE FROM season WHERE id_season='".$seasonId."';";
-        $db->exec($req);
+        $req="DELETE FROM season WHERE id_season=:id_season;";
+        $response = $db->prepare($req);
+        $response->execute([
+            'id_season' => $seasonId
+        ]);
         $db->exec("ALTER TABLE season AUTO_INCREMENT=0;");
         popup($title_deleted,"index.php?page=season");
 }
 // Create
 elseif($create==1){
-    echo "<h2>$title_createASeason</h2>\n";
+    echo "<h3>$title_createASeason</h3>\n";
     // Create popup
     if($seasonName!="") {
         $db->exec("ALTER TABLE season AUTO_INCREMENT=0;");
@@ -89,18 +91,17 @@ elseif($create==1){
     }
     // Create form
     else {
-	echo "	    <form action='index.php?page=season' method='POST'>\n";
-	echo "      <div class='error'>".$error->getError()."</div>\n";
-    echo "      <input type='hidden' name='create' value='1'>\n"; 
-	echo "	    <label>$title_name :</label>\n";
-	echo "      <input type='text' name='name' value='".$seasonName."'>\n";
-	echo "      <input type='submit' value='$title_create'>\n";
-	echo "	    </form>\n";   
+	echo "	  <form action='index.php?page=season' method='POST'>\n";
+	echo $error->getError();
+	echo $form->inputAction("create");
+	echo $form->input($title_name,"name");
+	echo $form->submit($title_create);
+	echo "	  </form>\n";   
 	}
 }
 // Modify
 elseif($modify==1){
-    echo "<h2>$title_modifyASeason</h2>\n";
+    echo "<h3>$title_modifyASeason</h3>\n";
     // Modify popup
     if($seasonName!="") {
         $req="UPDATE season SET name='".$seasonName."' WHERE id_season='".$seasonId."';";
@@ -109,28 +110,33 @@ elseif($modify==1){
     }
     // Modify form
     else {
-    $response = $db->query("SELECT * FROM season WHERE id_season='".$seasonId."';");
-    echo "	 <form action='index.php?page=season' method='POST'>\n";
-    echo "      <div class='error'>".$error->getError()."</div>\n";
-    $data = $response->fetch(PDO::FETCH_OBJ);
-    echo "      <input type='hidden' name='modify' value=1>\n";    
-    echo "      <input type='hidden' name='id_season' readonly='readonly' value='".$data->id_season."'>\n";
-    echo "	    <label>$title_name :</label>\n";
-    echo "      <input type='text' name='name' value='".$data->name."'>\n";
-    echo "      <input type='submit' value='$title_modify'>\n";
-    echo "	 </form>\n";
-    // Delete form
-    echo "	 <form action='index.php?page=season' method='POST' onsubmit='return confirm()'>\n";
-    echo "      <input type='hidden' name='delete' value=1>\n";
-    echo "      <input type='hidden' name='id_season' value=$seasonId>\n";
-    echo "      <input type='hidden' name='name' value='".$data->name."'>\n";
-    echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n";
-    echo "	 </form>\n";
-    $response->closeCursor();
+        $response = $db->prepare("SELECT * FROM season 
+        WHERE id_season=:id_season;");
+        $response->execute([
+            'id_season' => $seasonId
+        ]);
+        echo "	 <form action='index.php?page=season' method='POST'>\n";
+        echo $error->getError();
+        
+        $data = $response->fetch(PDO::FETCH_OBJ);
+        $form->setValues($data);
+        
+        echo $form->inputAction("modify"); 
+        echo "      <input type='hidden' name='id_season' value='".$data->id_season."'>\n";
+        echo $form->input($title_name,"name");
+        echo $form->submit($title_modify);
+        echo "	 </form>\n";
+        // Delete form
+        echo "	 <form action='index.php?page=season' method='POST' onsubmit='return confirm()'>\n";
+        echo $form->inputAction("delete");  
+        echo "      <input type='hidden' name='id_season' value=$seasonId>\n";
+        echo "      <input type='hidden' name='name' value='".$data->name."'>\n";
+        echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n";
+        echo "	 </form>\n";
+        $response->closeCursor();
     }
 }
 else {
-    echo "<h2>$icon_season $title_season</h2>\n";
     echo "<h3>".$_SESSION['seasonName']."</h3>\n";
     $response = $db->prepare("SELECT c.name, COUNT(*) as nb 
     FROM championship c

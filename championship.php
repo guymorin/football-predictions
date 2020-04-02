@@ -9,6 +9,7 @@ echo "<section>\n";
 echo "      <h2>$icon_championship $title_championship</h2>\n";
 // Values
 $error = new Errors();
+$form = new Forms($_POST);
 $championshipId=$create=$modify=$delete=$standaway=$standhome=0;
 $championshipName="";
 if(isset($_POST['id_championship'])) $championshipId=$error->check("Digit",$_POST['id_championship']);

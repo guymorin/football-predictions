@@ -11,6 +11,7 @@ echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $error = new Errors();
+$form = new Forms($_POST);
 $matchdayId=0;
 $matchdayNumber="";
 if(isset($_POST['matchdaySelect'])){
@@ -296,8 +297,8 @@ elseif($modify==1){
         $response = $db->query("SELECT * FROM matchday WHERE id_matchday='".$matchdayId."';");
         echo "	 <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
         $data = $response->fetch(PDO::FETCH_OBJ);
-        echo "      <div class='error'>".$error->getError()."</div>\n";
-        echo "      <input type='hidden' name='modify' value=1>\n";    
+        echo $error->getError();
+        echo $form->inputAction("modify");    
         echo "	    <label>Id.</label>\n";
         echo "      <input type='text' name='id_matchday' readonly='readonly' value='".$data->id_matchday."'>\n";
         echo "	    <label>$title_number</label>\n";

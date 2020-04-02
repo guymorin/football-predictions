@@ -9,6 +9,7 @@ echo "<section>\n";
 
 // Values
 $error = new Errors();
+$form = new Forms($_POST);
 
 // No matchday selected
 if(empty($_SESSION['matchdayId'])) {
@@ -65,7 +66,7 @@ else {
         // Create form 
         else {
             echo "	  <form action='index.php?page=match' method='POST'>\n";
-            echo "      <div class='error'>".$error->getError()."</div>\n";
+            echo $error->getError();
             echo "      <input type='hidden' name='create' value='1'>\n"; 
             echo "      <input type='hidden' readonly name='matchdayId' value='".$_SESSION['matchdayId']."'></p>\n"; 
             
@@ -131,8 +132,8 @@ else {
             $odds2=$data->odds2;
             
             echo "	 <form action='index.php?page=match' method='POST'>\n";
-            echo "      <div class='error'>".$error->getError()."</div>\n";
-            echo "      <input type='hidden' name='modify' value=1>\n";    
+            echo $error->getError();
+            echo $form->inputAction("modify");    
             echo "      <input type='hidden' name='id_matchgame' readonly value='".$data->id_matchgame."'></p>\n";
             echo "	    <label>$title_team 1</label>\n";
             echo "  	<select name='team_1'>\n";
@@ -191,7 +192,7 @@ else {
         else {
 
             echo "  <form action='index.php?page=match' method='POST'>\n";             // Modifier
-            echo "      <div class='error'>".$error->getError()."</div>\n";
+            echo $error->getError();
             echo "      <input type='hidden' name='modify' value='1'>\n"; 
             echo "      <label>$title_modifyAMatch :</label>\n";                                    
             echo "  	<select multiple size='10' name='id_matchgame'>\n";

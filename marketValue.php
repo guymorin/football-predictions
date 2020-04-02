@@ -10,6 +10,7 @@ echo "<h2>$icon_team $title_team</h2>\n";
 
 // Values
 $error = new Errors();
+$form = new Forms($_POST);
 $teamId=$valClub=0;
 if(isset($_POST['id_team'])) $teamId=$error->check("Digit",$_POST['id_team']);
 if(isset($_POST['marketValue'])) $valClub=$error->check("Digit",$_POST['marketValue']);
@@ -50,7 +51,7 @@ else {
     AND scc. id_championship='".$_SESSION['championshipId']."';";
     $response = $db->query($req);
     echo "	 <form action='index.php?page=marketValue' method='POST'>\n";
-    echo "      <div class='error'>".$error->getError()."</div>\n";
+    echo $error->getError();
     
     echo "      <label>$title_modifyAMarketValue :</label>\n";  
     echo "      <table>\n";

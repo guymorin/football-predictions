@@ -52,7 +52,7 @@ if(isset($_SESSION['matchdayId'])){
         $response = $db->query($req); 
         
         echo "	 <form action='index.php?page=teamOfTheWeek' method='POST' onsubmit='return confirm();'>\n";
-        echo "      <div class='error'>".$error->getError()."</div>\n";
+        echo $error->getError();
         echo "      <input type='hidden' name='teamOfTheWeek' value='1'>\n";
         
         echo "   <table id='teamOfTheWeek'>\n";

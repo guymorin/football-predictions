@@ -5,7 +5,6 @@ echo "<h3>$title_prediction</h3>\n";
 // Switch form
 echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";             // Basculer
 echo "  <input type='hidden' name='modify' value='2'>\n"; 
-echo "  <p><h2>$title_predictions $title_MD".$_SESSION['matchdayNum']."</h2></p>\n";
 echo "  <input id='edition 'type='hidden' name='expert' value='0'>\n";
 echo "  <input type='submit' value='$title_swithToDefault'>\n";
 echo "</form>\n";
@@ -28,9 +27,11 @@ m.result, m.date FROM matchgame m
 LEFT JOIN team c1 ON m.team_1=c1.id_team 
 LEFT JOIN team c2 ON m.team_2=c2.id_team 
 LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
-WHERE m.id_matchday='".$_SESSION['matchdayId']."' ORDER BY m.date;";
-$response = $db->query($req);
-
+WHERE m.id_matchday=:id_matchday ORDER BY m.date;";
+$response = $db->prepare($req);
+$response->execute([
+    'id_matchday' => $_SESSION['matchdayId']
+]);
 // Predictions for the matchday
 while ($data = $response->fetch(PDO::FETCH_OBJ))
 {

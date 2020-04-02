@@ -11,7 +11,9 @@ require("include/functions.php");
 
 // Class
 require "class/Errors.php";
+require "class/Forms.php";
 $error = new Errors();
+$form = new Forms($_POST);
 
 // Popup if needed
     // Season selected

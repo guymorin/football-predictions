@@ -12,6 +12,7 @@ echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $error = new Errors();
+$form = new Forms($_POST);
 $modify=0;
 if(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify']);
 // Modify
@@ -91,7 +92,7 @@ else {
     changeMD($db,"results");
     echo "<h3>$title_results</h3>\n";
     echo "<form id='results' action='index.php?page=results' method='POST' onsubmit='return confirm();'>\n";
-    echo "      <div class='error'>".$error->getError()."</div>\n";
+    echo $error->getError();
     echo "      <input type='hidden' name='modify' value='1'>\n";
     $req="SELECT m.id_matchgame,
         c1.name as name1,c2.name as name2,

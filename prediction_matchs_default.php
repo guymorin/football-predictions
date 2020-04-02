@@ -27,9 +27,11 @@ m.result, m.date FROM matchgame m
 LEFT JOIN team c1 ON m.team_1=c1.id_team 
 LEFT JOIN team c2 ON m.team_2=c2.id_team 
 LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
-WHERE m.id_matchday='".$_SESSION['matchdayId']."' ORDER BY m.date;";
-$response = $db->query($req);
-
+WHERE m.id_matchday=:id_matchday ORDER BY m.date;";
+$response = $db->prepare($req);
+$response->execute([
+    'id_matchday' => $_SESSION['matchdayId']
+]);
 /* Requests */
 // Best teams home
 $req="
@@ -42,14 +44,18 @@ FROM team c
 LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
 LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship) 
 LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday 
-WHERE scc.id_season='".$_SESSION['seasonId']."' 
-AND scc.id_championship='".$_SESSION['championshipId']."' 
+WHERE scc.id_season=:id_season  
+AND scc.id_championship=:id_championship 
 AND (c.id_team=m.team_1 OR c.id_team=m.team_2) 
 AND m.result<>'' 
 GROUP BY c.id_team,c.name 
 ORDER BY points DESC
 LIMIT 0,5";
-$r = $db->query($req);
+$r = $db->prepare($req);
+$r->execute([
+    'id_season' => $_SESSION['seasonId'],
+    'id_championship' => $_SESSION['championshipId']
+]);
 while($data=$r->fetchColumn(0))   $domBonus[] = $data;
     
 // Worst teams home

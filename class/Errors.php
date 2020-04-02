@@ -1,28 +1,32 @@
 <?php
+/*
+ * Class Errors
+ * Check values and generate an error message
+ */
 class Errors
 {
-    private $_error;
+    private $_errorMessage;
 
     public function __construct() {
-        $this->_error="";
+        $this->_errorMessage="";
     }
     
     // Getters
     public function getError()
     {
-        return $this->_error;
+        return "<div class='error'>".$this->_errorMessage."</div>\n";
     }
     
     // Setters
     
     public function setError($error)
     {
-        $this->_error = $error;
+        $this->_errorMessage = $error;
     }
     
     public function addError($error)
     {
-        $this->_error .= "$error<br />";
+        $this->_errorMessage .= "$error<br />";
     }
     
     // Check function
@@ -50,8 +54,8 @@ class Errors
                 }
                 break;
             case "Position":
-                $array=array('Gaolkeeper','Defender','Midfielder','Forward');
-                if(in_array($array, $val)) return $val;
+                $array=array('Goalkeeper','Defender','Midfielder','Forward');
+                if(in_array($val, $array)) return $val;
                 else {
                     $this->addError($title_errorPosition);
                     return null;
@@ -59,7 +63,7 @@ class Errors
                 break;
             case "Result":
                 $array=array('','1','D','2');
-                if(in_array($array, $val)) return $val;
+                if(in_array($val, $array)) return $val;
                 else {
                     $this->addError($title_errorResult);
                     return null;
