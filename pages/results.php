@@ -8,7 +8,6 @@ use FootballPredictions\Forms;
 
 // Files to include
 require '../include/changeMD.php';
-require 'matchday_nav.php';
 
 echo "<section>\n";
 

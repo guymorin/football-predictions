@@ -4,7 +4,6 @@
 
 // Files to include
 require '../include/changeMD.php';
-require 'matchday_nav.php';
 
 echo "<section>\n";
 echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";

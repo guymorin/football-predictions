@@ -3,20 +3,24 @@
 /* This is the Football Predictions index page */
 /* Author : Guy Morin */
 
+// Class
+require '../vendor/autoload.php';
+
 // Namespaces
-use FootballPredictions\Autoloader;
+use FootballPredictions\App;
+use FootballPredictions\Database;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
+use FootballPredictions\Section\Championship;
+use FootballPredictions\Section\Matchday;
+use FootballPredictions\Section\Player;
+use FootballPredictions\Section\Season;
+use FootballPredictions\Section\Team;
 
 // Files to include
 require '../lang/fr.php';
-require '../include/header.php';
 require '../include/connection.php';
 require '../include/functions.php';
-
-// Class
-require '../class/Autoloader.php';
-Autoloader::register();
 
 $error = new Errors();
 $form = new Forms($_POST);
@@ -81,6 +85,67 @@ elseif(
     (empty($_SESSION['championshipId']))
     &&($page=="")
 )$page="championship";
+
+
+/* Header */
+
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+    <?php require("../theme/default/theme.php");?>
+
+</head>
+
+<body>
+<script>
+window.onscroll = function() {myFunction()};
+
+function myFunction() {
+  if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+    document.getElementById("fp-submenu").className = "off";
+  } else {
+    document.getElementById("fp-submenu").className = "";
+  }
+}
+</script>
+<header>
+    <nav id='fp-submenu'>
+<?php
+switch($page){
+    case "championship":
+    case "dashboard":
+        echo Championship::submenu($db);
+        break;
+    case "matchday":
+    case "match":
+    case "prediction":
+    case "results":
+    case "teamOfTheWeek":
+        echo Matchday::submenu($db);
+        break;
+    case "player":
+        echo Player::submenu($db);
+        break;
+    case "season":
+        echo Season::submenu($db);
+        break;
+    case "team":
+    case "marketValue":
+        echo Team::submenu($db);
+        break;
+}
+?>
+    </nav>
+	<?php require("../include/fp-menu.php");?>
+    <h1><a href="/"><?= "$title_site ".(isset($_SESSION['seasonName']) ? $_SESSION['seasonName'] : null);?></a></h1>
+</header>
+
+<?php
+
+/* Page */
+
 
 if($page!="") require("../pages/" . $page . ".php");
 else {

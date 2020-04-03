@@ -6,8 +6,6 @@
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 
-// Files to include
-require 'championship_nav.php';
 
 echo "<section>\n";
 echo "<h2>$icon_championship $title_championship</h2>\n";
@@ -47,8 +45,8 @@ $table.="         <th>$title_earning</th>\n";
 $table.="         <th>$title_profit</th>\n";
 $table.="         <th>$title_profit<br />total</th>\n";
 $table.="       </tr>\n";
-
-$matchdayBetSum=$matchdaySuccessSum=$matchdayEarningSum;$matchdayPlayedOddsSum;$matchdayProfitSum=0;
+$matchdayEarningSum=$matchdayMatchs=$mdEarning=$matchdaySuccess=$matchdayPlayedOdds=
+$matchdayBetSum=$matchdaySuccessSum=$matchdayEarningSum=$matchdayPlayedOddsSum=$matchdayProfitSum=0;
 while ($data = $response->fetch(PDO::FETCH_OBJ))
 {
     $PlayedOdds=0;         
@@ -125,20 +123,20 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
     
     if($prediction==$data->result){
         $matchdaySuccess++;
-        $jGains+=$PlayedOdds;
+        $mdEarning+=$PlayedOdds;
     }
     $matchdayPlayedOdds+=$PlayedOdds;
 
     $matchdayMatchs++;
 
-    $matchdayProfit=$jGains-$matchdayMatchs;
+    $matchdayProfit=$mdEarning-$matchdayMatchs;
     
     if($matchdayMatchs==10){
         
         $matchdayProfitSum+=$matchdayProfit;
         $matchdayBetSum+=$matchdayMatchs;
         $matchdaySuccessSum+=$matchdaySuccess;
-        $matchdayEarningSum+=$jGains;
+        $matchdayEarningSum+=$mdEarning;
         $matchdayPlayedOddsSum+=$matchdayPlayedOdds;
         $table.="       <tr>\n";
         $table.="           <td><strong>".$data->number."</strong></td>\n";
@@ -146,7 +144,7 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
         $table.="           <td>".$matchdaySuccess."</td>\n";
         $averageOdds=(round($matchdayPlayedOdds/$matchdayMatchs,2));
         $table.="           <td>".$averageOdds."</td>\n";
-        $table.="           <td>".(money_format('%i',$jGains))."</td>\n";
+        $table.="           <td>".(money_format('%i',$mdEarning))."</td>\n";
         $table.="           <td><span style='color:".valColor($matchdayProfit)."'>";
         if($matchdayProfit>0) $table.="+";
         $table.=(money_format('%i',$matchdayProfit))."</span></td>\n";
@@ -155,7 +153,7 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
         $table.=(money_format('%i',$matchdayProfitSum))."</span></td>\n";
         $table.="       </tr>\n";
         
-        $matchdayMatchs=$matchdaySuccess=$matchdayPlayedOdds=$jGains=$matchdayProfit=0;
+        $matchdayMatchs=$matchdaySuccess=$matchdayPlayedOdds=$mdEarning=$matchdayProfit=0;
         $graph[$data->number]=$matchdayProfitSum;
     }
 }
@@ -230,14 +228,16 @@ $height=300;
 $maxX=array_key_last($graph);
 $maxY=end($graph);;
 ?>
-<svg width="<?php echo $width;?>" height="<?php echo $height;?>">
+<svg width="<?= $width;?>" height="<?= $height;?>">
 <!-- fond -->
 <rect width="100%" height="100%" fill="#dec" stroke="#9c7" stroke-width="4"/>
         
 <!-- margin -->
-<g class="layer" transform="translate(40,<?php echo ($height/2);?>)">
+<g class="layer" transform="translate(40,<?= ($height/2);?>)">
   
 <?php
+$cxPrec=0;
+$cyPrec=0;
 foreach ($graph as $k => $v){
     $cx=$k*10;
     $cy=-$v*2;
@@ -251,7 +251,7 @@ foreach ($graph as $k => $v){
 
 <!-- Y Axis -->
     <g class="y axis" fill="purple">
-      <line x1="<?php echo -($width-10);?>" y1="0" x2="<?php echo ($width-10);?>" y2="0" stroke="#555" stroke-width="1" />
+      <line x1="<?= -($width-10);?>" y1="0" x2="<?= ($width-10);?>" y2="0" stroke="#555" stroke-width="1" />
 <?php
 for($i=-($height/(2*25));$i<($height/(2*25)+1);$i++){
     if($i!=0){
@@ -264,9 +264,9 @@ for($i=-($height/(2*25));$i<($height/(2*25)+1);$i++){
 <!-- X axis -->
     </g>
     <g class="x axis" fill="purple">
-      <line x1="0" y1="<?php echo -($height-10);?>" x2="0" y2="<?php echo ($height-10);?>" stroke="#555" stroke-width="1" />
-      <text x="5" y="20" fill="black"><?php echo $title_MD;?>1</text>
-      <text x="<?php echo ($maxX*10)+5;?>" y="<?php echo (-($maxY*2)+15);?>" fill="black"><?php echo $title_MD.$maxX;?></text>
+      <line x1="0" y1="<?= -($height-10);?>" x2="0" y2="<?= ($height-10);?>" stroke="#555" stroke-width="1" />
+      <text x="5" y="20" fill="black"><?= $title_MD;?>1</text>
+      <text x="<?= ($maxX*10)+5;?>" y="<?= (-($maxY*2)+15);?>" fill="black"><?= $title_MD.$maxX;?></text>
     </g>
 
   </g>

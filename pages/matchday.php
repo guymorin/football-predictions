@@ -12,7 +12,7 @@ require 'matchday_nav.php';
 ?>
 
 <section>
-<h2><?php echo "$icon_matchday $title_matchday ".$_SESSION['matchdayNum'];?></h2>
+<h2><?= "$icon_matchday $title_matchday ".(isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>
 
 <?php
 // Values

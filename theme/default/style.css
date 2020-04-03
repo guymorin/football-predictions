@@ -4,7 +4,7 @@
 
 @font-face {
 font-family: 'hemi';
-src: url('hemi head bd it.ttf') format('truetype');
+src: url('hemi_head_bd_it.ttf') format('truetype');
 font-weight: normal;
 font-style: normal;
 }	
@@ -29,19 +29,12 @@ h2 {
  font: 100% sans-serif; 
  text-align:left;
  text-transform:uppercase;
+ text-shadow:0 0 2px #0006;
  color:white;
- background:#593 linear-gradient(#6a4,#482);
- position: relative;
- margin:.4em 0;
+ background:#996 linear-gradient(#aa7,#774);
+ border-radius:2px;
+ margin:.4em;
  padding:.2em 1.8em .2em .8em;
-}
-h2:before {
-  content: " ";
-  position: absolute;
-  top: 0; right: 0; 
-  border-bottom: 2em solid transparent; 
-  border-right: 1em solid #efd; 
-  width: 2em; height: 0; 
 }
 h3 {
  font: 110% sans-serif; 
@@ -58,7 +51,7 @@ th,td {padding:.5em;}
 a{color:#095;text-decoration:none}
 a:hover{text-decoration:underline}
 
-table{font-size:.9em;margin:0 auto;border:2px solid #ccc;border-radius:3px;min-width:20%;}
+table{font-size:.9em;margin:0 auto;border:2px solid #ccc;border-radius:3px;min-width:80%;}
 td{border:.1em solid #aaa;}
 tr:nth-child(odd){background:#efefef}
 tr:nth-child(even){background:#fff}
@@ -74,9 +67,9 @@ header{
 	overflow:hidden;
 	padding:0;
 	background:#371 linear-gradient(#482,#260);
-	vertical-align:middle;
+	position:fixed;
 }
-header h1 {margin:0;padding:.25em 4% .25em 0}
+header h1 {margin:0;padding:.25em 3% .25em 0}
 header h1 a {
 	font-family:hemi, sans-serif;
 	text-decoration:none;
@@ -86,22 +79,13 @@ header h1 a {
 header h1 a:hover {text-decoration:none}
 
 nav {
-	width:100vw;
-	top:3.5em;
-	height:3.5em;
-	overflow:hidden;
-	text-align:center;
 	background:#bf7;
 	color:#231;
 	text-transform:uppercase;
 }
-
-/* Submenu */
-
 nav a {
 	display:inline-block;
-	background:#4a29;
-	border-left:1px solid #bf7;
+	background:#482c;
 	color:white;
 	margin:.1em 0;
 	padding:1em;
@@ -109,28 +93,16 @@ nav a {
 	text-shadow:1px 1px #0003;
 	transition:background .5s;
 }
-nav a:last-child {border-right:1px solid #bf7}
-nav a:focus, nav a:hover,
-#fp a:focus, #fp a:hover {
-	background:white;
-	padding:1em;
-	color:#231;
-	text-decoration:none
-}
-
-nav form {display:inline}
-nav form, nav select, nav .hamburger, nav input {margin:0 .5em;padding:0}
-nav label {margin-right:.2em}
 
 /* Main menu */
 #fp {
 	background:none;
+	margin:0;
 	padding:0;
 	display:block;
 	float:left;
-	width:4%;
+	width:3%;
 }
-#fp a {background:#4a2;}
 #fp input {display: none;}
 #fp .hamburger {
 	display:inline-block;
@@ -175,7 +147,7 @@ nav label {margin-right:.2em}
 	background:#bf7;
 }
 #fp input:not(:checked) ~ #fp-menu ul {
-	transform: translate(-100%, 0);*
+	transform: translate(-100%, 0);
 }
 #fp input:checked ~ #fp-menu ul {
 	transform: none;
@@ -206,16 +178,45 @@ nav label {margin-right:.2em}
 #fp-menu li:last-child a:focus {
   border-bottom:1px solid #bf7;
 }
+#fp-submenu a:focus, #fp-submenu a:hover,
+#fp a:focus, #fp a:hover {
+	background:white;
+	padding:1em;
+	color:#231;
+	text-decoration:none
+}
+
+/* Submenu */
+#fp-submenu {
+	position:fixed;
+	margin-top:3.5em;
+	width:100%;
+	text-align:center;
+	opacity:1;
+	transition: opacity 1s;
+}
+#fp-submenu.off {
+	opacity:0;
+}
+#fp-submenu a {
+	border-left:1px solid #bf7;
+}
+#fp-submenu a:last-child {border-right:1px solid #bf7}
+#fp-submenu form {display:inline}
+#fp-submenu form, #fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}
+#fp-submenu label {margin-right:.2em}
+
 
 /* Section */
 
 section {
 	background: #efd;
 	box-shadow:0 0 10px #2313;
+	min-width:50%;
 	height:calc(100% - 7em);
 	text-align:center;
-	margin:.7em auto;
-	padding:0 1em 1em 1em;
+	margin:8em auto .7em auto;
+	padding:.4em .4em .8em .4em;
 	display:inline-block;
 	border-radius:4px;
 }
@@ -309,7 +310,6 @@ section .tooltip span{
 }
 section .tooltip{
   text-decoration:none; 
-  position:relative;
 }
 section .tooltip:hover span,.tooltip:focus span{
   display:block; 

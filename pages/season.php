@@ -6,12 +6,10 @@
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 
-// Files to include
-require 'season_nav.php';
 ?>
 
 <section>
-<h2><?php echo "$icon_season $title_season";?></h2>
+<h2><?= "$icon_season $title_season";?></h2>
 
 <?php
 // Values

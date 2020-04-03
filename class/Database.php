@@ -27,15 +27,13 @@ class Database
     private function getPDO(){
         /* Include to connect the database */
         if($this->db==null){
-            try
-            {
+            try{
                 $db = new PDO(
-               "mysql:host=$this->db_host;dbname=phpmyadmin;charset=utf8",
+                "mysql:host=$this->db_host;dbname=phpmyadmin;charset=utf8",
                 $this->db_user,
-                $this->db_pass);
-            }
-            catch (PDOException $e)
-            {
+                $this->db_pass
+                );
+            } catch (PDOException $e) {
                 die("<div class='error'>".$title_error." : ". $e->getMessage()."</div>");
             }
             $this->db = $db;

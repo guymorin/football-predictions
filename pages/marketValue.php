@@ -8,10 +8,13 @@ use FootballPredictions\Forms;
 
 // Files to include
 require 'team_nav.php';
+?>
 
-echo "<section>\n";
-echo "<h2>$icon_team $title_team</h2>\n";
+<section>
+<h2><?= "$icon_team $title_team";?></h2>
+<h3><?= $title_marketValue;?></h3>;
 
+<?php
 // Values
 $error = new Errors();
 $form = new Forms($_POST);
@@ -20,9 +23,6 @@ if(isset($_POST['id_team'])) $teamId=$error->check("Digit",$_POST['id_team']);
 if(isset($_POST['marketValue'])) $valClub=$error->check("Digit",$_POST['marketValue']);
 $val=array_combine($teamId,$valClub);
 
-
-// Modify
-echo "<h3>$title_marketValue</h3>\n";
 // Modify popup
 if(isset($val)){
     $db->exec("ALTER TABLE marketValue AUTO_INCREMENT=0;");

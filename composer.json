@@ -3,5 +3,10 @@
     "description": "Football predictions help predict football matches",
     "type": "project",
     "license": "GNU GPL",
+    "autoload": {
+	    "psr-4": {
+		    "FootballPredictions\\": "class/"
+	    }
+    },
     "require": {}
 }
