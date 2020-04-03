@@ -3,7 +3,7 @@
 echo "<h3>$title_prediction</h3>\n";
 
 // Switch form
-echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";             // Basculer
+echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
 echo "  <input type='hidden' name='modify' value='2'>\n"; 
 echo "  <input id='edition 'type='hidden' name='expert' value='0'>\n";
 echo "  <input type='submit' value='$title_swithToDefault'>\n";

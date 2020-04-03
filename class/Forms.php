@@ -72,8 +72,9 @@ class Forms
      * @param string $name
      * @return string HTML code
      */
-    public function input($label,$name){
-         $val = $this->label($label);
+    public function input($label='',$name){
+         $val = "";
+         if($label!='') $val.= $this->label($label);
          $val.= "   <input type='text' name='$name' value='".$this->getValue($name)."'>\n";
          $val = $this->surround($val);
          return $val;
@@ -92,10 +93,34 @@ class Forms
      * 
      * @param string $name
      * @param string $value
+     * @return string HTMLcode
+     */
+    public function inputDate($name, $value){
+        $val = "   <input type='date' name='$name' value='".$value."'>\n";
+        return $val;
+    }
+    
+    
+    /**
+     * 
+     * @param string $name
+     * @param string $value
      * @return string HTML code
      */
     public function inputHidden($name, $value){
         return "    <input type='hidden' name='$name' value='$value'>\n";
+    }
+    
+    /**
+     * 
+     * @param string $name
+     * @param int $value
+     * @param int $step Interval when using up and down
+     * @return string HTML code
+     */
+    public function inputNumber($name, $value, $step){
+        $val = "   <input type='number' step='".$step."' name='$name' value='".$value."'>\n";
+        return $val;
     }
     
     /**
@@ -114,6 +139,22 @@ class Forms
      */
     public function labelBr($title){
         return $this->label($title)."<br />\n";
+    }
+
+    /**
+     *
+     * @param int $id
+     * @param string $name
+     * @param int $value
+     * @param boolean $checked
+     * @return string HTML code
+     */
+    public function inputRadio($id, $name, $value, $checked=false){
+        $val = "   <input type='radio' ";
+        $val.= "id='$id' name='$name' value='$value'";
+        $checked ? $val.= " checked" : null;
+        $val.= ">\n";
+        return $val;
     }
     
     /**

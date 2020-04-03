@@ -5,7 +5,6 @@
 // Files to include
 require '../include/changeMD.php';
 
-echo "<section>\n";
 echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
@@ -136,5 +135,4 @@ else {
     else require 'prediction_matchs_default.php';
     
 }
-echo "</section>\n";
 ?>  

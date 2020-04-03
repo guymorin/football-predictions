@@ -1,8 +1,3 @@
-<?php 
-use FootballPredictions\Submenu;
-
-$submenu = new Submenu();
-?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -18,9 +13,9 @@ window.onscroll = function() {myFunction()};
 
 function myFunction() {
   if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-    document.getElementById("fp-submenu").className = "off";
+    document.getElementById('fp-submenu').className = "off";
   } else {
-    document.getElementById("fp-submenu").className = "";
+    document.getElementById('fp-submenu').className = "";
   }
 }
 </script>

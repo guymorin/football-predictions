@@ -9,11 +9,8 @@ use FootballPredictions\Forms;
 // Files to include
 require 'player_nav.php';
 
-echo "<section>\n";
 echo "<h2>$icon_player $title_player</h2>\n";
 // Values
-$error = new Errors();
-$form = new Forms($_POST);
 $playerId=$teamId=0;
 $playerName=$playerFirstname=$playerPosition="";
 if(isset($_POST['id_player'])) $playerId=$error->check("Digit",$_POST['id_player']);
@@ -146,7 +143,7 @@ elseif($modify==1){
         $playerName = $data->name;
         $playerFirstname = $data->firstname;
         $teamId = $data->id_team;
-        echo $form->inputAction("modify");    
+        echo $form->inputAction('modify');    
         echo "      <input type='hidden' name='id_player' readonly value='".$playerId."'>\n";
     
         echo "	    <label>$title_name :</label>\n";
@@ -182,7 +179,7 @@ elseif($modify==1){
         echo "	 </form>\n";
         // Delete form
         echo "	 <form action='index.php?page=player' method='POST' onsubmit='return confirm()'>\n";
-       echo $form->inputAction("delete");
+       echo $form->inputAction('delete');
         echo "      <input type='hidden' name='id_team' value=$teamId>\n";
         echo "      <input type='hidden' name='id_player' value=$playerId>\n";
         echo "      <input type='hidden' name='name' value='".$playerName."'>\n";
@@ -286,5 +283,4 @@ else {
     $response->closeCursor();
     echo "  </table>\n";
 }
-echo "</section>\n";
 ?>

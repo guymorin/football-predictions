@@ -6,21 +6,16 @@
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 
-// Files to include
-require 'team_nav.php';
 ?>
 
-<section>
 <h2><?= "$icon_team $title_team";?></h2>
 <h3><?= $title_marketValue;?></h3>;
 
 <?php
 // Values
-$error = new Errors();
-$form = new Forms($_POST);
 $teamId=$valClub=0;
-if(isset($_POST['id_team'])) $teamId=$error->check("Digit",$_POST['id_team']);
-if(isset($_POST['marketValue'])) $valClub=$error->check("Digit",$_POST['marketValue']);
+isset($_POST['id_team'])        ? $teamId=$error->check("Digit",$_POST['id_team']) : null;
+isset($_POST['marketValue'])    ? $valClub=$error->check("Digit",$_POST['marketValue']) : null;
 $val=array_combine($teamId,$valClub);
 
 // Modify popup
@@ -56,17 +51,25 @@ else {
     $response = $db->query($req);
     echo "	 <form action='index.php?page=marketValue' method='POST'>\n";
     echo $error->getError();
-    
-    echo "      <label>$title_modifyAMarketValue :</label>\n";  
+    echo $form->label($title_modifyAMarketValue);
     echo "      <table>\n";
     echo "          <tr><th>Club</th><th>$title_marketValue (M €)</th></tr>\n";
         while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
-            echo "          <tr><td><input type='hidden' name='id_team[]' readonly  value='".$data->id_team."'>".$data->name."</td><td><input type='text' name='marketValue[]' value='".$data->marketValue."'></td></tr>\n";
+            echo "          <tr>\n";
+            echo "              <td>\n";
+            echo $form->inputHidden('id_team[]', $data->id_team);
+            echo $data->name;
+            echo "              </td>\n";
+            echo "              <td>\n";
+            echo $form->input("", 'marketValue[]');
+            //echo "                  <input type='text' name= value='".$data->marketValue."'>
+            echo "              </td>\n";
+            echo "          </tr>\n";
         }
     echo "  </table>\n";
     echo "      <input type='submit'>\n";
     $response->closeCursor();  
 }
-echo "</section>\n";
+
 ?>

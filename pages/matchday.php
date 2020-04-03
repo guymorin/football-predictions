@@ -8,16 +8,12 @@ use FootballPredictions\Forms;
 
 // Files to include
 require '../include/changeMD.php';
-require 'matchday_nav.php';
 ?>
 
-<section>
 <h2><?= "$icon_matchday $title_matchday ".(isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>
 
 <?php
 // Values
-$error = new Errors();
-$form = new Forms($_POST);
 $matchdayId=0;
 $matchdayNumber="";
 
@@ -346,7 +342,7 @@ elseif($modify==1){
         
         echo " <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
         echo $error->getError();
-        echo $form->inputAction("modify");    
+        echo $form->inputAction('modify');    
         echo $form->inputHidden("id_matchday", $data->id_matchday);
         echo $form->input($title_number, "number");
         echo $form->submit($title_modify);
@@ -354,7 +350,7 @@ elseif($modify==1){
         
         // Delete form
         echo "<form action='index.php?page=matchday' method='POST' onsubmit='return confirm()'>\n";
-        echo $form->inputAction("delete");
+        echo $form->inputAction('delete');
         echo $form->inputHidden("id_matchday", $matchdayId);
         echo $form->inputHidden("number", "number");
         echo $form->submit("&#9888 $title_delete &#9888");
@@ -368,5 +364,4 @@ else {
     require 'matchday_select.php';
     echo "</form>\n";
 }
-echo "</section>\n";
 ?>

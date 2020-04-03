@@ -9,11 +9,7 @@ use FootballPredictions\Forms;
 // Files to include
 require 'matchday_nav.php';
 
-echo "<section>\n";
-
 // Values
-$error = new Errors();
-$form = new Forms($_POST);
 
 // No matchday selected
 if(empty($_SESSION['matchdayId'])){
@@ -137,7 +133,7 @@ else {
             
             echo "	 <form action='index.php?page=match' method='POST'>\n";
             echo $error->getError();
-            echo $form->inputAction("modify");    
+            echo $form->inputAction('modify');    
             echo "      <input type='hidden' name='id_matchgame' readonly value='".$data->id_matchgame."'></p>\n";
             echo "	    <label>$title_team 1</label>\n";
             echo "  	<select name='team_1'>\n";
@@ -186,7 +182,7 @@ else {
             echo "	 </form>\n";
             
             echo "	 <form action='index.php?page=match' method='POST' onsubmit='return confirm()'>\n";
-           echo $form->inputAction("delete");
+           echo $form->inputAction('delete');
             echo "      <input type='hidden' name='id_matchgame' value=$idMatch>\n";
             echo "      <input type='submit' value='&#9888 $title_delete $name1 - $name2 &#9888'>\n";
             echo "	 </form>\n";
@@ -218,6 +214,4 @@ else {
     }
 
 }
-
-echo "</section>\n";
 ?>  

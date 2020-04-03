@@ -8,13 +8,10 @@ use FootballPredictions\Forms;
 
 ?>
 
-<section>
 <h2><?= "$icon_championship $title_championship";?></h2>
 
 <?php
 // Values
-$error = new Errors();
-$form = new Forms($_POST);
 
 $championshipId=$create=$modify=$delete=$standaway=$standhome=0;
 $championshipName="";
@@ -93,7 +90,7 @@ elseif($create==1){
     else {
         echo $error->getError();
         echo "<form action='index.php?page=championship' method='POST'>\n";
-        echo $form->inputAction("create");
+        echo $form->inputAction('create');
         echo $form->input($title_name,"name");
         echo $form->submit($title_create);
         echo "</form>\n";   
@@ -112,14 +109,14 @@ elseif($modify==1){
         echo "<form action='index.php?page=championship' method='POST'>\n";
         $data = $response->fetch(PDO::FETCH_OBJ);
         $form->setValues($data);
-        echo $form->inputAction("modify");
+        echo $form->inputAction('modify');
         echo $form->inputHidden("id_championship", $data->id_championship);
         echo $form->input($title_name, "name");
         echo $form->submit($title_modify);
         echo "</form>\n";
         
         echo "<form action='index.php?page=championship' method='POST' onsubmit='return confirm()'>\n";
-        echo $form->inputAction("delete");
+        echo $form->inputAction('delete');
         echo $form->inputHidden("id_championship", $championshipId);
         echo $form->inputHidden("name", $data->name);
         echo $form->submit("&#9888 $title_delete ".$data->name." &#9888");
@@ -234,4 +231,4 @@ elseif(isset($_SESSION['championshipId'])&&($exit==0)){
 echo "   </table>\n";
 echo "</div>\n";
 ?>
-</section>     
+

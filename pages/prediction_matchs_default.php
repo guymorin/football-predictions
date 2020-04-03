@@ -150,7 +150,7 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
     if($data->date!=""){
         
         $date1 = new DateTime($data->date);
-        $date2 = new DateTime(date("Y-m-d"));
+        $date2 = new DateTime(date('Y-m-d'));
         $diff = $date2->diff($date1)->format("%a");
         $cloud="";
         

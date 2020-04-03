@@ -8,14 +8,10 @@ use FootballPredictions\Forms;
 
 ?>
 
-<section>
 <h2><?= "$icon_season $title_season";?></h2>
 
 <?php
 // Values
-$error = new Errors();
-$form = new Forms($_POST);
-
 $seasonId=0;
 $seasonName="";
 isset($_POST['id_season'])  ? $seasonId=$error->check("Digit",$_POST['id_season']) : null;
@@ -79,15 +75,18 @@ elseif($create==1){
     // Create popup
     if($seasonName!=""){
         $db->exec("ALTER TABLE season AUTO_INCREMENT=0;");
-        $req="INSERT INTO season VALUES(NULL,'".$seasonName."');";
-        $db->exec($req);
+        $req="INSERT INTO season VALUES(NULL,:name);";
+        $response = $db->prepare($req);
+        $response->execute([
+            'name' => $seasonName
+        ]);
         popup($title_created,"index.php?page=season");
     }
     // Create form
     else {
     	echo "<form action='index.php?page=season' method='POST'>\n";
     	echo $error->getError();
-    	echo $form->inputAction("create");
+    	echo $form->inputAction('create');
     	echo $form->input($title_name,"name");
     	echo $form->submit($title_create);
     	echo "</form>\n";   
@@ -115,7 +114,7 @@ elseif($modify==1){
         
         echo "<form action='index.php?page=season' method='POST'>\n";
         echo $error->getError();
-        echo $form->inputAction("modify");
+        echo $form->inputAction('modify');
         echo $form->inputHidden("id_season",$data->id_season); 
         echo $form->input($title_name,"name");
         echo $form->submit($title_modify);
@@ -123,7 +122,7 @@ elseif($modify==1){
         
         // Delete form
         echo "<form action='index.php?page=season' method='POST' onsubmit='return confirm()'>\n";
-        echo $form->inputAction("delete");
+        echo $form->inputAction('delete');
         echo $form->inputHidden(id_season, $seasonId);
         echo $form->inputHidden("name",$data->name); 
         echo $form->submit("&#9888 $title_delete &#9888");

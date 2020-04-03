@@ -6,8 +6,6 @@
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 
-
-echo "<section>\n";
 echo "<h2>$icon_championship $title_championship</h2>\n";
 echo "<h3>$title_dashboard</h3>\n";
 
@@ -64,27 +62,45 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
         SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
         FROM matchgame m 
         LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
-        WHERE cr.motivation1='".$data->motivation1."' 
-        AND cr.motivation2='".$data->motivation2."' 
-        AND cr.currentForm1='".$data->currentForm1."' 
-        AND cr.currentForm2='".$data->currentForm2."' 
-        AND cr.physicalForm1='".$data->physicalForm1."' 
-        AND cr.physicalForm2='".$data->physicalForm2."' 
-        AND cr.weather1='".$data->weather1."' 
-        AND cr.weather2='".$data->weather2."' 
-        AND cr.bestPlayers1='".$data->bestPlayers1."' 
-        AND cr.bestPlayers2='".$data->bestPlayers2."' 
-        AND cr.marketValue1='".$data->marketValue1."' 
-        AND cr.marketValue2='".$data->marketValue2."' 
-        AND cr.home_away1='".$data->home_away1."' 
-        AND cr.home_away2='".$data->home_away2."' 
-        AND m.date<'".$data->date."'";
-        $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
-        $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
-        $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
+        WHERE cr.motivation1 = :motivation1 
+        AND cr.motivation2 = :motivation2 
+        AND cr.currentForm1 = :currentForm1
+        AND cr.currentForm2 = :currentForm2
+        AND cr.physicalForm1 = :physicalForm1
+        AND cr.physicalForm2 = :physicalForm2 
+        AND cr.weather1 = :weather1
+        AND cr.weather2 = :weather2
+        AND cr.bestPlayers1 = :bestPlayers1
+        AND cr.bestPlayers2 = :bestPlayers2 
+        AND cr.marketValue1 = :marketValue1
+        AND cr.marketValue2 = :marketValue2 
+        AND cr.home_away1 = :home_away1
+        AND cr.home_away2 = :home_away2 
+        AND m.date < :date;
+        $r = $db->prepare($req);
+        $r->execute([
+            'motivation1' => $data->motivation1,
+            'motivation2' => $data->motivation2,
+            'currentForm1' => $data->currentForm1,
+            'currentForm2' => $data->currentForm2,
+            'physicalForm1' => $data->physicalForm1,
+            'physicalForm2' => $data->physicalForm2,
+            'weather1' => $data->weather1,
+            'weather2' => $data->weather2,
+            'bestPlayers1' => $data->bestPlayers1,
+            'bestPlayers2' => $data->bestPlayers2,
+            'marketValue1' => $data->marketValue1,
+            'marketValue2' => $data->marketValue2,
+            'home_away1' => $data->home_away1,
+            'home_away2' => $data->home_away2,
+            'm.date' => $data->date
+        ]);
+        $data = $r->fetch(PDO::FETCH_OBJ);
+        $predictionsHistoryHome=(criterion('predictionsHistoryHome',$data,$db);
+        $predictionsHistoryAway=criterion('predictionsHistoryAway',$data,$db);
     
     // Sum
-    $win="";
+    $win=0;
     $id=$data->id_matchgame;
     $sum1=
         $data->motivation1
@@ -104,19 +120,19 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
         +$predictionsHistoryAway
         +$mv2
         +$away;
-    if($sum1>$sum2) $prediction="1";
-    elseif($sum1==$sum2) $prediction="D";
-    elseif($sum1<$sum2) $prediction="2";
+    if($sum1>$sum2) $prediction='1';
+    elseif($sum1==$sum2) $prediction='D';
+    elseif($sum1<$sum2) $prediction='2';
     
     $playedOdds=0;
     switch($prediction){
-        case "1":
+        case '1':
             $PlayedOdds = $data->odds1;
             break;
-        case "D":
+        case 'D':
             $PlayedOdds = $data->oddsD;
             break;
-        case "2":
+        case '2':
             $PlayedOdds = $data->odds2;
             break;
     }
@@ -275,5 +291,4 @@ for($i=-($height/(2*25));$i<($height/(2*25)+1);$i++){
 <?php
         echo "<h3>$title_profitByMatchday</h3>\n";
         echo $table; 
-        echo "</section>\n";
 ?>   

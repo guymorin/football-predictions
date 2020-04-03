@@ -5,7 +5,6 @@
 // Files to include
 require '../include/changeMD.php';
 
-echo "<section>\n";
 echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Only if a matchday is selected
@@ -47,20 +46,27 @@ if(isset($_SESSION['matchdayId'])){
     else {
         echo "<h3>$title_teamOfTheWeek</h3>\n";
         $counter=0;
-        $req = "SELECT j.id_player,j.name,j.firstname,e.rating FROM teamOfTheWeek e LEFT JOIN player j ON e.id_player=j.id_player WHERE id_matchday='".$_SESSION['matchdayId']."' ORDER BY j.position,j.name,j.firstname;";
-        $response = $db->query($req); 
+        $req = "SELECT j.id_player,j.name,j.firstname,e.rating 
+        FROM teamOfTheWeek e 
+        LEFT JOIN player j ON e.id_player=j.id_player 
+        WHERE id_matchday=:id_matchday 
+        ORDER BY j.position,j.name,j.firstname;";
+        $response = $db->prepare($req);
+        $response->execute([
+            'id_matchday' => $_SESSION['matchdayId']
+        ]);
         
-        echo "	 <form action='index.php?page=teamOfTheWeek' method='POST' onsubmit='return confirm();'>\n";
+        echo " <form action='index.php?page=teamOfTheWeek' method='POST' onsubmit='return confirm();'>\n";
         echo $error->getError();
-        echo "      <input type='hidden' name='teamOfTheWeek' value='1'>\n";
-        
-        echo "   <table id='teamOfTheWeek'>\n";
-        echo "    <tr><th> </th><th>$title_player</th><th>$title_rating</th><th>&#10060;</th></tr>\n";
+        echo $form->inputAction('teamOfTheWeek');        
+        echo "<table id='teamOfTheWeek'>\n";
+        echo "  <tr><th> </th><th>$title_player</th><th>$title_rating</th><th>&#10060;</th></tr>\n";
 
         while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
             $counter++;
-            echo "  	<tr><td>".$counter."</td>";
+            echo "  <tr>";
+            echo "<td>".$counter."</td>";
             echo "<td><input type='hidden' name='id_player[]' value='".$data->id_player."'>".mb_strtoupper($data->name,'UTF-8')." ".$data->firstname."</td>";
             echo "<td><input type='text' name='rating[]' size='3' value='".$data->rating."'</td><td><input type='checkbox' name='delete[]' value='".$data->id_player."'></td></tr>\n";
         }
@@ -91,11 +97,10 @@ if(isset($_SESSION['matchdayId'])){
             echo "</select>\n";
             echo "</td><td><input type='text' name='rating[]' value=''></td><td> </td></tr>\n";
         }
-        echo "  </table>\n";
-        echo "      <input type='submit'>\n";
-        echo "	 <form>\n";
+        echo "</table>\n";
+        echo $form->submit($title_modify);
+        echo "<form>\n";
         $response->closeCursor();   
     
     }
 }
-echo "</section>\n";

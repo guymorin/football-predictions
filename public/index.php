@@ -104,9 +104,9 @@ window.onscroll = function() {myFunction()};
 
 function myFunction() {
   if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-    document.getElementById("fp-submenu").className = "off";
+    document.getElementById('fp-submenu').className = "off";
   } else {
-    document.getElementById("fp-submenu").className = "";
+    document.getElementById('fp-submenu').className = "";
   }
 }
 </script>
@@ -135,6 +135,13 @@ switch($page){
     case "marketValue":
         echo Team::submenu($db);
         break;
+    default:
+        echo "  <a href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
+        echo "<a href='index.php?page=championship&exit=1'>".$_SESSION['championshipName']." &#10060;</a>";
+        if(isset($_SESSION['matchdayId'])){
+            echo "<a href='index.php?page=matchday&exit=1'>".$title_MD.$_SESSION['matchdayNum']." &#10060;</a>\n"; // Sortir
+        }
+        break;
 }
 ?>
     </nav>
@@ -146,13 +153,12 @@ switch($page){
 
 /* Page */
 
-
+echo "<section>\n";
 if($page!="") require("../pages/" . $page . ".php");
 else {
-    require '../pages/index_nav.php'; // Navigation
     
     // Section with menu
-    echo "<section>\n";
+
         
     echo "<ul class='menu'>\n";
     echo "    <li><h2>$icon_championship $title_championship</h2>\n";
@@ -189,7 +195,8 @@ else {
     echo "        </ul>\n";
     echo "    </li>\n";
     echo "</ul>\n";
-    echo "</section>\n";
+
 }
+echo "</section>\n";
 ?>
 <?php require '../include/footer.php';?>
