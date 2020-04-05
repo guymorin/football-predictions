@@ -12,16 +12,19 @@ font-style: normal;
 html, body {
  margin: 0;
  padding: 0;
- background:#cdb;
  overflow-x:hidden;
  }
+html {
+ background:#010;
+}
 body {
- font-family: Verdana, sans-serif; 
- font-size: .8em;
+ background:#030 linear-gradient(#030,#010);
+ font-family: Arial, sans-serif; 
+ font-size: .9em;
  text-align:center;
  }
 h1 {
- font: 200% sans-serif; 
+ font: 200% Arial, sans-serif; 
  text-transform:uppercase;
  text-align: center;
  }
@@ -33,11 +36,11 @@ h2 {
  color:white;
  background:#996 linear-gradient(#aa7,#774);
  border-radius:2px;
- margin:.4em;
+ margin:0;
  padding:.2em 1.8em .2em .8em;
 }
 h3 {
- font: 110% sans-serif; 
+ font: 110% Arial, sans-serif; 
  font-weight:bold;
  }
 h4 {
@@ -51,7 +54,7 @@ th,td {padding:.5em;}
 a{color:#095;text-decoration:none}
 a:hover{text-decoration:underline}
 
-table{font-size:.9em;margin:0 auto;border:2px solid #ccc;border-radius:3px;min-width:80%;}
+table{font-size:.9em;margin:0 auto;border:2px solid #774;border-radius:3px;min-width:50%;}
 td{border:.1em solid #aaa;}
 tr:nth-child(odd){background:#efefef}
 tr:nth-child(even){background:#fff}
@@ -66,7 +69,7 @@ header{
 	height:3.5em;
 	overflow:hidden;
 	padding:0;
-	background:#371 linear-gradient(#482,#260);
+	background:#360 linear-gradient(#582,#030);
 	position:fixed;
 }
 header h1 {margin:0;padding:.25em 3% .25em 0}
@@ -78,20 +81,11 @@ header h1 a {
 }
 header h1 a:hover {text-decoration:none}
 
-nav {
-	background:#bf7;
-	color:#231;
-	text-transform:uppercase;
-}
 nav a {
-	display:inline-block;
-	background:#482c;
 	color:white;
 	margin:.1em 0;
 	padding:1em;
 	text-decoration:none;
-	text-shadow:1px 1px #0003;
-	transition:background .5s;
 }
 
 /* Main menu */
@@ -137,15 +131,6 @@ nav a {
 	visibility:visible;
 	transition:opacity .5s;
 }
-#fp-menu ul {
-	list-style:none;
-	margin:0;
-	padding:0;
-	width:calc(20vw + 2em + 2px);
-	height:100vh;
-	overflow:hidden;
-	background:#bf7;
-}
 #fp input:not(:checked) ~ #fp-menu ul {
 	transform: translate(-100%, 0);
 }
@@ -160,23 +145,40 @@ nav a {
 	width:100vw;
 	height:100vh;
 }
-#fp-menu li a,
-#fp-menu li a:focus,
-#fp-menu li a:hover {
+#fp-menu ul {
+	list-style:none;
+	margin:0;
+	padding:0;
+	width:calc(20vw + 2em + 2px);
+	height:100vh;
+	overflow:hidden;
+	background:#693;
+}
+#fp-menu li a
+ {
+  background:#ffc3;
+  transition:background .5s;
+  text-shadow:1px 1px #0003;
   display: block;
+  text-transform:uppercase;
   text-decoration: none;
   font-size: 1em;
   margin:0;
-  border-left:1px solid #bf7;
-  border-right:1px solid #bf7;
-  border-top:1px solid #bf7;
+  border-left:1px solid #693;
+  border-right:1px solid #693;
+  border-top:1px solid #693;
   text-align:left;
   width:20vw;
+}
+#fp-menu li a:hover,
+#fp-menu li a:focus {
+  background:#ff7;
+  transition:background .5s;
 }
 #fp-menu li:last-child a,
 #fp-menu li:last-child a:hover,
 #fp-menu li:last-child a:focus {
-  border-bottom:1px solid #bf7;
+  border-bottom:1px solid #482;
 }
 #fp-submenu a:focus, #fp-submenu a:hover,
 #fp a:focus, #fp a:hover {
@@ -188,6 +190,8 @@ nav a {
 
 /* Submenu */
 #fp-submenu {
+	background:#693;
+	color:#000c;
 	position:fixed;
 	margin-top:3.5em;
 	width:100%;
@@ -199,9 +203,19 @@ nav a {
 	opacity:0;
 }
 #fp-submenu a {
-	border-left:1px solid #bf7;
+	border-left:1px solid #693;
+	display:inline-block;
+	padding:.5em;
+	background:#ffc3;
+	transition:background .5s;
 }
-#fp-submenu a:last-child {border-right:1px solid #bf7}
+#fp-submenu a:last-child {border-right:1px solid #693}
+#fp-submenu a:hover {
+	padding:.5em;
+	background:#ff7;
+	transition:background .5s;
+	text-shadow:1px 1px #0003;
+}
 #fp-submenu form {display:inline}
 #fp-submenu form, #fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}
 #fp-submenu label {margin-right:.2em}
@@ -210,12 +224,13 @@ nav a {
 /* Section */
 
 section {
-	background: #efd;
-	box-shadow:0 0 10px #2313;
-	min-width:50%;
+	background: #cc9;
+	border:2px solid #996;
+	box-shadow:0 0 10px #444;
+	width:90%;
 	height:calc(100% - 7em);
 	text-align:center;
-	margin:8em auto .7em auto;
+	margin:7em auto .7em auto;
 	padding:.4em .4em .8em .4em;
 	display:inline-block;
 	border-radius:4px;
@@ -232,24 +247,22 @@ section .menu li {
 	margin:0 .4em;
 	vertical-align:top;
 }
+section .menu li ul {clear:left;}
 section .menu li ul li {
-	margin:0;
+	margin:.5em 0 0 0;
 }
 section .menu li ul li a {
 	display:block;
 	padding:.5em 1em;
 	margin:.2em;
 }
-section .menu li ul {clear:left;}
-section .menu li ul:last-child {margin-bottom:1em}
+
 section .menu li ul li a:hover {background:linear-gradient(#4a2,#6c4);border:1px solid green;color:white;}
 
 section #changeMD {display:inline-block;margin:0 auto;text-align:center;}
 section #changeMD input[type=submit] {
-	height:2em;
 	min-width:0;
-	width:2em;
-	margin:0 .5em
+	margin:.5em
 }
 section #changeMD {
 	display:block;
@@ -257,6 +270,9 @@ section #changeMD {
 }
 section #leftArrow {float:left;}
 section #rightArrow {float:right;}
+section #leftArrow, section #rightArrow {
+	display:block; width:4em; height:4em;
+}
 
 section table.stats th,
 section table.stats td{width:1.5em;height:2em}
@@ -290,10 +306,10 @@ section #standing ul {display:inline;}
 section #standing li a,
 section #standing li p {
 	font-size:1em;
-	display:inline;
+	display:inline-block;
 	background:linear-gradient(#eee,#fff);
 	color:#2229;
-	padding:0 1em;
+	padding:.4em 1em;
 	margin:0;
 	border:1px solid #999;
 	border-bottom:none;
@@ -376,8 +392,8 @@ footer strong {color:#231}
 .update a,
 section .menu li ul li a,
 button[type=submit], input[type=submit], input[type=button], input[type=reset] {
-	background:white;
-	background:linear-gradient(#ddd,#eee);
+	background:#eee linear-gradient(#ddd,#eee);
+	transition: background .5s, border .5s;
 	color:#444;
 	border:1px outset #ccc;
 	border-radius:5px;
@@ -385,14 +401,15 @@ button[type=submit], input[type=submit], input[type=button], input[type=reset] {
 	margin:0 .5em;
 	text-decoration:none;
 	text-shadow:1px 1px #fff;
-	transition: background .5s;
+	
  	cursor: pointer;
 }
 .update a:hover,.update a:focus,
 section .menu li ul li a:hover,section .menu li ul li a:focus,
 button[type=submit]:hover, input[type=submit]:hover, input[type=button]:hover, input[type=reset]:hover,
 button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, input[type=reset]:focus {
-	background:#fff;
+	background:#fff linear-gradient(#fff,#fff);
+	transition: background .5s, border .5s;
 	border:1px outset #999;
 	border-radius:5px;
 	color:#333;

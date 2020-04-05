@@ -112,173 +112,175 @@ if(isset($_SESSION['matchdayId'])){
             'id_matchday' => $_SESSION['matchdayId']
         ]);
 
-        $table="	 <table class='stats'>\n";
-           
-        $table.="  		<tr>\n";
-        $table.="  		  <th>$title_match</th>\n";
-        $table.="         <th>$title_prediction</th>\n";
-        $table.="         <th>$title_result</th>\n";
-        $table.="         <th>$title_odds</th>\n";
-        $table.="         <th>$title_success</th>\n";
-        $table.="       </tr>\n";
-        
-        $matchs=$success=$earningSum=$totalJouee=0;
-        
-        while ($data = $response->fetch(PDO::FETCH_OBJ))
-        {
-            
-            // Marketvalue
-            $v1=criterion("v1",$data,$db);
-            $v2=criterion("v2",$data,$db);
-            $mv1 = round(sqrt($v1/$v2));
-            $mv2 = round(sqrt($v2/$v1));
-            
-            $dom = $data->home_away1; 
-            $ext = $data->home_away2; 
-            
-            // Predictions history
-                $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
-                SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
-                SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
-                FROM matchgame m 
-                LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
-                WHERE cr.motivation1='".$data->motivation1."' 
-                AND cr.motivation2='".$data->motivation2."' 
-                AND cr.currentForm1='".$data->currentForm1."' 
-                AND cr.currentForm2='".$data->currentForm2."' 
-                AND cr.physicalForm1='".$data->physicalForm1."' 
-                AND cr.physicalForm2='".$data->physicalForm2."' 
-                AND cr.weather1='".$data->weather1."' 
-                AND cr.weather2='".$data->weather2."' 
-                AND cr.bestPlayers1='".$data->bestPlayers1."' 
-                AND cr.bestPlayers2='".$data->bestPlayers2."' 
-                AND cr.marketValue1='".$data->marketValue1."' 
-                AND cr.marketValue2='".$data->marketValue2."' 
-                AND cr.home_away1='".$data->home_away1."' 
-                AND cr.home_away2='".$data->home_away2."' 
-                AND m.date<'".$data->date."'";
-                $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
-                $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
-                $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
-                
-            // Sum
-            $win="";
-
-            $sum1=
-                $data->motivation1
-                +$data->currentForm1
-                +$data->physicalForm1
-                +$data->weather1
-                +$data->bestPlayers1
-                +$mv1
-                +$dom
-                +$predictionsHistoryHome;
-            $sum2=
-                $data->motivation2
-                +$data->currentForm2
-                +$data->physicalForm2
-                +$data->weather2
-                +$data->bestPlayers2
-                +$mv2
-                +$ext
-                +$predictionsHistoryAway;
-            if($sum1>$sum2) $prediction="1";
-            elseif($sum1==$sum2) $prediction=$title_draw;
-            elseif($sum1<$sum2) $prediction="2";
-            
-            $matchs++;
-            
-            $playedOdds=0;
-            switch($prediction){
-                case "1":
-                    $playedOdds = $data->odds1;
-                    break;
-                case "N":
-                    $playedOdds = $data->oddsD;
-                    break;
-                case "2":
-                    $playedOdds = $data->odds2;
-                    break;
-            }
-            
-            if($prediction==$data->result){
-                $win="<big style='color:green'>&#x2714;</big>";
-                $success++;
-                $earningSum+=$playedOdds;
-            } elseif ($data->result!="") $win="<small style='color:gray'>&times;</small>";
-            $totalJouee+=$playedOdds;
-            
+        if($response->rowCount()>0){
+    
+            $table="	 <table class='stats'>\n";               
             $table.="  		<tr>\n";
-            $table.="  		  <td>".$data->name1." - ".$data->name2."</td>\n";
-            $table.="  		  <td>".$prediction."</td>\n";
-            $table.="  		  <td>";
-            if($data->result=='D') $table.=$title_draw;
-            else $table.=$data->result;
-            $table.="</td>\n";
-            $table.="  		  <td>".$playedOdds."</td>\n";
-            $table.="  		  <td>".$win."</td>\n";
+            $table.="  		  <th>$title_match</th>\n";
+            $table.="         <th>$title_prediction</th>\n";
+            $table.="         <th>$title_result</th>\n";
+            $table.="         <th>$title_odds</th>\n";
+            $table.="         <th>$title_success</th>\n";
             $table.="       </tr>\n";
-
-        }
-        $response->closeCursor();
-        $table.="	 </table>\n";
-        
-        // Values
-        $benef=money_format('%i',$earningSum-$matchs);
-        $roi = round(($benef/$matchs)*100);
-        $successRate = (($success/$matchs)*100);
-        $earning = money_format('%i',$earningSum);
-        $earningByBet = (round($earningSum/$matchs,2));
-        
-        echo "<p>\n";
-        echo "  <table class='stats'>\n";
-        
-        echo "    <tr>\n";
-        echo "      <td>$title_bet</td>\n";
-        echo "      <td>".$matchs."</td>\n";
-        echo "      <td>$title_profit</td>\n";
-        echo "      <td><span style='color:".valColor($benef)."'>";
-        if($benef>0) echo "+";
-        echo $benef."&nbsp;&euro;</span></td>\n";
-        echo "      <td>$title_ROI</td>\n";
-        echo "      <td>";
-        echo "<span style='color:".valColor($roi)."'>";
-        if($roi>0) echo "+";
-        echo $roi."&nbsp;%</span>";
-        echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($roi)."</a>";
-        echo "</td>\n";
-        echo "    </tr>\n";
-  
-        echo "    <tr>\n";
-        echo "      <td>$title_success</td>\n";
-        echo "      <td>$success</td>\n";
-        echo "      <td>$title_earning</td>\n";
-        echo "      <td>".$earning."&nbsp;&euro;</td>\n";
-        echo "      <td>$title_earningByBet</td>\n";
-        echo "      <td>$earningByBet</td>\n";
-        echo "    </tr>\n";
-        
-        echo "    <tr>\n";
-        echo "      <td>$title_successRate</td>\n";
-        echo "      <td>";
-        if($matchs>0) echo $successRate;
-        else echo 0;
-        echo "&nbsp;%</td>\n";
-        $averageOdds=(round($totalJouee/$matchs,2));
-        echo "      <td>$title_oddsAveragePlayed</td>\n";
-        echo "      <td>".$averageOdds;
-        if(($averageOdds<1.8)||($averageOdds>2.3)){
-            echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valOdds($averageOdds)."</a>";
-        }
-        echo "</td>\n";
-        echo "      <td></td>\n";
-        echo "      <td></td>\n";
-        echo "    </tr>\n";
-        
-        echo "  </table>\n";
-        echo "</p>\n";
-        
-        echo $table;
+            
+            $matchs=$success=$earningSum=$totalJouee=0;
+            
+            while ($data = $response->fetch(PDO::FETCH_OBJ))
+            {
+                
+                // Marketvalue
+                $v1=criterion("v1",$data,$db);
+                $v2=criterion("v2",$data,$db);
+                $mv1 = round(sqrt($v1/$v2));
+                $mv2 = round(sqrt($v2/$v1));
+                
+                $dom = $data->home_away1; 
+                $ext = $data->home_away2; 
+                
+                // Predictions history
+                    $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
+                    SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
+                    SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
+                    FROM matchgame m 
+                    LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
+                    WHERE cr.motivation1='".$data->motivation1."' 
+                    AND cr.motivation2='".$data->motivation2."' 
+                    AND cr.currentForm1='".$data->currentForm1."' 
+                    AND cr.currentForm2='".$data->currentForm2."' 
+                    AND cr.physicalForm1='".$data->physicalForm1."' 
+                    AND cr.physicalForm2='".$data->physicalForm2."' 
+                    AND cr.weather1='".$data->weather1."' 
+                    AND cr.weather2='".$data->weather2."' 
+                    AND cr.bestPlayers1='".$data->bestPlayers1."' 
+                    AND cr.bestPlayers2='".$data->bestPlayers2."' 
+                    AND cr.marketValue1='".$data->marketValue1."' 
+                    AND cr.marketValue2='".$data->marketValue2."' 
+                    AND cr.home_away1='".$data->home_away1."' 
+                    AND cr.home_away2='".$data->home_away2."' 
+                    AND m.date<'".$data->date."'";
+                    $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
+                    $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
+                    $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
+                    
+                // Sum
+                $win="";
+    
+                $sum1=
+                    $data->motivation1
+                    +$data->currentForm1
+                    +$data->physicalForm1
+                    +$data->weather1
+                    +$data->bestPlayers1
+                    +$mv1
+                    +$dom
+                    +$predictionsHistoryHome;
+                $sum2=
+                    $data->motivation2
+                    +$data->currentForm2
+                    +$data->physicalForm2
+                    +$data->weather2
+                    +$data->bestPlayers2
+                    +$mv2
+                    +$ext
+                    +$predictionsHistoryAway;
+                if($sum1>$sum2) $prediction="1";
+                elseif($sum1==$sum2) $prediction=$title_draw;
+                elseif($sum1<$sum2) $prediction="2";
+                
+                $matchs++;
+                
+                $playedOdds=0;
+                switch($prediction){
+                    case "1":
+                        $playedOdds = $data->odds1;
+                        break;
+                    case "N":
+                        $playedOdds = $data->oddsD;
+                        break;
+                    case "2":
+                        $playedOdds = $data->odds2;
+                        break;
+                }
+                
+                if($prediction==$data->result){
+                    $win="<big style='color:green'>&#x2714;</big>";
+                    $success++;
+                    $earningSum+=$playedOdds;
+                } elseif ($data->result!="") $win="<small style='color:gray'>&times;</small>";
+                $totalJouee+=$playedOdds;
+                
+                $table.="  		<tr>\n";
+                $table.="  		  <td>".$data->name1." - ".$data->name2."</td>\n";
+                $table.="  		  <td>".$prediction."</td>\n";
+                $table.="  		  <td>";
+                if($data->result=='D') $table.=$title_draw;
+                else $table.=$data->result;
+                $table.="</td>\n";
+                $table.="  		  <td>".$playedOdds."</td>\n";
+                $table.="  		  <td>".$win."</td>\n";
+                $table.="       </tr>\n";
+    
+            }
+            $response->closeCursor();
+            $table.="	 </table>\n";
+            
+            // Values
+            $benef=money_format('%i',$earningSum-$matchs);
+            $roi = round(($benef/$matchs)*100);
+            $successRate = (($success/$matchs)*100);
+            $earning = money_format('%i',$earningSum);
+            $earningByBet = (round($earningSum/$matchs,2));
+            
+            echo "<p>\n";
+            echo "  <table class='stats'>\n";
+            
+            echo "    <tr>\n";
+            echo "      <td>$title_bet</td>\n";
+            echo "      <td>".$matchs."</td>\n";
+            echo "      <td>$title_profit</td>\n";
+            echo "      <td><span style='color:".valColor($benef)."'>";
+            if($benef>0) echo "+";
+            echo $benef."&nbsp;&euro;</span></td>\n";
+            echo "      <td>$title_ROI</td>\n";
+            echo "      <td>";
+            echo "<span style='color:".valColor($roi)."'>";
+            if($roi>0) echo "+";
+            echo $roi."&nbsp;%</span>";
+            echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($roi)."</a>";
+            echo "</td>\n";
+            echo "    </tr>\n";
+      
+            echo "    <tr>\n";
+            echo "      <td>$title_success</td>\n";
+            echo "      <td>$success</td>\n";
+            echo "      <td>$title_earning</td>\n";
+            echo "      <td>".$earning."&nbsp;&euro;</td>\n";
+            echo "      <td>$title_earningByBet</td>\n";
+            echo "      <td>$earningByBet</td>\n";
+            echo "    </tr>\n";
+            
+            echo "    <tr>\n";
+            echo "      <td>$title_successRate</td>\n";
+            echo "      <td>";
+            if($matchs>0) echo $successRate;
+            else echo 0;
+            echo "&nbsp;%</td>\n";
+            $averageOdds=(round($totalJouee/$matchs,2));
+            echo "      <td>$title_oddsAveragePlayed</td>\n";
+            echo "      <td>".$averageOdds;
+            if(($averageOdds<1.8)||($averageOdds>2.3)){
+                echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valOdds($averageOdds)."</a>";
+            }
+            echo "</td>\n";
+            echo "      <td></td>\n";
+            echo "      <td></td>\n";
+            echo "    </tr>\n";
+            
+            echo "  </table>\n";
+            echo "</p>\n";
+            
+            echo $table;
+        } else echo $title_noStatistic;
     }
 }
 

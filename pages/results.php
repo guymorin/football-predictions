@@ -86,12 +86,9 @@ if($modify==1){
 
 }
 // Modify form    
-else {    
+else {
     changeMD($db,"results");
     echo "<h3>$title_results</h3>\n";
-    echo "<form id='results' action='index.php?page=results' method='POST' onsubmit='return confirm();'>\n";
-    echo $error->getError();
-    echo $form->inputAction('modify');
 
     $req="SELECT m.id_matchgame,
         c1.name as name1,c2.name as name2,
@@ -104,64 +101,69 @@ else {
     $response->execute([
         'id_matchday' => $_SESSION['matchdayId']
     ]);
-    
-    echo "<table>\n";
-    
-    echo "  <tr>\n";
-    echo "      <th>$title_date</th>\n";
-    echo "      <th>$title_notPlayed</th>\n";
-    echo "      <th>$title_match</th>\n";
-    echo "      <th>$title_odds</th>\n";
-    echo "      <th>1</th>\n";
-    echo "      <th>$title_draw</th>\n";
-    echo "      <th>2</th>\n";
-    echo "      <th colspan='2'>$title_redCards</th>\n";
-    echo "  </tr>\n";
-    
-    while ($data = $response->fetch(PDO::FETCH_OBJ))
-    {
-        $form->setValues($data);
-        $id=$data->id_matchgame;
-        echo $form->inputHidden('id_match[]', $data->id_matchgame);
+    if($response->rowCount()>0){
+        echo "<form id='results' action='index.php?page=results' method='POST' onsubmit='return confirm();'>\n";
+        echo $error->getError();
+        echo $form->inputAction('modify');
+        
+        
+        echo "<table>\n";
+        
         echo "  <tr>\n";
-        echo "      <td>".$form->inputDate("date[$id]",$data->date)."</td>\n";
-        
-        echo "  	<td>";
-        if($data->result=="") echo $form->inputRadio("", "result[$id]", "", true);
-        else  echo $form->inputRadio("", "result[$id]", "", false);
-        echo "</td>\n";
-        
-        echo "  	<td>".$data->name1." - ".$data->name2."</td>\n";
-        
-        echo "      <td>";
-        echo "1".$form->inputNumber("odds1[$id]",$data->odds1, '0.01');
-        echo $title_draw.$form->inputNumber("oddsD[$id]",$data->oddsD, '0.01');
-        echo "2".$form->inputNumber("odds2[$id]",$data->odds2, '0.01');
-        echo "</td>\n";
-        
-        echo "  	<td>";
-        if($data->result=="1") echo $form->inputRadio("1", "result[$id]", "1", true);
-        else echo $form->inputRadio("1", "result[$id]", "1", false);
-        echo "</td>\n";
-        
-        echo "  	<td>";
-        if($data->result=="D") echo $form->inputRadio("D", "result[$id]", "D", true);
-        else echo $form->inputRadio("D", "result[$id]", "D", false);
-        echo "</td>\n";
-        
-        echo "  	<td>";
-        if($data->result=="2") echo $form->inputRadio("2", "result[$id]", "2", true);
-        else echo $form->inputRadio("2", "result[$id]", "2", false);
-        echo "</td>\n";
-        
-        echo "<td>".$form->inputNumber("red1[$id]",$data->red1, "")."</td>\n";
-        
-        echo "<td>".$form->inputNumber("red2[$id]",$data->red2, "")."</td>\n";
-        
+        echo "      <th>$title_date</th>\n";
+        echo "      <th>$title_notPlayed</th>\n";
+        echo "      <th>$title_match</th>\n";
+        echo "      <th>1</th>\n";
+        echo "      <th>$title_draw</th>\n";
+        echo "      <th>2</th>\n";
+        echo "      <th colspan='2'>$title_redCards</th>\n";
         echo "  </tr>\n";
-    }
-    $response->closeCursor();
-    echo "</table>\n";
-    echo $form->submit($title_modify);
-    echo "</form>\n";
+        
+        while ($data = $response->fetch(PDO::FETCH_OBJ))
+        {
+            $form->setValues($data);
+            $id=$data->id_matchgame;
+            echo $form->inputHidden('id_match[]', $data->id_matchgame);
+            echo "  <tr>\n";
+            echo "      <td>".$form->inputDate("", "date[$id]", $data->date)."</td>\n";
+            
+            echo "  	<td>";
+            if($data->result=="") echo $form->inputRadio("", "result[$id]", "", true);
+            else  echo $form->inputRadio("", "result[$id]", "", false);
+            echo "</td>\n";
+            
+            echo "  	<td>" . $data->name1." - " . $data->name2."</td>\n";
+            
+            echo "  	<td>";
+            if($data->result=="1") echo $form->inputRadio("1", "result[$id]", "1", true);
+            else echo $form->inputRadio("1", "result[$id]", "1", false);
+            echo "<br />" . $form->labelBr($title_odds);
+            echo $form->inputNumber("", "odds1[$id]",$data->odds1, '0.01');
+            echo "</td>\n";
+            
+            echo "  	<td>";
+            if($data->result=="D") echo $form->inputRadio("D", "result[$id]", "D", true);
+            else echo $form->inputRadio("D", "result[$id]", "D", false);
+            echo "<br />" . $form->labelBr($title_odds);
+            echo $form->inputNumber("", "oddsD[$id]",$data->oddsD, '0.01');
+            echo "</td>\n";
+            
+            echo "  	<td>";
+            if($data->result=="2") echo $form->inputRadio("2", "result[$id]", "2", true);
+            else echo $form->inputRadio("2", "result[$id]", "2", false);
+            echo "<br />" . $form->labelBr($title_odds);
+            echo $form->inputNumber("", "odds2[$id]",$data->odds2, '0.01');
+            echo "</td>\n";
+            
+            echo "<td>".$form->inputNumber("", "red1[$id]",$data->red1, "")."</td>\n";
+            
+            echo "<td>".$form->inputNumber("", "red2[$id]",$data->red2, "")."</td>\n";
+            
+            echo "  </tr>\n";
+        }
+        $response->closeCursor();
+        echo "</table>\n";
+        echo $form->submit($title_modify);
+        echo "</form>\n";
+    } else echo $title_noResult;
 }

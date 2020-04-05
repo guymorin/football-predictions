@@ -52,7 +52,7 @@ if(
         $data = $response->fetch(PDO::FETCH_OBJ);
 
         echo "<form action='index.php' method='POST'>\n";
-        echo $form->label($title_quickNav);
+        echo $form->labelBr($title_quickNav);
         echo $form->inputHidden("championshipSelect",$data->id_championship.",".$data->name);
         echo $form->submit($icon_quicknav." ".$data->name);
         echo "</form>\n";

@@ -47,7 +47,7 @@ if(
     
         echo "<form action='index.php?page=championship' method='POST'>\n";
         echo $form->inputHidden("seasonSelect",$data->id_season.",".$data->name);
-        echo $form->label($title_quickNav);
+        echo $form->labelBr($title_quickNav);
         echo $form->submit($icon_quicknav." ".$data->name);
         echo "</form>\n";
         

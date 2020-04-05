@@ -146,7 +146,7 @@ switch($page){
 ?>
     </nav>
 	<?php require("../include/fp-menu.php");?>
-    <h1><a href="/"><?= "$title_site ".(isset($_SESSION['seasonName']) ? $_SESSION['seasonName'] : null);?></a></h1>
+    <h1><a href="/"><?= "$title_site " . (isset($_SESSION['seasonName']) ? $_SESSION['seasonName'] : null);?></a></h1>
 </header>
 
 <?php
@@ -158,7 +158,6 @@ if($page!="") require("../pages/" . $page . ".php");
 else {
     
     // Section with menu
-
         
     echo "<ul class='menu'>\n";
     echo "    <li><h2>$icon_championship $title_championship</h2>\n";
@@ -167,7 +166,7 @@ else {
     echo "            <li><a href='index.php?page=championship'>$title_standing</a></li>\n";
     echo "       </ul>\n";
     echo "    </li>\n";
-    echo "    <li><h2>$icon_matchday $title_matchday ".(isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h2>\n";
+    echo "    <li><h2>$icon_matchday $title_matchday " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h2>\n";
     if(isset($_SESSION['matchdayId'])){
         echo "        <ul>\n";
         echo "            <li><a href='index.php?page=matchday'>$title_statistics</a></li>\n";

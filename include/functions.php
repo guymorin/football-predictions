@@ -166,13 +166,13 @@ function changeMD($db,$page){
             case 2:
                 // Previous button
                 if($data->number==$_SESSION['matchdayNum']-1){
-                    $button1="  <input type='submit' value='<'>\n";
+                    $button1="  <input type='submit' value='&larr;'>\n";
                     $button1.="<input type='hidden' name='matchdaySelect' ";
                     $button1.="value='".$data->id_matchday.",".$data->number."'>\n";
                 }
                 // Next button
                 if($data->number==$_SESSION['matchdayNum']+1){
-                    $button2="  <input type='submit' value='>'>\n";
+                    $button2="  <input type='submit' value='&rarr;'>\n";
                     $button2.="<input type='hidden' name='matchdaySelect' ";
                     $button2.="value='".$data->id_matchday.",".$data->number."'>\n";
                 }

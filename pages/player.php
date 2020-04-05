@@ -6,24 +6,22 @@
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 
-// Files to include
-require 'player_nav.php';
-
 echo "<h2>$icon_player $title_player</h2>\n";
+
 // Values
 $playerId=$teamId=0;
 $playerName=$playerFirstname=$playerPosition="";
-if(isset($_POST['id_player'])) $playerId=$error->check("Digit",$_POST['id_player']);
-if(isset($_POST['name'])) $playerName=$error->check("Alnum",$_POST['name']);
-if(isset($_POST['firstname'])) $playerFirstname=$error->check("Alnum",$_POST['firstname']);
-if(isset($_POST['position'])) $playerPosition=$error->check("Position",$_POST['position']);
-if(isset($_POST['id_team'])) $teamId=$error->check("Digit",$_POST['id_team']);
+isset($_POST['id_player'])      ? $playerId=$error->check("Digit",$_POST['id_player']) : null;
+isset($_POST['name'])           ? $playerName=$error->check("Alnum",$_POST['name']) : null;
+isset($_POST['firstname'])      ? $playerFirstname=$error->check("Alnum",$_POST['firstname']) : null;
+isset($_POST['position'])       ? $playerPosition=$error->check("Position",$_POST['position']) : null;
+isset($_POST['id_team'])        ? $teamId=$error->check("Digit",$_POST['id_team']) : null;
 $create=$modify=$delete=0;
-if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create']);
-if(isset($_POST['create'])) $create=$error->check("Action",$_POST['create']);
-if(isset($_GET['modify'])) $modify=$error->check("Action",$_GET['modify']);
-if(isset($_POST['modify'])) $modify=$error->check("Action",$_POST['modify']);
-if(isset($_POST['delete'])) $delete=$error->check("Action",$_POST['delete']);
+isset($_GET['create'])          ? $create=$error->check("Action",$_GET['create']) : null;
+isset($_POST['create'])         ? $create=$error->check("Action",$_POST['create']) : null;
+isset($_GET['modify'])          ? $modify=$error->check("Action",$_GET['modify']) : null;
+isset($_POST['modify'])         ? $modify=$error->check("Action",$_POST['modify']) : null;
+isset($_POST['delete'])         ? $delete=$error->check("Action",$_POST['delete']) : null;
 
 // Delete
 if($delete==1){
@@ -50,22 +48,31 @@ elseif($create==1){
     if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)){
         $db->exec("ALTER TABLE season_team_player AUTO_INCREMENT=0;");
         $db->exec("ALTER TABLE player AUTO_INCREMENT=0;");
-        $req1="INSERT INTO player VALUES(NULL,'".$playerName."','".$playerFirstname."','".$playerPosition."');";
-        $db->exec($req1);
+        $req1="INSERT INTO player 
+        VALUES(NULL,:name,:firstname,:position);";
+        $response = $db->prepare($req1);
+        $response->execute([
+            'name' => $playerName,
+            'firstname' => $playerFirstname,
+            'position' => $playerPosition
+        ]);
         $playerId=$db->lastInsertId();
-        $req2="INSERT INTO season_team_player VALUES(NULL,'".$_SESSION['seasonId']."','".$teamId."','".$playerId."');";
-        $db->exec($req2);
+        $req2="INSERT INTO season_team_player VALUES(NULL,:id_season,:id_team,:id_player);";
+        $response = $db->prepare($req2);
+        $response->execute([
+            'id_season' => $_SESSION['seasonId'],
+            'id_team' => $teamId,
+            'id_player' => $playerId
+        ]);
         popup($title_created,"index.php?page=player");
     }
     // Create form
     else {
         echo $error->getError();
-    	echo "	 <form action='index.php?page=player' method='POST'>\n";
-        echo "      <input type='hidden' name='create' value='1'>\n"; 
-    	echo "	    <label>$title_name :</label>\n";
-    	echo "      <input type='text' name='name' value='".$playerName."'>\n";
-    	echo "	    <label>$title_firstname :</label>\n";
-    	echo "      <input type='text' name='firstname' value='".$playerFirstname."'>\n";
+    	echo "<form action='index.php?page=player' method='POST'>\n";
+        echo $form->inputAction('create'); 
+        echo $form->input($title_name, 'name');
+        echo $form->input($title_firstname, 'firstname');
     	echo "	    <p><label>$title_position :</label><br />\n";
     	echo "      <input type='radio' name='position' id='Goalkeeper' value='Goalkeeper'><label for='Goalkeeper'>$title_goalkeeper</label>\n";
     	echo "      <input type='radio' name='position' id='Defender' value='Defender'><label for='Defender'>$title_defender</label>\n";
@@ -79,8 +86,8 @@ elseif($create==1){
             echo "  		<option value='".$data->id_team."'>".$data->name."</option>\n";
         }
         echo "	   </select></p>\n";
-    	echo "     <input type='submit' value='$title_create'>\n";
-    	echo "	 </form>\n";
+    	echo $form->submit($title_create);
+    	echo "</form>\n";
 	}
 }
 // Modify
@@ -178,14 +185,14 @@ elseif($modify==1){
         echo "      <input type='submit' value='$title_modify'>\n";
         echo "	 </form>\n";
         // Delete form
-        echo "	 <form action='index.php?page=player' method='POST' onsubmit='return confirm()'>\n";
+        echo "<form action='index.php?page=player' method='POST' onsubmit='return confirm()'>\n";
        echo $form->inputAction('delete');
         echo "      <input type='hidden' name='id_team' value=$teamId>\n";
         echo "      <input type='hidden' name='id_player' value=$playerId>\n";
         echo "      <input type='hidden' name='name' value='".$playerName."'>\n";
         echo "      <input type='hidden' name='firstname' value='".$playerFirstname."'>\n";
         echo "      <input type='submit' value='&#9888 $title_delete &#9888'>\n";
-        echo "	 </form>\n";
+        echo "</form>\n";
         $response->closeCursor();  
     }
     // Select form

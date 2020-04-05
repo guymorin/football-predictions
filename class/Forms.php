@@ -73,7 +73,7 @@ class Forms
      * @return string HTML code
      */
     public function input($label='',$name){
-         $val = "";
+         $val = '';
          if($label!='') $val.= $this->label($label);
          $val.= "   <input type='text' name='$name' value='".$this->getValue($name)."'>\n";
          $val = $this->surround($val);
@@ -95,8 +95,11 @@ class Forms
      * @param string $value
      * @return string HTMLcode
      */
-    public function inputDate($name, $value){
-        $val = "   <input type='date' name='$name' value='".$value."'>\n";
+    public function inputDate($label='', $name, $value){
+        $val = '';
+        if($label!='') $val .= $this->label($label);
+        $val .= "   <input type='date' name='$name' value='".$value."'>\n";
+        $val = $this->surround($val);
         return $val;
     }
     
@@ -118,8 +121,11 @@ class Forms
      * @param int $step Interval when using up and down
      * @return string HTML code
      */
-    public function inputNumber($name, $value, $step){
-        $val = "   <input type='number' step='".$step."' name='$name' value='".$value."'>\n";
+    public function inputNumber($label='', $name, $value, $step){
+        $val= '';
+        if($label!='') $val .= $this->label($label);
+        $val .= "   <input type='number' step='".$step."' name='$name' value='".$value."'>\n";
+        $val = $this->surround($val);
         return $val;
     }
     
@@ -130,6 +136,16 @@ class Forms
      */
     public function label($title){
         return "    <label>$title : </label>\n";
+    }
+ 
+    /**
+     *
+     * @param string $id "For" attribute to activate checkbox or radio ID
+     * @param string $title
+     * @return string HTML code
+     */
+    public function labelId($id, $title){
+        return "    <label for='$id'>$title : </label>\n";
     }
     
     /**

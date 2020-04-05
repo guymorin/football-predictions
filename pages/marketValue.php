@@ -9,7 +9,7 @@ use FootballPredictions\Forms;
 ?>
 
 <h2><?= "$icon_team $title_team";?></h2>
-<h3><?= $title_marketValue;?></h3>;
+<h3><?= $title_marketValue;?></h3>
 
 <?php
 // Values
@@ -25,7 +25,12 @@ if(isset($val)){
     foreach($val as $k=>$v){
         $v=$error->check("Digit",$v);
         if($v>0){     
-            $response = $db->query("SELECT COUNT(*) as nb FROM marketValue WHERE id_season='".$_SESSION['seasonId']."' AND id_team='".$k."';");
+            $response = $db->prepare("SELECT COUNT(*) as nb FROM marketValue 
+            WHERE id_season=:id_season AND id_team=:id_team;");
+            $response->execute([
+                'id_season' => $_SESSION['seasonId'],
+                'id_team' => $k
+            ]); 
             $data = $response->fetch(PDO::FETCH_OBJ);
             $response->closeCursor();
             echo $data[0];
@@ -46,29 +51,36 @@ else {
     FROM team c 
     LEFT JOIN marketValue v ON v.id_team=c.id_team
     LEFT JOIN season_championship_team scc ON scc.id_team=c.id_team 
-    WHERE scc.id_season='".$_SESSION['seasonId']."' 
-    AND scc. id_championship='".$_SESSION['championshipId']."';";
-    $response = $db->query($req);
-    echo "	 <form action='index.php?page=marketValue' method='POST'>\n";
+    WHERE scc.id_season=:id_season 
+    AND scc. id_championship=:id_championship;";
+    $response = $db->prepare($req);
+    $response->execute([
+        'id_season' => $_SESSION['seasonId'],
+        'id_championship' => $_SESSION['championshipId']
+    ]);
+    echo "<form action='index.php?page=marketValue' method='POST'>\n";
     echo $error->getError();
     echo $form->label($title_modifyAMarketValue);
-    echo "      <table>\n";
-    echo "          <tr><th>Club</th><th>$title_marketValue (M €)</th></tr>\n";
+    echo "<table>\n";
+    echo "  <tr>\n";
+    echo "      <th>Club</th>\n";
+    echo "      <th>$title_marketValue (M €)</th>\n";
+    echo "  </tr>\n";
         while ($data = $response->fetch(PDO::FETCH_OBJ))
         {
-            echo "          <tr>\n";
-            echo "              <td>\n";
+            echo "  <tr>\n";
+            echo "      <td>\n";
             echo $form->inputHidden('id_team[]', $data->id_team);
             echo $data->name;
-            echo "              </td>\n";
-            echo "              <td>\n";
-            echo $form->input("", 'marketValue[]');
-            //echo "                  <input type='text' name= value='".$data->marketValue."'>
-            echo "              </td>\n";
-            echo "          </tr>\n";
+            echo "      </td>\n";
+            echo "      <td>\n";
+            $form->setValue('marketValue[]',$data->marketValue);
+            echo $form->input('', 'marketValue[]');
+            echo "      </td>\n";
+            echo "  </tr>\n";
         }
-    echo "  </table>\n";
-    echo "      <input type='submit'>\n";
+    echo "</table>\n";
+    echo $form->submit($title_modify);
     $response->closeCursor();  
 }
 
