@@ -15,10 +15,9 @@ html, body {
  overflow-x:hidden;
  }
 html {
- background:#010;
+ background:#362;
 }
 body {
- background:#030 linear-gradient(#030,#010);
  font-family: Arial, sans-serif; 
  font-size: .9em;
  text-align:center;
@@ -34,7 +33,7 @@ h2 {
  text-transform:uppercase;
  text-shadow:0 0 2px #0006;
  color:white;
- background:#996 linear-gradient(#aa7,#774);
+ background:#7a4 linear-gradient(#8b5,#582);
  border-radius:2px;
  margin:0;
  padding:.2em 1.8em .2em .8em;
@@ -224,8 +223,8 @@ nav a {
 /* Section */
 
 section {
-	background: #cc9;
-	border:2px solid #996;
+	background: #bc9;
+	border:2px solid #ab8;
 	box-shadow:0 0 10px #444;
 	width:90%;
 	height:calc(100% - 7em);

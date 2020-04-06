@@ -73,14 +73,18 @@ FROM team c
 LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team
 LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship)
 LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday
-WHERE scc.id_season='".$_SESSION['seasonId']."'
-AND scc.id_championship='".$_SESSION['championshipId']."'
+WHERE scc.id_season=:id_season 
+AND scc.id_championship=:id_championship 
 AND (c.id_team=m.team_1 OR c.id_team=m.team_2)
 AND m.result<>''
 GROUP BY c.id_team,c.name
 ORDER BY points ASC
 LIMIT 0,5";
-    $r = $db->query($req);
+    $r = $db->prepare($req);
+    $r->execute([
+        'id_season' => $_SESSION['seasonId'],
+        'id_championship' => $_SESSION['championshipId']
+    ]);
     while($data=$r->fetchColumn(0))   $domMalus[] = $data;
     
     // Best teams away
@@ -277,7 +281,7 @@ LIMIT 0,5";
         +$ext
         +$historyAway;
         if($sum1>$sum2) $prediction="1";
-        elseif($sum1==$sum2) $prediction="N";
+        elseif($sum1==$sum2) $prediction="D";
         elseif($sum1<$sum2) $prediction="2";
         if(($historyDraw>$sum1)&&($historyDraw>$sum2)) $prediction="N";
         
@@ -383,7 +387,7 @@ LIMIT 0,5";
         if($prediction=="1") echo " checked";
         echo "></td>\n";
         echo "  		  <td><input type='radio' readonly id='N' value='N'";
-        if($prediction=="N") echo " checked";
+        if($prediction=="D") echo " checked";
         echo "></td>\n";
         echo "  		  <td><input type='radio' readonly id='2' value='2'";
         if($prediction=="2") echo " checked";
@@ -397,7 +401,7 @@ LIMIT 0,5";
             if($data->result=="1") echo " checked";
             echo "></td>\n";
             echo "  		  <td><input type='radio'  readonly id='N' value='N'";
-            if($data->result=="N") echo " checked";
+            if($data->result=="D") echo " checked";
             echo "></td>\n";
             echo "  		  <td><input type='radio'  readonly id='2' value='2'";
             if($data->result=="2") echo " checked";
@@ -406,10 +410,9 @@ LIMIT 0,5";
         }
         echo "	 </table>\n";
     }
-    $response->closeCursor();
-    
-    echo "  <div><input type='submit'></div>\n";
+    echo $form->submit($title_modify);
     echo "</form>\n";
+    $response->closeCursor();
     
 } else echo $title_noMatch;
 ?>  
