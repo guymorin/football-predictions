@@ -31,18 +31,24 @@ if(
     &&($delete==0)
 ){
     echo "<ul class='menu'>\n";
-    $response = $db->query("SELECT id_season, name FROM season ORDER BY name;");
+    $req = "SELECT id_season, name FROM season ORDER BY name;";
+    $counter = $pdo->rowCount($req);
     
-    if($response->rowCount()>0){
+    if($counter>0){
+        
         // Select form
         $list = "<form action='index.php?page=championship' method='POST'>\n";
         $list.= $form->labelBr($title_selectTheSeason);
+        $response = $pdo->query($req);
         $list.= $form->selectSubmit("seasonSelect",$response);
         $list.= "</form>\n";
         
         // Quick nav button
-        $response = $db->query("SELECT id_season, name FROM season ORDER BY id_season DESC;");
-        $data = $response->fetch(PDO::FETCH_OBJ);
+        $req = "SELECT DISTINCT sct.id_season, s.name
+        FROM season_championship_team sct
+        LEFT JOIN season s ON s.id_season = sct.id_season
+        ORDER BY s.name DESC;";
+        $data = $pdo->queryObj($req);
         $form->setValues($data);
     
         echo "<form action='index.php?page=championship' method='POST'>\n";
@@ -62,54 +68,51 @@ if(
 // Delete
 elseif($delete==1){
         $req="DELETE FROM season WHERE id_season=:id_season;";
-        $response = $db->prepare($req);
-        $response->execute([
+        $pdo->prepare($req,[
             'id_season' => $seasonId
         ]);
-        $db->exec("ALTER TABLE season AUTO_INCREMENT=0;");
+        $pdo->alterAuto('season');
         popup($title_deleted,"index.php?page=season");
 }
 // Create
 elseif($create==1){
     echo "<h3>$title_createASeason</h3>\n";
-    // Create popup
-    if($seasonName!=""){
-        $db->exec("ALTER TABLE season AUTO_INCREMENT=0;");
+    
+    if($pdo->findName('season', $seasonName))  $error->setError($title_errorExists);
+     // Create popup
+    elseif($seasonName!=""){      
+        $pdo->alterAuto('season');
         $req="INSERT INTO season VALUES(NULL,:name);";
-        $response = $db->prepare($req);
-        $response->execute([
+        $pdo->prepare($req,[
             'name' => $seasonName
-        ]);
+        ],true);
         popup($title_created,"index.php?page=season");
     }
     // Create form
-    else {
     	echo "<form action='index.php?page=season' method='POST'>\n";
     	echo $error->getError();
     	echo $form->inputAction('create');
     	echo $form->input($title_name,"name");
     	echo $form->submit($title_create);
-    	echo "</form>\n";   
-	}
+    	echo "</form>\n";
 }
 // Modify
 elseif($modify==1){
     echo "<h3>$title_modifyASeason</h3>\n";
     // Modify popup
     if($seasonName!=""){
-        $req="UPDATE season SET name='".$seasonName."' WHERE id_season='".$seasonId."';";
-        $db->exec($req);
+        $req="UPDATE season 
+        SET name='".$seasonName."' 
+        WHERE id_season='".$seasonId."';";
+        $pdo->exec($req);
         popup($title_modified,"index.php?page=season");
     }
     // Modify form
     else {
-        $response = $db->prepare("SELECT * FROM season 
-        WHERE id_season=:id_season;");
-        $response->execute([
+        $req = "SELECT * FROM season WHERE id_season=:id_season;";
+        $data = $pdo->prepare($req,[
             'id_season' => $seasonId
         ]);
-
-        $data = $response->fetch(PDO::FETCH_OBJ);
         $form->setValues($data);
         
         echo "<form action='index.php?page=season' method='POST'>\n";
@@ -133,25 +136,26 @@ elseif($modify==1){
 }
 else {
     echo "<h3>".$_SESSION['seasonName']."</h3>\n";
-    $response = $db->prepare("SELECT c.name, COUNT(*) as nb 
+    $req = "SELECT c.name, COUNT(*) as nb
     FROM championship c
     LEFT JOIN season_championship_team scc ON c.id_championship=scc.id_championship
     WHERE scc.id_season=:id_season
     GROUP BY c.name
-    ORDER BY c.name");
-    $response->execute([
+    ORDER BY c.name";
+    $data = $pdo->prepare($req,[
         'id_season' => $_SESSION['seasonId']
-    ]);
+    ],true);
     echo "<table>\n";
     echo "  <tr>\n";
     echo "      <th>$title_championship</th>\n";
     echo "      <th>$title_teams</th>\n";
     echo "  </tr>\n";
-    while ($data = $response->fetch(PDO::FETCH_OBJ))
+   
+    foreach ($data as $element)
     {
         echo "  <tr>\n";
-        echo "      <td>$data->name</td>\n";
-        echo "      <td>$data->nb</td>\n";
+        echo "      <td>" . $element->name . "</td>\n";
+        echo "      <td>" . $element->nb . "</td>\n";
         echo "  </tr>\n";
     }
     echo "</table>\n";

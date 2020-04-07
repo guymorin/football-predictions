@@ -146,7 +146,8 @@ switch($page){
 ?>
     </nav>
 	<?php require("../include/fp-menu.php");?>
-    <h1><a href="/"><?= "$title_site " . (isset($_SESSION['seasonName']) ? $_SESSION['seasonName'] : null);?></a></h1>
+	<?= App::setTitle($title_site);?>
+    <h1><a href="/"><a href="/"><?= App::getTitle();?></a></h1>
 </header>
 
 <?php
@@ -198,4 +199,12 @@ else {
 }
 echo "</section>\n";
 ?>
-<?php require '../include/footer.php';?>
+
+<footer>
+    
+</footer>
+
+</body>
+
+</html>
+

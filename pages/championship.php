@@ -33,23 +33,27 @@ if(
     &&($delete==0)
     ){
     echo "<ul class='menu'>\n";
-    $response = $db->query("SELECT DISTINCT c.id_championship, c.name
-    FROM championship c
-    ORDER BY c.name;");
+    $req = "SELECT DISTINCT c.id_championship, c.name 
+    FROM championship c 
+    ORDER BY c.name;";
+    $counter = $pdo->rowCount($req);
     $list="";
-    if($response->rowCount()>0){
+    
+    if($counter>0){
 
         // Select form
         $list.="<form action='index.php' method='POST'>\n";
         $list.= $form->labelBr($title_selectTheChampionship);
+        $response = $pdo->query($req);
         $list.= $form->selectSubmit("championshipSelect", $response);
         $list.="</form>\n";
         
         // Quick nav button
-        $response = $db->query("SELECT c.id_championship, c.name
-        FROM championship c
-        ORDER BY c.name DESC;");
-        $data = $response->fetch(PDO::FETCH_OBJ);
+        $req = "SELECT DISTINCT sct.id_championship, c.name
+        FROM season_championship_team sct
+        LEFT JOIN championship c ON c.id_championship = sct.id_championship
+        ORDER BY c.name DESC;";
+        $data = $pdo->queryObj($req);
 
         echo "<form action='index.php' method='POST'>\n";
         echo $form->labelBr($title_quickNav);
@@ -70,20 +74,24 @@ elseif($delete==1){
     if($championshipId==0){
         popup($title_error,"index.php?page=championship");
     } else {
-        $req="DELETE FROM championship WHERE id_championship='".$championshipId."';";
-        $db->exec($req);
-        $db->exec("ALTER TABLE championship AUTO_INCREMENT=0;");
+        $req="DELETE FROM championship WHERE id_championship=:id_championship;";
+        $pdo->prepare($req,[
+            'id_championship' => $championshipId
+        ]);
+        $pdo->alterAuto('championship');
         popup($title_deleted,"index.php?page=championship");
     }
 }
 // Created popup or create form
 elseif($create==1){
     echo "<h3>$title_createAChampionship</h3>\n";
+    
+    if($pdo->findName('championship', $championshipName))  $error->setError($title_errorExists);
     // Create popup
-    if($championshipName!=""){
-        $db->exec("ALTER TABLE championship AUTO_INCREMENT=0;");
+    elseif($championshipName!=""){
+        $pdo->alterAuto('championship');
         $req="INSERT INTO championship VALUES(NULL,'".$championshipName."');";
-        $db->exec($req);
+        $pdo->exec($req);
         popup($title_created,"index.php?page=championship");
     }
     // Created form
@@ -102,12 +110,25 @@ elseif($modify==1){
     if($championshipId==0){
         popup($title_error,"index.php?page=championship");
     }
+    // Modify popup
+    elseif($championshipName!="") {
+        $req="UPDATE championship
+        SET name=:name 
+        WHERE id_championship=:id_championship;";
+        $pdo->prepare($req,[
+            'name' => $championshipName,
+            'id_championship' => $championshipId
+        ]);
+        popup($title_modified,"index.php?page=championship");
+    }
     // Modify form
-    elseif($championshipName==""){
-        $response = $db->query("SELECT * FROM championship WHERE id_championship='$championshipId';");
+    else {
+        $req = "SELECT * FROM championship WHERE id_championship=:id_championship;";        
+        $data = $pdo->prepare($req,[
+            'id_championship' => $championshipId
+        ]);
         echo $error->getError();
         echo "<form action='index.php?page=championship' method='POST'>\n";
-        $data = $response->fetch(PDO::FETCH_OBJ);
         $form->setValues($data);
         echo $form->inputAction('modify');
         echo $form->inputHidden("id_championship", $data->id_championship);
@@ -122,12 +143,6 @@ elseif($modify==1){
         echo $form->submit("&#9888 $title_delete ".$data->name." &#9888");
         echo "</form>\n";
         $response->closeCursor();
-    }
-    // Modify popup
-    else {
-        $req="UPDATE championship SET name='$championshipName' WHERE id_championship='$championshipId';";
-        $db->exec($req);
-        popup($title_modified,"index.php?page=championship");
     }
 }
 // Default page
@@ -198,35 +213,39 @@ elseif(isset($_SESSION['championshipId'])&&($exit==0)){
     LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
     LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship) 
     LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday 
-    WHERE scc.id_season='".$_SESSION['seasonId']."' 
-    AND scc.id_championship='".$_SESSION['championshipId']."' 
+    WHERE scc.id_season=:id_season 
+    AND scc.id_championship=:id_championship 
     AND (c.id_team=m.team_1 OR c.id_team=m.team_2) 
     AND m.result<>'' 
     GROUP BY c.id_team,c.name 
     ORDER BY points DESC, c.name ASC;";
-    $response = $db->query($req);
+    $data = $pdo->prepare($req,[
+        'id_season' => $_SESSION['seasonId'],
+        'id_championship' => $_SESSION['championshipId']
+    ],true);
+    
     $counter=0;
     $previousPoints=0;
     
-    while ($data = $response->fetch(PDO::FETCH_OBJ))
+    foreach ($data as $element)
     {
         echo "        <tr>\n";
         echo "          <td>";
-        if($data->points!=$previousPoints){
+        if($element->points!=$previousPoints){
             $counter++;
             echo $counter;
-            $previousPoints=$data->points;
+            $previousPoints=$element->points;
         }
         echo "</td>\n";
-        echo "          <td>".$data->name."</td>\n";
-        echo "          <td>".$data->points."</td>\n";
-        echo "          <td>".$data->matchgame."</td>\n";
-        echo "          <td>".$data->gagne."</td>\n";
-        echo "          <td>".$data->nul."</td>\n";
-        echo "          <td>".$data->perdu."</td>\n";
+        echo "          <td>".$element->name."</td>\n";
+        echo "          <td>".$element->points."</td>\n";
+        echo "          <td>".$element->matchgame."</td>\n";
+        echo "          <td>".$element->gagne."</td>\n";
+        echo "          <td>".$element->nul."</td>\n";
+        echo "          <td>".$element->perdu."</td>\n";
         echo "        </tr>\n";
     }
-    $response->closeCursor();
+    $pdo->close();
 }
 echo "   </table>\n";
 echo "</div>\n";

@@ -68,7 +68,7 @@ header{
 	height:3.5em;
 	overflow:hidden;
 	padding:0;
-	background:#360 linear-gradient(#582,#030);
+	background:#250 linear-gradient(#471,#030);
 	position:fixed;
 }
 header h1 {margin:0;padding:.25em 3% .25em 0}
@@ -82,8 +82,6 @@ header h1 a:hover {text-decoration:none}
 
 nav a {
 	color:white;
-	margin:.1em 0;
-	padding:1em;
 	text-decoration:none;
 }
 
@@ -155,19 +153,20 @@ nav a {
 }
 #fp-menu li a
  {
-  background:#ffc3;
-  transition:background .5s;
-  text-shadow:1px 1px #0003;
-  display: block;
-  text-transform:uppercase;
-  text-decoration: none;
-  font-size: 1em;
-  margin:0;
-  border-left:1px solid #693;
-  border-right:1px solid #693;
-  border-top:1px solid #693;
-  text-align:left;
-  width:20vw;
+	background:#ffc3;
+	transition:background .5s;
+	text-shadow:1px 1px #0003;
+	display: block;
+	text-transform:uppercase;
+	text-decoration: none;
+	font-size: 1em;
+	margin:0;
+	padding:1em;
+	border-left:1px solid #693;
+	border-right:1px solid #693;
+	border-top:1px solid #693;
+	text-align:left;
+	width:20vw;
 }
 #fp-menu li a:hover,
 #fp-menu li a:focus {
@@ -182,7 +181,6 @@ nav a {
 #fp-submenu a:focus, #fp-submenu a:hover,
 #fp a:focus, #fp a:hover {
 	background:white;
-	padding:1em;
 	color:#231;
 	text-decoration:none
 }
@@ -204,6 +202,7 @@ nav a {
 #fp-submenu a {
 	border-left:1px solid #693;
 	display:inline-block;
+	margin:.05em 0;
 	padding:.5em;
 	background:#ffc3;
 	transition:background .5s;

@@ -11,9 +11,10 @@ $response->execute([
 
 if($response->rowCount()>0){
     // Select form
-    $list = "   <form action='index.php' method='POST'>\n";
+    $list = "<form action='index.php' method='POST'>\n";
     $list.= $form->labelBr($title_selectTheMatchday); 
     $list.= $form->selectSubmit("matchdaySelect", $response);
+    $list = "</form>\n";
     
     // Quicknav button
     $response = $db->prepare("SELECT DISTINCT j.id_matchday, j.number FROM matchday j

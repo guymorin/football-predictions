@@ -27,6 +27,7 @@ $title_earningByBet = "Gain&nbsp;par&nbsp;mise";
 $title_error = "Erreur";
 $title_errorAlnum = "Caractères alphanumériques uniquement";
 $title_errorDigit = "Caractères numériques uniquement";
+$title_errorExists = "Ce nom existe déjà";
 $title_errorFields = "Certains champs n'ont pas été remplis correctement";
 $title_errorPosition = "Poste invalide";
 $title_errorResult = "Résultat invalide";

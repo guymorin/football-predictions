@@ -1,11 +1,14 @@
 <?php
-/* Include to connect the database */
 try
 {
 	$db = new PDO('mysql:host=localhost;dbname=phpmyadmin;charset=utf8', 'phpmyadmin', 'master');
 }
-catch (PDOException $e)
+catch (Exception $e)
 {
-        die("<div class='error'>".$title_error." : ". $e->getMessage()."</div>");
+        die('Erreur : ' . $e->getMessage());
 }
+
+use FootballPredictions\Database;
+$pdo = new Database('localhost', 'phpmyadmin', 'phpmyadmin', 'master');
+
 ?>
