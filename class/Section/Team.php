@@ -33,7 +33,7 @@ class Team
         ]);
         //self::teamSelect($response);
         require '../pages/team_select.php';
-        $response->closeCursor();
+        
         echo "	       </select>\n";
         echo "         <noscript><input type='submit'></noscript>\n";
         echo "</form>\n";

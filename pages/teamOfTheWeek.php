@@ -28,7 +28,7 @@ if(isset($_SESSION['matchdayId'])){
                 
                 $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';");
                 $data = $response->fetch(PDO::FETCH_OBJ);
-                $response->closeCursor();
+                
                 
                 if($data[0]==0){
                     $req.="INSERT INTO teamOfTheWeek VALUES(NULL,'".$_SESSION['matchdayId']."','".$k."','".$v."');";
@@ -100,7 +100,7 @@ if(isset($_SESSION['matchdayId'])){
         echo "</table>\n";
         echo $form->submit($title_modify);
         echo "<form>\n";
-        $response->closeCursor();   
+           
     
     }
 }

@@ -32,7 +32,8 @@ if(
 ){
     echo "<ul class='menu'>\n";
     $req = "SELECT id_season, name FROM season ORDER BY name;";
-    $counter = $pdo->rowCount($req);
+    $pdo->query($req);
+    $counter = $pdo->rowCount();
     
     if($counter>0){
         
@@ -53,7 +54,7 @@ if(
     
         echo "<form action='index.php?page=championship' method='POST'>\n";
         echo $form->inputHidden("seasonSelect",$data->id_season.",".$data->name);
-        echo $form->labelBr($title_quickNav);
+        echo $form->label($title_quickNav);
         echo $form->submit($icon_quicknav." ".$data->name);
         echo "</form>\n";
         
@@ -61,7 +62,6 @@ if(
     }
     // No season
     else    echo "  <h3>$title_noSeason</h3>\n";
-    $response->closeCursor();
     echo "</ul>\n";
 }
 /* Popup if needed */
@@ -85,7 +85,7 @@ elseif($create==1){
         $req="INSERT INTO season VALUES(NULL,:name);";
         $pdo->prepare($req,[
             'name' => $seasonName
-        ],true);
+        ]);
         popup($title_created,"index.php?page=season");
     }
     // Create form
@@ -102,9 +102,12 @@ elseif($modify==1){
     // Modify popup
     if($seasonName!=""){
         $req="UPDATE season 
-        SET name='".$seasonName."' 
-        WHERE id_season='".$seasonId."';";
-        $pdo->exec($req);
+        SET name=:name  
+        WHERE id_season=:id_season;";
+        $pdo->prepare($req,[
+            'name' => $seasonName,
+            'id_season' => $seasonId
+        ]);
         popup($title_modified,"index.php?page=season");
     }
     // Modify form
@@ -131,7 +134,6 @@ elseif($modify==1){
         echo $form->submit("&#9888 $title_delete &#9888");
         echo "</form>\n";
         
-        $response->closeCursor();
     }
 }
 else {
@@ -151,11 +153,11 @@ else {
     echo "      <th>$title_teams</th>\n";
     echo "  </tr>\n";
    
-    foreach ($data as $element)
+    foreach ($data as $d)
     {
         echo "  <tr>\n";
-        echo "      <td>" . $element->name . "</td>\n";
-        echo "      <td>" . $element->nb . "</td>\n";
+        echo "      <td>" . $d->name . "</td>\n";
+        echo "      <td>" . $d->nb . "</td>\n";
         echo "  </tr>\n";
     }
     echo "</table>\n";

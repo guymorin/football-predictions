@@ -36,7 +36,7 @@ class Season
             echo "	 </select>\n";
             echo "      <noscript><input type='submit'></noscript>\n";
             echo "	 </form>\n";
-            $response->closeCursor();
+            
         }
     }
 }

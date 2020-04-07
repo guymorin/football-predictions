@@ -48,7 +48,7 @@ if($modify==1){
             'id_match' => $k
         ]);
         $data = $response->fetch(PDO::FETCH_OBJ);
-        $response->closeCursor();
+        
         
         if($data[0]==0){
             $req.="INSERT INTO criterion VALUES(NULL,'".$k."','";

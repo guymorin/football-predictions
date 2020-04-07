@@ -16,6 +16,7 @@ class Database
     private $db_user;
     private $db_pass;
     private $db;
+    private $response;
     
     public function __construct($db_host, $db_name, $db_user, $db_pass){
         $this->db_host = $db_host;
@@ -44,24 +45,39 @@ class Database
     public function findName($table, $name){
         $val = false;
         $req = "SELECT * FROM " . $table . " WHERE name= '" . $name . "';";
-        if($this->rowCount($req)>0) $val = true;
+        $this->query($req);
+        if($this->rowCount()>0) $val = true;
         return $val;
     }
 
     public function alterAuto($table){
         $this->getPDO()->exec("ALTER TABLE " . $table . " AUTO_INCREMENT=0;");
     }
-    
-    public function close(){
-        $this->getPDO()->closeCursor();
-    }
-    
+  
     public function exec($req){
         $this->getPDO()->exec($req);
     }
-
+    
+    public function lastInsertId(){
+        return $this->getPDO()->lastInsertId();
+    }
+    
+    public function prepare($req, $attributes=null, $all=false){
+        $val = $this->getPDO()->prepare($req);
+        $val->execute($attributes);
+        $this->response = $val;
+        $val->setFetchMode(PDO::FETCH_OBJ);
+        if($all==true){
+            $val = $val->fetchAll();
+        } else {
+            $val = $val->fetch();
+        }
+        return $val;
+    }
+    
     public function query($req){
         $val = $this->getPDO()->query($req);
+        $this->response = $val;
         return $val;
     }
     
@@ -70,22 +86,10 @@ class Database
         $val = $val->fetch(PDO::FETCH_OBJ);
         return $val;
     }
+
     
-    public function prepare($req, $attributes, $all=false){
-        $response = $this->getPDO()->prepare($req);
-        $response->execute($attributes);
-        $response->setFetchMode(PDO::FETCH_OBJ);
-        if($all==true){
-            $data = $response->fetchAll();
-        } else {
-            $data = $response->fetch();
-        }
-        return $data;
-    }
-    
-    public function rowCount($req){
-        $val = $this->getPDO()->query($req);
-        $val = $val->rowCount();
+    public function rowCount(){
+        $val = $this->response->rowCount();
         return $val;
     }
 

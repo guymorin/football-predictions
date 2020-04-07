@@ -187,7 +187,7 @@ function changeMD($db,$page){
     echo $button2;
     echo "</form>\n";
     echo "</div>\n";
-    $response->closeCursor();
+    
 }
 if (!function_exists('array_key_first')){
     function array_key_first(array $arr){

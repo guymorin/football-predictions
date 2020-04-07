@@ -103,7 +103,7 @@ else {
             require '../pages/team_select.php';
             
             echo "  	</select>\n";
-            $response->closeCursor();
+            
             
             echo "<br />" . $form->labelBr($title_odds);
             echo "<table>\n";
@@ -214,7 +214,7 @@ else {
             echo "      <input type='hidden' name='id_matchgame' value=$idMatch>\n";
             echo "      <input type='submit' value='&#9888 $title_delete $name1 - $name2 &#9888'>\n";
             echo "	 </form>\n";
-            $response->closeCursor();  
+              
         }
         // Modify selection of a match
         else {
@@ -237,7 +237,7 @@ else {
             echo "	    </select>\n";
             echo "      <input type='submit' value='$title_select'>\n";
             echo "	 </form>\n";
-            $response->closeCursor();
+            
         }
     }
 

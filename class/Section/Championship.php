@@ -44,7 +44,7 @@ class Championship
             echo "         <noscript><input type='submit'></noscript>\n";
             echo "	    </form>\n";
         }
-            $response->closeCursor();
+            
     }
 }
 ?>

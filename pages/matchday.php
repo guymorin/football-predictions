@@ -44,43 +44,40 @@ if(isset($_SESSION['matchdayId'])){
 
     // Modify popup
     if($equipe==1){
-        $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
+        $pdo->alterAuto('teamOfTheWeek');
         $req="";
         foreach($deletePlayer as $d){
             $req="DELETE FROM teamOfTheWeek 
             WHERE id_matchday=:id_matchday  
             AND id_player=:id_player;";
-            $response = $db->prepare($req);
-            $response->execute([
+            $pdo->prepare($req,[
                 'id_matchday' => $_SESSION['matchdayId'],
                 'id_player' => $d
             ]);
         }
-        $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
+        $pdo->alterAuto('teamOfTheWeek');
         $req="";
         foreach($val as $k=>$v){
             if(($v!="")&&(!in_array($k,$deletePlayer))){
-                $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek 
-                WHERE id_matchday=:id_matchday  
-                AND id_player='".$k."';");
-                $response->execute([
+                $req = "SELECT COUNT(*) as nb FROM teamOfTheWeek
+                WHERE id_matchday=:id_matchday
+                AND id_player='".$k."';";
+                $data = $pdo->prepare($req,[
                     'id_matchday' => $_SESSION['matchdayId'],
                     'id_player' => $k
                 ]);
-                $data = $response->fetch(PDO::FETCH_NUM);
                 
-                if($data[0]==0){
+                if($data->nb==0){
                     $req.="INSERT INTO teamOfTheWeek VALUES(NULL,:id_matchday,:id_player,:rating);";
                 }
-                if($data[0]==1){
+                if($data->nb==1){
                     $req.="UPDATE teamOfTheWeek SET rating=:rating WHERE id_matchday=:id_matchday AND id_player=:id_player;";
                 }
                 
-                $response->closeCursor();
+                
             }
         } 
-        $response = $db->prepare($req);
-        $response->execute([
+        $pdo->prepare($req,[
             'id_matchday' => $_SESSION['matchdayId'],
             'id_player' => $k,
             'rating' => $v
@@ -107,12 +104,11 @@ if(isset($_SESSION['matchdayId'])){
         LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
         WHERE m.id_matchday=:id_matchday ORDER BY m.date 
         ;";
-        $response = $db->prepare($req);
-        $response->execute([
+        $data = $db->prepare($req,[
             'id_matchday' => $_SESSION['matchdayId']
-        ]);
-
-        if($response->rowCount()>0){
+        ],true);
+        $counter = $pdo->rowCount();
+        if($counter > 0){
     
             $table="	 <table class='stats'>\n";               
             $table.="  		<tr>\n";
@@ -125,17 +121,17 @@ if(isset($_SESSION['matchdayId'])){
             
             $matchs=$success=$earningSum=$totalJouee=0;
             
-            while ($data = $response->fetch(PDO::FETCH_OBJ))
+            foreach ($data as $d)
             {
                 
                 // Marketvalue
-                $v1=criterion("v1",$data,$db);
-                $v2=criterion("v2",$data,$db);
+                $v1=criterion("v1",$d,$db);
+                $v2=criterion("v2",$d,$db);
                 $mv1 = round(sqrt($v1/$v2));
                 $mv2 = round(sqrt($v2/$v1));
                 
-                $dom = $data->home_away1; 
-                $ext = $data->home_away2; 
+                $dom = $d->home_away1; 
+                $ext = $d->home_away2; 
                 
                 // Predictions history
                     $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
@@ -143,22 +139,22 @@ if(isset($_SESSION['matchdayId'])){
                     SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
                     FROM matchgame m 
                     LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
-                    WHERE cr.motivation1='".$data->motivation1."' 
-                    AND cr.motivation2='".$data->motivation2."' 
-                    AND cr.currentForm1='".$data->currentForm1."' 
-                    AND cr.currentForm2='".$data->currentForm2."' 
-                    AND cr.physicalForm1='".$data->physicalForm1."' 
-                    AND cr.physicalForm2='".$data->physicalForm2."' 
-                    AND cr.weather1='".$data->weather1."' 
-                    AND cr.weather2='".$data->weather2."' 
-                    AND cr.bestPlayers1='".$data->bestPlayers1."' 
-                    AND cr.bestPlayers2='".$data->bestPlayers2."' 
-                    AND cr.marketValue1='".$data->marketValue1."' 
-                    AND cr.marketValue2='".$data->marketValue2."' 
-                    AND cr.home_away1='".$data->home_away1."' 
-                    AND cr.home_away2='".$data->home_away2."' 
-                    AND m.date<'".$data->date."'";
-                    $r = $db->query($req)->fetch(PDO::FETCH_OBJ);
+                    WHERE cr.motivation1='".$d->motivation1."' 
+                    AND cr.motivation2='".$d->motivation2."' 
+                    AND cr.currentForm1='".$d->currentForm1."' 
+                    AND cr.currentForm2='".$d->currentForm2."' 
+                    AND cr.physicalForm1='".$d->physicalForm1."' 
+                    AND cr.physicalForm2='".$d->physicalForm2."' 
+                    AND cr.weather1='".$d->weather1."' 
+                    AND cr.weather2='".$d->weather2."' 
+                    AND cr.bestPlayers1='".$d->bestPlayers1."' 
+                    AND cr.bestPlayers2='".$d->bestPlayers2."' 
+                    AND cr.marketValue1='".$d->marketValue1."' 
+                    AND cr.marketValue2='".$d->marketValue2."' 
+                    AND cr.home_away1='".$d->home_away1."' 
+                    AND cr.home_away2='".$d->home_away2."' 
+                    AND m.date<'".$d->date."'";
+                    $r = $pdo->prepare($req,'');
                     $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
                     $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
                     
@@ -166,20 +162,20 @@ if(isset($_SESSION['matchdayId'])){
                 $win="";
     
                 $sum1=
-                    $data->motivation1
-                    +$data->currentForm1
-                    +$data->physicalForm1
-                    +$data->weather1
-                    +$data->bestPlayers1
+                    $d->motivation1
+                    +$d->currentForm1
+                    +$d->physicalForm1
+                    +$d->weather1
+                    +$d->bestPlayers1
                     +$mv1
                     +$dom
                     +$predictionsHistoryHome;
                 $sum2=
-                    $data->motivation2
-                    +$data->currentForm2
-                    +$data->physicalForm2
-                    +$data->weather2
-                    +$data->bestPlayers2
+                    $d->motivation2
+                    +$d->currentForm2
+                    +$d->physicalForm2
+                    +$d->weather2
+                    +$d->bestPlayers2
                     +$mv2
                     +$ext
                     +$predictionsHistoryAway;
@@ -192,36 +188,36 @@ if(isset($_SESSION['matchdayId'])){
                 $playedOdds=0;
                 switch($prediction){
                     case "1":
-                        $playedOdds = $data->odds1;
+                        $playedOdds = $d->odds1;
                         break;
                     case "N":
-                        $playedOdds = $data->oddsD;
+                        $playedOdds = $d->oddsD;
                         break;
                     case "2":
-                        $playedOdds = $data->odds2;
+                        $playedOdds = $d->odds2;
                         break;
                 }
                 
-                if($prediction==$data->result){
+                if($prediction==$d->result){
                     $win="<big style='color:green'>&#x2714;</big>";
                     $success++;
                     $earningSum+=$playedOdds;
-                } elseif ($data->result!="") $win="<small style='color:gray'>&times;</small>";
+                } elseif ($d->result!="") $win="<small style='color:gray'>&times;</small>";
                 $totalJouee+=$playedOdds;
                 
                 $table.="  		<tr>\n";
-                $table.="  		  <td>".$data->name1." - ".$data->name2."</td>\n";
+                $table.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
                 $table.="  		  <td>".$prediction."</td>\n";
                 $table.="  		  <td>";
-                if($data->result=='D') $table.=$title_draw;
-                else $table.=$data->result;
+                if($d->result=='D') $table.=$title_draw;
+                else $table.=$d->result;
                 $table.="</td>\n";
                 $table.="  		  <td>".$playedOdds."</td>\n";
                 $table.="  		  <td>".$win."</td>\n";
                 $table.="       </tr>\n";
     
             }
-            $response->closeCursor();
+            
             $table.="	 </table>\n";
             
             // Values
@@ -240,7 +236,7 @@ if(isset($_SESSION['matchdayId'])){
             echo "      <td>$title_profit</td>\n";
             echo "      <td><span style='color:".valColor($benef)."'>";
             if($benef>0) echo "+";
-            echo $benef."&nbsp;&euro;</span></td>\n";
+            echo $benef."</span></td>\n";
             echo "      <td>$title_ROI</td>\n";
             echo "      <td>";
             echo "<span style='color:".valColor($roi)."'>";
@@ -287,20 +283,19 @@ if(isset($_SESSION['matchdayId'])){
 // Delete popup
 elseif($delete==1){
     $req="DELETE FROM matchday WHERE id_matchday='".$matchdayId."';";
-    $db->exec($req);
-    $db->exec("ALTER TABLE matchday AUTO_INCREMENT=0;");
+    $pdo->exec($req);
+    $pdo->alterAuto('matchday');
     popup($title_deleted,"index.php?page=matchday");
 }
 // Create
 elseif($create==1){
-    echo "<h2>$title_createAMatchday</h2>\n";
+    echo "<h3>$title_createAMatchday</h3>\n";
     // Create popup
     if($matchdayNumber!=""){
-        $db->exec("ALTER TABLE matchday AUTO_INCREMENT=0;");
+        $pdo->alterAuto('matchday');
         $req="INSERT INTO matchday 
         VALUES(NULL,:id_season,:id_championship,:number);";
-        $response = $db->prepare($req);
-        $response->execute([
+        $pdo->prepare($req,[
             'id_season' => $_SESSION['seasonId'],
             'id_championship' => $_SESSION['championshipId'],
             'number' => $matchdayNumber
@@ -309,13 +304,12 @@ elseif($create==1){
     }
     // Create form
     else {
-    	echo "	    <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
-    	echo "         <div class='error'>".$error->getError()."</div>\n";
-    	echo "         <input type='hidden' name='create' value='1'>\n"; 
-    	echo "	       <label>$title_number</label>\n";
-    	echo "         <input type='text' name='number' value='".$matchdayNumber."'>\n";
-    	echo "         <input type='submit' value='$title_create'>\n";
-    	echo "	    </form>\n";   
+        echo $error->getError();
+        echo "<form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+    	echo $form->inputAction('create'); 
+    	echo $form->input($title_number,'number');
+    	echo $form->submit($title_create);
+    	echo "</form>\n";   
 	}
 }
 // Modify
@@ -326,8 +320,7 @@ elseif($modify==1){
         $req="UPDATE matchday 
         SET number=:number  
         WHERE id_matchday=:id_matchday;";
-        $response = $db->prepare($req);
-        $response->execute([
+        $pdo->prepare($req,[
             'number' => $matchdayNumber,
             'id_matchday' => $matchdayId
         ]);
@@ -335,15 +328,14 @@ elseif($modify==1){
     }
     // Modify form
     else {
-        $response = $db->prepare("SELECT * FROM matchday WHERE id_matchday=:id_matchday;");
-        $response->execute([
+        $req = "SELECT * FROM matchday WHERE id_matchday=:id_matchday;";
+        $data = $db->prepare($req,[
             'id_matchday' => $matchdayId
-        ]);
-        $data = $response->fetch(PDO::FETCH_OBJ);
-        $form->setValues($data);
-        
-        echo " <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+        ],true);
+
         echo $error->getError();
+        echo " <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+        $form->setValues($data);
         echo $form->inputAction('modify');    
         echo $form->inputHidden("id_matchday", $data->id_matchday);
         echo $form->input($title_number, "number");
@@ -357,7 +349,7 @@ elseif($modify==1){
         echo $form->inputHidden("number", "number");
         echo $form->submit("&#9888 $title_delete &#9888");
         echo "</form>\n";
-        $response->closeCursor();
+        
     }
 }
 // Form select

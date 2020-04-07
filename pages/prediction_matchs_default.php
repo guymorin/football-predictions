@@ -412,7 +412,7 @@ LIMIT 0,5";
     }
     echo $form->submit($title_modify);
     echo "</form>\n";
-    $response->closeCursor();
+    
     
 } else echo $title_noMatch;
 ?>  
