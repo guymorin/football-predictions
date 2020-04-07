@@ -76,7 +76,7 @@ if(isset($_SESSION['matchdayId'])){
                     $req.="UPDATE teamOfTheWeek SET rating=:rating WHERE id_matchday=:id_matchday AND id_player=:id_player;";
                 }
                 
-                $response->closeCursor();
+                
             }
         } 
         $response = $db->prepare($req);
@@ -221,7 +221,7 @@ if(isset($_SESSION['matchdayId'])){
                 $table.="       </tr>\n";
     
             }
-            $response->closeCursor();
+            
             $table.="	 </table>\n";
             
             // Values
@@ -357,7 +357,7 @@ elseif($modify==1){
         echo $form->inputHidden("number", "number");
         echo $form->submit("&#9888 $title_delete &#9888");
         echo "</form>\n";
-        $response->closeCursor();
+        
     }
 }
 // Form select

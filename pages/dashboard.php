@@ -25,7 +25,7 @@ LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame
 LEFT JOIN matchday j ON j.id_matchday=m.id_matchday 
 WHERE m.result<>'' 
 ORDER BY j.number;";
-$response = $db->query($req);
+$data = $pdo->prepare($req,null,true);
 
 // Table of benefits
 $table = "	 <table class='benef'>\n";
@@ -41,14 +41,14 @@ $table .= "       </tr>\n";
 
 $matchdayEarningSum = $matchdayMatchs = $mdEarning = $matchdaySuccess = $matchdayPlayedOdds = 
 $matchdayBetSum = $matchdaySuccessSum = $matchdayEarningSum = $matchdayPlayedOddsSum = $matchdayProfitSum = 0;
-while ($data = $response->fetch(PDO::FETCH_OBJ))
+foreach ($data as $d)
 {
     // Marketvalue
-    $mv1 = $data->marketValue1; 
-    $mv2 = $data->marketValue2; 
+    $mv1 = $d->marketValue1; 
+    $mv2 = $d->marketValue2; 
     
-    $home = $data->home_away1; 
-    $away = $data->home_away2; 
+    $home = $d->home_away1; 
+    $away = $d->home_away2; 
     
     // Predictions history
         $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
@@ -73,21 +73,21 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
         AND m.date < :mdate";
         $r = $db->prepare($req);
         $r->execute([
-            'motivation1' => $data->motivation1,
-            'motivation2' => $data->motivation2,
-            'currentForm1' => $data->currentForm1,
-            'currentForm2' => $data->currentForm2,
-            'physicalForm1' => $data->physicalForm1,
-            'physicalForm2' => $data->physicalForm2,
-            'weather1' => $data->weather1,
-            'weather2' => $data->weather2,
-            'bestPlayers1' => $data->bestPlayers1,
-            'bestPlayers2' => $data->bestPlayers2,
-            'marketValue1' => $data->marketValue1,
-            'marketValue2' => $data->marketValue2,
-            'home_away1' => $data->home_away1,
-            'home_away2' => $data->home_away2,
-            'mdate' => $data->date
+            'motivation1' => $d->motivation1,
+            'motivation2' => $d->motivation2,
+            'currentForm1' => $d->currentForm1,
+            'currentForm2' => $d->currentForm2,
+            'physicalForm1' => $d->physicalForm1,
+            'physicalForm2' => $d->physicalForm2,
+            'weather1' => $d->weather1,
+            'weather2' => $d->weather2,
+            'bestPlayers1' => $d->bestPlayers1,
+            'bestPlayers2' => $d->bestPlayers2,
+            'marketValue1' => $d->marketValue1,
+            'marketValue2' => $d->marketValue2,
+            'home_away1' => $d->home_away1,
+            'home_away2' => $d->home_away2,
+            'mdate' => $d->date
         ]);
         $data2 = $r->fetch(PDO::FETCH_OBJ);
         $predictionsHistoryHome=criterion('predictionsHistoryHome',$data2,$db);
@@ -95,22 +95,22 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
     
     // Sum
     $win=0;
-    $id=$data->id_matchgame;
+    $id=$d->id_matchgame;
     $sum1=
-        $data->motivation1
-        +$data->currentForm1
-        +$data->physicalForm1
-        +$data->weather1
-        +$data->bestPlayers1
+        $d->motivation1
+        +$d->currentForm1
+        +$d->physicalForm1
+        +$d->weather1
+        +$d->bestPlayers1
         +$predictionsHistoryHome
         +$mv1
         +$home;
     $sum2=
-        $data->motivation2
-        +$data->currentForm2
-        +$data->physicalForm2
-        +$data->weather2
-        +$data->bestPlayers2
+        $d->motivation2
+        +$d->currentForm2
+        +$d->physicalForm2
+        +$d->weather2
+        +$d->bestPlayers2
         +$predictionsHistoryAway
         +$mv2
         +$away;
@@ -121,17 +121,17 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
     $playedOdds=0;
     switch($prediction){
         case '1':
-            $playedOdds = $data->odds1;
+            $playedOdds = $d->odds1;
             break;
         case 'D':
-            $playedOdds = $data->oddsD;
+            $playedOdds = $d->oddsD;
             break;
         case '2':
-            $playedOdds = $data->odds2;
+            $playedOdds = $d->odds2;
             break;
     }
     
-    if($prediction==$data->result){
+    if($prediction==$d->result){
         $matchdaySuccess++;
         $mdEarning += $playedOdds;
     }
@@ -150,7 +150,7 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
         $matchdayPlayedOddsSum += $matchdayPlayedOdds;
 
         $table .= "       <tr>\n";
-        $table .= "           <td><strong>" . $data->number . "</strong></td>";
+        $table .= "           <td><strong>" . $d->number . "</strong></td>";
         $table .= "           <td>" . $matchdayMatchs. " </td>\n";
         $table .= "           <td>" . $matchdaySuccess. " </td>\n";
         $averageOdds=(round($matchdayPlayedOdds/$matchdayMatchs,2));
@@ -165,10 +165,9 @@ while ($data = $response->fetch(PDO::FETCH_OBJ))
         $table .= "       </tr>\n";
         
         $matchdayMatchs = $matchdaySuccess = $matchdayPlayedOdds = $mdEarning = $matchdayProfit = 0;
-        $graph[$data->number] = $matchdayProfitSum;
+        $graph[$d->number] = $matchdayProfitSum;
     }
 }
-$response->closeCursor();
 $table .= "	 </table>\n";
 
 // Values
@@ -241,7 +240,7 @@ $maxY=end($graph);;
 ?>
 <svg width="<?= $width;?>" height="<?= $height;?>">
 <!-- fond -->
-<rect width="100%" height="100%" fill="#dec" stroke="#9c7" stroke-width="4"/>
+<rect width="100%" height="100%" fill="#dec" stroke="#774" stroke-width="4"/>
         
 <!-- margin -->
 <g class="layer" transform="translate(40,<?= ($height/2);?>)">

@@ -56,7 +56,7 @@ if(
         $data = $pdo->queryObj($req);
 
         echo "<form action='index.php' method='POST'>\n";
-        echo $form->labelBr($title_quickNav);
+        echo $form->label($title_quickNav);
         echo $form->inputHidden("championshipSelect",$data->id_championship.",".$data->name);
         echo $form->submit($icon_quicknav." ".$data->name);
         echo "</form>\n";
@@ -65,7 +65,6 @@ if(
     }
     // No championship
     else    echo "  <h2>$title_noChampionship</h2>\n";
-    $response->closeCursor();
     echo "</ul>\n";
 }
 /* Popups or page */
@@ -90,8 +89,11 @@ elseif($create==1){
     // Create popup
     elseif($championshipName!=""){
         $pdo->alterAuto('championship');
-        $req="INSERT INTO championship VALUES(NULL,'".$championshipName."');";
-        $pdo->exec($req);
+        $req="INSERT INTO championship 
+        VALUES(NULL,:name);";
+        $pdo->prepare($req,[
+            'name' => $championshipName
+        ]);
         popup($title_created,"index.php?page=championship");
     }
     // Created form
@@ -142,7 +144,6 @@ elseif($modify==1){
         echo $form->inputHidden("name", $data->name);
         echo $form->submit("&#9888 $title_delete ".$data->name." &#9888");
         echo "</form>\n";
-        $response->closeCursor();
     }
 }
 // Default page
@@ -227,25 +228,24 @@ elseif(isset($_SESSION['championshipId'])&&($exit==0)){
     $counter=0;
     $previousPoints=0;
     
-    foreach ($data as $element)
+    foreach ($data as $d)
     {
         echo "        <tr>\n";
         echo "          <td>";
-        if($element->points!=$previousPoints){
+        if($d->points!=$previousPoints){
             $counter++;
             echo $counter;
-            $previousPoints=$element->points;
+            $previousPoints=$d->points;
         }
         echo "</td>\n";
-        echo "          <td>".$element->name."</td>\n";
-        echo "          <td>".$element->points."</td>\n";
-        echo "          <td>".$element->matchgame."</td>\n";
-        echo "          <td>".$element->gagne."</td>\n";
-        echo "          <td>".$element->nul."</td>\n";
-        echo "          <td>".$element->perdu."</td>\n";
+        echo "          <td>".$d->name."</td>\n";
+        echo "          <td>".$d->points."</td>\n";
+        echo "          <td>".$d->matchgame."</td>\n";
+        echo "          <td>".$d->gagne."</td>\n";
+        echo "          <td>".$d->nul."</td>\n";
+        echo "          <td>".$d->perdu."</td>\n";
         echo "        </tr>\n";
     }
-    $pdo->close();
 }
 echo "   </table>\n";
 echo "</div>\n";

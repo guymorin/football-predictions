@@ -161,7 +161,7 @@ else {
             
             echo "  </tr>\n";
         }
-        $response->closeCursor();
+        
         echo "</table>\n";
         echo $form->submit($title_modify);
         echo "</form>\n";

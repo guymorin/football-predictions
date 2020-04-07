@@ -20,7 +20,7 @@ class Player
         echo "<a href='index.php?page=player'>$title_bestPlayers</a>";
         echo "<a href='index.php?page=player&create=1'>$title_createAPlayer</a>";
         echo "<a href='index.php?page=player&modify=1'>$title_modifyAPlayer</a>\n";
-        $response->closeCursor();
+        
     }
 }
 ?>

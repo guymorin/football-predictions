@@ -64,6 +64,19 @@ class Forms
         foreach($data as $k => $v) $this->data[$k] = $v;
     }
     
+    /* Table elements */
+    
+    public function addTr($code, $colspan=0){
+        $val = "    <tr>\n";
+        foreach($code as $v){
+            $val .= "       <td";
+            if($colspan>0) $val .= " colspan='$colspan'";
+            $val .= ">$v</td>\n";
+        }
+        $val .= "   </tr>";
+        return $val;
+    }
+    
     /* Forms elements */
     
     /**
@@ -130,6 +143,58 @@ class Forms
     }
     
     /**
+     *
+     * @param int $id
+     * @param string $name
+     * @param int $value
+     * @param boolean $checked
+     * @return string HTML code
+     */
+    public function inputRadio($id, $name, $value, $checked=false){
+        $val = "   <input type='radio' ";
+        $val.= "id='$id' name='$name' value='$value'";
+        $checked ? $val.= " checked" : null;
+        $val.= ">\n";
+        return $val;
+    }
+    
+    /**
+     * Radio buttons for positions: Goalkeeper, Defender, Midfielder and Forward
+     * @return string
+     */
+    public function inputRadioPosition($data=null){
+        require '../lang/fr.php';
+
+        $val = $this->labelId('Goalkeeper', $title_goalkeeper);
+        if ($data->position=="Goalkeeper"){
+            $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper', true);
+        } else $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper');
+
+        $val .= $this->labelId('Defender', $title_defender);
+        if ($data->position=="Defender"){
+            $val .= $this->inputRadio('Defender', 'position', 'Defender', true);
+        } else $val .= $this->inputRadio('Defender', 'position', 'Defender');
+
+        $val .= $this->labelId('Midfielder', $title_midfielder);
+        if ($data->position=="Midfielder"){
+            $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder', true);
+        } else {
+            $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder');
+        }
+        
+        $val .= $this->labelId('Forward', $title_forward);
+        if ($data->position=="Forward"){
+            $val .= $this->inputRadio('Forward', 'position', 'Forward', true);
+        } else {
+            $val .= $this->inputRadio('Forward', 'position', 'Forward');
+        }
+        $this->surround = "span";
+        $val = $this->surround($val);
+        $this->surround = "p";
+        return $val;
+    }
+    
+    /**
      * 
      * @param string $title
      * @return string HTML code
@@ -156,22 +221,6 @@ class Forms
     public function labelBr($title){
         return $this->label($title)."<br />\n";
     }
-
-    /**
-     *
-     * @param int $id
-     * @param string $name
-     * @param int $value
-     * @param boolean $checked
-     * @return string HTML code
-     */
-    public function inputRadio($id, $name, $value, $checked=false){
-        $val = "   <input type='radio' ";
-        $val.= "id='$id' name='$name' value='$value'";
-        $checked ? $val.= " checked" : null;
-        $val.= ">\n";
-        return $val;
-    }
     
     /**
      * 
@@ -190,7 +239,35 @@ class Forms
         }
         $val.= "    </select>\n";
         $val.="<br /><noscript>".$this->submit($title_select)."</noscript>\n";
-        return $val;
+        return $this->surround($val);
+    }
+    
+    public function selectPlayer($data,$selected=null){
+        require '../lang/fr.php';
+        $val = $this->labelBr($title_selectThePlayer);
+        $val .= "     <select multiple size='10' name='id_player'>\n";
+        foreach ($data as $d)
+        {
+            $val .= "  		<option value='".$d->id_player."'";
+            $d->id_player==$selected ? $val .= " selected" : null;
+            $val .= ">".mb_strtoupper($d->name,'UTF-8')." ".ucfirst($d->firstname)."</option>\n";
+        }
+        $val .= "	   </select>\n";
+        return $this->surround($val);
+    }
+    
+    public function selectTeam($data,$selected=null){
+        require '../lang/fr.php';
+        $val = $this->labelBr($title_team);
+        $val .= "     <select multiple size='10' name='id_team'>\n";
+        foreach ($data as $d)
+        {
+            $val .= "  		<option value='".$d->id_team."'";
+            $d->id_team==$selected ? $val .= " selected" : null;
+            $val .= ">".$d->name."</option>\n";
+        }
+        $val .= "	   </select>\n";
+        return $this->surround($val);
     }
     
     /**
@@ -199,7 +276,7 @@ class Forms
      * @return string HTML code
      */
     public function submit($title){
-        return "    <button type='submit'>$title</button>\n";
+        return "    <br /><button type='submit'>$title</button>\n";
         ;
     }
 }

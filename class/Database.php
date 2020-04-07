@@ -51,27 +51,16 @@ class Database
     public function alterAuto($table){
         $this->getPDO()->exec("ALTER TABLE " . $table . " AUTO_INCREMENT=0;");
     }
-    
-    public function close(){
-        $this->getPDO()->closeCursor();
-    }
-    
+  
     public function exec($req){
         $this->getPDO()->exec($req);
     }
-
-    public function query($req){
-        $val = $this->getPDO()->query($req);
-        return $val;
+    
+    public function lastInsertId(){
+        return $this->getPDO()->lastInsertId();
     }
     
-    public function queryObj($req){
-        $val = $this->query($req);
-        $val = $val->fetch(PDO::FETCH_OBJ);
-        return $val;
-    }
-    
-    public function prepare($req, $attributes, $all=false){
+    public function prepare($req, $attributes=null, $all=false){
         $response = $this->getPDO()->prepare($req);
         $response->execute($attributes);
         $response->setFetchMode(PDO::FETCH_OBJ);
@@ -82,6 +71,18 @@ class Database
         }
         return $data;
     }
+    
+    public function query($req){
+        $val = $this->getPDO()->query($req);
+        return $val;
+    }
+    
+    public function queryObj($req){
+        $val = $this->query($req);
+        $val = $val->fetch(PDO::FETCH_OBJ);
+        return $val;
+    }
+
     
     public function rowCount($req){
         $val = $this->getPDO()->query($req);

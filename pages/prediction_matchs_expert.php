@@ -154,7 +154,7 @@ if($response->rowCount()>0){
         
         echo "	 </table>\n";
     }
-    $response->closeCursor();
+    
     
     echo "      <div><input type='submit'></div>\n";
     echo "	 </form>\n";
