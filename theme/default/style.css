@@ -23,7 +23,7 @@ body {
  text-align:center;
  }
 h1 {
- font: 200% Arial, sans-serif; 
+ font: 180% Arial, sans-serif; 
  text-transform:uppercase;
  text-align: center;
  }
@@ -65,13 +65,13 @@ input[type='number'] {width:6em;padding:1em 0}
 
 header{
 	width:100vw;
-	height:3.5em;
+	height:3em;
 	overflow:hidden;
 	padding:0;
 	background:#250 linear-gradient(#471,#030);
 	position:fixed;
 }
-header h1 {margin:0;padding:.25em 3% .25em 0}
+header h1 {margin:0;padding:.25em 2em .25em 1.4em}
 header h1 a {
 	font-family:hemi, sans-serif;
 	text-decoration:none;
@@ -97,8 +97,8 @@ nav a {
 #fp input {display: none;}
 #fp .hamburger {
 	display:inline-block;
-	padding:.25em 0;
-	font-size:2em;
+	padding:.25em;
+	font-size:1.8em;
 	color:#fff9;
 	text-shadow:1px 1px #0003;
 	cursor: pointer;
@@ -110,7 +110,7 @@ nav a {
 
 #fp-menu {
 	position:fixed;
-	left:0;top:3.5em;
+	left:0;top:3em;
 	z-index:1;
 	width:100vw;
 	height:100vh;
@@ -190,7 +190,7 @@ nav a {
 	background:#693;
 	color:#000c;
 	position:fixed;
-	margin-top:3.5em;
+	margin-top:3em;
 	width:100%;
 	text-align:center;
 	opacity:1;
@@ -345,6 +345,7 @@ footer strong {color:#231}
 /* Popup */
 #overlay {
   position: fixed;
+  overflow:hidden;
   top: 0;
   bottom: 0;
   left: 0;
