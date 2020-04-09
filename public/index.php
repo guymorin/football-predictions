@@ -116,24 +116,24 @@ function myFunction() {
 switch($page){
     case "championship":
     case "dashboard":
-        echo Championship::submenu($db);
+        echo Championship::submenu($pdo, $form);
         break;
     case "matchday":
     case "match":
     case "prediction":
     case "results":
     case "teamOfTheWeek":
-        echo Matchday::submenu($db);
+        echo Matchday::submenu($pdo, $form);
         break;
     case "player":
-        echo Player::submenu($db);
+        echo Player::submenu($pdo, $form);
         break;
     case "season":
-        echo Season::submenu($db);
+        echo Season::submenu($pdo, $form);
         break;
     case "team":
     case "marketValue":
-        echo Team::submenu($db);
+        echo Team::submenu($pdo, $form);
         break;
     default:
         echo "  <a href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";

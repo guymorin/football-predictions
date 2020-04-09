@@ -13,38 +13,60 @@ class Team
 
     }
     
-    static function submenu($db){
+    static function submenu($pdo, $form){
         require '../lang/fr.php';
-        echo "  	<a href='/'>$title_homepage</a>";
-        echo "<a href='index.php?page=marketValue'>$title_marketValue</a>";
-        echo "<a href='index.php?page=team&create=1'>$title_createATeam</a>\n";
-        echo "<form action='index.php?page=team' method='POST'>\n";
-        echo "          <input type='hidden' name='modify' value='1'>\n";
-        echo "          <label>$title_modifyATeam :</label>\n";
-        echo "  	   <select name='id_team' onchange='submit()'>\n";
-        $response = $db->prepare("SELECT c.* FROM team c 
+        $val = "  	<a href='/'>$title_homepage</a>";
+        $val .= "<a href='index.php?page=marketValue'>$title_marketValue</a>";
+        $val .= "<a href='index.php?page=team&create=1'>$title_createATeam</a>\n";
+        $req = "SELECT c.* FROM team c 
         LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
-        WHERE scc.id_season=:id_season 
-        AND scc.id_championship=:id_championship
-        ORDER BY name;");
-        $response->execute([
-            'id_season' => $_SESSION['seasonId'],
-            'id_championship' => $_SESSION['championshipId']
-        ]);
-        //self::teamSelect($response);
-        require '../pages/team_select.php';
-        
-        echo "	       </select>\n";
-        echo "         <noscript><input type='submit'></noscript>\n";
-        echo "</form>\n";
+        WHERE scc.id_season = " . $_SESSION['seasonId'] . "
+        AND scc.id_championship = " . $_SESSION['championshipId'] . " 
+        ORDER BY name;";
+        $data = $pdo->query($req);
+        $counter = $pdo->rowCount();
+        if($counter > 1){
+            $val .= "<form action='index.php?page=team' method='POST'>\n";
+            $val .= $form->inputAction('modify');
+            $val .= $form->label($title_modifyATeam);
+            $val .= $form->selectSubmit('id_team', $data);
+            $val .= "</form>\n";
+        }
+        return $val;
     }
     
-    static function teamSelect($response) {
-        $val = "<option value='0'>...</option>\n";
-        /*while ($data = $response->fetch(PDO::FETCH_OBJ))
-        {
-            $val .= "  		<option value='".$data->id_team."'>".$data->name."</option>\n";
-        }*/
+    static function createForm($pdo, $error, $form, $teamName, $weatherCode){
+        require '../lang/fr.php';
+        $val = $error->getError();
+        $val .= "<form action='index.php?page=team' method='POST'>\n";
+        $val .= $form->inputAction('create');
+        $form->setValue('name', $teamName);
+        $form->setValue('weather_code', $weatherCode);
+        $val .= $form->input($title_name, 'name');
+        $val .= $form->input($title_weathercode, 'weather_code');
+        $val .= $form->submit($title_create);
+        $val .= "</form>\n";  
+        return $val;
+    }
+    
+    static function modifyForm($pdo, $data, $error, $form, $teamId){
+        require '../lang/fr.php';
+        $val .= $error->getError();
+        $val .= "<form action='index.php?page=team' method='POST'>\n";
+        $form->setValues($data);
+        $val .= $form->inputAction('modify');
+        $val .= $form->input($title_name, 'name');
+        $val .= $form->input($title_weathercode, 'weather_code');
+        $val .= $form->submit($title_modify);
+        $val .= "</form>\n";
+        // Delete
+        $val .= "<form action='index.php?page=team' method='POST' onsubmit='return confirm()'>\n";
+        $val .= $error->getError();
+        $val .= $form->inputAction('delete');
+        $val .= $form->inputHidden('id_team',$teamId);
+        $val .= $form->inputHidden('name',$data->name);
+        $val .= $form->submit("&#9888 $title_delete &#9888");
+        $val .= "</form>\n";
         return $val;
     }
 }

@@ -231,35 +231,60 @@ class Forms
     public function selectSubmit($name, $response){
         require '../lang/fr.php';
         $val = "    <select name='$name' onchange='submit()'>\n";
-        $val.= "        <option value='0'>...</option>\n";
+        $val .= "        <option value='0'>...</option>\n";
         while ($data = $response->fetch(PDO::FETCH_NUM)){
-            $val.= "  		<option value='".$data[0].",".$data[1]."'>";
-            $name == "matchdaySelect" ? $val.= $title_MD : null;
-            $val.= $data[1]."</option>\n";
+            
+            switch($name){
+                case "id_championship":
+                case "id_season":
+                case "id_team":
+                    $val .= "  		<option value='" . $data[0] . "'";
+                    if(
+                    ($name=="id_championship" && $data[0]==$_SESSION['championshipId'])
+                    ||($name=="id_season" && $data[0]==$_SESSION['seasonId'])
+                    ){
+                        $val .= " disabled";
+                    }
+                    $val .= ">".$data[1];
+                    break;
+                case "id_player":
+                    $val .= "  		<option value='" . $data[0] . "'>";
+                    $val.= mb_strtoupper($data[1],'UTF-8') . " " . ucfirst($data[2]);
+                    break;
+                case "matchdaySelect":
+                    $val .= "  		<option value='" . $data[0] . "," . $data[1] . "'>";
+                    $val.= $title_MD.$data[1];
+                    break;
+                default:
+                    $val .= "  		<option value='" . $data[0] . "," . $data[1] . "'>";
+                    $val .= $data[1];     
+            }
+            $val .= "</option>\n";
         }
-        $val.= "    </select>\n";
-        $val.="<br /><noscript>".$this->submit($title_select)."</noscript>\n";
-        return $this->surround($val);
+        $val .= "    </select>\n";
+        $val .= "<noscript>".$this->submit($title_select)."</noscript>\n";
+        return $val;
     }
     
-    public function selectPlayer($data,$selected=null){
+    public function selectTeam($pdo, $name='id_team', $selected=null, $data=null){
         require '../lang/fr.php';
-        $val = $this->labelBr($title_selectThePlayer);
-        $val .= "     <select multiple size='10' name='id_player'>\n";
-        foreach ($data as $d)
-        {
-            $val .= "  		<option value='".$d->id_player."'";
-            $d->id_player==$selected ? $val .= " selected" : null;
-            $val .= ">".mb_strtoupper($d->name,'UTF-8')." ".ucfirst($d->firstname)."</option>\n";
+        
+        if($data == null){
+            $req="SELECT c.id_team, c.name FROM team c
+            LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team
+            WHERE scc.id_season=:id_season AND scc.id_championship=:id_championship 
+            ORDER BY c.name;";
+            $data = $pdo->prepare($req,[
+                'id_season' => $_SESSION['seasonId'],
+                'id_championship' => $_SESSION['championshipId']
+            ],true);
         }
-        $val .= "	   </select>\n";
-        return $this->surround($val);
-    }
-    
-    public function selectTeam($data,$selected=null){
-        require '../lang/fr.php';
+               
         $val = $this->labelBr($title_team);
-        $val .= "     <select multiple size='10' name='id_team'>\n";
+        $val .= "     <select multiple size='10' name='";
+        if($name == null) $val .= 'id_team';
+        else $val .= $name;
+        $val .= "'>\n";
         foreach ($data as $d)
         {
             $val .= "  		<option value='".$d->id_team."'";
@@ -276,7 +301,7 @@ class Forms
      * @return string HTML code
      */
     public function submit($title){
-        return "    <br /><button type='submit'>$title</button>\n";
+        return "    <button type='submit'>$title</button>\n";
         ;
     }
 }

@@ -5,23 +5,24 @@
 // Namespaces
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
+use FootballPredictions\Section\Player;
 
 echo "<h2>$icon_player $title_player</h2>\n";
 
 // Values
-$playerId=$teamId=0;
-$playerName=$playerFirstname=$playerPosition="";
-isset($_POST['id_player'])      ? $playerId=$error->check("Digit",$_POST['id_player']) : null;
-isset($_POST['name'])           ? $playerName=$error->check("Alnum",$_POST['name']) : null;
-isset($_POST['firstname'])      ? $playerFirstname=$error->check("Alnum",$_POST['firstname']) : null;
-isset($_POST['position'])       ? $playerPosition=$error->check("Position",$_POST['position']) : null;
-isset($_POST['id_team'])        ? $teamId=$error->check("Digit",$_POST['id_team']) : null;
+$playerId = $teamId = 0;
+$playerName = $playerFirstname = $playerPosition = "";
+isset($_POST['id_player'])      ? $playerId = $error->check("Digit",$_POST['id_player']) : null;
+isset($_POST['name'])           ? $playerName = $error->check("Alnum",$_POST['name']) : null;
+isset($_POST['firstname'])      ? $playerFirstname = $error->check("Alnum",$_POST['firstname']) : null;
+isset($_POST['position'])       ? $playerPosition = $error->check("Position",$_POST['position']) : null;
+isset($_POST['id_team'])        ? $teamId = $error->check("Digit",$_POST['id_team']) : null;
 $create=$modify=$delete=0;
-isset($_GET['create'])          ? $create=$error->check("Action",$_GET['create']) : null;
-isset($_POST['create'])         ? $create=$error->check("Action",$_POST['create']) : null;
-isset($_GET['modify'])          ? $modify=$error->check("Action",$_GET['modify']) : null;
-isset($_POST['modify'])         ? $modify=$error->check("Action",$_POST['modify']) : null;
-isset($_POST['delete'])         ? $delete=$error->check("Action",$_POST['delete']) : null;
+isset($_GET['create'])          ? $create = $error->check("Action",$_GET['create']) : null;
+$create==0 && isset($_POST['create'])         ? $create = $error->check("Action",$_POST['create']) : null;
+isset($_GET['modify'])          ? $modify = $error->check("Action",$_GET['modify']) : null;
+isset($_POST['modify'])         ? $modify = $error->check("Action",$_POST['modify']) : null;
+isset($_POST['delete'])         ? $delete = $error->check("Action",$_POST['delete']) : null;
 
 // Delete
 if($delete==1){
@@ -65,22 +66,7 @@ elseif($create==1){
     }
     // Create form
     else {
-        echo $error->getError();
-    	echo "<form action='index.php?page=player' method='POST'>\n";
-        echo $form->inputAction('create'); 
-
-        echo $form->input($title_name, 'name') . $form->input($title_firstname, 'firstname');
-        echo "<br />\n";
-        
-        echo $form->inputRadioPosition();
-        echo "<br />\n";
-        
-        $req = "SELECT id_team, name FROM team ORDER BY name;";
-        $data = $pdo->prepare($req,null,true);
-        echo $form->selectTeam($data);
-        
-        echo $form->submit($title_create);
-    	echo "</form>\n";
+        echo Player::createForm($pdo, $error, $form);
 	}
 }
 // Modify
@@ -99,12 +85,12 @@ elseif($modify==1){
             'id_season' => $_SESSION['seasonId'],
             'id_team' => $teamId,
             'id_player' => $playerId
-        ]);    
+        ],true);    
         
         $req="UPDATE player 
         SET name=:name, firstname=:firstname, position=:position  
         WHERE id_player=:id_player;";
-        if($data[0]==0){
+        if($data->nb==0){
             $req.="INSERT INTO season_team_player 
             VALUES(NULL,:id_season,:id_team,:id_player);";
         }
@@ -124,7 +110,7 @@ elseif($modify==1){
     }
     // Modify form
     elseif($playerId!=0){
-        $req ="SELECT j.id_player, j.name, j.firstname, j.position, scj.id_team 
+        $req ="SELECT j.id_player, j.name, j.firstname, j.position, c.id_team 
         FROM player j 
         LEFT JOIN season_team_player scj ON j.id_player=scj.id_player 
         LEFT JOIN team c ON scj.id_team=c.id_team 
@@ -132,51 +118,10 @@ elseif($modify==1){
         $data = $pdo->prepare($req,[
             'id_player' => $playerId
         ]);
-        
-        $playerId = $data->id_player;
-        $playerName = $data->name;
-        $playerFirstname = $data->firstname;
-        $teamId = $data->id_team;
-        echo $error->getError();
-        echo "<form action='index.php?page=player' method='POST'>\n";
-        $form->setValues($data);
-        echo $form->inputAction('modify');  
-        echo $form->inputHidden('id_player',$playerId);
-        echo $form->input($title_name,'name');
-        echo $form->input($title_firstname,'firstname');
-        echo "<br />\n";
-        
-        echo $form->inputRadioPosition($data);
-        echo "<br />\n";
-        
-        $req = "SELECT id_team, name FROM team ORDER BY name;";
-        $data = $pdo->prepare($req,null,true);       
-        echo $form->selectTeam($data,$teamId);
-        
-        echo $form->submit($title_modify);
-        echo "</form>\n";
-        // Delete form
-        echo "<form action='index.php?page=player' method='POST' onsubmit='return confirm()'>\n";
-        echo $form->inputAction('delete');
-        echo $form->inputHidden('id_team',$teamId);
-        echo $form->inputHidden('id_player',$playerId);
-        echo $form->inputHidden('name',$playerName);
-        echo $form->inputHidden('firstname',$playerFirstname);
-        echo $form->submit("&#9888 $title_delete &#9888");
-        echo "</form>\n";
+
+        // Modify form
+        echo Player::modifyForm($pdo, $data, $error, $form);
           
-    }
-    // Select form
-    else {
-        echo "<form action='index.php?page=player' method='POST'>\n";
-        echo $form->inputAction('modify');
-        
-        $req = "SELECT id_player, name, firstname FROM player ORDER BY name, firstname;";
-        $data = $pdo->prepare($req,null,true);
-        echo $form->selectPlayer($data);
-        
-        echo $form->submit($title_select);
-        echo "</form>\n";
     }
 }
 // Default page (best players)

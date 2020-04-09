@@ -11,7 +11,7 @@ echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 $modify = $expert = 0;
 isset($_POST['modify'])     ? $modify=$error->check("Action",$_POST['modify']) : null;
 isset($_POST['expert'])     ? $expert=$error->check("Digit",$_POST['expert']) : null;
-if(expert==0) isset($_GET['expert'])      ? $expert=$error->check("Digit",$_GET['expert']) : null;
+if($expert==0) isset($_GET['expert'])      ? $expert=$error->check("Digit",$_GET['expert']) : null;
 
 /* Popups or page */
 // Modified popup
@@ -35,22 +35,19 @@ if($modify==1){
     isset($_POST['marketValue2'])   ? $vaMatch2=array_filter($_POST['marketValue2']) : null;
     isset($_POST['home_away2'])     ? $doMatch2=array_filter($_POST['home_away2']) : null;
     
-    $db->exec("ALTER TABLE criterion AUTO_INCREMENT=0;");
+    $pdo->alterAuto('criterion');
     $req="";
     
     foreach($idMatch as $k){
         if($rMatch[$k]!=""){
             $req.="UPDATE matchgame SET result='".$rMatch[$k]."' WHERE id_match='".$k."';";
         }
-        $response = $db->prepare("SELECT COUNT(*) as nb FROM criterion 
-        WHERE id_match=:id_match;");
-        $response->execute([
+        $data = $pdo->prepare("SELECT COUNT(*) as nb FROM criterion 
+        WHERE id_match=:id_match;",[
             'id_match' => $k
         ]);
-        $data = $response->fetch(PDO::FETCH_OBJ);
         
-        
-        if($data[0]==0){
+        if($data->nb == 0){
             $req.="INSERT INTO criterion VALUES(NULL,'".$k."','";
             isset($moMatch1[$k]) ? $req.=$moMatch1[$k] : $req.=0;
             $req.="','";
@@ -81,7 +78,7 @@ if($modify==1){
             isset($doMatch2[$k]) ? $req.=$doMatch2[$k] : $req.=0;
             $req.="');";
         }
-        if($data[0]==1){
+        if($data->nb == 1){
             $req.="UPDATE criterion SET ";
             $req.="motivation1='";
             isset($moMatch1[$k]) ? $req.=$moMatch1[$k] : $req.=0;
@@ -127,7 +124,7 @@ if($modify==1){
             $req.="' WHERE id_match='".$k."';";
         }  
     }
-    $db->exec($req);
+    $pdo->exec($req);
     popup($title_modifyPredictions,"index.php?page=prediction&expert=".$expert);
 
 }

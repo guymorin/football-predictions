@@ -81,13 +81,13 @@ if($modify==1){
         }
         $req.=" WHERE id_match='".$k."';";
     }
-    $db->exec($req);
+    $pdo->exec($req);
     popup($title_modified,"index.php?page=results");
 
 }
 // Modify form    
 else {
-    changeMD($db,"results");
+    changeMD($pdo,"results");
     echo "<h3>$title_results</h3>\n";
 
     $req="SELECT m.id_matchgame,
@@ -97,11 +97,11 @@ else {
         LEFT JOIN team c2 ON m.team_2=c2.id_team
         WHERE m.id_matchday=:id_matchday
         ORDER BY m.date;";
-    $response = $db->prepare($req);
-    $response->execute([
+    $data = $pdo->prepare($req,[
         'id_matchday' => $_SESSION['matchdayId']
     ]);
-    if($response->rowCount()>0){
+    $counter=$pdo->rowCount();
+    if($counter > 0){
         echo "<form id='results' action='index.php?page=results' method='POST' onsubmit='return confirm();'>\n";
         echo $error->getError();
         echo $form->inputAction('modify');
@@ -119,45 +119,45 @@ else {
         echo "      <th colspan='2'>$title_redCards</th>\n";
         echo "  </tr>\n";
         
-        while ($data = $response->fetch(PDO::FETCH_OBJ))
+        foreach ($data as $d)
         {
-            $form->setValues($data);
-            $id=$data->id_matchgame;
-            echo $form->inputHidden('id_match[]', $data->id_matchgame);
+            $form->setValues($d);
+            $id=$d->id_matchgame;
+            echo $form->inputHidden('id_match[]', $d->id_matchgame);
             echo "  <tr>\n";
-            echo "      <td>".$form->inputDate("", "date[$id]", $data->date)."</td>\n";
+            echo "      <td>".$form->inputDate("", "date[$id]", $d->date)."</td>\n";
             
             echo "  	<td>";
-            if($data->result=="") echo $form->inputRadio("", "result[$id]", "", true);
+            if($d->result=="") echo $form->inputRadio("", "result[$id]", "", true);
             else  echo $form->inputRadio("", "result[$id]", "", false);
             echo "</td>\n";
             
-            echo "  	<td>" . $data->name1." - " . $data->name2."</td>\n";
+            echo "  	<td>" . $d->name1." - " . $d->name2."</td>\n";
             
             echo "  	<td>";
-            if($data->result=="1") echo $form->inputRadio("1", "result[$id]", "1", true);
+            if($d->result=="1") echo $form->inputRadio("1", "result[$id]", "1", true);
             else echo $form->inputRadio("1", "result[$id]", "1", false);
             echo "<br />" . $form->labelBr($title_odds);
-            echo $form->inputNumber("", "odds1[$id]",$data->odds1, '0.01');
+            echo $form->inputNumber("", "odds1[$id]",$d->odds1, '0.01');
             echo "</td>\n";
             
             echo "  	<td>";
-            if($data->result=="D") echo $form->inputRadio("D", "result[$id]", "D", true);
+            if($d->result=="D") echo $form->inputRadio("D", "result[$id]", "D", true);
             else echo $form->inputRadio("D", "result[$id]", "D", false);
             echo "<br />" . $form->labelBr($title_odds);
-            echo $form->inputNumber("", "oddsD[$id]",$data->oddsD, '0.01');
+            echo $form->inputNumber("", "oddsD[$id]",$d->oddsD, '0.01');
             echo "</td>\n";
             
             echo "  	<td>";
-            if($data->result=="2") echo $form->inputRadio("2", "result[$id]", "2", true);
+            if($d->result=="2") echo $form->inputRadio("2", "result[$id]", "2", true);
             else echo $form->inputRadio("2", "result[$id]", "2", false);
             echo "<br />" . $form->labelBr($title_odds);
-            echo $form->inputNumber("", "odds2[$id]",$data->odds2, '0.01');
+            echo $form->inputNumber("", "odds2[$id]",$d->odds2, '0.01');
             echo "</td>\n";
             
-            echo "<td>".$form->inputNumber("", "red1[$id]",$data->red1, "")."</td>\n";
+            echo "<td>".$form->inputNumber("", "red1[$id]",$d->red1, "")."</td>\n";
             
-            echo "<td>".$form->inputNumber("", "red2[$id]",$data->red2, "")."</td>\n";
+            echo "<td>".$form->inputNumber("", "red2[$id]",$d->red2, "")."</td>\n";
             
             echo "  </tr>\n";
         }

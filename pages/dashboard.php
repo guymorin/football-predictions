@@ -71,8 +71,7 @@ foreach ($data as $d)
         AND cr.home_away1 = :home_away1
         AND cr.home_away2 = :home_away2 
         AND m.date < :mdate";
-        $r = $db->prepare($req);
-        $r->execute([
+        $data2 = $pdo->prepare($req,[
             'motivation1' => $d->motivation1,
             'motivation2' => $d->motivation2,
             'currentForm1' => $d->currentForm1,
@@ -89,9 +88,8 @@ foreach ($data as $d)
             'home_away2' => $d->home_away2,
             'mdate' => $d->date
         ]);
-        $data2 = $r->fetch(PDO::FETCH_OBJ);
-        $predictionsHistoryHome=criterion('predictionsHistoryHome',$data2,$db);
-        $predictionsHistoryAway=criterion('predictionsHistoryAway',$data2,$db);
+        $predictionsHistoryHome=criterion('predictionsHistoryHome',$data2,$pdo);
+        $predictionsHistoryAway=criterion('predictionsHistoryAway',$data2,$pdo);
     
     // Sum
     $win=0;

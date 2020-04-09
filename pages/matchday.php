@@ -87,7 +87,7 @@ if(isset($_SESSION['matchdayId'])){
     // Default page
     else {
     
-        changeMD($db,"matchday");
+        changeMD($pdo,"matchday");
         echo "<h3>$title_statistics</h3>";
         $req="SELECT m.id_matchgame,
         cr.motivation1,cr.motivation2,
@@ -104,7 +104,7 @@ if(isset($_SESSION['matchdayId'])){
         LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
         WHERE m.id_matchday=:id_matchday ORDER BY m.date 
         ;";
-        $data = $db->prepare($req,[
+        $data = $pdo->prepare($req,[
             'id_matchday' => $_SESSION['matchdayId']
         ],true);
         $counter = $pdo->rowCount();
@@ -125,8 +125,8 @@ if(isset($_SESSION['matchdayId'])){
             {
                 
                 // Marketvalue
-                $v1=criterion("v1",$d,$db);
-                $v2=criterion("v2",$d,$db);
+                $v1=criterion("v1",$d,$pdo);
+                $v2=criterion("v2",$d,$pdo);
                 $mv1 = round(sqrt($v1/$v2));
                 $mv2 = round(sqrt($v2/$v1));
                 
@@ -155,8 +155,8 @@ if(isset($_SESSION['matchdayId'])){
                     AND cr.home_away2='".$d->home_away2."' 
                     AND m.date<'".$d->date."'";
                     $r = $pdo->prepare($req,'');
-                    $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$db);
-                    $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$db);
+                    $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$pdo);
+                    $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$pdo);
                     
                 // Sum
                 $win="";
@@ -199,10 +199,10 @@ if(isset($_SESSION['matchdayId'])){
                 }
                 
                 if($prediction==$d->result){
-                    $win="<big style='color:green'>&#x2714;</big>";
+                    $win = $icon_winOK;
                     $success++;
-                    $earningSum+=$playedOdds;
-                } elseif ($d->result!="") $win="<small style='color:gray'>&times;</small>";
+                    $earningSum += $playedOdds;
+                } elseif ($d->result!="") $win = $icon_winKO;
                 $totalJouee+=$playedOdds;
                 
                 $table.="  		<tr>\n";
@@ -329,7 +329,7 @@ elseif($modify==1){
     // Modify form
     else {
         $req = "SELECT * FROM matchday WHERE id_matchday=:id_matchday;";
-        $data = $db->prepare($req,[
+        $data = $pdo->prepare($req,[
             'id_matchday' => $matchdayId
         ],true);
 

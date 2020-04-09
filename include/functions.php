@@ -52,7 +52,7 @@ function valColor($val){
     }
     return $color;
 }
-function criterion($type,$data,$db){
+function criterion($type,$data,$pdo){
     $v=0;
     switch($type){
         case "motivC1":
@@ -70,22 +70,29 @@ function criterion($type,$data,$db){
                     SELECT m.team_1 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_1
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number='".$num."'
-                    AND m.team_1='".$data->eq1."'
-                    AND m.result='1'
-                    AND s.id_championship='".$_SESSION['championshipId']."'
-                    AND s.id_season='".$_SESSION['seasonId']."'
+                    WHERE j.number = :number
+                    AND m.team_1 = :team_1
+                    AND m.result = '1'
+                    AND s.id_championship = :id_championship 
+                    AND s.id_season = :id_season 
                     UNION
                     SELECT m.team_2 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_2
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number='".$num."'
-                    AND m.team_2='".$data->eq1."'
-                    AND m.result='2'
-                    AND s.id_championship='".$_SESSION['championshipId']."'
-                    AND s.id_season='".$_SESSION['seasonId']."'";
-                $r = $db->query($req);
-                while($data=$r->fetchColumn(0))   $res[] = $data;
+                    WHERE j.number = :number
+                    AND m.team_2 = :team_1
+                    AND m.result = '2'
+                    AND s.id_championship = :id_championship
+                    AND s.id_season = :id_season;";
+                $r = $pdo->prepare($req,[
+                    'number' => $num,
+                    'team_1' => $data->eq1,
+                    'id_championship' => $_SESSION['championshipId'],
+                    'id_season' => $_SESSION['seasonId']
+                ]);
+                
+                foreach($r as $v) $res[] = $v->team;
+                
                 if(in_array($data->eq1,$res)) $v=1;
             }
             break;
@@ -97,34 +104,51 @@ function criterion($type,$data,$db){
                     SELECT m.team_1 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_1
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number='".$num."'
-                    AND m.team_1='".$data->eq2."'
+                    WHERE j.number = :number 
+                    AND m.team_1 = :team_2
                     AND m.result='1'
-                    AND s.id_championship='".$_SESSION['championshipId']."'
-                    AND s.id_season='".$_SESSION['seasonId']."'
+                    AND s.id_championship = :id_championship
+                    AND s.id_season = :id_season 
                     UNION
                     SELECT m.team_2 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_2
                     LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number='".$num."'
-                    AND m.team_2='".$data->eq2."'
-                    AND m.result='2'
-                    AND s.id_championship='".$_SESSION['championshipId']."'
-                    AND s.id_season='".$_SESSION['seasonId']."'";
-                $r = $db->query($req);
-                while($data=$r->fetchColumn(0))   $res[] = $data;
+                    WHERE j.number = :number 
+                    AND m.team_2 = :team_2
+                    AND m.result = '2'
+                    AND s.id_championship = :id_championship
+                    AND s.id_season = :id_season;";
+                $r = $pdo->prepare($req,[
+                    'number' => $num,
+                    'team_2' => $data->eq2,
+                    'id_championship' => $_SESSION['championshipId'],
+                    'id_season' => $_SESSION['seasonId']
+                ]);
+                
+                foreach($r as $v) $res[] = $v->team;
+                
                 if(in_array($data->eq2,$res)) $v=1;
             }
             break;
         case "v1":
-            $req="SELECT marketValue FROM marketValue WHERE id_team='".$data->eq1."' AND id_season='".$_SESSION['seasonId']."';";
-            $r = $db->query($req)->fetch();
-            $v = $r[0];
+            $req="SELECT marketValue FROM marketValue 
+            WHERE id_team=:id_team  
+            AND id_season=:id_season;";
+            $r = $pdo->prepare($req,[
+                'id_team' => $data->eq1,
+                'id_season' => $_SESSION['seasonId']
+            ]);
+            $v = $r->marketValue;
             break;
         case "v2":
-            $req="SELECT marketValue FROM marketValue WHERE id_team='".$data->eq2."' AND id_season='".$_SESSION['seasonId']."';";
-            $r = $db->query($req)->fetch();
-            $v = $r[0];
+            $req="SELECT marketValue FROM marketValue 
+            WHERE id_team=:id_team  
+            AND id_season=:id_season;";
+            $r = $pdo->prepare($req,[
+                'id_team' => $data->eq2,
+                'id_season' => $_SESSION['seasonId']
+            ]);
+            $v = $r->marketValue;
             break;
         case "predictionsHistoryHome":
             if(isset($data->Dom)) $v=$data->Dom;
@@ -144,41 +168,48 @@ function popup($texte,$lien){
     echo "  <div id='overlay'><div class='update'><a class='close' href='".$lien."'>&times;</a><p>".$texte."</p><p><a href='".$lien."'>Ok</a></p></div></div>\n";
     
 }
-function changeMD($db,$page){
+function changeMD($pdo,$page){
     require '../lang/fr.php';
+
     // Arrows to change matchday
     echo "<div id='changeMD'>\n";
-    $req="SELECT id_matchday, number FROM matchday
-        WHERE number>=".($_SESSION['matchdayNum']-1)."
-        AND number<>".$_SESSION['matchdayNum']."
-        AND number<=".($_SESSION['matchdayNum']+1)."
-        AND id_season='".$_SESSION['seasonId']."'
-        AND id_championship='".$_SESSION['championshipId']."'
+    $req = "SELECT id_matchday, number FROM matchday
+        WHERE number >= :match1
+        AND number <> :match2
+        AND number <= :match3
+        AND id_season = :id_season
+        AND id_championship = :id_championship
         ORDER BY number;";
-    $response = $db->query($req);
-    $nb=sizeof($response->fetchAll());
-    $button1=$button2="";
-    $response = $db->query($req);
-    while ($data = $response->fetch(PDO::FETCH_OBJ))
+    $data = $pdo->prepare($req,[
+        'match1' => ($_SESSION['matchdayNum']-1),
+        'match2' => $_SESSION['matchdayNum'],
+        'match3' => ($_SESSION['matchdayNum']+1),
+        'id_season' => $_SESSION['seasonId'],
+        'id_championship' => $_SESSION['championshipId']
+    ]);
+    $counter = $pdo->rowCount();
+
+    $button1 = $button2 = "";
+    foreach ($data as $d)
     {
-        switch($nb){
+        switch($counter){
             case 1:
             case 2:
                 // Previous button
-                if($data->number==$_SESSION['matchdayNum']-1){
-                    $button1="  <input type='submit' value='&larr;'>\n";
-                    $button1.="<input type='hidden' name='matchdaySelect' ";
-                    $button1.="value='".$data->id_matchday.",".$data->number."'>\n";
+                if($d->number == $_SESSION['matchdayNum']-1){
+                    $button1 = "  <input type='submit' value='&larr;'>\n";
+                    $button1 .= "<input type='hidden' name='matchdaySelect' ";
+                    $button1 .= "value='".$d->id_matchday.",".$d->number."'>\n";
                 }
                 // Next button
-                if($data->number==$_SESSION['matchdayNum']+1){
-                    $button2="  <input type='submit' value='&rarr;'>\n";
-                    $button2.="<input type='hidden' name='matchdaySelect' ";
-                    $button2.="value='".$data->id_matchday.",".$data->number."'>\n";
+                if($d->number==$_SESSION['matchdayNum']+1){
+                    $button2 = "  <input type='submit' value='&rarr;'>\n";
+                    $button2 .= "<input type='hidden' name='matchdaySelect' ";
+                    $button2 .= "value='".$d->id_matchday.",".$d->number."'>\n";
                 }
                 break;
         }
-        $nb--;
+        $counter--;
     }
     echo "<form id='leftArrow' action='index.php?page=$page' method='POST'>\n";
     echo $button1;
