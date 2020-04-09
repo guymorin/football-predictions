@@ -41,14 +41,6 @@ class Database
         }
         return $this->db;
     }
-    
-    public function findName($table, $name){
-        $val = false;
-        $req = "SELECT * FROM " . $table . " WHERE name= '" . $name . "';";
-        $this->query($req);
-        if($this->rowCount()>0) $val = true;
-        return $val;
-    }
 
     public function alterAuto($table){
         $this->getPDO()->exec("ALTER TABLE " . $table . " AUTO_INCREMENT=0;");
@@ -56,6 +48,14 @@ class Database
   
     public function exec($req){
         $this->getPDO()->exec($req);
+    }
+
+    public function findName($table, $name){
+        $val = false;
+        $req = "SELECT * FROM " . $table . " WHERE name= '" . $name . "';";
+        $this->query($req);
+        if($this->rowCount()>0) $val = true;
+        return $val;
     }
     
     public function lastInsertId(){
@@ -86,12 +86,10 @@ class Database
         $val = $val->fetch(PDO::FETCH_OBJ);
         return $val;
     }
-
     
     public function rowCount(){
         $val = $this->response->rowCount();
         return $val;
     }
-
 }
 ?>
