@@ -13,12 +13,20 @@ class Player
 
     }
     
-    static function submenu($pdo, $form){
+    static function submenu($pdo, $form, $current = null){
         require '../lang/fr.php';
         $response = $pdo->query("SELECT * FROM player ORDER BY name, firstname");
         $val = "  	<a href='/'>$title_homepage</a>";
-        $val .= "<a href='index.php?page=player'>$title_bestPlayers</a>";
-        $val .= "<a href='index.php?page=player&create=1'>$title_createAPlayer</a>";
+        if($current == 'bestPlayers'){
+            $val .= "<a class='current' href='index.php?page=player'>$title_bestPlayers</a>";
+        } else {
+            $val .= "<a href='index.php?page=player'>$title_bestPlayers</a>";
+        }
+        if($current == 'create'){
+            $val .= "<a class='current' href='index.php?page=player&create=1'>$title_createAPlayer</a>";
+        } else {
+            $val .= "<a href='index.php?page=player&create=1'>$title_createAPlayer</a>";
+        }
         $req = "SELECT id_player, name, firstname 
         FROM player
         ORDER BY name, firstname;";

@@ -14,15 +14,10 @@ use FootballPredictions\Section\Championship;
 <?php
 // Values
 
-$championshipId=$create=$modify=$delete=$standaway=$standhome=0;
+$championshipId=$standaway=$standhome=0;
 $championshipName="";
 isset($_POST['id_championship'])    ? $championshipId=$error->check("Digit",$_POST['id_championship']) : null;
 isset($_POST['name'])		        ? $championshipName=$error->check("Alnum",$_POST['name'],$error) : null;
-
-isset($_GET['create'])              ? $create=$error->check("Action",$_GET['create']) : null;
-$create==0&&isset($_POST['create']) ? $create=$error->check("Action",$_POST['create']) : null;
-isset($_POST['modify'])             ? $modify=$error->check("Action",$_POST['modify']) : null;
-isset($_POST['delete'])             ? $delete=$error->check("Action",$_POST['delete']) : null;
 isset($_GET['standhome'])           ? $standhome=$error->check("Action",$_GET['standhome']) : null;
 isset($_GET['standaway'])           ? $standaway=$error->check("Action",$_GET['standaway']) : null;
 

@@ -248,6 +248,10 @@ class Forms
                     }
                     $val .= ">".$data[1];
                     break;
+                case "id_match":
+                    $val .= "  		<option value='" . $data[0] . "'>";
+                    $val .= $data[1] . " - " . $data[2];
+                    break;
                 case "id_player":
                     $val .= "  		<option value='" . $data[0] . "'>";
                     $val.= mb_strtoupper($data[1],'UTF-8') . " " . ucfirst($data[2]);

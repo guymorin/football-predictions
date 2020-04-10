@@ -57,7 +57,7 @@ table{font-size:.9em;margin:0 auto;border:2px solid #774;border-radius:3px;min-w
 td{border:.1em solid #aaa;}
 tr:nth-child(odd){background:#efefef}
 tr:nth-child(even){background:#fff}
-th{padding:.4em;background:#bf7;color:#231;font-weight:bold;}
+th{padding:.4em;background:#bf7;color:#222;font-weight:bold;}
 input[type='date'] {font-size:1.2em}
 input[type='number'] {width:6em;padding:1em 0}
 
@@ -181,7 +181,7 @@ nav a {
 #fp-submenu a:focus, #fp-submenu a:hover,
 #fp a:focus, #fp a:hover {
 	background:white;
-	color:#231;
+	color:#222;
 	text-decoration:none
 }
 
@@ -204,16 +204,18 @@ nav a {
 	display:inline-block;
 	margin:.05em 0;
 	padding:.5em;
-	background:#ffc3;
+	background:#8a4;
 	transition:background .5s;
 }
 #fp-submenu a:last-child {border-right:1px solid #693}
-#fp-submenu a:hover {
+#fp-submenu a:hover, #fp-submenu a:focus, #fp-submenu .current {
 	padding:.5em;
+	color:#222;
 	background:#ff7;
 	transition:background .5s;
 	text-shadow:1px 1px #0003;
 }
+#fp-submenu .session {background:#ccc3;color:#fff}
 #fp-submenu form {display:inline}
 #fp-submenu form, #fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}
 #fp-submenu label {margin-right:.2em}
@@ -280,7 +282,7 @@ section table.stats th:first-child{width:15em}
 section #results td:nth-child(3){width:20em;}
 
 
-section #equipe_type td:nth-child(2){width:20em;}
+section #teamOfTheWeek td:nth-child(2){width:20em;}
 
 section #criterion table {margin-bottom:1em}
 section #criterion table td:first-child {width:20em;}
@@ -340,7 +342,7 @@ section .tooltip:hover span,.tooltip:focus span{
 }
 
 footer {clear:both;font-size:.9em;color:#564;padding:.5em;margin-top:1em;text-align:center}
-footer strong {color:#231}
+footer strong {color:#222}
 
 /* Popup */
 #overlay {

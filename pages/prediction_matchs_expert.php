@@ -165,7 +165,7 @@ if($counter > 0){
     
     echo $form->submit($title_modify);
     
-    echo "	 </form>\n";
+    echo "</form>\n";
     
 } else echo $title_noMatch;
 ?>

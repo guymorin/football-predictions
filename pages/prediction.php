@@ -8,12 +8,10 @@ require '../include/changeMD.php';
 echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
-$modify = $expert = 0;
-isset($_POST['modify'])     ? $modify=$error->check("Action",$_POST['modify']) : null;
+$expert = 0;
 isset($_POST['expert'])     ? $expert=$error->check("Digit",$_POST['expert']) : null;
 if($expert==0) isset($_GET['expert'])      ? $expert=$error->check("Digit",$_GET['expert']) : null;
 
-/* Popups or page */
 // Modified popup
 if($modify==1){
 

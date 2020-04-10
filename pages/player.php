@@ -17,12 +17,6 @@ isset($_POST['name'])           ? $playerName = $error->check("Alnum",$_POST['na
 isset($_POST['firstname'])      ? $playerFirstname = $error->check("Alnum",$_POST['firstname']) : null;
 isset($_POST['position'])       ? $playerPosition = $error->check("Position",$_POST['position']) : null;
 isset($_POST['id_team'])        ? $teamId = $error->check("Digit",$_POST['id_team']) : null;
-$create=$modify=$delete=0;
-isset($_GET['create'])          ? $create = $error->check("Action",$_GET['create']) : null;
-$create==0 && isset($_POST['create'])         ? $create = $error->check("Action",$_POST['create']) : null;
-isset($_GET['modify'])          ? $modify = $error->check("Action",$_GET['modify']) : null;
-isset($_POST['modify'])         ? $modify = $error->check("Action",$_POST['modify']) : null;
-isset($_POST['delete'])         ? $delete = $error->check("Action",$_POST['delete']) : null;
 
 // Delete
 if($delete==1){

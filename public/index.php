@@ -49,10 +49,16 @@ $form = new Forms($_POST);
     }
 // Check the page value
 $page="";
-$create=$exit=0;
 if(isset($_GET['page'])) $page=$error->check("Alnum",$_GET['page']);
-if(isset($_GET['create'])) $create=$error->check("Action",$_GET['create']);
+
+$create = $modify = $delete = $exit = 0;
+isset($_GET['create'])          ? $create = $error->check("Action",$_GET['create']) : null;
+$create==0 && isset($_POST['create'])  ? $create = $error->check("Action",$_POST['create']) : null;
+isset($_GET['modify'])          ? $modify = $error->check("Action",$_GET['modify']) : null;
+isset($_POST['modify'])         ? $modify = $error->check("Action",$_POST['modify']) : null;
+isset($_POST['delete'])         ? $delete = $error->check("Action",$_POST['delete']) : null;
 if(isset($_GET['exit'])) $exit=$error->check("Action",$_GET['exit']);
+
 
 // Exit
 if($exit==1){
@@ -84,7 +90,7 @@ if(empty($_SESSION['seasonId'])) $page="season";
 elseif(
     (empty($_SESSION['championshipId']))
     &&($page=="")
-)$page="championship";
+) $page="championship";
 
 
 /* Header */
@@ -113,33 +119,52 @@ function myFunction() {
 <header>
     <nav id='fp-submenu'>
 <?php
+$current = '';
 switch($page){
     case "championship":
     case "dashboard":
-        echo Championship::submenu($pdo, $form);
+        if($create == 1)                $current = 'create';
+        elseif($modify == 1 && $page == 'championship') $current = 'modify';
+        elseif($page == 'championship') $current = 'standing';
+        elseif($page=='dashboard')      $current = 'dashboard';
+        echo Championship::submenu($pdo, $form, $current);
         break;
     case "matchday":
     case "match":
     case "prediction":
     case "results":
     case "teamOfTheWeek":
-        echo Matchday::submenu($pdo, $form);
+        if($create == 1 && $page == 'matchday')  $current = 'create';
+        elseif($modify == 1 && $page == 'matchday')     $current = 'modify';
+        elseif($page == 'matchday')     $current = 'statistics';
+        elseif($create == 1 && $page == 'match') $current = 'createMatch';
+        elseif($page=='prediction')     $current = 'prediction';
+        elseif($page=='results')        $current = 'results';
+        elseif($page=='teamOfTheWeek')  $current = 'teamOfTheWeek';
+        echo Matchday::submenu($pdo, $form, $current);
         break;
     case "player":
-        echo Player::submenu($pdo, $form);
+        if($create == 1)        $current = 'create';
+        elseif($modify == 1)    $current = 'modify';
+        else                    $current = 'bestPlayers';
+        echo Player::submenu($pdo, $form, $current);
         break;
     case "season":
-        echo Season::submenu($pdo, $form);
+        if($create == 1)        $current = 'create';
+        elseif($modify == 1)    $current = 'modify';
+        echo Season::submenu($pdo, $form, $current);
         break;
     case "team":
-    case "marketValue":
-        echo Team::submenu($pdo, $form);
+        if($create == 1 && $page == 'team')        $current = 'create';
+        elseif($modify == 1 && $page == 'team')    $current = 'modify';
+        else                                       $current = 'marketValue';
+        echo Team::submenu($pdo, $form, $current);
         break;
     default:
-        echo "  <a href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
-        echo "<a href='index.php?page=championship&exit=1'>".$_SESSION['championshipName']." &#10060;</a>";
+        echo "<a class='session' href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
+        echo "<a class='session' href='index.php?page=championship&exit=1'>".$_SESSION['championshipName']." &#10060;</a>";
         if(isset($_SESSION['matchdayId'])){
-            echo "<a href='index.php?page=matchday&exit=1'>".$title_MD.$_SESSION['matchdayNum']." &#10060;</a>\n"; // Sortir
+            echo "<a class='session' href='index.php?page=matchday&exit=1'>".$title_MD.$_SESSION['matchdayNum']." &#10060;</a>";
         }
         break;
 }
@@ -171,14 +196,51 @@ else {
     if(isset($_SESSION['matchdayId'])){
         echo "        <ul>\n";
         echo "            <li><a href='index.php?page=matchday'>$title_statistics</a></li>\n";
-        echo "            <li><a href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a></li>\n";
         echo "            <li><a href='index.php?page=prediction'>$title_predictions</a></li>\n";
         echo "            <li><a href='index.php?page=results'>$title_results</a></li>\n";
+        echo "            <li><a href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a></li>\n";
         echo "        </ul>\n";
     } else {
         echo "        <ul>\n";
 
-        require '../pages/matchday_select.php';
+        $req = "SELECT DISTINCT id_matchday, number
+FROM matchday
+WHERE id_season=" . $_SESSION['seasonId']."
+AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
+        $response = $pdo->query($req);
+        $counter = $pdo->rowCount();
+        
+        if($counter>0){
+            // Select form
+            $list = "<form action='index.php' method='POST'>\n";
+            $list .= $form->labelBr($title_selectTheMatchday);
+            $list .= $form->selectSubmit("matchdaySelect", $response);
+            $list .= "</form>\n";
+            
+            // Quicknav button
+            $req = "SELECT DISTINCT j.id_matchday, j.number FROM matchday j
+            LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday
+            WHERE m.result=''
+            AND j.id_season=:id_season
+            AND j.id_championship=:id_championship
+            ORDER BY j.number;";
+            $data = $pdo->prepare($req,[
+                'id_season' => $_SESSION['seasonId'],
+                'id_championship' => $_SESSION['championshipId']
+            ]);
+            $counter = $pdo->rowCount();
+            if($counter>0){
+                // $form->setValues($data);
+                echo "<form action='index.php' method='POST'>\n";
+                echo $form->label($title_quickNav);
+                echo $form->inputHidden("matchdaySelect", $data->id_matchday . "," . $data->number);
+                echo $form->submit("$icon_quicknav $title_MD".$data->number);
+                echo "</form>\n";
+            }
+            
+            echo $list;
+            
+        } else echo "      <p>$title_noMatchday</p>\n";
         
         echo "        </ul>\n";
         echo "    </li>\n";
@@ -186,7 +248,7 @@ else {
     echo "    </li>\n";
     echo "    <li><h2>$icon_team $title_team</h2>\n";
     echo "        <ul>\n";
-    echo "            <li><a href='index.php?page=marketValue'>$title_marketValue</a></li>\n";
+    echo "            <li><a href='index.php?page=team'>$title_marketValue</a></li>\n";
     echo "        </ul>\n";
     echo "    </li>\n";
     echo "    <li><h2>$icon_player $title_player</h2>\n";

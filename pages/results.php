@@ -11,9 +11,6 @@ require '../include/changeMD.php';
 
 echo "<h2>$icon_matchday $title_matchday ".(isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null)."</h2>\n";
 
-// Values
-$modify=0;
-isset($_POST['modify']) ? $modify=$error->check("Action",$_POST['modify']) : null;
 // Modify
 // Modify popup
 if($modify==1){
@@ -99,7 +96,7 @@ else {
         ORDER BY m.date;";
     $data = $pdo->prepare($req,[
         'id_matchday' => $_SESSION['matchdayId']
-    ]);
+    ],true);
     $counter=$pdo->rowCount();
     if($counter > 0){
         echo "<form id='results' action='index.php?page=results' method='POST' onsubmit='return confirm();'>\n";

@@ -13,17 +13,69 @@ class Matchday
 
     }
     
-    static function submenu($pdo, $form){
+    static function submenu($pdo, $form, $current = null){
         require '../lang/fr.php';
         $val = "  	<a href='/'>$title_homepage</a>";
         if(isset($_SESSION['matchdayId'])){
-            $val .= "<a href='index.php?page=matchday'>$title_statistics</a>";
-            $val .= "<a href='index.php?page=prediction'>$title_predictions</a>";
-            $val .= "<a href='index.php?page=results'>$title_results</a>";
-            $val .= "<a href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a>";
-            $val .= "<a href='index.php?page=match&create=1'>$title_createAMatch</a>";
-            $val .= "<a href='index.php?page=match&modify=1'>$title_modifyAMatch</a>";
-        } else $val .= "<a href='index.php?page=matchday&create=1'>$title_createAMatchday</a>\n";
+            
+            if($current == 'statistics'){
+                $val .= "<a class='current' href='index.php?page=matchday'>$title_statistics</a>";
+            } else {
+                $val .= "<a href='index.php?page=matchday'>$title_statistics</a>";
+            }
+            if($current == 'prediction'){ 
+                $val .= "<a class='current' href='index.php?page=prediction'>$title_predictions</a>";
+            } else {    
+                $val .= "<a href='index.php?page=prediction'>$title_predictions</a>";
+            }
+            if($current == 'results'){
+                $val .= "<a class='current' href='index.php?page=results'>$title_results</a>";
+            } else {
+                $val .= "<a href='index.php?page=results'>$title_results</a>";
+            }
+            if($current == 'teamOfTheWeek'){
+                $val .= "<a class='current' href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a>";
+            } else {
+                $val .= "<a href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a>";
+            }
+            if($current == 'createMatch'){
+                $val .= "<a class='current' href='index.php?page=match&create=1'>$title_createAMatch</a>";
+            } else {
+                $val .= "<a href='index.php?page=match&create=1'>$title_createAMatch</a>";
+            }
+            
+            $req = "SELECT DISTINCT mg.id_matchgame, t1.name, t2.name, mg.date
+            FROM matchgame mg
+            LEFT JOIN matchday md ON md.id_matchday = mg.id_matchday  
+            LEFT JOIN team t1 ON mg.team_1 = t1.id_team 
+            LEFT JOIN team t2 ON mg.team_2 = t2.id_team 
+            WHERE md.id_season = " . $_SESSION['seasonId'] . "
+            AND md.id_championship = " . $_SESSION['championshipId'] . " 
+            AND md.id_matchday = " . $_SESSION['matchdayId'] . " ORDER BY mg.date;";
+            $data = $pdo->query($req);
+            $counter = $pdo->rowCount();
+            if($counter > 1){
+                $val .= "<form action='index.php?page=match' method='POST'>\n";
+                $val .= $form->inputAction('modify');
+                $val .= $form->label($title_modifyAMatch);
+                $val .= $form->selectSubmit('id_match', $data);
+                $val .= "</form>\n";
+            }
+        } else {
+            $val .= "<a href='index.php?page=matchday&create=1'>$title_createAMatchday</a>\n";
+            $req = "SELECT DISTINCT id_matchday, number FROM matchday
+            WHERE id_season = " . $_SESSION['seasonId'] . "
+            AND id_championship = " . $_SESSION['championshipId'] . " ORDER BY number DESC;";
+            $data = $pdo->query($req);
+            $counter = $pdo->rowCount();
+            if($counter > 1){
+                $val .= "<form action='index.php?page=matchday' method='POST'>\n";
+                $val .= $form->inputAction('modify');
+                $val .= $form->label($title_modifyAMatchday);
+                $val .= $form->selectSubmit('id_matchday', $data);
+                $val .= "</form>\n";
+            }
+        }
         return $val;
     }
     
@@ -33,6 +85,16 @@ class Matchday
         $pdo->exec($req);
         $pdo->alterAuto('matchday');
         popup($title_deleted,"index.php?page=matchday");
+    }
+    
+    static function deletePopupMatch($pdo, $idMatch){
+        require '../lang/fr.php';
+        $req="DELETE FROM matchgame WHERE id_match=:id_match;";
+        $pdo->prepare($req,[
+            'id_match' => $idMatch
+        ]);
+        $pdo->alterAuto('matchgame');
+        popup($title_deleted,"index.php?page=match");
     }
     
     static function createForm($pdo, $error, $form){
@@ -57,6 +119,24 @@ class Matchday
             'number' => $matchdayNumber
         ]);
         popup($title_created,"index.php?page=matchday");
+    }
+    
+    static function createPopupMatch($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date){
+        require '../lang/fr.php';
+        $pdo->alterAuto('matchgame');
+        $req="INSERT INTO matchgame
+            VALUES(NULL,'".$_SESSION['matchdayId']."',:team1,:team2,:result,:odds1,:oddsD,:odds2,:date,0,0,0,0);";
+        $pdo->prepare($req,[
+            $_SESSION['matchdayId'],
+            'team1' => $team1,
+            'team2' => $team2,
+            'result' => $result,
+            'odds1' => $odds1,
+            'oddsD' => $oddsD,
+            'odds2' => $odds2,
+            'date' => $date
+        ]);
+        popup($title_created,"index.php?page=match&create=1");
     }
     
     static function modifyForm($pdo, $data, $matchdayId, $error, $form){
@@ -93,6 +173,21 @@ class Matchday
             'id_matchday' => $matchdayId
         ]);
         popup($title_modified,"index.php?page=matchday");
+    }
+    
+    static function modifyPopupMatch($pdo, $team1, $team2, $result, $idMatch){
+        require '../lang/fr.php';
+        $req="UPDATE matchgame
+            SET id_matchday = :id_matchday, team_1=:team_1, team_2 = :team_2, result = :result
+            WHERE id_match = :id_match;";
+        $pdo->prepare($req,[
+            'id_matchday' => $_SESSION['matchdayId'],
+            'team_1' => $team1,
+            'team_2' => $team2,
+            'result' => $result,
+            'id_match' => $idMatch
+        ]);
+        popup($title_modifyAMatch,"index.php?page=match");
     }
     
     static function createMatchForm($pdo, $error, $form){
@@ -137,10 +232,16 @@ class Matchday
         return $val;
     }
     
-    static function modifyMatchForm($pdo, $data, $idMatch, $error, $form){
+    static function modifyFormMatch($pdo, $error, $form, $idMatch){
         require '../lang/fr.php';
-        $val .= $error->getError();
-        $val .= "	 <form action='index.php?page=match' method='POST'>\n";
+        $req="SELECT m.id_matchgame,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2
+            FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team
+            WHERE m.id_matchgame = :id_matchgame;";
+        $data = $pdo->prepare($req,[
+            'id_matchgame' => $idMatch
+        ]);
+        $val = $error->getError();
+        $val .= "<form action='index.php?page=match' method='POST'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden('id_matchgame',$data->id_matchgame);

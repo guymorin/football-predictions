@@ -18,12 +18,6 @@ $seasonName="";
 isset($_POST['id_season'])  ? $seasonId=$error->check("Digit",$_POST['id_season']) : null;
 isset($_POST['name'])       ? $seasonName=$error->check("Alnum",$_POST['name']) : null;
 
-$create=$modify=$delete=0;
-isset($_GET['create'])      ? $create=$error->check("Action",$_GET['create']) : null;
-$create==0&&isset($_POST['create']) ? $create=$error->check("Action",$_POST['create']) : null;
-isset($_POST['modify'])     ? $modify=$error->check("Action",$_POST['modify']) : null;
-isset($_POST['delete'])     ? $delete=$error->check("Action",$_POST['delete']) : null;
-
 // First, select a season
 if(
     (empty($_SESSION['seasonId']))

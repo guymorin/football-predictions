@@ -13,15 +13,31 @@ class Championship
 
     }
     
-    static function submenu($pdo, $form){
+    static function submenu($pdo, $form, $current=null){
         require '../lang/fr.php';
         
         if(isset($_SESSION['championshipId'])){
             $val = "  	<a href='/'>$title_homepage</a>";
-            $val .= "<a href='index.php?page=championship'>$title_standing</a>";
-            $val .= "<a href='index.php?page=dashboard'>$title_dashboard</a>";
-        } else $val .= "      <a href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
-        $val .= "<a href='index.php?page=championship&create=1'>$title_createAChampionship</a>\n";
+            
+            if($current == 'standing'){
+                $val .= "<a class='current' href='index.php?page=championship'>$title_standing</a>";
+            } else {
+                $val .= "<a href='index.php?page=championship'>$title_standing</a>";
+            }
+            if($current == 'dashboard'){
+                $val .= "<a class='current' href='index.php?page=dashboard'>$title_dashboard</a>";
+            } else {
+                $val .= "<a href='index.php?page=dashboard'>$title_dashboard</a>";
+            }
+        } else {
+            $val .= "<a class='session' href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
+        }
+        
+        if($current == 'create'){
+            $val .= "<a class='current' href='index.php?page=championship&create=1'>$title_createAChampionship</a>\n";
+        } else {
+            $val .= "<a href='index.php?page=championship&create=1'>$title_createAChampionship</a>\n";
+        }
         $req = "SELECT DISTINCT c.id_championship, c.name
         FROM championship c
         ORDER BY c.name;";

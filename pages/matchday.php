@@ -27,33 +27,15 @@ if(isset($_POST['matchdaySelect'])){
 isset($_POST['id_matchday'])   ? $matchdayId=$error->check("Digit",$_POST['id_matchday']) : null;
 isset($_POST['number'])		   ? $matchdayNumber=$error->check("Digit",$_POST['number']) : null;
 
-$create = $modify = $delete = 0;
-isset($_GET['create'])		   ? $create=$error->check("Action",$_GET['create']) : null;
-isset($_POST['create'])		   ? $create=$error->check("Action",$_POST['create']) : null;
-isset($_POST['modify'])		   ? $modify=$error->check("Action",$_POST['modify']) : null;
-isset($_POST['delete'])		   ? $delete=$error->check("Action",$_POST['delete']) : null;
-
-$equipe = $idPlayer = $ratingPlayer = $deletePlayer = 0;
-isset($_POST['equipe'])		   ? $equipe=$error->check("Digit",$_POST['equipe']) : null;
+$idPlayer = $ratingPlayer = $deletePlayer = 0;
 isset($_POST['id_player'])	   ? $idPlayer=$error->check("Digit",$_POST['id_player']) : null;
 isset($_POST['rating'])		   ? $ratingPlayer=$error->check("Digit",$_POST['rating']) : null;
 isset($_POST['delete'])		   ? $deletePlayer=$error->check("Digit",$_POST['delete']) : null;
 
 $val=array_combine($idPlayer,$ratingPlayer);
 
-// First, select a matchday
-if(
-(empty($_SESSION['matchdayId']))
-&&($create==0)
-&&($modify==0)
-&&($delete==0)
-){
-    echo "<form action='index.php?page=matchday' method='POST'>\n";
-    require 'matchday_select.php';
-    echo "</form>\n";
-}
 // Delete
-elseif($delete==1){
+if($delete==1){
     Matchday::deletePopup($pdo, $matchdayId);
 }
 // Create

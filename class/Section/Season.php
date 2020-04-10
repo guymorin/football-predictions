@@ -13,11 +13,18 @@ class Season
 
     }
     
-    static function submenu($pdo, $form){
+    static function submenu($pdo, $form, $current=null){
         require '../lang/fr.php';
-        $val = "<a href='/'>$title_homepage</a>";
-        isset($_SESSION['seasonId']) ? $val .= "<a href='index.php?page=season'>$title_listChampionships</a>" : null;
-        $val .= "<a href='index.php?page=season&create=1'>$title_createASeason</a>";
+        $val = "";
+        if(isset($_SESSION['seasonId'])) {
+            $val .= "<a href='/'>$title_homepage</a>";
+            $val .= "<a href='index.php?page=season'>$title_listChampionships</a>";
+        }
+        if($current == 'create'){
+            $val .= "<a class='current' href='index.php?page=season&create=1'>$title_createASeason</a>";
+        } else {
+            $val .= "<a href='index.php?page=season&create=1'>$title_createASeason</a>";
+        }
         $req = "SELECT id_season, name FROM season ORDER BY name;";
         $data = $pdo->query($req);
         $counter = $pdo->rowCount();
