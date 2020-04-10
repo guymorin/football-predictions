@@ -44,6 +44,7 @@ class Forms
      * @return NULL
      */
     private function getValue($index){
+        $index = preg_replace("#\[.*\]#", '', $index);
         return isset($this->data[$index]) ? $this->data[$index] : null;
     }
     
@@ -88,7 +89,7 @@ class Forms
     public function input($label='',$name){
          $val = '';
          if($label!='') $val.= $this->label($label);
-         $val.= "   <input type='text' name='$name' value='".$this->getValue($name)."'>\n";
+         $val.= "<input type='text' name='$name' value='".$this->getValue($name)."'>";
          $val = $this->surround($val);
          return $val;
     }
@@ -99,7 +100,7 @@ class Forms
      * @return string HTML code
      */
     public function inputAction($name){
-        return "    <input type='hidden' name='$name' value='1'>\n";
+        return "<input type='hidden' name='$name' value='1'>";
     }
     
     /**
@@ -111,7 +112,7 @@ class Forms
     public function inputDate($label='', $name, $value){
         $val = '';
         if($label!='') $val .= $this->label($label);
-        $val .= "   <input type='date' name='$name' value='".$value."'>\n";
+        $val .= "<input type='date' name='$name' value='".$value."'>";
         $val = $this->surround($val);
         return $val;
     }
@@ -137,7 +138,7 @@ class Forms
     public function inputNumber($label='', $name, $value, $step){
         $val= '';
         if($label!='') $val .= $this->label($label);
-        $val .= "   <input type='number' step='".$step."' name='$name' value='".$value."'>\n";
+        $val .= "<input type='number' step='".$step."' name='$name' value='".$value."'>";
         $val = $this->surround($val);
         return $val;
     }
@@ -151,10 +152,10 @@ class Forms
      * @return string HTML code
      */
     public function inputRadio($id, $name, $value, $checked=false){
-        $val = "   <input type='radio' ";
+        $val = "<input type='radio' ";
         $val.= "id='$id' name='$name' value='$value'";
         $checked ? $val.= " checked" : null;
-        $val.= ">\n";
+        $val.= ">";
         return $val;
     }
     
@@ -200,7 +201,7 @@ class Forms
      * @return string HTML code
      */
     public function label($title){
-        return "    <label>$title : </label>\n";
+        return "<label>$title : </label>";
     }
  
     /**
@@ -210,7 +211,7 @@ class Forms
      * @return string HTML code
      */
     public function labelId($id, $title){
-        return "    <label for='$id'>$title : </label>\n";
+        return "<label for='$id'>$title : </label>";
     }
     
     /**
@@ -266,9 +267,39 @@ class Forms
         return $val;
     }
     
-    public function selectTeam($pdo, $name='id_team', $selected=null, $data=null){
+    public function selectPlayer($pdo, $name='id_player', $selected=null, $data=null){
         require '../lang/fr.php';
-        
+        if($data == null){
+            $req = "SELECT j.id_player, j.name, j.firstname, c.name as team
+            FROM player j
+            LEFT JOIN season_team_player scj ON scj.id_player=j.id_player
+            LEFT JOIN season_championship_team scc ON scc.id_team=scj.id_team
+            LEFT JOIN team c ON c.id_team=scj.id_team
+            WHERE scc.id_season = :id_season
+            AND scc.id_championship = :id_championship
+            ORDER BY j.name, j.firstname;";
+            $data = $pdo->prepare($req,[
+                'id_season' => $_SESSION['seasonId'],
+                'id_championship' => $_SESSION['championshipId']
+            ],true);
+        }
+        $val .= "     <select name='";
+        if($name == null) $val .= 'id_player[]';
+        else $val .= $name;
+        $val .= "'>\n";
+        $val .= "        <option value='0'>...</option>\n";
+        foreach ($data as $d)
+        {
+            $val .= "  		<option value='" . $d->id_player . "'";
+            $d->id_player==$selected ? $val .= " selected" : null;
+            $val .= ">" . mb_strtoupper($d->name,'UTF-8') . " " . ucfirst($d->firstname);
+            $val .= " [" . $d->team . "]</option>\n";
+        }
+        $val .= "	   </select>\n";
+        return $this->surround($val);
+    }
+    public function selectTeam($pdo, $name='id_team', $selected=null, $data=null){
+        require '../lang/fr.php';   
         if($data == null){
             $req="SELECT c.id_team, c.name FROM team c
             LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team
@@ -281,10 +312,11 @@ class Forms
         }
                
         $val = $this->labelBr($title_team);
-        $val .= "     <select multiple size='10' name='";
+        $val .= "     <select name='";
         if($name == null) $val .= 'id_team';
         else $val .= $name;
         $val .= "'>\n";
+        $val .= "        <option value='0'>...</option>\n";
         foreach ($data as $d)
         {
             $val .= "  		<option value='".$d->id_team."'";
@@ -301,7 +333,7 @@ class Forms
      * @return string HTML code
      */
     public function submit($title){
-        return "    <button type='submit'>$title</button>\n";
+        return "<button type='submit'>$title</button>";
         ;
     }
 }

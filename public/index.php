@@ -163,8 +163,8 @@ else {
     echo "<ul class='menu'>\n";
     echo "    <li><h2>$icon_championship $title_championship</h2>\n";
     echo "       <ul>\n";
-    echo "            <li><a href='index.php?page=dashboard'>$title_dashboard</a></li>\n";
     echo "            <li><a href='index.php?page=championship'>$title_standing</a></li>\n";
+    echo "            <li><a href='index.php?page=dashboard'>$title_dashboard</a></li>\n";
     echo "       </ul>\n";
     echo "    </li>\n";
     echo "    <li><h2>$icon_matchday $title_matchday " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h2>\n";

@@ -186,7 +186,7 @@ function changeMD($pdo,$page){
         'match3' => ($_SESSION['matchdayNum']+1),
         'id_season' => $_SESSION['seasonId'],
         'id_championship' => $_SESSION['championshipId']
-    ]);
+    ],true);
     $counter = $pdo->rowCount();
 
     $button1 = $button2 = "";
@@ -197,13 +197,13 @@ function changeMD($pdo,$page){
             case 2:
                 // Previous button
                 if($d->number == $_SESSION['matchdayNum']-1){
-                    $button1 = "  <input type='submit' value='&larr;'>\n";
+                    $button1 = "<input type='submit' value='&larr;'>\n";
                     $button1 .= "<input type='hidden' name='matchdaySelect' ";
                     $button1 .= "value='".$d->id_matchday.",".$d->number."'>\n";
                 }
                 // Next button
                 if($d->number==$_SESSION['matchdayNum']+1){
-                    $button2 = "  <input type='submit' value='&rarr;'>\n";
+                    $button2 = "<input type='submit' value='&rarr;'>\n";
                     $button2 .= "<input type='hidden' name='matchdaySelect' ";
                     $button2 .= "value='".$d->id_matchday.",".$d->number."'>\n";
                 }
@@ -238,4 +238,3 @@ if (! function_exists("array_key_last")){
     }
 }
 ?>
- 

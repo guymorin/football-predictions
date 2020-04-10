@@ -35,6 +35,15 @@ class Team
         return $val;
     }
     
+    static function deletePopup($pdo, $teamId){
+        require '../lang/fr.php';
+        $req="DELETE FROM team WHERE id_team=:id_team;";
+        $pdo->prepare($req,[
+            'id_team' => $teamId
+        ]);
+        $pdo->alterAuto('team');
+        popup($title_deleted,"index.php?page=team");
+    }
     static function createForm($pdo, $error, $form, $teamName, $weatherCode){
         require '../lang/fr.php';
         $val = $error->getError();
@@ -49,9 +58,24 @@ class Team
         return $val;
     }
     
-    static function modifyForm($pdo, $data, $error, $form, $teamId){
+    static function createPopup($pdo, $teamName, $weatherCode){
         require '../lang/fr.php';
-        $val .= $error->getError();
+        $pdo->alterAuto('team');
+        $req="INSERT INTO team VALUES(NULL,:$teamName,:weatherCode);";
+        $pdo->prepare($req,[
+            'teamName' => $teamName,
+            'weatherCode' => $weatherCode
+        ]);
+        popup($title_created,"index.php?page=team");
+    }
+    
+    static function modifyForm($pdo, $error, $form, $teamId){
+        require '../lang/fr.php';
+        $req = "SELECT * FROM team WHERE id_team=:id_team;";
+        $data = $pdo->prepare($req,[
+            'id_team' => $teamId
+        ]);
+        $val = $error->getError();
         $val .= "<form action='index.php?page=team' method='POST'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
@@ -68,6 +92,18 @@ class Team
         $val .= $form->submit("&#9888 $title_delete &#9888");
         $val .= "</form>\n";
         return $val;
+    }
+    
+    static function modifyPopup($pdo, $teamName, $weatherCode, $teamId){
+        require '../lang/fr.php';
+        $req="UPDATE team SET name=:name, weather_code=:weather_code
+        WHERE id_team=:id_team;";
+        $pdo->prepare($req,[
+            'name' => $teamName,
+            'weather_code' => $weatherCode,
+            'id_team' => $teamId
+        ]);
+        popup($title_modified,"index.php?page=team");
     }
 }
 ?>

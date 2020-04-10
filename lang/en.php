@@ -39,6 +39,7 @@ $title_general = "General";
 $title_goalkeeper = "Goalkeeper";
 $title_home = "Home";
 $title_homepage = "Homepage";
+$title_listChampionships = "List of championship";
 $title_lose = "L";
 $title_marketValue = "Marketvalue";
 $title_match = "Match";

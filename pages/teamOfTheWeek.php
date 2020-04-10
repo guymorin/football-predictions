@@ -7,68 +7,88 @@ require '../include/changeMD.php';
 
 echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
 
+// Values
+$teamOfTheWeek = 0;
+isset($_POST['teamOfTheWeek']) ? $teamOfTheWeek=$error->check("Action",$_POST['teamOfTheWeek']) : null;
+
 // Only if a matchday is selected
 if(isset($_SESSION['matchdayId'])){
 
-    changeMD($db,"teamOfTheWeek");
+    changeMD($pdo,"teamOfTheWeek");
     
     // Popup modified
     if($teamOfTheWeek==1){
-        $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
+        $pdo->alterAuto('teamOfTheWeek');
         $req="";
         foreach($deletePlayer as $d){
             $req="DELETE FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$d."';";
-            $db->exec($req);
+            $pdo->exec($req);
         }
-        $db->exec("ALTER TABLE teamOfTheWeek AUTO_INCREMENT=0;");
+        $pdo->alterAuto('teamOfTheWeek');
         $req="";
         foreach($val as $k=>$v){
             $v=$error->check("Digit",$v);
             if(($v>0)&&(!in_array($k,$deletePlayer))){
+                $req = "SELECT COUNT(*) as nb FROM teamOfTheWeek 
+                WHERE id_matchday = :id_matchday 
+                AND id_player = :id_player;";
+                $data = $pdo->query($req,[
+                    'id_matchday' => $_SESSION['matchdayId'],
+                    'id_player' => $k
+                ]);              
                 
-                $response = $db->query("SELECT COUNT(*) as nb FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';");
-                $data = $response->fetch(PDO::FETCH_OBJ);
-                
-                
-                if($data[0]==0){
+                if($data->nb==0){
                     $req.="INSERT INTO teamOfTheWeek VALUES(NULL,'".$_SESSION['matchdayId']."','".$k."','".$v."');";
                 }
-                if($data[0]==1){
+                if($data->nb==1){
                     $req.="UPDATE teamOfTheWeek SET rating='".$v."' WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';";
                 }
             
             }
         } 
-        $db->exec($req);
+        $pdo->exec($req);
         popup($title_modified,"index.php?page=teamOfTheWeek");
     }
+
     // Modify form
     else {
         echo "<h3>$title_teamOfTheWeek</h3>\n";
-        $counter=0;
-        $req = "SELECT j.id_player,j.name,j.firstname,e.rating 
-        FROM teamOfTheWeek e 
-        LEFT JOIN player j ON e.id_player=j.id_player 
-        WHERE id_matchday=:id_matchday 
-        ORDER BY j.position,j.name,j.firstname;";
-        $response = $db->prepare($req);
-        $response->execute([
-            'id_matchday' => $_SESSION['matchdayId']
-        ]);
-        
-        echo " <form action='index.php?page=teamOfTheWeek' method='POST' onsubmit='return confirm();'>\n";
-        echo $error->getError();
-        echo $form->inputAction('teamOfTheWeek');        
         echo "<table id='teamOfTheWeek'>\n";
-        echo "  <tr><th> </th><th>$title_player</th><th>$title_rating</th><th>&#10060;</th></tr>\n";
-
-        while ($data = $response->fetch(PDO::FETCH_OBJ))
+        echo "  <tr>\n";
+        echo "      <th> </th>\n";
+        echo "      <th>$title_player</th>\n";
+        echo "      <th>$title_rating</th>\n";
+        echo "      <th>&#10060;</th>\n";
+        echo "  </tr>\n";
+        
+        $counter=0;
+        $req = "SELECT j.id_player,j.name,j.firstname,e.rating
+        FROM teamOfTheWeek e
+        LEFT JOIN player j ON e.id_player=j.id_player
+        WHERE id_matchday=:id_matchday
+        ORDER BY j.position,j.name,j.firstname;";
+        $data = $pdo->prepare($req,[
+            'id_matchday' => $_SESSION['matchdayId']
+        ],true);
+        
+        echo $error->getError();
+        echo "<form action='index.php?page=teamOfTheWeek' method='POST' onsubmit='return confirm();'>\n";
+        $form->setValues($data);
+        echo $form->inputAction('teamOfTheWeek');   
+        foreach ($data as $d)
         {
             $counter++;
             echo "  <tr>";
-            echo "<td>".$counter."</td>";
-            echo "<td><input type='hidden' name='id_player[]' value='".$data->id_player."'>".mb_strtoupper($data->name,'UTF-8')." ".$data->firstname."</td>";
-            echo "<td><input type='text' name='rating[]' size='3' value='".$data->rating."'</td><td><input type='checkbox' name='delete[]' value='".$data->id_player."'></td></tr>\n";
+            echo "      <td>".$counter."</td>\n";
+            echo "      <td>";
+            echo $form->inputHidden('id_player[]',$d->id_player);
+            echo mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
+            echo "</td>\n";
+            $form->setValue('rating',$d->rating);
+            echo "      <td>" . $form->input('','rating[]') . "</td>\n";
+            echo "      <td><input type='checkbox' name='delete[]' value='".$d->id_player."'>";
+            echo "</td>\n";
+            echo "  </tr>\n";
         }
         
         $req = "SELECT j.id_player, j.name, j.firstname, j.position, c.name as team 
@@ -76,31 +96,26 @@ if(isset($_SESSION['matchdayId'])){
         LEFT JOIN season_team_player scj ON scj.id_player=j.id_player 
         LEFT JOIN season_championship_team scc ON scc.id_team=scj.id_team 
         LEFT JOIN team c ON c.id_team=scj.id_team
-        WHERE scc.id_season='".$_SESSION['seasonId']."' 
-        AND scc. id_championship='".$_SESSION['championshipId']."' 
+        WHERE scc.id_season = :id_season 
+        AND scc.id_championship = :id_championship 
         ORDER BY j.name, j.firstname;";
        
         $playersLeft=11-$counter;
         for($i=0;$i<$playersLeft;$i++){
             $counter++;
-            $response = $db->query($req);
-            echo "  	<tr>";
-            echo "<td>".$counter."</td>";
-            echo "<td><select name='id_player[]'>\n";
-            echo "  <option value=''>...</option>\n";
-            while ($data = $response->fetch(PDO::FETCH_OBJ))
-            {
-
-                echo "  <option value='".$data->id_player."'>".mb_strtoupper($data->name,'UTF-8')." ".$data->firstname." [".$data->team."]";
-                echo "</option>\n";
-            }
-            echo "</select>\n";
-            echo "</td><td><input type='text' name='rating[]' value=''></td><td> </td></tr>\n";
+            $data = $db->prepare($req,[
+                'id_season' => $_SESSION['seasonId'],
+                'id_championship' => $_SESSION['championshipId']
+            ]);
+            echo " <tr>\n";
+            echo "  <td>".$counter."</td>\n";
+            echo "  <td>" . $form->selectPlayer($pdo) . "</td>\n";
+            echo "  <td>" . $form->input('','rating[]') . "</td>\n";
+            echo "  <td> </td>\n";
+            echo "</tr>\n";
         }
         echo "</table>\n";
         echo $form->submit($title_modify);
-        echo "<form>\n";
-           
-    
+        echo "<form>\n";   
     }
 }

@@ -386,7 +386,7 @@ footer strong {color:#231}
 .update .close:hover {background:none;border:none;color:#361;padding:.1em .3em;}
 
 /* Error */
-.error {color:red;margin:.2em;display:block;text-align: center;}
+.error {color:purple;margin:.2em;display:block;text-align: center;}
 
 
 /* Buttons */

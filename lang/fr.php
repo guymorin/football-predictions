@@ -39,6 +39,7 @@ $title_general = "Général";
 $title_goalkeeper = "Gardien";
 $title_home = "Domicile";
 $title_homepage = "Accueil";
+$title_listChampionships = "Liste des championnats";
 $title_lose = "P";
 $title_marketValue = "Valeur marchande";
 $title_match = "Match";

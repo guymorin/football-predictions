@@ -15,15 +15,84 @@ class Matchday
     
     static function submenu($pdo, $form){
         require '../lang/fr.php';
-        echo "  	<a href='/'>$title_homepage</a>";
+        $val = "  	<a href='/'>$title_homepage</a>";
         if(isset($_SESSION['matchdayId'])){
-            echo "<a href='index.php?page=matchday'>$title_statistics</a>";
-            echo "<a href='index.php?page=prediction'>$title_predictions</a>";
-            echo "<a href='index.php?page=results'>$title_results</a>";
-            echo "<a href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a>";
-            echo "<a href='index.php?page=match&create=1'>$title_createAMatch</a>";
-            echo "<a href='index.php?page=match&modify=1'>$title_modifyAMatch</a>";
-        } else echo "<a href='index.php?page=matchday&create=1'>$title_createAMatchday</a>\n";
+            $val .= "<a href='index.php?page=matchday'>$title_statistics</a>";
+            $val .= "<a href='index.php?page=prediction'>$title_predictions</a>";
+            $val .= "<a href='index.php?page=results'>$title_results</a>";
+            $val .= "<a href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a>";
+            $val .= "<a href='index.php?page=match&create=1'>$title_createAMatch</a>";
+            $val .= "<a href='index.php?page=match&modify=1'>$title_modifyAMatch</a>";
+        } else $val .= "<a href='index.php?page=matchday&create=1'>$title_createAMatchday</a>\n";
+        return $val;
+    }
+    
+    static function deletePopup($pdo, $matchdayId){
+        require '../lang/fr.php';
+        $req="DELETE FROM matchday WHERE id_matchday='".$matchdayId."';";
+        $pdo->exec($req);
+        $pdo->alterAuto('matchday');
+        popup($title_deleted,"index.php?page=matchday");
+    }
+    
+    static function createForm($pdo, $error, $form){
+        require '../lang/fr.php';
+        $val = $error->getError();
+        $val .= "<form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+        $val .= $form->inputAction('create');
+        $val .= $form->input($title_number,'number');
+        $val .= $form->submit($title_create);
+        $val .= "</form>\n";
+        return $val;
+    }
+    
+    static function createPopup($pdo, $matchdayNumber){
+        require '../lang/fr.php';
+        $pdo->alterAuto('matchday');
+        $req = "INSERT INTO matchday
+        VALUES(NULL,:id_season,:id_championship,:number);";
+        $pdo->prepare($req,[
+            'id_season' => $_SESSION['seasonId'],
+            'id_championship' => $_SESSION['championshipId'],
+            'number' => $matchdayNumber
+        ]);
+        popup($title_created,"index.php?page=matchday");
+    }
+    
+    static function modifyForm($pdo, $data, $matchdayId, $error, $form){
+        require '../lang/fr.php';
+        $req = "SELECT * FROM matchday WHERE id_matchday=:id_matchday;";
+        $data = $pdo->prepare($req,[
+            'id_matchday' => $matchdayId
+        ],true);
+        
+        $val .= $error->getError();
+        $val .= " <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+        $form->setValues($data);
+        $val .= $form->inputAction('modify');
+        $val .= $form->inputHidden("id_matchday", $data->id_matchday);
+        $val .= $form->input($title_number, "number");
+        $val .= $form->submit($title_modify);
+        $val .= " </form>\n";
+        $val .= "<form action='index.php?page=matchday' method='POST' onsubmit='return confirm()'>\n";
+        $val .= $form->inputAction('delete');
+        $val .= $form->inputHidden("id_matchday", $matchdayId);
+        $val .= $form->inputHidden("number", "number");
+        $val .= $form->submit("&#9888 $title_delete &#9888");
+        $val .= "</form>\n";
+        return $val;
+    }
+    
+    static function modifyPopup($pdo, $matchdayNumber, $matchdayId){
+        require '../lang/fr.php';
+        $req="UPDATE matchday
+        SET number=:number
+        WHERE id_matchday=:id_matchday;";
+        $pdo->prepare($req,[
+            'number' => $matchdayNumber,
+            'id_matchday' => $matchdayId
+        ]);
+        popup($title_modified,"index.php?page=matchday");
     }
     
     static function createMatchForm($pdo, $error, $form){
@@ -70,44 +139,239 @@ class Matchday
     
     static function modifyMatchForm($pdo, $data, $idMatch, $error, $form){
         require '../lang/fr.php';
-        echo $error->getError();
-        echo "	 <form action='index.php?page=match' method='POST'>\n";
+        $val .= $error->getError();
+        $val .= "	 <form action='index.php?page=match' method='POST'>\n";
         $form->setValues($data);
-        echo $form->inputAction('modify');
-        echo $form->inputHidden('id_matchgame',$data->id_matchgame);
+        $val .= $form->inputAction('modify');
+        $val .= $form->inputHidden('id_matchgame',$data->id_matchgame);
         
-        echo $form->inputDate($title_date, 'date', $data->date);
-        echo "<br />";
+        $val .= $form->inputDate($title_date, 'date', $data->date);
+        $val .= "<br />";
         
-        echo $form->selectTeam($pdo,'team_1',$data->id1);
-        echo $form->selectTeam($pdo,'team_2',$data->id2);
-        echo "<br />";
+        $val .= $form->selectTeam($pdo,'team_1',$data->id1);
+        $val .= $form->selectTeam($pdo,'team_2',$data->id2);
+        $val .= "<br />";
         
-        echo "	    <p><label>$title_odds :</label>\n";
-        echo "         1<input type='number' step='0.01' size='2' name='odds1' value='".$data->odds1."'>\n";
-        echo "         $title_draw<input type='number' step='0.01' size='2' name='oddsD' value='".$data->oddsD."'>\n";
-        echo "         2<input type='number' step='0.01' size='2' name='odds2' value='".$data->odds2."'>\n";
-        echo "      </p>\n";
+        $val .= "	    <p><label>$title_odds :</label>\n";
+        $val .= "         1<input type='number' step='0.01' size='2' name='odds1' value='".$data->odds1."'>\n";
+        $val .= "         $title_draw<input type='number' step='0.01' size='2' name='oddsD' value='".$data->oddsD."'>\n";
+        $val .= "         2<input type='number' step='0.01' size='2' name='odds2' value='".$data->odds2."'>\n";
+        $val .= "      </p>\n";
         
-        echo "	    <p><label>$title_result :</label>\n";
-        echo "     <input type='radio' name='result' id='1' value='1'";
-        if($data->result=="1") echo " checked";
-        echo "><label for='1'>1</label>\n";
-        echo "     <input type='radio' name='result' id='D' value='D'";
-        if($data->result=="D") echo " checked";
-        echo "><label for='D'>$title_draw</label>\n";
-        echo "     <input type='radio' name='result' id='2' value='2'";
-        if($data->result=="2") echo " checked";
-        echo "><label for='2'>2</label>\n";
+        $val .= "	    <p><label>$title_result :</label>\n";
+        $val .= "     <input type='radio' name='result' id='1' value='1'";
+        if($data->result=="1") $val .= " checked";
+        $val .= "><label for='1'>1</label>\n";
+        $val .= "     <input type='radio' name='result' id='D' value='D'";
+        if($data->result=="D") $val .= " checked";
+        $val .= "><label for='D'>$title_draw</label>\n";
+        $val .= "     <input type='radio' name='result' id='2' value='2'";
+        if($data->result=="2") $val .= " checked";
+        $val .= "><label for='2'>2</label>\n";
         
-        echo $form->submit($title_modify);
-        echo "</form>\n";
+        $val .= $form->submit($title_modify);
+        $val .= "</form>\n";
         
-        echo "<form action='index.php?page=match' method='POST' onsubmit='return confirm()'>\n";
-        echo $form->inputAction('delete');
-        echo $form->inputHidden('id_matchgame', $idMatch);
-        echo $form->submit("&#9888 $title_delete $data->name1 - $data->name2 &#9888");
-        echo "</form>\n";
+        $val .= "<form action='index.php?page=match' method='POST' onsubmit='return confirm()'>\n";
+        $val .= $form->inputAction('delete');
+        $val .= $form->inputHidden('id_matchgame', $idMatch);
+        $val .= $form->submit("&#9888 $title_delete $data->name1 - $data->name2 &#9888");
+        $val .= "</form>\n";
+        return $val;
+    }
+    
+    static function list($pdo){
+        require '../lang/fr.php';
+        changeMD($pdo,"matchday");
+        echo "<h3>$title_statistics</h3>";
+        $req="SELECT m.id_matchgame,
+        cr.motivation1,cr.motivation2,
+        cr.currentForm1,cr.currentForm2,
+        cr.physicalForm1,cr.physicalForm2,
+        cr.weather1,cr.weather2,
+        cr.bestPlayers1,cr.bestPlayers2,
+        cr.marketValue1,cr.marketValue2,
+        cr.home_away1,cr.home_away2,
+        c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
+        m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchgame m
+        LEFT JOIN team c1 ON m.team_1=c1.id_team
+        LEFT JOIN team c2 ON m.team_2=c2.id_team
+        LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame
+        WHERE m.id_matchday=:id_matchday ORDER BY m.date
+        ;";
+        $data = $pdo->prepare($req,[
+            'id_matchday' => $_SESSION['matchdayId']
+        ],true);
+        $counter = $pdo->rowCount();
+        if($counter > 0){
+            
+            $table="	 <table class='stats'>\n";
+            $table.="  		<tr>\n";
+            $table.="  		  <th>$title_match</th>\n";
+            $table.="         <th>$title_prediction</th>\n";
+            $table.="         <th>$title_result</th>\n";
+            $table.="         <th>$title_odds</th>\n";
+            $table.="         <th>$title_success</th>\n";
+            $table.="       </tr>\n";
+            
+            $matchs=$success=$earningSum=$totalJouee=0;
+            
+            foreach ($data as $d)
+            {
+                
+                // Marketvalue
+                $v1=criterion("v1",$d,$pdo);
+                $v2=criterion("v2",$d,$pdo);
+                $mv1 = round(sqrt($v1/$v2));
+                $mv2 = round(sqrt($v2/$v1));
+                
+                $dom = $d->home_away1;
+                $ext = $d->home_away2;
+                
+                // Predictions history
+                $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
+                    SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
+                    SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
+                    FROM matchgame m
+                    LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame
+                    WHERE cr.motivation1='".$d->motivation1."'
+                    AND cr.motivation2='".$d->motivation2."'
+                    AND cr.currentForm1='".$d->currentForm1."'
+                    AND cr.currentForm2='".$d->currentForm2."'
+                    AND cr.physicalForm1='".$d->physicalForm1."'
+                    AND cr.physicalForm2='".$d->physicalForm2."'
+                    AND cr.weather1='".$d->weather1."'
+                    AND cr.weather2='".$d->weather2."'
+                    AND cr.bestPlayers1='".$d->bestPlayers1."'
+                    AND cr.bestPlayers2='".$d->bestPlayers2."'
+                    AND cr.marketValue1='".$d->marketValue1."'
+                    AND cr.marketValue2='".$d->marketValue2."'
+                    AND cr.home_away1='".$d->home_away1."'
+                    AND cr.home_away2='".$d->home_away2."'
+                    AND m.date<'".$d->date."'";
+                $r = $pdo->prepare($req,'');
+                $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$pdo);
+                $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$pdo);
+                
+                // Sum
+                $win="";
+                
+                $sum1=
+                $d->motivation1
+                +$d->currentForm1
+                +$d->physicalForm1
+                +$d->weather1
+                +$d->bestPlayers1
+                +$mv1
+                +$dom
+                +$predictionsHistoryHome;
+                $sum2=
+                $d->motivation2
+                +$d->currentForm2
+                +$d->physicalForm2
+                +$d->weather2
+                +$d->bestPlayers2
+                +$mv2
+                +$ext
+                +$predictionsHistoryAway;
+                if($sum1>$sum2) $prediction="1";
+                elseif($sum1==$sum2) $prediction=$title_draw;
+                elseif($sum1<$sum2) $prediction="2";
+                
+                $matchs++;
+                
+                $playedOdds=0;
+                switch($prediction){
+                    case "1":
+                        $playedOdds = $d->odds1;
+                        break;
+                    case "N":
+                        $playedOdds = $d->oddsD;
+                        break;
+                    case "2":
+                        $playedOdds = $d->odds2;
+                        break;
+                }
+                
+                if($prediction==$d->result){
+                    $win = $icon_winOK;
+                    $success++;
+                    $earningSum += $playedOdds;
+                } elseif ($d->result!="") $win = $icon_winKO;
+                $totalJouee+=$playedOdds;
+                
+                $table.="  		<tr>\n";
+                $table.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
+                $table.="  		  <td>".$prediction."</td>\n";
+                $table.="  		  <td>";
+                if($d->result=='D') $table.=$title_draw;
+                else $table.=$d->result;
+                $table.="</td>\n";
+                $table.="  		  <td>".$playedOdds."</td>\n";
+                $table.="  		  <td>".$win."</td>\n";
+                $table.="       </tr>\n";
+                
+            }
+            
+            $table.="	 </table>\n";
+            
+            // Values
+            $benef=money_format('%i',$earningSum-$matchs);
+            $roi = round(($benef/$matchs)*100);
+            $successRate = (($success/$matchs)*100);
+            $earning = money_format('%i',$earningSum);
+            $earningByBet = (round($earningSum/$matchs,2));
+            
+            echo "<p>\n";
+            echo "  <table class='stats'>\n";
+            
+            echo "    <tr>\n";
+            echo "      <td>$title_bet</td>\n";
+            echo "      <td>".$matchs."</td>\n";
+            echo "      <td>$title_profit</td>\n";
+            echo "      <td><span style='color:".valColor($benef)."'>";
+            if($benef>0) echo "+";
+            echo $benef."</span></td>\n";
+            echo "      <td>$title_ROI</td>\n";
+            echo "      <td>";
+            echo "<span style='color:".valColor($roi)."'>";
+            if($roi>0) echo "+";
+            echo $roi."&nbsp;%</span>";
+            echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($roi)."</a>";
+            echo "</td>\n";
+            echo "    </tr>\n";
+            
+            echo "    <tr>\n";
+            echo "      <td>$title_success</td>\n";
+            echo "      <td>$success</td>\n";
+            echo "      <td>$title_earning</td>\n";
+            echo "      <td>".$earning."&nbsp;&euro;</td>\n";
+            echo "      <td>$title_earningByBet</td>\n";
+            echo "      <td>$earningByBet</td>\n";
+            echo "    </tr>\n";
+            
+            echo "    <tr>\n";
+            echo "      <td>$title_successRate</td>\n";
+            echo "      <td>";
+            if($matchs>0) echo $successRate;
+            else echo 0;
+            echo "&nbsp;%</td>\n";
+            $averageOdds=(round($totalJouee/$matchs,2));
+            echo "      <td>$title_oddsAveragePlayed</td>\n";
+            echo "      <td>".$averageOdds;
+            if(($averageOdds<1.8)||($averageOdds>2.3)){
+                echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valOdds($averageOdds)."</a>";
+            }
+            echo "</td>\n";
+            echo "      <td></td>\n";
+            echo "      <td></td>\n";
+            echo "    </tr>\n";
+            
+            echo "  </table>\n";
+            echo "</p>\n";
+            
+            echo $table;
+        } else echo $title_noStatistic;
     }
 }
 ?>
