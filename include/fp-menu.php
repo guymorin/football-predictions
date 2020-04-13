@@ -12,7 +12,7 @@ if(isset($_SESSION['seasonId'])){
     echo "	 <li><a href='index.php?page=championship'>$icon_championship $title_championship</a></li>\n";
     if(isset($_SESSION['championshipId'])){
         echo "	 <li><a href='index.php?page=matchday'>$icon_matchday $title_matchday ".(isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</a></li>\n";
-        echo "	 <li><a href='index.php?page=marketValue'>$icon_team $title_team</a></li>\n";
+        echo "	 <li><a href='index.php?page=team'>$icon_team $title_team</a></li>\n";
         echo "	 <li><a href='index.php?page=player'>$icon_player $title_player</a></li>\n";
     }
 }

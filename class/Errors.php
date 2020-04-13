@@ -28,7 +28,9 @@ class Errors
      */
     public function getError()
     {
-        return "<div class='error'>".$this->errorMessage."</div>\n";
+        $val = '';
+        if($this->errorMessage!="") $val = "<div class='error'>".$this->errorMessage."</div>\n";
+        return $val;
     }
     
     // Setters
@@ -45,9 +47,9 @@ class Errors
      * 
      * @param string $error Error message to add
      */
-    public function addError($error)
+    public function addError($title, $error)
     {
-        $this->errorMessage .= "$error<br />";
+        $this->errorMessage .= "$title : $error<br />";
     }
     
     // Check function
@@ -57,7 +59,7 @@ class Errors
      * @param int|string $val Value to check
      * @return int|string|NULL Value
      */
-    public function check($check,$val)
+    public function check($check, $val, $title=null)
     {
         require '../lang/fr.php';
         switch($check){
@@ -65,17 +67,29 @@ class Errors
                 if($val==1) return $val;
                 else return null;
                 break;
+            case "ActionDelete":
+                if($val==1 || $val==2) return $val;
+                else return null;
+                break;
             case "Alnum":
                 if(ctype_alnum(str_replace('-','',str_replace(' ','',($val))))) return $val;
                 else {
-                    $this->addError($title_errorAlnum);
+                    $this->addError($title, $title_errorAlnum);
+                    return null;
+                }
+                break;
+            case "Date":
+                $test = explode('-', $val);
+                if(checkdate($test[1],$test[2],$test[0])) return $val;  
+                else {
+                    $this->addError($title, $title_errorDate);
                     return null;
                 }
                 break;
             case "Digit":
                 if(ctype_digit($val)) return $val;
                 else {
-                    $this->addError($title_errorDigit);
+                    $this->addError($title, $title_errorDigit);
                     return null;
                 }
                 break;
@@ -83,7 +97,7 @@ class Errors
                 $array=array('Goalkeeper','Defender','Midfielder','Forward');
                 if(in_array($val, $array)) return $val;
                 else {
-                    $this->addError($title_errorPosition);
+                    $this->addError($title, $title_errorPosition);
                     return null;
                 }
                 break;
@@ -91,7 +105,7 @@ class Errors
                 $array=array('','1','D','2');
                 if(in_array($val, $array)) return $val;
                 else {
-                    $this->addError($title_errorResult);
+                    $this->addError($title, $title_errorResult);
                     return null;
                 }
                 break;

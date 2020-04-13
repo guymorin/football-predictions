@@ -18,7 +18,11 @@ class Season
         $val = "";
         if(isset($_SESSION['seasonId'])) {
             $val .= "<a href='/'>$title_homepage</a>";
-            $val .= "<a href='index.php?page=season'>$title_listChampionships</a>";
+            if($current == 'list'){
+                $val .= "<a class='current' href='index.php?page=season'>$title_listChampionships</a>";
+            } else {
+                $val .= "<a href='index.php?page=season'>$title_listChampionships</a>";
+            }
         }
         if($current == 'create'){
             $val .= "<a class='current' href='index.php?page=season&create=1'>$title_createASeason</a>";
@@ -78,10 +82,9 @@ class Season
     }
     
     static function deletePopup($pdo, $seasonId){
-        $req="DELETE FROM season WHERE id_season=:id_season;";
-        $pdo->prepare($req,[
-            'id_season' => $seasonId
-        ]);
+        require '../lang/fr.php';
+        $req="DELETE FROM season WHERE id_season=$seasonId;";
+        $pdo->exec($req);
         $pdo->alterAuto('season');
         popup($title_deleted,"index.php?page=season");
     }
@@ -122,12 +125,7 @@ class Season
         $val .= "</form>\n";
         
         // Delete form
-        $val .= "<form action='index.php?page=season' method='POST' onsubmit='return confirm()'>\n";
-        $val .= $form->inputAction('delete');
-        $val .= $form->inputHidden('id_season', $seasonId);
-        $val .= $form->inputHidden("name",$data->name);
-        $val .= $form->submit("&#9888 $title_delete &#9888");
-        $val .= "</form>\n";
+        $val .= $form->deleteForm('season', 'id_season', $seasonId);
         return $val;
     }
     

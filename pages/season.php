@@ -16,7 +16,7 @@ use FootballPredictions\Section\Season;
 $seasonId=0;
 $seasonName="";
 isset($_POST['id_season'])  ? $seasonId=$error->check("Digit",$_POST['id_season']) : null;
-isset($_POST['name'])       ? $seasonName=$error->check("Alnum",$_POST['name']) : null;
+isset($_POST['name'])       ? $seasonName=$error->check("Alnum",$_POST['name'], $title_name) : null;
 
 // First, select a season
 if(
@@ -29,19 +29,22 @@ if(
 }
 // Delete
 elseif($delete == 1){
+    echo $form->popupConfirm('season', 'id_season', $seasonId);
+}
+elseif($delete == 2){
     Season::deletePopup($pdo, $seasonId);
 }
 // Create
 elseif($create == 1){
     echo "<h3>$title_createASeason</h3>\n";
-    if($pdo->findName('season', $seasonName))  $error->setError($title_errorExists);
+    if($pdo->findName('season', $seasonName))  $error->addError($title_name, $title_errorExists);
     elseif($seasonName!="") Season::createPopup($pdo, $seasonName);
     echo Season::createForm($error, $form);
 }
 // Modify
 elseif($modify == 1){
     echo "<h3>$title_modifyASeason</h3>\n";
-    if($pdo->findName('season', $seasonName))  $error->setError($title_errorExists);
+    if($pdo->findName('season', $seasonName))  $error->addError($title_name, $title_errorExists);
     elseif($seasonName!="") Season::modifyPopup($pdo, $seasonName, $seasonId);
     echo Season::modifyForm($pdo, $error, $form, $seasonId);
 }

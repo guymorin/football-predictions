@@ -25,17 +25,19 @@ if(isset($_POST['matchdaySelect'])){
 }
 
 isset($_POST['id_matchday'])   ? $matchdayId=$error->check("Digit",$_POST['id_matchday']) : null;
-isset($_POST['number'])		   ? $matchdayNumber=$error->check("Digit",$_POST['number']) : null;
+isset($_POST['number'])		   ? $matchdayNumber=$error->check("Digit",$_POST['number'], $title_number) : null;
 
 $idPlayer = $ratingPlayer = $deletePlayer = 0;
 isset($_POST['id_player'])	   ? $idPlayer=$error->check("Digit",$_POST['id_player']) : null;
-isset($_POST['rating'])		   ? $ratingPlayer=$error->check("Digit",$_POST['rating']) : null;
-isset($_POST['delete'])		   ? $deletePlayer=$error->check("Digit",$_POST['delete']) : null;
+isset($_POST['rating'])		   ? $ratingPlayer=$error->check("Digit",$_POST['rating'], $title_rating) : null;
 
 $val=array_combine($idPlayer,$ratingPlayer);
 
 // Delete
 if($delete==1){
+    echo $form->popupConfirm('matchday', 'id_matchday', $matchdayId);
+}
+elseif($delete==2){
     Matchday::deletePopup($pdo, $matchdayId);
 }
 // Create

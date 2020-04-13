@@ -16,22 +16,22 @@ if($expert==0) isset($_GET['expert'])      ? $expert=$error->check("Digit",$_GET
 if($modify==1){
 
     $rMatch="";
-    isset($_POST['id_matchgame'])   ? $idMatch=$error->check("Digit",$_POST['id_matchgame']) : null;
-    isset($_POST['result'])         ? $rMatch=$error->check("Digit",$_POST['result']) : null;
-    isset($_POST['motivation1'])    ? $moMatch1=array_filter($_POST['motivation1']) : null;
-    isset($_POST['currentForm1'])   ? $seMatch1=array_filter($_POST['currentForm1']) : null;
-    isset($_POST['physicalForm1'])  ? $foMatch1=array_filter($_POST['physicalForm1']) : null;
-    isset($_POST['weather1'])       ? $meMatch1=array_filter($_POST['weather1']) : null;
-    isset($_POST['bestPlayers1'])   ? $joMatch1=array_filter($_POST['bestPlayers1']) : null;
-    isset($_POST['marketValue1'])   ? $vaMatch1=array_filter($_POST['marketValue1']) : null;
-    isset($_POST['home_away1'])     ? $doMatch1=array_filter($_POST['home_away1']) : null;
-    isset($_POST['motivation2'])    ? $moMatch2=array_filter($_POST['motivation2']) : null;
-    isset($_POST['currentForm2'])   ? $seMatch2=array_filter($_POST['currentForm2']) : null;
-    isset($_POST['physicalForm2'])  ? $foMatch2=array_filter($_POST['physicalForm2']) : null;
-    isset($_POST['weather2'])       ? $meMatch2=array_filter($_POST['weather2']) : null;
-    isset($_POST['bestPlayers2'])   ? $joMatch2=array_filter($_POST['bestPlayers2']) : null;
-    isset($_POST['marketValue2'])   ? $vaMatch2=array_filter($_POST['marketValue2']) : null;
-    isset($_POST['home_away2'])     ? $doMatch2=array_filter($_POST['home_away2']) : null;
+    isset($_POST['id_matchgame'])   ? $idMatch = $error->check("Digit",$_POST['id_matchgame']) : null;
+    isset($_POST['result'])         ? $rMatch = $error->check("Digit",$_POST['result'], $title_result) : null;
+    isset($_POST['motivation1'])    ? $moMatch1 = array_filter($_POST['motivation1']) : null;
+    isset($_POST['currentForm1'])   ? $seMatch1 = array_filter($_POST['currentForm1']) : null;
+    isset($_POST['physicalForm1'])  ? $foMatch1 = array_filter($_POST['physicalForm1']) : null;
+    isset($_POST['weather1'])       ? $meMatch1 = array_filter($_POST['weather1']) : null;
+    isset($_POST['bestPlayers1'])   ? $joMatch1 = array_filter($_POST['bestPlayers1']) : null;
+    isset($_POST['marketValue1'])   ? $vaMatch1 = array_filter($_POST['marketValue1']) : null;
+    isset($_POST['home_away1'])     ? $doMatch1 = array_filter($_POST['home_away1']) : null;
+    isset($_POST['motivation2'])    ? $moMatch2 = array_filter($_POST['motivation2']) : null;
+    isset($_POST['currentForm2'])   ? $seMatch2 = array_filter($_POST['currentForm2']) : null;
+    isset($_POST['physicalForm2'])  ? $foMatch2 = array_filter($_POST['physicalForm2']) : null;
+    isset($_POST['weather2'])       ? $meMatch2 = array_filter($_POST['weather2']) : null;
+    isset($_POST['bestPlayers2'])   ? $joMatch2 = array_filter($_POST['bestPlayers2']) : null;
+    isset($_POST['marketValue2'])   ? $vaMatch2 = array_filter($_POST['marketValue2']) : null;
+    isset($_POST['home_away2'])     ? $doMatch2 = array_filter($_POST['home_away2']) : null;
     
     $pdo->alterAuto('criterion');
     $req="";

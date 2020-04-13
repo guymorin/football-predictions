@@ -16,13 +16,16 @@ isset($_POST['id_team'])&&isset($_POST['marketValue']) ? $val=array_combine($_PO
 if(empty($_POST['marketValue'])){
     $teamName = "";
     $teamId = $weatherCode = 0;
-    isset($_POST['name'])           ? $teamName = $error->check("Alnum",$_POST['name']) : null;
+    isset($_POST['name'])           ? $teamName = $error->check("Alnum",$_POST['name'], $title_name) : null;
     isset($_POST['id_team'])        ? $teamId = $error->check("Digit",$_POST['id_team']) : null;
-    isset($_POST['weather_code'])   ? $weatherCode = $error->check("Digit",$_POST['weather_code']) : null;
+    isset($_POST['weather_code'])   ? $weatherCode = $error->check("Digit",$_POST['weather_code'], $title_weatherCode) : null;
 }
 
 // Delete
 if($delete == 1){
+    echo $form->popupConfirm('team', 'id_team', $teamId);
+}
+elseif($delete == 2){
     Team::deletePopup($pdo, $teamId);
 }
 // Create

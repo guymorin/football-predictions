@@ -127,14 +127,8 @@ class Player
         $val .= $form->submit($title_modify);
         $val .= "</form>\n";
         $val .= "<br />\n";
-        $val .= "<form action='index.php?page=player' method='POST' onsubmit='return confirm()'>\n";
-        $val .= $form->inputAction('delete');
-        $val .= $form->inputHidden('id_team', $data->id_team);
-        $val .= $form->inputHidden('id_player', $data->id_player);
-        $val .= $form->inputHidden('name', $data->name);
-        $val .= $form->inputHidden('firstname', $data->firstname);
-        $val .= $form->submit("&#9888 $title_delete &#9888");
-        $val .= "</form>\n";
+        // Delete form
+        $val .= $form->deleteForm('player', 'id_player', $playerId, false, 'id_team', $data->id_team);
         return $val;
     }
     

@@ -163,11 +163,10 @@ function criterion($type,$data,$pdo){
     return $v;
 }
 
-function popup($texte,$lien){
-    
-    echo "  <div id='overlay'><div class='update'><a class='close' href='".$lien."'>&times;</a><p>".$texte."</p><p><a href='".$lien."'>Ok</a></p></div></div>\n";
-    
+function popup($text,$link){
+    echo "<div id='overlay'><div class='update'><p class='close'><a href='".$link."'>&times;</a></p><p>".$text."</p><p><a href='".$link."'>Ok</a></p></div></div>\n";    
 }
+
 function changeMD($pdo,$page){
     require '../lang/fr.php';
 

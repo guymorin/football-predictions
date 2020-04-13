@@ -67,6 +67,40 @@ class Forms
     
     /* Table elements */
     
+    public function deleteForm($page, $name, $id, $confirm=false, $nameOther=null, $idOther=null){
+        require '../lang/fr.php';
+        $val = "<form action='index.php?page=$page' method='POST'>\n";
+        if($confirm==true) $val .= $this->inputHidden('delete',2);
+        else $val .= $this->inputAction('delete');
+        $val .= $this->inputHidden($name, $id);
+        isset($nameOther) ? $val .= $this->inputHidden($nameOther, $idOther) : null;
+        if($confirm==true) $val .= $this->submit($title_yes);
+        else $val .= $this->submit("&#9888 $title_delete &#9888");
+        $val .= "</form>\n";
+        return $val;
+    }
+    
+    public function popupConfirm($page, $name, $id, $nameOther = null, $idOther = null){
+        require '../lang/fr.php';
+        $val = "<div id='overlay'>\n";
+        $val .= "  <div class='update confirm'>\n";
+        $val .= "      <p class='close'><a href='index.php?page=$page'>&times;</a></p>\n";
+        $val .= "      <p>$title_delete ?</p>\n";
+        $val .= "      <span>\n";
+        $val .= $this->deleteForm($page, $name, $id, true, $nameOther, $idOther);
+        $val .= "      </span>\n";
+        $val .= "      <span>\n";
+        $val .= "       <form action='index.php?page=$page' method='POST'>\n";
+        $val .= $this->inputAction('modify');
+        $val .= $this->inputHidden($name, $id);
+        $val .= $this->submit($title_no);
+        $val .= "       </form>\n";
+        $val .= "      </span>\n";
+        $val .= "  </div>\n";
+        $val .= "</div>\n";
+        return $val;
+    }
+    
     public function addTr($code, $colspan=0){
         $val = "    <tr>\n";
         foreach($code as $v){
@@ -167,24 +201,24 @@ class Forms
         require '../lang/fr.php';
 
         $val = $this->labelId('Goalkeeper', $title_goalkeeper);
-        if ($data->position=="Goalkeeper"){
+        if (isset($data) && $data->position=="Goalkeeper"){
             $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper', true);
         } else $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper');
 
         $val .= $this->labelId('Defender', $title_defender);
-        if ($data->position=="Defender"){
+        if (isset($data) && $data->position=="Defender"){
             $val .= $this->inputRadio('Defender', 'position', 'Defender', true);
         } else $val .= $this->inputRadio('Defender', 'position', 'Defender');
 
         $val .= $this->labelId('Midfielder', $title_midfielder);
-        if ($data->position=="Midfielder"){
+        if (isset($data) && $data->position=="Midfielder"){
             $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder', true);
         } else {
             $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder');
         }
         
         $val .= $this->labelId('Forward', $title_forward);
-        if ($data->position=="Forward"){
+        if (isset($data) && $data->position=="Forward"){
             $val .= $this->inputRadio('Forward', 'position', 'Forward', true);
         } else {
             $val .= $this->inputRadio('Forward', 'position', 'Forward');
@@ -231,6 +265,9 @@ class Forms
      */
     public function selectSubmit($name, $response){
         require '../lang/fr.php';
+        $championshipId = $seasonId = 0;
+        isset($_SESSION['championshipId']) ? $championshipId = $_SESSION['championshipId'] : null;
+        isset($_SESSION['seasonId']) ? $seasonId = $_SESSION['seasonId'] : null;
         $val = "    <select name='$name' onchange='submit()'>\n";
         $val .= "        <option value='0'>...</option>\n";
         while ($data = $response->fetch(PDO::FETCH_NUM)){
@@ -241,8 +278,8 @@ class Forms
                 case "id_team":
                     $val .= "  		<option value='" . $data[0] . "'";
                     if(
-                    ($name=="id_championship" && $data[0]==$_SESSION['championshipId'])
-                    ||($name=="id_season" && $data[0]==$_SESSION['seasonId'])
+                    ($name=="id_championship" && $data[0]==$championshipId)
+                        ||($name=="id_season" && $data[0]==$seasonId)
                     ){
                         $val .= " disabled";
                     }
@@ -287,7 +324,7 @@ class Forms
                 'id_championship' => $_SESSION['championshipId']
             ],true);
         }
-        $val .= "     <select name='";
+        $val = "     <select name='";
         if($name == null) $val .= 'id_player[]';
         else $val .= $name;
         $val .= "'>\n";
@@ -337,8 +374,10 @@ class Forms
      * @return string HTML code
      */
     public function submit($title){
-        return "<button type='submit'>$title</button>";
+        $val = "<button type='submit'>$title</button>";
+        return $this->surround($val);
         ;
     }
+
 }
 ?>

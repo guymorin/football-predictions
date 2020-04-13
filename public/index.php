@@ -56,7 +56,7 @@ isset($_GET['create'])          ? $create = $error->check("Action",$_GET['create
 $create==0 && isset($_POST['create'])  ? $create = $error->check("Action",$_POST['create']) : null;
 isset($_GET['modify'])          ? $modify = $error->check("Action",$_GET['modify']) : null;
 isset($_POST['modify'])         ? $modify = $error->check("Action",$_POST['modify']) : null;
-isset($_POST['delete'])         ? $delete = $error->check("Action",$_POST['delete']) : null;
+isset($_POST['delete'])         ? $delete = $error->check("ActionDelete",$_POST['delete']) : null;
 if(isset($_GET['exit'])) $exit=$error->check("Action",$_GET['exit']);
 
 
@@ -152,6 +152,7 @@ switch($page){
     case "season":
         if($create == 1)        $current = 'create';
         elseif($modify == 1)    $current = 'modify';
+        else                    $current = 'list';
         echo Season::submenu($pdo, $form, $current);
         break;
     case "team":

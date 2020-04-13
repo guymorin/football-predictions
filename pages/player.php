@@ -11,15 +11,18 @@ echo "<h2>$icon_player $title_player</h2>\n";
 
 // Values
 $playerId = $teamId = 0;
-$playerName = $playerFirstname = $playerPosition = "";
+$playerName = $playerFirstname = $playerPosition = '';
 isset($_POST['id_player'])      ? $playerId = $error->check("Digit",$_POST['id_player']) : null;
-isset($_POST['name'])           ? $playerName = $error->check("Alnum",$_POST['name']) : null;
-isset($_POST['firstname'])      ? $playerFirstname = $error->check("Alnum",$_POST['firstname']) : null;
-isset($_POST['position'])       ? $playerPosition = $error->check("Position",$_POST['position']) : null;
+isset($_POST['name'])           ? $playerName = $error->check("Alnum",$_POST['name'], $title_name) : null;
+isset($_POST['firstname'])      ? $playerFirstname = $error->check("Alnum",$_POST['firstname'], $title_firstname) : null;
+isset($_POST['position'])       ? $playerPosition = $error->check("Position",$_POST['position'], $title_position) : null;
 isset($_POST['id_team'])        ? $teamId = $error->check("Digit",$_POST['id_team']) : null;
 
 // Delete
-if($delete==1){
+if($delete == 1){
+    echo $form->popupConfirm('player', 'id_player', $playerId, 'id_team', $teamId);
+}
+elseif($delete==2){
     Player::deletePopup($pdo, $teamId, $playerId);
 }
 // Create
@@ -28,7 +31,7 @@ elseif($create==1){
     if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)){
         Player::createPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition);
     }
-    else  echo Player::createForm($pdo, $error, $form);
+    echo Player::createForm($pdo, $error, $form);
 }
 // Modify
 elseif($modify==1){

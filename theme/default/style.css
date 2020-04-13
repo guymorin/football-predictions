@@ -294,6 +294,8 @@ section #criterion table input[type='radio'] {margin-bottom:.3em}
 
 section form label {vertical-align: middle;}
 section form p {text-align:left;padding:.4em;display:inline-block;}
+section .menu form p {margin:0;padding:0;}
+
 section form span label:first-child{margin-left:1em;}
 section form span input[type='radio']{margin-right:1em;vertical-align:bottom;}
 section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em}
@@ -344,51 +346,8 @@ section .tooltip:hover span,.tooltip:focus span{
 footer {clear:both;font-size:.9em;color:#564;padding:.5em;margin-top:1em;text-align:center}
 footer strong {color:#222}
 
-/* Popup */
-#overlay {
-  position: fixed;
-  overflow:hidden;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #0009;
-  transition: opacity 500ms;
-  visibility: visible;
-  opacity: 1;
-  z-index: 1;
-}
-
-.update {
-  margin: 7em auto;
-  padding: .2em;
-  background: white;
-  border-radius: 6px;
-  text-align:center;
-  width: 30%;
-  position: relative;
-  transition: all 5s ease-in-out;
-  color:black;
-}
-.update a {padding:.5em 1em}
-.update a:hover {padding:.5em 1em}
-.update p {margin:1em;}
-.update .close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  transition: all 20ms;
-  font-size: 1.5em;
-  font-weight: bold;
-  margin:0;
-  padding:.1em .3em;
-  text-decoration: none;
-  background:none;border:none;color:#8b6;
-}
-.update .close:hover {background:none;border:none;color:#361;padding:.1em .3em;}
-
 /* Error */
-.error {color:purple;margin:.2em;display:block;text-align: center;}
+.error {color:red;background:#fff;border:1px solid #f99;border-radius:3px;margin:.2em;padding:.4em;display:inline-block;text-align: center;}
 
 
 /* Buttons */
@@ -420,3 +379,52 @@ button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, i
  	text-shadow:none;
  	cursor: pointer;
 }
+
+/* Popup */
+#overlay {
+  position: fixed;
+  overflow:hidden;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0009;
+  transition: opacity 500ms;
+  visibility: visible;
+  opacity: 1;
+  z-index: 1;
+}
+.update {
+  margin:8em auto;
+  padding:.2em;
+  background: white;
+  border-radius: 6px;
+  text-align:center;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+  color:black;
+}
+.update a {padding:.5em 1em}
+.update a:hover,.update a:focus {padding:.5em 1em}
+.update .close {margin:0;padding:0;}
+.update .close a {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+  background:none;border:none;color:#8b6;
+  float:right;
+  transition: all 20ms;
+  margin:0;
+  padding:0 .2em;
+}
+.update .close a:hover, .update .close a:focus {
+  background:none;
+  border:none;
+  color:#361;
+}
+.update p {clear:right;}
+.update span, .update span a {
+	display:inline-block;
+}
+.confirm p, .confirm form {display:block;margin:0;padding:0}

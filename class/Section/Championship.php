@@ -30,7 +30,7 @@ class Championship
                 $val .= "<a href='index.php?page=dashboard'>$title_dashboard</a>";
             }
         } else {
-            $val .= "<a class='session' href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
+            $val .= "<a class='session' href='index.php?page=season&exit=1'>".(isset($_SESSION['seasonName']) ? $_SESSION['seasonName'] : null)." &#10060;</a>";
         }
         
         if($current == 'create'){
@@ -140,12 +140,8 @@ class Championship
         $val .= $form->submit($title_modify);
         $val .= "</form>\n";
         
-        $val .= "<form action='index.php?page=championship' method='POST' onsubmit='return confirm()'>\n";
-        $val .= $form->inputAction('delete');
-        $val .= $form->inputHidden("id_championship", $championshipId);
-        $val .= $form->inputHidden("name", $data->name);
-        $val .= $form->submit("&#9888 $title_delete ".$data->name." &#9888");
-        $val .= "</form>\n";
+        // Delete form
+        $val .= $form->deleteForm('championship', 'id_championship', $championshipId);
         return $val;
     }
     

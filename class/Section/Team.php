@@ -26,11 +26,7 @@ class Team
         } else {
             $val .= "<a href='index.php?page=team&create=1'>$title_createATeam</a>\n";
         }
-        $req = "SELECT c.* FROM team c 
-        LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team 
-        WHERE scc.id_season = " . $_SESSION['seasonId'] . "
-        AND scc.id_championship = " . $_SESSION['championshipId'] . " 
-        ORDER BY name;";
+        $req = "SELECT * FROM team c ORDER BY name;";
         $data = $pdo->query($req);
         $counter = $pdo->rowCount();
         if($counter > 1){
@@ -69,11 +65,8 @@ class Team
     static function createPopup($pdo, $teamName, $weatherCode){
         require '../lang/fr.php';
         $pdo->alterAuto('team');
-        $req="INSERT INTO team VALUES(NULL,:$teamName,:weatherCode);";
-        $pdo->prepare($req,[
-            'teamName' => $teamName,
-            'weatherCode' => $weatherCode
-        ]);
+        $req="INSERT INTO team VALUES(NULL, '" . $teamName . "', $weatherCode);";
+        $pdo->exec($req);
         popup($title_created,"index.php?page=team");
     }
     
@@ -87,18 +80,13 @@ class Team
         $val .= "<form action='index.php?page=team' method='POST'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
+        $val .= $form->inputHidden('id_team',$teamId);
         $val .= $form->input($title_name, 'name');
         $val .= $form->input($title_weathercode, 'weather_code');
         $val .= $form->submit($title_modify);
         $val .= "</form>\n";
         // Delete
-        $val .= "<form action='index.php?page=team' method='POST' onsubmit='return confirm()'>\n";
-        $val .= $error->getError();
-        $val .= $form->inputAction('delete');
-        $val .= $form->inputHidden('id_team',$teamId);
-        $val .= $form->inputHidden('name',$data->name);
-        $val .= $form->submit("&#9888 $title_delete &#9888");
-        $val .= "</form>\n";
+        $val .= $form->deleteForm('team', 'id_team', $teamId);
         return $val;
     }
     
@@ -143,13 +131,9 @@ class Team
     
     static function modifyPopup($pdo, $teamName, $weatherCode, $teamId){
         require '../lang/fr.php';
-        $req="UPDATE team SET name=:name, weather_code=:weather_code
-        WHERE id_team=:id_team;";
-        $pdo->prepare($req,[
-            'name' => $teamName,
-            'weather_code' => $weatherCode,
-            'id_team' => $teamId
-        ]);
+        $req="UPDATE team SET name = '" . $teamName . "', weather_code = '" . $weatherCode . "' 
+        WHERE id_team = '" . $teamId . "';";
+        $pdo->exec($req);
         popup($title_modified,"index.php?page=team");
     }
     

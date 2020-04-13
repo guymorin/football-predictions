@@ -15,13 +15,13 @@ echo "<h2>$icon_matchday $title_matchday ".(isset($_SESSION['matchdayNum']) ? $_
 // Modify popup
 if($modify==1){
     isset($_POST['id_matchgame'])   ? $idMatch=$error->check("Digit",$_POST['id_matchgame']) : null;
-    isset($_POST['result'])         ? $rMatch=$error->check("Digit",$_POST['result']) : null;
-    isset($_POST['date'])           ? $dMatch=$error->check("Digit",$_POST['date']) : null;
-    isset($_POST['odds1'])          ? $c1Match=$error->check("Digit",$_POST['odds1']) : null;
-    isset($_POST['oddsD'])          ? $cNMatch=$error->check("Digit",$_POST['oddsD']) : null;
-    isset($_POST['odds2'])          ? $c2Match=$error->check("Digit",$_POST['odds2']) : null;
-    isset($_POST['red1'])           ? $r1Match=$error->check("Digit",$_POST['red1']) : null;
-    isset($_POST['red2'])           ? $r2Match=$error->check("Digit",$_POST['red2']) : null;
+    isset($_POST['result'])         ? $rMatch=$error->check("Digit",$_POST['result'], $title_result) : null;
+    isset($_POST['date'])           ? $dMatch=$error->check("Date",$_POST['date'], $title_date) : null;
+    isset($_POST['odds1'])          ? $c1Match=$error->check("Digit",$_POST['odds1'], $title_odds.' 1') : null;
+    isset($_POST['oddsD'])          ? $cNMatch=$error->check("Digit",$_POST['oddsD'], $title_odds.' '.$title_draw) : null;
+    isset($_POST['odds2'])          ? $c2Match=$error->check("Digit",$_POST['odds2'], $title_odds.' 2') : null;
+    isset($_POST['red1'])           ? $r1Match=$error->check("Digit",$_POST['red1'], $title_redCards.' 1') : null;
+    isset($_POST['red2'])           ? $r2Match=$error->check("Digit",$_POST['red2'], $title_redCards.' 2') : null;
     $cpt=0;
     $req="";
     foreach($idMatch as $k){

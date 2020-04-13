@@ -17,7 +17,7 @@ use FootballPredictions\Section\Championship;
 $championshipId=$standaway=$standhome=0;
 $championshipName="";
 isset($_POST['id_championship'])    ? $championshipId=$error->check("Digit",$_POST['id_championship']) : null;
-isset($_POST['name'])		        ? $championshipName=$error->check("Alnum",$_POST['name'],$error) : null;
+isset($_POST['name'])		        ? $championshipName=$error->check("Alnum",$_POST['name'], $title_name) : null;
 isset($_GET['standhome'])           ? $standhome=$error->check("Action",$_GET['standhome']) : null;
 isset($_GET['standaway'])           ? $standaway=$error->check("Action",$_GET['standaway']) : null;
 
@@ -30,9 +30,11 @@ if(
     ){
     echo Championship::selectChampionship($pdo, $form, $icon_quicknav);
 }
-
 // Delete
 elseif($delete == 1){
+    echo $form->popupConfirm('championship', 'id_championship', $championshipId);
+}
+elseif($delete == 2){
     if($championshipId==0) popup($title_error,"index.php?page=championship");
     else Championship::deletePopup($pdo, $championshipId);
 }

@@ -125,17 +125,8 @@ class Matchday
         require '../lang/fr.php';
         $pdo->alterAuto('matchgame');
         $req="INSERT INTO matchgame
-            VALUES(NULL,'".$_SESSION['matchdayId']."',:team1,:team2,:result,:odds1,:oddsD,:odds2,:date,0,0,0,0);";
-        $pdo->prepare($req,[
-            $_SESSION['matchdayId'],
-            'team1' => $team1,
-            'team2' => $team2,
-            'result' => $result,
-            'odds1' => $odds1,
-            'oddsD' => $oddsD,
-            'odds2' => $odds2,
-            'date' => $date
-        ]);
+            VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0,0,0);";
+        $pdo->exec($req);
         popup($title_created,"index.php?page=match&create=1");
     }
     
@@ -154,12 +145,8 @@ class Matchday
         $val .= $form->input($title_number, "number");
         $val .= $form->submit($title_modify);
         $val .= " </form>\n";
-        $val .= "<form action='index.php?page=matchday' method='POST' onsubmit='return confirm()'>\n";
-        $val .= $form->inputAction('delete');
-        $val .= $form->inputHidden("id_matchday", $matchdayId);
-        $val .= $form->inputHidden("number", "number");
-        $val .= $form->submit("&#9888 $title_delete &#9888");
-        $val .= "</form>\n";
+        // Delete
+        $val .= $form->deleteForm('matchday', 'id_matchday', $matchdayId);
         return $val;
     }
     
@@ -258,6 +245,7 @@ class Matchday
         $val .= "         $title_draw<input type='number' step='0.01' size='2' name='oddsD' value='".$data->oddsD."'>\n";
         $val .= "         2<input type='number' step='0.01' size='2' name='odds2' value='".$data->odds2."'>\n";
         $val .= "      </p>\n";
+        $val .= "<br />";
         
         $val .= "	    <p><label>$title_result :</label>\n";
         $val .= "     <input type='radio' name='result' id='1' value='1'";
@@ -269,15 +257,14 @@ class Matchday
         $val .= "     <input type='radio' name='result' id='2' value='2'";
         if($data->result=="2") $val .= " checked";
         $val .= "><label for='2'>2</label>\n";
+        $val .= "<br />";
         
         $val .= $form->submit($title_modify);
         $val .= "</form>\n";
         
-        $val .= "<form action='index.php?page=match' method='POST' onsubmit='return confirm()'>\n";
-        $val .= $form->inputAction('delete');
-        $val .= $form->inputHidden('id_matchgame', $idMatch);
-        $val .= $form->submit("&#9888 $title_delete $data->name1 - $data->name2 &#9888");
-        $val .= "</form>\n";
+        // Delete
+        $val .= $form->deleteForm('match', 'id_matchgame', $idMatch);
+        
         return $val;
     }
     
