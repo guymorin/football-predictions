@@ -33,7 +33,7 @@ h2 {
  text-transform:uppercase;
  text-shadow:0 0 2px #0006;
  color:white;
- background:#7a4 linear-gradient(#8b5,#582);
+ background:#777 linear-gradient(#888,#555);
  border-radius:2px;
  margin:0;
  padding:.2em 1.8em .2em .8em;
@@ -224,8 +224,8 @@ nav a {
 /* Section */
 
 section {
-	background: #bc9;
-	border:2px solid #ab8;
+	background: #edf;
+	border:2px solid #aaa;
 	box-shadow:0 0 10px #444;
 	width:90%;
 	height:calc(100% - 7em);
@@ -292,8 +292,10 @@ section #criterion table td:nth-child(4){width:10em;text-align:center}
 section #criterion table td:nth-child(3){width:3em}
 section #criterion table input[type='radio'] {margin-bottom:.3em}
 
-section form label {vertical-align: middle;}
-section form p {text-align:left;padding:.4em;display:inline-block;}
+section form {width: 80%;margin: 0 auto}
+section form label {vertical-align: middle;width:9em;display:inline-block;}
+section form label.right {text-align:right;padding-right:.2em}
+section form p {text-align:left;margin:.2em;padding:.4em;display:inline-block;}
 section .menu form p {margin:0;padding:0;}
 
 section form span label:first-child{margin-left:1em;}
@@ -347,8 +349,27 @@ footer {clear:both;font-size:.9em;color:#564;padding:.5em;margin-top:1em;text-al
 footer strong {color:#222}
 
 /* Error */
-.error {color:red;background:#fff;border:1px solid #f99;border-radius:3px;margin:.2em;padding:.4em;display:inline-block;text-align: center;}
-
+@keyframes errorDiv {
+  0% 	{opacity:1;margin-bottom:.2em;padding:.4em;height:inherit;color:#f00;}
+  79% 	{opacity:1;margin-bottom:.2em;padding:.4em;height:inherit;color:#f00;}
+  80% 	{opacity:1;margin-bottom:.2em;padding:.4em;height:inherit;color:#f000;}
+  100% 	{opacity:0;margin-bottom:0;padding:0;height:0;color:#f000;}
+}
+.error {
+	animation-duration: 5s;
+	animation-name: errorDiv;
+	height:0;
+	width: 80%;
+	color:#f000;
+	background:#fff;
+	border:1px solid #f93;
+	border-radius:3px;
+	margin:0;
+	padding:0;
+	display:inline-block;
+	opacity:0;
+	text-align: center;
+}
 
 /* Buttons */
 .update a,
@@ -396,7 +417,7 @@ button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, i
 }
 .update {
   margin:8em auto;
-  padding:.2em;
+  padding:.2em .2em .4em .2em;
   background: white;
   border-radius: 6px;
   text-align:center;

@@ -171,8 +171,16 @@ class Forms
      */
     public function inputNumber($label='', $name, $value, $step){
         $val= '';
-        if($label!='') $val .= $this->label($label);
+        if($label!='') $val .= $this->label($label, 'right');
         $val .= "<input type='number' step='".$step."' name='$name' value='".$value."'>";
+        $val = $this->surround($val);
+        return $val;
+    }
+
+    public function inputPassword($label='',$name){
+        $val = '';
+        if($label!='') $val.= $this->label($label);
+        $val.= "<input type='password' name='$name' value='".$this->getValue($name)."'>";
         $val = $this->surround($val);
         return $val;
     }
@@ -188,7 +196,7 @@ class Forms
     public function inputRadio($id, $name, $value, $checked=false){
         $val = "<input type='radio' ";
         $val.= "id='$id' name='$name' value='$value'";
-        $checked ? $val.= " checked" : null;
+        $checked ? $val.= " checked='checked'" : null;
         $val.= ">";
         return $val;
     }
@@ -200,24 +208,24 @@ class Forms
     public function inputRadioPosition($data=null){
         require '../lang/fr.php';
 
-        $val = $this->labelId('Goalkeeper', $title_goalkeeper);
+        $val = $this->labelId('Goalkeeper', $title_goalkeeper, 'right');
         if (isset($data) && $data->position=="Goalkeeper"){
             $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper', true);
         } else $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper');
 
-        $val .= $this->labelId('Defender', $title_defender);
+        $val .= $this->labelId('Defender', $title_defender, 'right');
         if (isset($data) && $data->position=="Defender"){
             $val .= $this->inputRadio('Defender', 'position', 'Defender', true);
         } else $val .= $this->inputRadio('Defender', 'position', 'Defender');
 
-        $val .= $this->labelId('Midfielder', $title_midfielder);
+        $val .= $this->labelId('Midfielder', $title_midfielder, 'right');
         if (isset($data) && $data->position=="Midfielder"){
             $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder', true);
         } else {
             $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder');
         }
         
-        $val .= $this->labelId('Forward', $title_forward);
+        $val .= $this->labelId('Forward', $title_forward, 'right');
         if (isset($data) && $data->position=="Forward"){
             $val .= $this->inputRadio('Forward', 'position', 'Forward', true);
         } else {
@@ -234,8 +242,10 @@ class Forms
      * @param string $title
      * @return string HTML code
      */
-    public function label($title){
-        return "<label>$title : </label>";
+    public function label($title, $class=null){
+        if($class==null) $val = "<label>$title : </label>";
+        else $val = "<label class='$class'>$title : </label>";
+        return $val;
     }
  
     /**
@@ -244,8 +254,10 @@ class Forms
      * @param string $title
      * @return string HTML code
      */
-    public function labelId($id, $title){
-        return "<label for='$id'>$title : </label>";
+    public function labelId($id, $title, $class=null){
+        if($class==null) $val = "<label for='$id'>$title : </label>";
+        else $val = "<label for='$id' class='$class'>$title : </label>";
+        return $val;
     }
     
     /**

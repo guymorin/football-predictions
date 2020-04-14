@@ -29,35 +29,36 @@ $form = new Forms($_POST);
     // Season selected
     if(isset($_POST['seasonSelect'])){
         $v=explode(",",$_POST['seasonSelect']);
-        $_SESSION['seasonId']=$error->check("Digit",$v[0]);
-        $_SESSION['seasonName']=$error->check("Alnum",$v[1]);
+        $_SESSION['seasonId'] = $error->check("Digit",$v[0]);
+        $_SESSION['seasonName'] = $error->check("Alnum",$v[1]);
         header('Location:index.php');
     }
     // Championship selected
     if(isset($_POST['championshipSelect'])){
         $v=explode(",",$_POST['championshipSelect']);
-        $_SESSION['championshipId']=$error->check("Digit",$v[0]);
-        $_SESSION['championshipName']=$error->check("Alnum",$v[1]);
+        $_SESSION['championshipId'] = $error->check("Digit",$v[0]);
+        $_SESSION['championshipName'] = $error->check("Alnum",$v[1]);
         header('Location:index.php');
     }
     // Matchday selected
     if(isset($_POST['matchdaySelect'])&&(!isset($_SESSION['matchdayId']))){
         $v=explode(",",$_POST['matchdaySelect']);
-        $_SESSION['matchdayId']=$error->check("Digit",$v[0]);
-        $_SESSION['matchdayNum']=$error->check("Digit",$v[1]);
+        $_SESSION['matchdayId'] = $error->check("Digit",$v[0]);
+        $_SESSION['matchdayNum'] = $error->check("Digit",$v[1]);
         header('Location:index.php');
     }
 // Check the page value
 $page="";
 if(isset($_GET['page'])) $page=$error->check("Alnum",$_GET['page']);
 
-$create = $modify = $delete = $exit = 0;
+$create = $modify = $delete = $exit = $logon = 0;
 isset($_GET['create'])          ? $create = $error->check("Action",$_GET['create']) : null;
 $create==0 && isset($_POST['create'])  ? $create = $error->check("Action",$_POST['create']) : null;
 isset($_GET['modify'])          ? $modify = $error->check("Action",$_GET['modify']) : null;
 isset($_POST['modify'])         ? $modify = $error->check("Action",$_POST['modify']) : null;
 isset($_POST['delete'])         ? $delete = $error->check("ActionDelete",$_POST['delete']) : null;
 if(isset($_GET['exit'])) $exit=$error->check("Action",$_GET['exit']);
+isset($_POST['logon'])         ? $logon = $error->check("Action",$_POST['logon']) : null;
 
 
 // Exit

@@ -41,9 +41,8 @@ elseif($modify == 1){
     if($teamName!="") Team::modifyPopup($pdo, $teamName, $weatherCode, $teamId);
     echo Team::modifyForm($pdo, $error, $form, $teamId);
 } else {
-
     echo "<h3>$title_marketValue</h3>";
-    if(isset($val)) Team::modifyPopupMarketValue($pdo);
+    if(isset($val)) Team::modifyPopupMarketValue($pdo, $error, $val);
     echo Team::modifyFormMarketValue($pdo, $error, $form);
 }
 ?>

@@ -67,7 +67,10 @@ class Player
         $val .= "<form action='index.php?page=player' method='POST'>\n";
         $val .= $form->inputAction('create');
         
-        $val .= $form->input($title_name, 'name') . $form->input($title_firstname, 'firstname');
+        $val .= $form->input($title_name, 'name');
+        $val .= "<br />\n";
+        
+        $val .= $form->input($title_firstname, 'firstname');
         $val .= "<br />\n";
         
         $val .= $form->inputRadioPosition();
@@ -118,6 +121,7 @@ class Player
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden('id_player', $data->id_player);
         $val .= $form->input($title_name,'name');
+        $val .= "<br />\n";
         $val .= $form->input($title_firstname,'firstname');
         $val .= "<br />\n";
         $val .= $form->inputRadioPosition($data);

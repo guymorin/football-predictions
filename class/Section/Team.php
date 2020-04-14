@@ -56,7 +56,9 @@ class Team
         $form->setValue('name', $teamName);
         $form->setValue('weather_code', $weatherCode);
         $val .= $form->input($title_name, 'name');
+        $val .= "<br />\n";
         $val .= $form->input($title_weathercode, 'weather_code');
+        $val .= "<br />\n";
         $val .= $form->submit($title_create);
         $val .= "</form>\n";  
         return $val;
@@ -82,7 +84,9 @@ class Team
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden('id_team',$teamId);
         $val .= $form->input($title_name, 'name');
+        $val .= "<br />\n";
         $val .= $form->input($title_weathercode, 'weather_code');
+        $val .= "<br />\n";
         $val .= $form->submit($title_modify);
         $val .= "</form>\n";
         // Delete
@@ -137,15 +141,15 @@ class Team
         popup($title_modified,"index.php?page=team");
     }
     
-    static function modifyPopupMarketValue($pdo){
+    static function modifyPopupMarketValue($pdo, $error, $val){
         require '../lang/fr.php';
         $pdo->alterAuto('marketValue');
-        $req="";
+        $req = "";
         foreach($val as $k=>$v){
-            $v=$error->check("Digit",$v);
+            $v=$error->check('Digit', $v, $title_marketValue);
             if($v>0){
                 $r = "SELECT COUNT(*) as nb FROM marketValue
-            WHERE id_season=:id_season AND id_team=:id_team;";
+                WHERE id_season=:id_season AND id_team=:id_team;";
                 $data = $pdo->prepare($r,[
                     'id_season' => $_SESSION['seasonId'],
                     'id_team' => $k
@@ -159,8 +163,9 @@ class Team
                 }
             }
         }
+        
         $pdo->exec($req);
-        popup($title_modified,"index.php?page=marketValue");
+        popup($title_modified,"index.php?page=team");
     }
 }
 ?>

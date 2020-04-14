@@ -205,11 +205,11 @@ class Matchday
         $val .= "<br />";
         
         $val .= $form->labelBr($title_result);
-        $val .= $form->labelId('1', '1');
+        $val .= $form->labelId('1', '1', 'right');
         $val .= $form->inputRadio('1', 'result', '1', false);
-        $val .= $form->labelId('D', $title_draw);
+        $val .= $form->labelId('D', $title_draw, 'right');
         $val .= $form->inputRadio('D', 'result', 'D', false);
-        $val .= $form->labelId('2', '2');
+        $val .= $form->labelId('2', '2', 'right');
         $val .= $form->inputRadio('2', 'result', '2', false);
         $val .= "<br />";
         
@@ -240,23 +240,24 @@ class Matchday
         $val .= $form->selectTeam($pdo,'team_2',$data->id2);
         $val .= "<br />";
         
-        $val .= "	    <p><label>$title_odds :</label>\n";
-        $val .= "         1<input type='number' step='0.01' size='2' name='odds1' value='".$data->odds1."'>\n";
-        $val .= "         $title_draw<input type='number' step='0.01' size='2' name='oddsD' value='".$data->oddsD."'>\n";
-        $val .= "         2<input type='number' step='0.01' size='2' name='odds2' value='".$data->odds2."'>\n";
-        $val .= "      </p>\n";
+        $val .= $form->labelBr($title_odds);
+        $val .= $form->inputNumber('1', 'odds1', $data->odds1, '0.01');
+        $val .= $form->inputNumber($title_draw, 'oddsD', $data->oddsD, '0.01');
+        $val .= $form->inputNumber('2', 'odds2', $data->odds2, '0.01');
         $val .= "<br />";
         
-        $val .= "	    <p><label>$title_result :</label>\n";
-        $val .= "     <input type='radio' name='result' id='1' value='1'";
-        if($data->result=="1") $val .= " checked";
-        $val .= "><label for='1'>1</label>\n";
-        $val .= "     <input type='radio' name='result' id='D' value='D'";
-        if($data->result=="D") $val .= " checked";
-        $val .= "><label for='D'>$title_draw</label>\n";
-        $val .= "     <input type='radio' name='result' id='2' value='2'";
-        if($data->result=="2") $val .= " checked";
-        $val .= "><label for='2'>2</label>\n";
+        $val .= $form->labelBr($title_result);
+        $val .= $form->labelId('1', '1', 'right');
+        if($data->result=="1") $val .= $form->inputRadio('1', 'result', '1', true);
+        else $val .= $form->inputRadio('1', 'result', '1', false);
+        
+        $val .= $form->labelId('D', $title_draw, 'right');
+        if($data->result=="D") $val .= $form->inputRadio('D', 'result', 'D', true);
+        else $val .= $form->inputRadio('D', 'result', 'D', false);
+
+        $val .= $form->labelId('2', '2', 'right');
+        if($data->result=="2") $val .= $form->inputRadio('2', 'result', '2', true);
+        else $val .= $form->inputRadio('2', 'result', '2', false);
         $val .= "<br />";
         
         $val .= $form->submit($title_modify);

@@ -4,6 +4,7 @@ echo "<link rel='stylesheet' type='text/css' media='all' ";
 echo "href='../theme/default/style.css' />\n";
 
 // Icons
+$icon_account="&#128100;";
 $icon_championship="&#127942;";
 $icon_homepage="&#127968;";
 $icon_matchday="&#x1f4c6;";

@@ -45,11 +45,14 @@ class Errors
     
     /**
      * 
+     * @param string $title Name of the field
      * @param string $error Error message to add
      */
-    public function addError($title, $error)
+    public function addError($name, $error = null)
     {
-        $this->errorMessage .= "$title : $error<br />";
+        if($error == null) $this->errorMessage .= "$name";
+        else $this->errorMessage .= "$name : $error";
+        $this->errorMessage .= "<br />";
     }
     
     // Check function

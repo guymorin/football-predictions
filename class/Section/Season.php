@@ -94,6 +94,7 @@ class Season
         $val .= "<form action='index.php?page=season' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= $form->input($title_name,"name");
+        $val .= "<br />\n";
         $val .= $form->submit($title_create);
         $val .= "</form>\n";
         return $val;    
@@ -121,6 +122,7 @@ class Season
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden('id_season',$data->id_season);
         $val .= $form->input($title_name,'name');
+        $val .= "<br />\n";
         $val .= $form->submit($title_modify);
         $val .= "</form>\n";
         
