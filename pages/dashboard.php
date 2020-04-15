@@ -238,7 +238,7 @@ $maxY=end($graph);;
 ?>
 <svg width="<?= $width;?>" height="<?= $height;?>">
 <!-- fond -->
-<rect width="100%" height="100%" fill="#dec" stroke="#774" stroke-width="4"/>
+<rect width="100%" height="100%" fill="#fff" stroke="#666" stroke-width="4"/>
         
 <!-- margin -->
 <g class="layer" transform="translate(40,<?= ($height/2);?>)">
@@ -263,8 +263,8 @@ foreach ($graph as $k => $v){
 <?php
 for($i=-($height/(2*25));$i<($height/(2*25)+1);$i++){
     if($i!=0){
-        echo "<text text-anchor='end' x='-6' y='" . (($i*20)+4). "' fill='#583'>" . -($i*10). " </text>\n";
-        echo "<line x1='-2' y1='" . ($i*20). "' x2='2' y2='" . ($i*20). "' stroke='#583' stroke-width='2' />\n";
+        echo "<text text-anchor='end' x='-6' y='" . (($i*20)+4). "' fill='#555'>" . -($i*10). " </text>\n";
+        echo "<line x1='-2' y1='" . ($i*20). "' x2='2' y2='" . ($i*20). "' stroke='#555' stroke-width='2' />\n";
     }
 }
 ?>

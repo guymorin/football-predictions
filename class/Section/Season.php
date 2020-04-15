@@ -13,6 +13,12 @@ class Season
 
     }
     
+    static function exitButton() {
+        if(isset($_SESSION['seasonName'])){
+            echo "<a class='session' href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
+        }
+    }
+    
     static function submenu($pdo, $form, $current=null){
         require '../lang/fr.php';
         $val = "";
@@ -27,6 +33,7 @@ class Season
         if($current == 'create'){
             $val .= "<a class='current' href='index.php?page=season&create=1'>$title_createASeason</a>";
         } else {
+            Account::exitButton();
             $val .= "<a href='index.php?page=season&create=1'>$title_createASeason</a>";
         }
         $req = "SELECT id_season, name FROM season ORDER BY name;";

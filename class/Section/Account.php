@@ -6,6 +6,7 @@
  */
 namespace FootballPredictions\Section;
 use \PDO;
+use FootballPredictions\Language;
 
 class Account
 {
@@ -13,6 +14,11 @@ class Account
 
     }
     
+    static function exitButton() {
+        if(isset($_SESSION['userLogin'])){
+            echo "<a class='session' href='index.php?page=account&exit=1'>".$_SESSION['userLogin']." &#10060;</a>";
+        }
+    }
     static function submenu($pdo, $form, $current = null){
         require '../lang/fr.php';
         $val = "  	<a href='/'>$title_homepage</a>";
@@ -38,7 +44,7 @@ class Account
     }
     
     static function logonForm($pdo, $error, $form){
-        require '../lang/fr.php';
+        //require '../lang/fr.php';
         $val = $error->getError();
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $val .= $form->inputAction('logon');
@@ -46,20 +52,27 @@ class Account
         $val .= "<br />\n";
         $val .= $form->inputPassword($title_password, 'password');
         $val .= "<br />\n";
-        $val .= $form->submit($title_logon);
+        $val .= $form->submit(Language::title('logon'));
         $val .= "</form>\n";
         $val .= $title_createAnAccount;
         return $val;
     }
 
     static function logonPopup($pdo, $login, $password){
-        require '../lang/fr.php';
+        $val = false;
         $req="SELECT * FROM fp_user
-        WHERE login='" . $login . "' AND password='" . $password . "';";
-        $pdo->query($req);
+        WHERE login = :login;";
+        $data = $pdo->prepare($req,['login' => $login]);
         $counter = $pdo->rowCount();
-        if($counter == 1) return true;
-        else return false;
+        if($counter == 1) {
+            if(password_verify($password, $data->password)){
+                $val = true;
+                $_SESSION['userLogin'] = $login;
+                $_SESSION['language'] = $data->language;
+                $_SESSION['theme'] = $data->theme;
+            }
+        }
+        return $val;
     }
     
     static function deletePopup($pdo, $id_fp_user){

@@ -243,8 +243,8 @@ class Forms
      * @return string HTML code
      */
     public function label($title, $class=null){
-        if($class==null) $val = "<label>$title : </label>";
-        else $val = "<label class='$class'>$title : </label>";
+        if($class==null) $val = "<label>$title&nbsp;: </label>";
+        else $val = "<label class='$class'>$title&nbsp;: </label>";
         return $val;
     }
  

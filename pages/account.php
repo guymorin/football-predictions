@@ -16,8 +16,9 @@ use FootballPredictions\Section\Account;
 // Values
 $userId = 0;
 $userLogin = $userPassword = "";
-isset($_POST['id_fp_user'])  ? $userId=$error->check("Digit",$_POST['id_fp_user']) : null;
-isset($_POST['login'])       ? $userLogin=$error->check("Alnum",$_POST['login'], $title_login) : null;
+isset($_POST['id_fp_user'])  ? $userId = $error->check("Digit",$_POST['id_fp_user']) : null;
+isset($_POST['login'])       ? $userLogin = $error->check("Alnum",$_POST['login'], $title_login) : null;
+isset($_POST['password'])    ? $userPassword = $_POST['password'] : null;
 
 if(    
     (empty($_SESSION['userLogin']))
@@ -28,8 +29,7 @@ if(
     if($logon == 0) echo Account::logonForm($pdo, $error, $form);
     elseif($logon == 1){
         if(Account::logonPopup($pdo, $userLogin, $userPassword)){
-            $_SESSION['userLogin'] = $userLogin;
-            header('Location:index.php?page=account');
+            header('Location:index.php');
         } else {
             $error->addError($title_logon,$title_error);
             echo  Account::logonForm($pdo, $error, $form);

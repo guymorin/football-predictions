@@ -12,6 +12,13 @@ class Matchday
     public function __construct(){
 
     }
+
+    static function exitButton() {
+        require '../lang/fr.php';
+        if(isset($_SESSION['matchdayId'])){
+            echo "<a class='session' href='index.php?page=matchday&exit=1'>".$title_MD.$_SESSION['matchdayNum']." &#10060;</a>";
+        }
+    }
     
     static function submenu($pdo, $form, $current = null){
         require '../lang/fr.php';

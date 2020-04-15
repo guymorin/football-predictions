@@ -16,6 +16,7 @@ use FootballPredictions\Section\Matchday;
 use FootballPredictions\Section\Player;
 use FootballPredictions\Section\Season;
 use FootballPredictions\Section\Team;
+use FootballPredictions\Section\Account;
 
 // Files to include
 require '../lang/fr.php';
@@ -64,6 +65,15 @@ isset($_POST['logon'])         ? $logon = $error->check("Action",$_POST['logon']
 // Exit
 if($exit==1){
     switch($page){
+        case "account":
+            unset($_SESSION['userLogin']);
+            unset($_SESSION['seasonId']);
+            unset($_SESSION['seasonName']);
+            unset($_SESSION['championshipId']);
+            unset($_SESSION['championshipName']);
+            unset($_SESSION['matchdayId']);
+            unset($_SESSION['matchdayNum']);
+            break;
         case "season":
             unset($_SESSION['seasonId']);
             unset($_SESSION['seasonName']);
@@ -87,7 +97,8 @@ if($exit==1){
 }
 
 // Choose a season, a championship...
-if(empty($_SESSION['seasonId'])) $page="season";
+if(empty($_SESSION['userLogin'])) $page="account";
+elseif(empty($_SESSION['seasonId'])) $page="season";
 elseif(
     (empty($_SESSION['championshipId']))
     &&($page=="")
@@ -163,11 +174,10 @@ switch($page){
         echo Team::submenu($pdo, $form, $current);
         break;
     default:
-        echo "<a class='session' href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
-        echo "<a class='session' href='index.php?page=championship&exit=1'>".$_SESSION['championshipName']." &#10060;</a>";
-        if(isset($_SESSION['matchdayId'])){
-            echo "<a class='session' href='index.php?page=matchday&exit=1'>".$title_MD.$_SESSION['matchdayNum']." &#10060;</a>";
-        }
+        Account::exitButton();
+        Season::exitButton();
+        Championship::exitButton();
+        Matchday::exitButton();
         break;
 }
 ?>
@@ -215,7 +225,7 @@ AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
         if($counter>0){
             // Select form
             $list = "<form action='index.php' method='POST'>\n";
-            $list .= $form->labelBr($title_selectTheMatchday);
+            $list .= $form->label($title_selectTheMatchday);
             $list .= $form->selectSubmit("matchdaySelect", $response);
             $list .= "</form>\n";
             

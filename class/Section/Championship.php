@@ -12,6 +12,12 @@ class Championship
     public function __construct(){
 
     }
+
+    static function exitButton() {
+        if(isset($_SESSION['championshipName'])){
+            echo "<a class='session' href='index.php?page=championship&exit=1'>".$_SESSION['championshipName']." &#10060;</a>";
+        }
+    }
     
     static function submenu($pdo, $form, $current=null){
         require '../lang/fr.php';
@@ -30,7 +36,8 @@ class Championship
                 $val .= "<a href='index.php?page=dashboard'>$title_dashboard</a>";
             }
         } else {
-            $val .= "<a class='session' href='index.php?page=season&exit=1'>".(isset($_SESSION['seasonName']) ? $_SESSION['seasonName'] : null)." &#10060;</a>";
+            Account::exitButton();
+            Season::exitButton();
         }
         
         if($current == 'create'){
