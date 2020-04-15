@@ -1,8 +1,10 @@
 <?php
 // Predictions matchgame default include file
 
+use FootballPredictions\Language;
+
 changeMD($pdo,"prediction"); // Arrows to change MD
-echo "<h3>$title_prediction</h3>\n";
+echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
 
 $prediction = $team1Weather = $team2Weather = $cloud = $history = "";
 
@@ -30,7 +32,7 @@ if($counter > 0){
     // Switch form
     echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
     echo $form->inputAction('expert');
-    echo $form->submit($title_swithToExpert);
+    echo $form->submit(Language::title('swithToExpert'));
     echo "</form>\n";
     
     // Modify form
@@ -316,7 +318,7 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_motivation</td>\n";
+        echo "  		  <td>" . (Language::title('motivation')) . "</td>\n";
         if($d->result!="") echo "<td>".$motivC1."</td>\n";
         else echo "  		  <td><input size='1' type='number' name='motivation1[$id]' value='".$motivC1."' placeholder='0'></td>\n";
         echo "  		  <td></td>\n";
@@ -325,7 +327,7 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_currentForm</td>";
+        echo "  		  <td>" . (Language::title('currentForm')) . "</td>";
         if($d->result!="") echo "<td>".$serieC1."</td>\n";
         else echo "  		  <td><input size='1' type='number' name='currentForm1[$id]' value='".$serieC1."' placeholder='0'></td>\n";
         echo "  		  <td></td>\n";
@@ -333,7 +335,7 @@ if($counter > 0){
         else echo "  		  <td><input size='1' type='number' name='currentForm2[$id]' value='".$serieC2."' placeholder='0'></td>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_physicalForm</td>\n";
+        echo "  		  <td>" . (Language::title('physicalForm')) . "</td>\n";
         if($d->result!="") echo "<td>".$d->physicalForm1."</td>\n";
         else echo "  		  <td><input size='1' type='number' name='physicalForm1[$id]' value='".$d->physicalForm1."' placeholder='0'></td>\n";
         echo "  		  <td></td>\n";
@@ -343,7 +345,7 @@ if($counter > 0){
         
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_weather <big>".$cloud."</big></td>\n";
+        echo "  		  <td>" . (Language::title('weather')) . " <big>".$cloud."</big></td>\n";
         if($d->result!="") echo "<td>".$team1Weather."</td>\n";
         else {
             echo "  		  <td><input size='1' type='text' readonly name='meteo1[$id]' value='".$team1Weather."'></td>\n";
@@ -358,7 +360,7 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_bestPlayers</td>\n";
+        echo "  		  <td>" . (Language::title('bestPlayers')) . "</td>\n";
         if($d->result!="") echo "<td>".$d->bestPlayers1."</td>\n";
         else echo "  		  <td><input size='1' type='number' name='bestPlayers1[$id]' value='".$d->bestPlayers1."' placeholder='0'></td>\n";
         echo "  		  <td></td>\n";
@@ -367,7 +369,7 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_marketValue</td>\n";
+        echo "  		  <td>" . (Language::title('marketValue')) . "</td>\n";
         if($d->result!="") echo "<td>".$d->marketValue1."</td>\n";
         else echo "  		  <td><input size='1' type='text' readonly name='marketValue1[$id]' value='".$mv1."'></td>\n";
         echo "  		  <td></td>\n";
@@ -376,7 +378,7 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_home / $title_away</td>";
+        echo "  		  <td>" . (Language::title('home')) . " / " . (Language::title('away')) . "</td>";
         if($d->result!="") echo "<td>".$d->home_away1."</td>\n";
         else echo "  		  <td><input size='1' type='text' readonly name='home_away1[$id]' value='".$dom."'></td>\n";
         echo "  		  <td></td>\n";
@@ -385,21 +387,21 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "          <tr>\n";
-        echo "            <td>$title_predictionsHistory</td>\n";
+        echo "            <td>" . (Language::title('predictionsHistory')) . "</td>\n";
         echo "            <td>$historyHome</td>\n";
         echo "            <td>$historyDraw</td>\n";
         echo "            <td>$historyAway</td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td><strong>$title_criterionSum</strong></td>\n";
+        echo "  		  <td><strong>" . (Language::title('criterionSum')) . "</strong></td>\n";
         echo "  		  <td><strong>$sum1</strong></td>\n";
         echo "  		  <td></td>\n";
         echo "  		  <td><strong>$sum2</strong></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_prediction</td>\n";
+        echo "  		  <td>" . (Language::title('prediction')) . "</td>\n";
         echo "  		  <td>";
         if($prediction == '1') echo $icon_OK;
         else echo $icon_KO;
@@ -416,7 +418,7 @@ if($counter > 0){
 
         if($d->result!=""){
             echo "  		<tr>\n";
-            echo "  		  <td>$title_result</td>\n";
+            echo "  		  <td>" . (Language::title('result')) . "</td>\n";
             echo "  		  <td>";
             $varName = "result[$id]";
             if($d->result == '1') echo $icon_OK;
@@ -434,8 +436,8 @@ if($counter > 0){
         }
         echo "	 </table>\n";
     }
-    echo $form->submit($title_modify);
+    echo $form->submit(Language::title('modify'));
     echo "</form>\n";
     
-} else echo $title_noMatch;
+} else echo Language::title('noMatch');
 ?>  

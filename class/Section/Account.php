@@ -20,12 +20,12 @@ class Account
         }
     }
     static function submenu($pdo, $form, $current = null){
-        require '../lang/fr.php';
-        $val = "  	<a href='/'>$title_homepage</a>";
+        
+        $val = "  	<a href='/'>Language::title('homepage')</a>";
         if($current == 'create'){
-            $val .= "<a class='current' href='index.php?page=account&create=1'>$title_createAnAccount</a>";
+            $val .= "<a class='current' href='index.php?page=account&create=1'>Language::title('createAnAccount')</a>";
         } else {
-            $val .= "<a href='index.php?page=account&create=1'>$title_createAnAccount</a>";
+            $val .= "<a href='index.php?page=account&create=1'>Language::title('createAnAccount')</a>";
         }
         $req = "SELECT id_fp_user, login
         FROM fp_user
@@ -36,7 +36,7 @@ class Account
         if($counter > 1){
             $val .= "<form action='index.php?page=account' method='POST'>\n";
             $val .= $form->inputAction('modify');
-            $val .= $form->label($title_modifynAccount);
+            $val .= $form->label(Language::title('modifynAccount'));
             $val .= $form->selectSubmit('id_fp_user', $data);
             $val .= "</form>\n";
         }
@@ -44,17 +44,17 @@ class Account
     }
     
     static function logonForm($pdo, $error, $form){
-        //require '../lang/fr.php';
+        //
         $val = $error->getError();
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $val .= $form->inputAction('logon');
-        $val .= $form->input($title_login, 'login');
+        $val .= $form->input(Language::title('login'), 'login');
         $val .= "<br />\n";
-        $val .= $form->inputPassword($title_password, 'password');
+        $val .= $form->inputPassword(Language::title('password'), 'password');
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('logon'));
         $val .= "</form>\n";
-        $val .= $title_createAnAccount;
+        $val .= Language::title('createAnAccount');
         return $val;
     }
 
@@ -76,36 +76,36 @@ class Account
     }
     
     static function deletePopup($pdo, $id_fp_user){
-        require '../lang/fr.php';
+        
         $req="DELETE FROM fp_user
         WHERE id_fp_user='" . $id_fp_user . "';";
         $data=$pdo->exec($req);
         $pdo->alterAuto('fp_user');
-        popup($title_deleted,"index.php?page=account");
+        popup(Language::title('deleted'),"index.php?page=account");
     }
     
     static function createForm($error, $form){
-        require '../lang/fr.php';
+        
         $val = $error->getError();
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $val .= $form->inputAction('create');
         
-        $val .= $form->input($title_login, 'login');
+        $val .= $form->input(Language::title('login'), 'login');
         $val .= "<br />\n";
         
-        $val .= $form->input($title_login, 'password');
+        $val .= $form->input(Language::title('login'), 'password');
         $val .= "<br />\n";
 
-        $val .= $form->input($title_login, 'email');
+        $val .= $form->input(Language::title('login'), 'email');
         $val .= "<br />\n";
         
-        $val .= $form->submit($title_create);
+        $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
         return $val;
     }
     
     static function createPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition){
-        require '../lang/fr.php';
+        
         $pdo->alterAuto('season_team_player');
         $pdo->alterAuto('player');
         $req1="INSERT INTO player
@@ -122,11 +122,11 @@ class Account
             'id_team' => $teamId,
             'id_player' => $playerId
         ]);
-        popup($title_created,"index.php?page=player");
+        popup(Language::title('created'),"index.php?page=player");
     }
     
     static function modifyForm($pdo, $error, $form, $playerId){
-        require '../lang/fr.php';
+        
         $req ="SELECT j.id_player, j.name, j.firstname, j.position, c.id_team
         FROM player j
         LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
@@ -140,14 +140,14 @@ class Account
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden('id_player', $data->id_player);
-        $val .= $form->input($title_name,'name');
-        $val .= $form->input($title_firstname,'firstname');
+        $val .= $form->input(Language::title('name'),'name');
+        $val .= $form->input(Language::title('firstname'),'firstname');
         $val .= "<br />\n";
         $val .= $form->inputRadioPosition($data);
         $val .= "<br />\n";
         $val .= $form->selectTeam($pdo, null, $data->id_team);
         $val .= "<br />\n";
-        $val .= $form->submit($title_modify);
+        $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
         $val .= "<br />\n";
         // Delete form
@@ -156,7 +156,7 @@ class Account
     }
     
     static function modifyPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition){
-        require '../lang/fr.php';
+        
         // Check if the player is known in Season Team Player table
         $req = "SELECT COUNT(*) as nb
         FROM season_team_player
@@ -186,11 +186,11 @@ class Account
             'id_team' => $teamId,
             'id_player' => $playerId
         ]);
-        popup($title_modified,"index.php?page=player");
+        popup(Language::title('modified'),"index.php?page=player");
     }
     
     static function list($pdo){
-        require '../lang/fr.php';
+        
         $req = "SELECT COUNT(e.rating) as nb,AVG(e.rating) as rating,c.name as team,j.name,j.firstname
         FROM player j
         LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
@@ -201,7 +201,7 @@ class Account
         $data = $pdo->prepare($req,null,true);
         $val = "<p>\n";
         $val .= "  <table>\n";
-        $val .= "      <tr><th></th><th>$title_player</th><th>$title_team</th><th>$title_teamOfTheWeek</th><th>$title_ratingAverage</th></tr>\n";
+        $val .= "      <tr><th></th><th>Language::title('player')</th><th>Language::title('team')</th><th>Language::title('teamOfTheWeek')</th><th>Language::title('ratingAverage')</th></tr>\n";
         $counterPodium = 0;
         $icon = "&#129351;"; // Gold medal
         foreach ($data as $d)
@@ -221,7 +221,7 @@ class Account
         $val .= "</p>\n";
         
         
-        $val .= "<h3>$title_bestPlayersByTeam</h3>\n";
+        $val .= "<h3>Language::title('bestPlayersByTeam')</h3>\n";
         
         $req = "SELECT COUNT(e.rating) as nb,AVG(e.rating) as rating,c.name as team,j.name,j.firstname
     FROM player j
@@ -232,7 +232,7 @@ class Account
     ORDER BY team ASC, nb DESC, rating DESC, j.name,j.firstname ASC";
         $data = $pdo->prepare($req,null,true);
         $val .= "  <table>\n";
-        $val .= "      <tr><th>$title_team</th><th>$title_player</th><th>$title_teamOfTheWeek</th><th>$title_ratingAverage</th></tr>\n";
+        $val .= "      <tr><th>Language::title('team')</th><th>Language::title('player')</th><th>Language::title('teamOfTheWeek')</th><th>Language::title('ratingAverage')</th></tr>\n";
         $counter = "";
         foreach ($data as $d)
         {

@@ -64,7 +64,7 @@ class Errors
      */
     public function check($check, $val, $title=null)
     {
-        require '../lang/fr.php';
+        
         switch($check){
             case "Action":
                 if($val==1) return $val;
@@ -77,7 +77,7 @@ class Errors
             case "Alnum":
                 if(ctype_alnum(str_replace('-','',str_replace(' ','',($val))))) return $val;
                 else {
-                    $this->addError($title, $title_errorAlnum);
+                    $this->addError($title, Language::title('errorAlnum'));
                     return null;
                 }
                 break;
@@ -85,14 +85,14 @@ class Errors
                 $test = explode('-', $val);
                 if(checkdate($test[1],$test[2],$test[0])) return $val;  
                 else {
-                    $this->addError($title, $title_errorDate);
+                    $this->addError($title, Language::title('errorDate'));
                     return null;
                 }
                 break;
             case "Digit":
                 if(ctype_digit($val)) return $val;
                 else {
-                    $this->addError($title, $title_errorDigit);
+                    $this->addError($title, Language::title('errorDigit'));
                     return null;
                 }
                 break;
@@ -100,7 +100,7 @@ class Errors
                 $array=array('Goalkeeper','Defender','Midfielder','Forward');
                 if(in_array($val, $array)) return $val;
                 else {
-                    $this->addError($title, $title_errorPosition);
+                    $this->addError($title, Language::title('errorPosition'));
                     return null;
                 }
                 break;
@@ -108,7 +108,7 @@ class Errors
                 $array=array('','1','D','2');
                 if(in_array($val, $array)) return $val;
                 else {
-                    $this->addError($title, $title_errorResult);
+                    $this->addError($title, Language::title('errorResult'));
                     return null;
                 }
                 break;

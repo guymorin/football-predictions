@@ -35,7 +35,7 @@ class Database
                 $this->db_pass
                 );
             } catch (PDOException $e) {
-                die("<div class='error'>".$title_error." : ". $e->getMessage()."</div>");
+                die("<div class='error'>".Language::title('error')." : ". $e->getMessage()."</div>");
             }
             $this->db = $db;
         }

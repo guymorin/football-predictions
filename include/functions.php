@@ -1,39 +1,41 @@
 <?php
+use FootballPredictions\Language;
+
 function valOdds($val){
-    require '../lang/fr.php';
+    
     $odds = "<span>";
     switch($val){
         case($val<1.5):
-            $odds .= $title_carefulToo;
+            $odds .= Language::title('carefulToo');
             break;
         case($val<1.8):
-            $odds .= $title_careful;
+            $odds .= Language::title('careful');
             break;
         case($val>3):
-            $odds .= $title_speculativeToo;
+            $odds .= Language::title('speculativeToo');
             break;
         case($val>2.3):
-            $odds .= $title_speculative;
+            $odds .= Language::title('speculative');
             break;
     }
     $odds .= "</span>";
     return $odds;
 }
 function valRoi($val){
-    require '../lang/fr.php';
+    
     $roi="<span>";
     switch($val){
         case($val<0):
-            $roi .= "$title_ROIisLosing";
+            $roi .= Language::title('ROIisLosing');
             break;
         case($val==0):
-            $roi .= "$title_ROIisNeutral";
+            $roi .= Language::title('ROIisNeutral');
             break;
         case($val>0&&$val<15):
-            $roi .= "$title_ROIwins";
+            $roi .= Language::title('ROIwins');
             break;
         case($val>=15):
-            $roi .= "$title_ROIisExcellent";
+            $roi .= Language::title('ROIisExcellent');
             break;
     }
     $roi.="</span>";
@@ -168,7 +170,7 @@ function popup($text,$link){
 }
 
 function changeMD($pdo,$page){
-    require '../lang/fr.php';
+    
 
     // Arrows to change matchday
     echo "<div id='changeMD'>\n";

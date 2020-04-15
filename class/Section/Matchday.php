@@ -5,6 +5,7 @@
  * Manage Matchday page
  */
 namespace FootballPredictions\Section;
+use FootballPredictions\Language;
 use \PDO;
 
 class Matchday
@@ -14,41 +15,41 @@ class Matchday
     }
 
     static function exitButton() {
-        require '../lang/fr.php';
+        
         if(isset($_SESSION['matchdayId'])){
-            echo "<a class='session' href='index.php?page=matchday&exit=1'>".$title_MD.$_SESSION['matchdayNum']." &#10060;</a>";
+            echo "<a class='session' href='index.php?page=matchday&exit=1'>" . (Language::title('MD')) . $_SESSION['matchdayNum'] . " &#10060;</a>";
         }
     }
     
     static function submenu($pdo, $form, $current = null){
-        require '../lang/fr.php';
-        $val = "  	<a href='/'>$title_homepage</a>";
+        
+        $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
         if(isset($_SESSION['matchdayId'])){
             
             if($current == 'statistics'){
-                $val .= "<a class='current' href='index.php?page=matchday'>$title_statistics</a>";
+                $val .= "<a class='current' href='index.php?page=matchday'>" . (Language::title('statistics')) . "</a>";
             } else {
-                $val .= "<a href='index.php?page=matchday'>$title_statistics</a>";
+                $val .= "<a href='index.php?page=matchday'>" . (Language::title('statistics')) . "</a>";
             }
             if($current == 'prediction'){ 
-                $val .= "<a class='current' href='index.php?page=prediction'>$title_predictions</a>";
+                $val .= "<a class='current' href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
             } else {    
-                $val .= "<a href='index.php?page=prediction'>$title_predictions</a>";
+                $val .= "<a href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
             }
             if($current == 'results'){
-                $val .= "<a class='current' href='index.php?page=results'>$title_results</a>";
+                $val .= "<a class='current' href='index.php?page=results'>" . (Language::title('results')) . "</a>";
             } else {
-                $val .= "<a href='index.php?page=results'>$title_results</a>";
+                $val .= "<a href='index.php?page=results'>" . (Language::title('results')) . "</a>";
             }
             if($current == 'teamOfTheWeek'){
-                $val .= "<a class='current' href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a>";
+                $val .= "<a class='current' href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
             } else {
-                $val .= "<a href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a>";
+                $val .= "<a href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
             }
             if($current == 'createMatch'){
-                $val .= "<a class='current' href='index.php?page=match&create=1'>$title_createAMatch</a>";
+                $val .= "<a class='current' href='index.php?page=match&create=1'>" . (Language::title('createAMatch')) . "</a>";
             } else {
-                $val .= "<a href='index.php?page=match&create=1'>$title_createAMatch</a>";
+                $val .= "<a href='index.php?page=match&create=1'>" . (Language::title('createAMatch')) . "</a>";
             }
             
             $req = "SELECT DISTINCT mg.id_matchgame, t1.name, t2.name, mg.date
@@ -64,12 +65,12 @@ class Matchday
             if($counter > 1){
                 $val .= "<form action='index.php?page=match' method='POST'>\n";
                 $val .= $form->inputAction('modify');
-                $val .= $form->label($title_modifyAMatch);
+                $val .= $form->label(Language::title('modifyAMatch'));
                 $val .= $form->selectSubmit('id_match', $data);
                 $val .= "</form>\n";
             }
         } else {
-            $val .= "<a href='index.php?page=matchday&create=1'>$title_createAMatchday</a>\n";
+            $val .= "<a href='index.php?page=matchday&create=1'>" . (Language::title('createAMatchday')) . "</a>\n";
             $req = "SELECT DISTINCT id_matchday, number FROM matchday
             WHERE id_season = " . $_SESSION['seasonId'] . "
             AND id_championship = " . $_SESSION['championshipId'] . " ORDER BY number DESC;";
@@ -78,7 +79,7 @@ class Matchday
             if($counter > 1){
                 $val .= "<form action='index.php?page=matchday' method='POST'>\n";
                 $val .= $form->inputAction('modify');
-                $val .= $form->label($title_modifyAMatchday);
+                $val .= $form->label(Language::title('modifyAMatchday'));
                 $val .= $form->selectSubmit('id_matchday', $data);
                 $val .= "</form>\n";
             }
@@ -87,36 +88,36 @@ class Matchday
     }
     
     static function deletePopup($pdo, $matchdayId){
-        require '../lang/fr.php';
+        
         $req="DELETE FROM matchday WHERE id_matchday='".$matchdayId."';";
         $pdo->exec($req);
         $pdo->alterAuto('matchday');
-        popup($title_deleted,"index.php?page=matchday");
+        popup(Language::title('deleted'),"index.php?page=matchday");
     }
     
     static function deletePopupMatch($pdo, $idMatch){
-        require '../lang/fr.php';
+        
         $req="DELETE FROM matchgame WHERE id_match=:id_match;";
         $pdo->prepare($req,[
             'id_match' => $idMatch
         ]);
         $pdo->alterAuto('matchgame');
-        popup($title_deleted,"index.php?page=match");
+        popup(Language::title('deleted'),"index.php?page=match");
     }
     
     static function createForm($pdo, $error, $form){
-        require '../lang/fr.php';
+        
         $val = $error->getError();
         $val .= "<form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
         $val .= $form->inputAction('create');
-        $val .= $form->input($title_number,'number');
-        $val .= $form->submit($title_create);
+        $val .= $form->input(Language::title('number'),'number');
+        $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
         return $val;
     }
     
     static function createPopup($pdo, $matchdayNumber){
-        require '../lang/fr.php';
+        
         $pdo->alterAuto('matchday');
         $req = "INSERT INTO matchday
         VALUES(NULL,:id_season,:id_championship,:number);";
@@ -125,20 +126,20 @@ class Matchday
             'id_championship' => $_SESSION['championshipId'],
             'number' => $matchdayNumber
         ]);
-        popup($title_created,"index.php?page=matchday");
+        popup(Language::title('created'),"index.php?page=matchday");
     }
     
     static function createPopupMatch($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date){
-        require '../lang/fr.php';
+        
         $pdo->alterAuto('matchgame');
         $req="INSERT INTO matchgame
             VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0,0,0);";
         $pdo->exec($req);
-        popup($title_created,"index.php?page=match&create=1");
+        popup(Language::title('created'),"index.php?page=match&create=1");
     }
     
     static function modifyForm($pdo, $data, $matchdayId, $error, $form){
-        require '../lang/fr.php';
+        
         $req = "SELECT * FROM matchday WHERE id_matchday=:id_matchday;";
         $data = $pdo->prepare($req,[
             'id_matchday' => $matchdayId
@@ -149,8 +150,8 @@ class Matchday
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden("id_matchday", $data->id_matchday);
-        $val .= $form->input($title_number, "number");
-        $val .= $form->submit($title_modify);
+        $val .= $form->input(Language::title('number'), "number");
+        $val .= $form->submit(Language::title('modify'));
         $val .= " </form>\n";
         // Delete
         $val .= $form->deleteForm('matchday', 'id_matchday', $matchdayId);
@@ -158,7 +159,7 @@ class Matchday
     }
     
     static function modifyPopup($pdo, $matchdayNumber, $matchdayId){
-        require '../lang/fr.php';
+        
         $req="UPDATE matchday
         SET number=:number
         WHERE id_matchday=:id_matchday;";
@@ -166,11 +167,11 @@ class Matchday
             'number' => $matchdayNumber,
             'id_matchday' => $matchdayId
         ]);
-        popup($title_modified,"index.php?page=matchday");
+        popup(Language::title('modified'),"index.php?page=matchday");
     }
     
     static function modifyPopupMatch($pdo, $team1, $team2, $result, $idMatch){
-        require '../lang/fr.php';
+        
         $req="UPDATE matchgame
             SET id_matchday = :id_matchday, team_1=:team_1, team_2 = :team_2, result = :result
             WHERE id_match = :id_match;";
@@ -181,17 +182,17 @@ class Matchday
             'result' => $result,
             'id_match' => $idMatch
         ]);
-        popup($title_modifyAMatch,"index.php?page=match");
+        popup(Language::title('modifyAMatch'),"index.php?page=match");
     }
     
     static function createMatchForm($pdo, $error, $form){
-        require '../lang/fr.php';
+        
         $val = $error->getError();
         $val .= "<form action='index.php?page=match' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= $form->inputHidden('matchdayId', $_SESSION['matchdayId']);
         
-        $val .= $form->inputDate($title_date, 'date', '');
+        $val .= $form->inputDate(Language::title('date'), 'date', '');
         $val .= "<br />";
         
         $req="SELECT c.id_team, c.name FROM team c
@@ -205,29 +206,29 @@ class Matchday
         $val .= $form->selectTeam($pdo,'team_2');
         $val .= "<br />";
         
-        $val .= $form->labelBr($title_odds);
+        $val .= $form->labelBr(Language::title('odds'));
         $val .= $form->inputNumber('1', 'odds1', '0', '0.01');
-        $val .= $form->inputNumber($title_draw, 'oddsD', '0', '0.01');
+        $val .= $form->inputNumber(Language::title('draw'), 'oddsD', '0', '0.01');
         $val .= $form->inputNumber('2', 'odds2', '0', '0.01');
         $val .= "<br />";
         
-        $val .= $form->labelBr($title_result);
+        $val .= $form->labelBr(Language::title('result'));
         $val .= $form->labelId('1', '1', 'right');
         $val .= $form->inputRadio('1', 'result', '1', false);
-        $val .= $form->labelId('D', $title_draw, 'right');
+        $val .= $form->labelId('D', Language::title('draw'), 'right');
         $val .= $form->inputRadio('D', 'result', 'D', false);
         $val .= $form->labelId('2', '2', 'right');
         $val .= $form->inputRadio('2', 'result', '2', false);
         $val .= "<br />";
         
-        $val .= $form->submit($title_create);
+        $val .= $form->submit(Language::title('create'));
         
         $val .= "</form>\n";   
         return $val;
     }
     
     static function modifyFormMatch($pdo, $error, $form, $idMatch){
-        require '../lang/fr.php';
+        
         $req="SELECT m.id_matchgame,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2
             FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team
             WHERE m.id_matchgame = :id_matchgame;";
@@ -240,25 +241,25 @@ class Matchday
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden('id_matchgame',$data->id_matchgame);
         
-        $val .= $form->inputDate($title_date, 'date', $data->date);
+        $val .= $form->inputDate(Language::title('date'), 'date', $data->date);
         $val .= "<br />";
         
         $val .= $form->selectTeam($pdo,'team_1',$data->id1);
         $val .= $form->selectTeam($pdo,'team_2',$data->id2);
         $val .= "<br />";
         
-        $val .= $form->labelBr($title_odds);
+        $val .= $form->labelBr(Language::title('odds'));
         $val .= $form->inputNumber('1', 'odds1', $data->odds1, '0.01');
-        $val .= $form->inputNumber($title_draw, 'oddsD', $data->oddsD, '0.01');
+        $val .= $form->inputNumber(Language::title('draw'), 'oddsD', $data->oddsD, '0.01');
         $val .= $form->inputNumber('2', 'odds2', $data->odds2, '0.01');
         $val .= "<br />";
         
-        $val .= $form->labelBr($title_result);
+        $val .= $form->labelBr(Language::title('result'));
         $val .= $form->labelId('1', '1', 'right');
         if($data->result=="1") $val .= $form->inputRadio('1', 'result', '1', true);
         else $val .= $form->inputRadio('1', 'result', '1', false);
         
-        $val .= $form->labelId('D', $title_draw, 'right');
+        $val .= $form->labelId('D', Language::title('draw'), 'right');
         if($data->result=="D") $val .= $form->inputRadio('D', 'result', 'D', true);
         else $val .= $form->inputRadio('D', 'result', 'D', false);
 
@@ -267,7 +268,7 @@ class Matchday
         else $val .= $form->inputRadio('2', 'result', '2', false);
         $val .= "<br />";
         
-        $val .= $form->submit($title_modify);
+        $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
         
         // Delete
@@ -277,9 +278,9 @@ class Matchday
     }
     
     static function list($pdo){
-        require '../lang/fr.php';
+        
         changeMD($pdo,"matchday");
-        echo "<h3>$title_statistics</h3>";
+        echo "<h3>" . (Language::title('statistics')) . "</h3>";
         $req="SELECT m.id_matchgame,
         cr.motivation1,cr.motivation2,
         cr.currentForm1,cr.currentForm2,
@@ -303,11 +304,11 @@ class Matchday
             
             $table="	 <table class='stats'>\n";
             $table.="  		<tr>\n";
-            $table.="  		  <th>$title_match</th>\n";
-            $table.="         <th>$title_prediction</th>\n";
-            $table.="         <th>$title_result</th>\n";
-            $table.="         <th>$title_odds</th>\n";
-            $table.="         <th>$title_success</th>\n";
+            $table.="  		  <th>" . (Language::title('match')) . "</th>\n";
+            $table.="         <th>" . (Language::title('prediction')) . "</th>\n";
+            $table.="         <th>" . (Language::title('result')) . "</th>\n";
+            $table.="         <th>" . (Language::title('odds')) . "</th>\n";
+            $table.="         <th>" . (Language::title('success')) . "</th>\n";
             $table.="       </tr>\n";
             
             $matchs=$success=$earningSum=$totalJouee=0;
@@ -371,7 +372,7 @@ class Matchday
                 +$ext
                 +$predictionsHistoryAway;
                 if($sum1>$sum2) $prediction="1";
-                elseif($sum1==$sum2) $prediction=$title_draw;
+                elseif($sum1==$sum2) $prediction=Language::title('draw');
                 elseif($sum1<$sum2) $prediction="2";
                 
                 $matchs++;
@@ -400,7 +401,7 @@ class Matchday
                 $table.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
                 $table.="  		  <td>".$prediction."</td>\n";
                 $table.="  		  <td>";
-                if($d->result=='D') $table.=$title_draw;
+                if($d->result=='D') $table.=Language::title('draw');
                 else $table.=$d->result;
                 $table.="</td>\n";
                 $table.="  		  <td>".$playedOdds."</td>\n";
@@ -422,13 +423,13 @@ class Matchday
             echo "  <table class='stats'>\n";
             
             echo "    <tr>\n";
-            echo "      <td>$title_bet</td>\n";
+            echo "      <td>" . (Language::title('bet')) . "</td>\n";
             echo "      <td>".$matchs."</td>\n";
-            echo "      <td>$title_profit</td>\n";
+            echo "      <td>" . (Language::title('profit')) . "</td>\n";
             echo "      <td><span style='color:".valColor($benef)."'>";
             if($benef>0) echo "+";
             echo $benef."</span></td>\n";
-            echo "      <td>$title_ROI</td>\n";
+            echo "      <td>" . (Language::title('ROI')) . "</td>\n";
             echo "      <td>";
             echo "<span style='color:".valColor($roi)."'>";
             if($roi>0) echo "+";
@@ -438,22 +439,22 @@ class Matchday
             echo "    </tr>\n";
             
             echo "    <tr>\n";
-            echo "      <td>$title_success</td>\n";
+            echo "      <td>" . (Language::title('success')) . "</td>\n";
             echo "      <td>$success</td>\n";
-            echo "      <td>$title_earning</td>\n";
+            echo "      <td>" . (Language::title('earning')) . "</td>\n";
             echo "      <td>".$earning."&nbsp;&euro;</td>\n";
-            echo "      <td>$title_earningByBet</td>\n";
+            echo "      <td>" . (Language::title('earningByBet')) . "</td>\n";
             echo "      <td>$earningByBet</td>\n";
             echo "    </tr>\n";
             
             echo "    <tr>\n";
-            echo "      <td>$title_successRate</td>\n";
+            echo "      <td>" . (Language::title('successRate')) . "</td>\n";
             echo "      <td>";
             if($matchs>0) echo $successRate;
             else echo 0;
             echo "&nbsp;%</td>\n";
             $averageOdds=(round($totalJouee/$matchs,2));
-            echo "      <td>$title_oddsAveragePlayed</td>\n";
+            echo "      <td>" . (Language::title('oddsAveragePlayed')) . "</td>\n";
             echo "      <td>".$averageOdds;
             if(($averageOdds<1.8)||($averageOdds>2.3)){
                 echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valOdds($averageOdds)."</a>";
@@ -467,7 +468,7 @@ class Matchday
             echo "</p>\n";
             
             echo $table;
-        } else echo $title_noStatistic;
+        } else echo Language::title('noStatistic');
     }
 }
 ?>

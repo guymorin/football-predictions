@@ -5,6 +5,7 @@
  * Manage season page
  */
 namespace FootballPredictions\Section;
+use FootballPredictions\Language;
 use \PDO;
 
 class Season
@@ -20,21 +21,21 @@ class Season
     }
     
     static function submenu($pdo, $form, $current=null){
-        require '../lang/fr.php';
+        
         $val = "";
         if(isset($_SESSION['seasonId'])) {
-            $val .= "<a href='/'>$title_homepage</a>";
+            $val .= "<a href='/'>Language::title('homepage')</a>";
             if($current == 'list'){
-                $val .= "<a class='current' href='index.php?page=season'>$title_listChampionships</a>";
+                $val .= "<a class='current' href='index.php?page=season'>Language::title('listChampionships')</a>";
             } else {
-                $val .= "<a href='index.php?page=season'>$title_listChampionships</a>";
+                $val .= "<a href='index.php?page=season'>Language::title('listChampionships')</a>";
             }
         }
         if($current == 'create'){
-            $val .= "<a class='current' href='index.php?page=season&create=1'>$title_createASeason</a>";
+            $val .= "<a class='current' href='index.php?page=season&create=1'>Language::title('createASeason')</a>";
         } else {
             Account::exitButton();
-            $val .= "<a href='index.php?page=season&create=1'>$title_createASeason</a>";
+            $val .= "<a href='index.php?page=season&create=1'>" . Language::title('createASeason') . "</a>";
         }
         $req = "SELECT id_season, name FROM season ORDER BY name;";
         $data = $pdo->query($req);
@@ -42,7 +43,7 @@ class Season
         if($counter > 1){
             $val .= "<form action='index.php?page=season' method='POST'>\n";
             $val .= $form->inputAction('modify');
-            $val .= $form->label($title_modifyASeason);
+            $val .= $form->label(Language::title('modifyASeason'));
             $val .= $form->selectSubmit('id_season', $data);
             $val .= "</form>\n";
             
@@ -51,7 +52,7 @@ class Season
     }
     
     static function selectSeason($pdo, $form, $icon_quicknav){
-        require '../lang/fr.php';
+        
         $val = "<ul class='menu'>\n";
         $req = "SELECT id_season, name FROM season ORDER BY name;";
         $pdo->query($req);
@@ -61,7 +62,7 @@ class Season
             
             // Select form
             $list = "<form action='index.php?page=championship' method='POST'>\n";
-            $list.= $form->labelBr($title_selectTheSeason);
+            $list.= $form->labelBr(Language::title('selectTheSeason'));
             $response = $pdo->query($req);
             $list.= $form->selectSubmit("seasonSelect",$response);
             $list.= "</form>\n";
@@ -76,7 +77,7 @@ class Season
             
             $val .= "<form action='index.php?page=championship' method='POST'>\n";
             $val .= $form->inputHidden("seasonSelect",$data->id_season.",".$data->name);
-            $val .= $form->label($title_quickNav);
+            $val .= $form->label(Language::title('quickNav'));
             $val .= $form->submit($icon_quicknav." ".$data->name);
             $val .= "</form>\n";
             
@@ -84,41 +85,41 @@ class Season
             return $val;
         }
         // No season
-        else    echo "  <h3>$title_noSeason</h3>\n";
+        else    echo "  <h3>Language::title('noSeason')</h3>\n";
         echo "</ul>\n";
     }
     
     static function deletePopup($pdo, $seasonId){
-        require '../lang/fr.php';
+        
         $req="DELETE FROM season WHERE id_season=$seasonId;";
         $pdo->exec($req);
         $pdo->alterAuto('season');
-        popup($title_deleted,"index.php?page=season");
+        popup(Language::title('deleted'),"index.php?page=season");
     }
     static function createForm($error, $form){
-        require '../lang/fr.php';
+        
         $val = $error->getError();
         $val .= "<form action='index.php?page=season' method='POST'>\n";
         $val .= $form->inputAction('create');
-        $val .= $form->input($title_name,"name");
+        $val .= $form->input(Language::title('name'),"name");
         $val .= "<br />\n";
-        $val .= $form->submit($title_create);
+        $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
         return $val;    
     }
     
     static function createPopup($pdo, $seasonName){
-        require '../lang/fr.php';
+        
         $pdo->alterAuto('season');
         $req="INSERT INTO season VALUES(NULL,:name);";
         $pdo->prepare($req,[
             'name' => $seasonName
         ]);
-        popup($title_created,"index.php?page=season");
+        popup(Language::title('created'),"index.php?page=season");
     }
     
     static function modifyForm($pdo, $error, $form, $seasonId){
-        require '../lang/fr.php';
+        
         $req = "SELECT * FROM season WHERE id_season=:id_season;";
         $data = $pdo->prepare($req,[
             'id_season' => $seasonId
@@ -128,9 +129,9 @@ class Season
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden('id_season',$data->id_season);
-        $val .= $form->input($title_name,'name');
+        $val .= $form->input(Language::title('name'),'name');
         $val .= "<br />\n";
-        $val .= $form->submit($title_modify);
+        $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
         
         // Delete form
@@ -139,7 +140,7 @@ class Season
     }
     
     static function modifyPopup($pdo, $seasonName, $seasonId){
-        require '../lang/fr.php';
+        
         $req="UPDATE season
         SET name=:name
         WHERE id_season=:id_season;";
@@ -147,11 +148,11 @@ class Season
             'name' => $seasonName,
             'id_season' => $seasonId
         ]);
-        popup($title_modified,"index.php?page=season");
+        popup(Language::title('modified'),"index.php?page=season");
     }
     
     static function list($pdo){
-        require '../lang/fr.php';
+        
         $req = "SELECT c.name, COUNT(*) as nb
         FROM championship c
         LEFT JOIN season_championship_team scc ON c.id_championship=scc.id_championship
@@ -163,8 +164,8 @@ class Season
         ],true);
         $val = "<table>\n";
         $val .= "  <tr>\n";
-        $val .= "      <th>$title_championship</th>\n";
-        $val .= "      <th>$title_teams</th>\n";
+        $val .= "      <th>Language::title('championship')</th>\n";
+        $val .= "      <th>Language::title('teams')</th>\n";
         $val .= "  </tr>\n";
         
         foreach ($data as $d)

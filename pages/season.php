@@ -5,18 +5,19 @@
 // Namespaces
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
+use FootballPredictions\Language;
 use FootballPredictions\Section\Season;
 
 ?>
 
-<h2><?= "$icon_season $title_season";?></h2>
+<h2><?= $icon_season . " " . (Language::title('season'));?></h2>
 
 <?php
 // Values
 $seasonId=0;
 $seasonName="";
 isset($_POST['id_season'])  ? $seasonId=$error->check("Digit",$_POST['id_season']) : null;
-isset($_POST['name'])       ? $seasonName=$error->check("Alnum",$_POST['name'], $title_name) : null;
+isset($_POST['name'])       ? $seasonName=$error->check("Alnum",$_POST['name'], Language::title('name')) : null;
 
 // First, select a season
 if(
@@ -36,21 +37,21 @@ elseif($delete == 2){
 }
 // Create
 elseif($create == 1){
-    echo "<h3>$title_createASeason</h3>\n";
-    if($pdo->findName('season', $seasonName))  $error->addError($title_name, $title_errorExists);
+    echo "<h3>" . (Language::title('createASeason')) . "</h3>\n";
+    if($pdo->findName('season', $seasonName))  $error->addError(Language::title('name'), Language::title('errorExists'));
     elseif($seasonName!="") Season::createPopup($pdo, $seasonName);
     echo Season::createForm($error, $form);
 }
 // Modify
 elseif($modify == 1){
-    echo "<h3>$title_modifyASeason</h3>\n";
-    if($pdo->findName('season', $seasonName))  $error->addError($title_name, $title_errorExists);
+    echo "<h3>" . (Language::title('modifyASeason')) . "</h3>\n";
+    if($pdo->findName('season', $seasonName))  $error->addError(Language::title('name'), Language::title('errorExists'));
     elseif($seasonName!="") Season::modifyPopup($pdo, $seasonName, $seasonId);
     echo Season::modifyForm($pdo, $error, $form, $seasonId);
 }
 // List
 else {
-    echo "<h3>$title_listChampionships ".$_SESSION['seasonName']."</h3>\n";
+    echo "<h3>" . (Language::title('listChampionships')) . " ".$_SESSION['seasonName']."</h3>\n";
     echo Season::list($pdo);
 }
 ?>

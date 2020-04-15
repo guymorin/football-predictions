@@ -5,23 +5,24 @@
 // Namespaces
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
+use FootballPredictions\Language;
 
 // Files to include
 require '../include/changeMD.php';
 
-echo "<h2>$icon_matchday $title_matchday ".(isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null)."</h2>\n";
+echo "<h2>" . $icon_matchday . " " . (Language::title('matchday')) . " " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null)."</h2>\n";
 
 // Modify
 // Modify popup
 if($modify==1){
     isset($_POST['id_matchgame'])   ? $idMatch=$error->check("Digit",$_POST['id_matchgame']) : null;
-    isset($_POST['result'])         ? $rMatch=$error->check("Digit",$_POST['result'], $title_result) : null;
-    isset($_POST['date'])           ? $dMatch=$error->check("Date",$_POST['date'], $title_date) : null;
-    isset($_POST['odds1'])          ? $c1Match=$error->check("Digit",$_POST['odds1'], $title_odds.' 1') : null;
-    isset($_POST['oddsD'])          ? $cNMatch=$error->check("Digit",$_POST['oddsD'], $title_odds.' '.$title_draw) : null;
-    isset($_POST['odds2'])          ? $c2Match=$error->check("Digit",$_POST['odds2'], $title_odds.' 2') : null;
-    isset($_POST['red1'])           ? $r1Match=$error->check("Digit",$_POST['red1'], $title_redCards.' 1') : null;
-    isset($_POST['red2'])           ? $r2Match=$error->check("Digit",$_POST['red2'], $title_redCards.' 2') : null;
+    isset($_POST['result'])         ? $rMatch=$error->check("Digit",$_POST['result'], Language::title('result')) : null;
+    isset($_POST['date'])           ? $dMatch=$error->check("Date",$_POST['date'], Language::title('date')) : null;
+    isset($_POST['odds1'])          ? $c1Match=$error->check("Digit",$_POST['odds1'], Language::title('odds').' 1') : null;
+    isset($_POST['oddsD'])          ? $cNMatch=$error->check("Digit",$_POST['oddsD'], Language::title('odds').' '.Language::title('draw')) : null;
+    isset($_POST['odds2'])          ? $c2Match=$error->check("Digit",$_POST['odds2'], Language::title('odds').' 2') : null;
+    isset($_POST['red1'])           ? $r1Match=$error->check("Digit",$_POST['red1'], Language::title('redCards').' 1') : null;
+    isset($_POST['red2'])           ? $r2Match=$error->check("Digit",$_POST['red2'], Language::title('redCards').' 2') : null;
     $cpt=0;
     $req="";
     foreach($idMatch as $k){
@@ -79,13 +80,13 @@ if($modify==1){
         $req.=" WHERE id_match='".$k."';";
     }
     $pdo->exec($req);
-    popup($title_modified,"index.php?page=results");
+    popup(Language::title('modified'),"index.php?page=results");
 
 }
 // Modify form    
 else {
     changeMD($pdo,"results");
-    echo "<h3>$title_results</h3>\n";
+    echo "<h3>" . (Language::title('results')) . "</h3>\n";
 
     $req="SELECT m.id_matchgame,
         c1.name as name1,c2.name as name2,
@@ -107,13 +108,13 @@ else {
         echo "<table>\n";
         
         echo "  <tr>\n";
-        echo "      <th>$title_date</th>\n";
-        echo "      <th>$title_notPlayed</th>\n";
-        echo "      <th>$title_match</th>\n";
+        echo "      <th>" . (Language::title('date')) . "</th>\n";
+        echo "      <th>" . (Language::title('notPlayed')) . "</th>\n";
+        echo "      <th>" . (Language::title('match')) . "</th>\n";
         echo "      <th>1</th>\n";
-        echo "      <th>$title_draw</th>\n";
+        echo "      <th>" . (Language::title('draw')) . "</th>\n";
         echo "      <th>2</th>\n";
-        echo "      <th colspan='2'>$title_redCards</th>\n";
+        echo "      <th colspan='2'>" . (Language::title('redCards')) . "</th>\n";
         echo "  </tr>\n";
         
         foreach ($data as $d)
@@ -134,21 +135,21 @@ else {
             echo "  	<td>";
             if($d->result=="1") echo $form->inputRadio("1", "result[$id]", "1", true);
             else echo $form->inputRadio("1", "result[$id]", "1", false);
-            echo "<br />" . $form->labelBr($title_odds);
+            echo "<br />" . $form->labelBr(Language::title('odds'));
             echo $form->inputNumber("", "odds1[$id]",$d->odds1, '0.01');
             echo "</td>\n";
             
             echo "  	<td>";
             if($d->result=="D") echo $form->inputRadio("D", "result[$id]", "D", true);
             else echo $form->inputRadio("D", "result[$id]", "D", false);
-            echo "<br />" . $form->labelBr($title_odds);
+            echo "<br />" . $form->labelBr(Language::title('odds'));
             echo $form->inputNumber("", "oddsD[$id]",$d->oddsD, '0.01');
             echo "</td>\n";
             
             echo "  	<td>";
             if($d->result=="2") echo $form->inputRadio("2", "result[$id]", "2", true);
             else echo $form->inputRadio("2", "result[$id]", "2", false);
-            echo "<br />" . $form->labelBr($title_odds);
+            echo "<br />" . $form->labelBr(Language::title('odds'));
             echo $form->inputNumber("", "odds2[$id]",$d->odds2, '0.01');
             echo "</td>\n";
             
@@ -160,7 +161,7 @@ else {
         }
         
         echo "</table>\n";
-        echo $form->submit($title_modify);
+        echo $form->submit(Language::title('modify'));
         echo "</form>\n";
-    } else echo $title_noResult;
+    } else echo Language::title('noResult');
 }

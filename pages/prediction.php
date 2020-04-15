@@ -3,9 +3,11 @@
 /* Author : Guy Morin */
 
 // Files to include
+use FootballPredictions\Language;
+
 require '../include/changeMD.php';
 
-echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
+echo "<h2>" . $icon_matchday . " " . (Language::title('matchday')) . " " . $_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $expert = 0;
@@ -17,7 +19,7 @@ if($modify==1){
 
     $rMatch="";
     isset($_POST['id_matchgame'])   ? $idMatch = $error->check("Digit",$_POST['id_matchgame']) : null;
-    isset($_POST['result'])         ? $rMatch = $error->check("Digit",$_POST['result'], $title_result) : null;
+    isset($_POST['result'])         ? $rMatch = $error->check("Digit",$_POST['result'], Language::title('result')) : null;
     isset($_POST['motivation1'])    ? $moMatch1 = array_filter($_POST['motivation1']) : null;
     isset($_POST['currentForm1'])   ? $seMatch1 = array_filter($_POST['currentForm1']) : null;
     isset($_POST['physicalForm1'])  ? $foMatch1 = array_filter($_POST['physicalForm1']) : null;
@@ -123,7 +125,7 @@ if($modify==1){
         }  
     }
     $pdo->exec($req);
-    popup($title_modifyPredictions,"index.php?page=prediction&expert=".$expert);
+    popup(Language::title('modifyPredictions'),"index.php?page=prediction&expert=".$expert);
 
 }
 // Default page or expert page

@@ -1,6 +1,8 @@
 <?php
 // Predictions matchgame expert include file
-echo "<h3>$title_prediction</h3>\n";
+use FootballPredictions\Language;
+
+echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
 
 $req="SELECT m.id_matchgame,
 cr.motivation1,cr.motivation2,
@@ -27,7 +29,7 @@ if($counter > 0){
     echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
     echo $form->inputHidden('modify','2');
     echo $form->inputHidden('expert','0');
-    echo $form->submit($title_swithToDefault);
+    echo $form->submit(Language::title('swithToDefault'));
     echo "</form>\n";
     
     // Modify form
@@ -72,62 +74,62 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_motivation</td>";
+        echo "  		  <td>" . (Language::title('motivation')) . "</td>";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='motivation1[$id]' value='".$d->motivation1."'></td>\n";
         echo "  		  <td></td>\n";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='motivation2[$id]' value='".$d->motivation2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_currentForm</td>";
+        echo "  		  <td>" . (Language::title('currentForm')) . "</td>";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='currentForm1[$id]' value='".$d->currentForm1."'></td>\n";
         echo "  		  <td></td>\n";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='currentForm2[$id]' value='".$d->currentForm2."'></td>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_physicalForm</td>";
+        echo "  		  <td>" . (Language::title('physicalForm')) . "</td>";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='physicalForm1[$id]' value='".$d->physicalForm1."'></td>\n";
         echo "  		  <td></td>\n";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='physicalForm2[$id]' value='".$d->physicalForm2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_weather</td>";
+        echo "  		  <td>" . (Language::title('weather')) . "</td>";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='meteo1[$id]' value='".$d->weather1."'></td>\n";
         echo "  		  <td></td>\n";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='meteo2[$id]' value='".$d->weather2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_bestPlayers</td>";
+        echo "  		  <td>" . (Language::title('bestPlayers')) . "</td>";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='bestPlayers1[$id]' value='".$d->bestPlayers1."'></td>\n";
         echo "  		  <td></td>\n";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='bestPlayers2[$id]' value='".$d->bestPlayers2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_marketValue</td>";
+        echo "  		  <td>" . (Language::title('marketValue')) . "</td>";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='marketValue1[$id]' value='".$d->marketValue1."'></td>\n";
         echo "  		  <td></td>\n";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='marketValue2[$id]' value='".$d->marketValue2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_home / $title_away</td>";
+        echo "  		  <td>" . (Language::title('home')) . " / " . (Language::title('away')) . "</td>";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='home_away1[$id]' value='".$d->home_away1."'></td>\n";
         echo "  		  <td></td>\n";
         echo "  		  <td><input size='1' type='number' placeholder='0' name='home_away2[$id]' value='".$d->home_away2."'></td>\n";
         echo "          </tr>\n";
     
         echo "  		<tr>\n";
-        echo "  		  <td>$title_criterionSum</td>";
+        echo "  		  <td>" . (Language::title('criterionSum')) . "</td>";
         echo "  		  <td>$sum1</td>\n";
         echo "  		  <td></td>\n";
         echo "  		  <td>$sum2</td>\n";
         echo "          </tr>\n";
     
         echo "  		<tr>\n";
-        echo "  		  <td>$title_prediction</td>";
+        echo "  		  <td>" . (Language::title('prediction')) . "</td>";
         echo "  		  <td>";
         if($prediction == '1') echo $icon_OK;
         else echo $icon_KO;
@@ -143,7 +145,7 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>$title_result</td>";
+        echo "  		  <td>" . (Language::title('result')) . "</td>";
         echo "  		  <td>";
         $varName = "result[$id]";
         if($d->result == '1') echo $icon_OK;
@@ -163,9 +165,9 @@ if($counter > 0){
     
     }
     
-    echo $form->submit($title_modify);
+    echo $form->submit(Language::title('modify'));
     
     echo "</form>\n";
     
-} else echo $title_noMatch;
+} else echo Language::title('noMatch');
 ?>

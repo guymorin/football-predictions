@@ -2,8 +2,10 @@
 /* This is the Football Predictions dashboard section page */
 /* Author : Guy Morin */
 
-echo "<h2>$icon_championship $title_championship</h2>\n";
-echo "<h3>$title_dashboard</h3>\n";
+use FootballPredictions\Language;
+
+echo "<h2>$icon_championship " . (Language::title('championship')) . "</h2>\n";
+echo "<h3>" . (Language::title('dashboard')) . "</h3>\n";
 
 $graph=array(0=>0);
 
@@ -30,13 +32,13 @@ $data = $pdo->prepare($req,null,true);
 // Table of benefits
 $table = "	 <table class='benef'>\n";
 $table .= "  		<tr>\n";
-$table .= "  		  <th>$title_matchday</th>\n";
-$table .= "  		  <th>$title_bet</th>\n";
-$table .= "         <th>$title_success</th>\n";
-$table .= "         <th>$title_oddsAveragePlayed</th>\n";
-$table .= "         <th>$title_earning</th>\n";
-$table .= "         <th>$title_profit</th>\n";
-$table .= "         <th>$title_profit<br />total</th>\n";
+$table .= "  		  <th>" . (Language::title('matchday')) . "</th>\n";
+$table .= "  		  <th>" . (Language::title('bet')) . "</th>\n";
+$table .= "         <th>" . (Language::title('success')) . "</th>\n";
+$table .= "         <th>" . (Language::title('oddsAveragePlayed')) . "</th>\n";
+$table .= "         <th>" . (Language::title('earning')) . "</th>\n";
+$table .= "         <th>" . (Language::title('profit')) . "</th>\n";
+$table .= "         <th>" . (Language::title('profit')) . "<br />total</th>\n";
 $table .= "       </tr>\n";
 
 $matchdayEarningSum = $matchdayMatchs = $mdEarning = $matchdaySuccess = $matchdayPlayedOdds = 
@@ -175,11 +177,11 @@ $gainParMise = (round($matchdayEarningSum/$matchdayBetSum,2));
 
 echo "<p>\n<table class='stats'>\n";
 echo "  <tr>\n";
-echo "      <td>$title_bet</td>\n";
+echo "      <td>" . (Language::title('bet')) . "</td>\n";
 echo "      <td>" . $matchdayBetSum. " </td>\n";
 
 // Profit
-echo "      <td>$title_profit</td>\n";
+echo "      <td>" . (Language::title('profit')) . "</td>\n";
 echo "      <td>";
 echo "<span style='color:" . valColor($matchdayProfitSum). " '>";
 if($matchdayProfitSum>0) echo "+";
@@ -197,26 +199,26 @@ echo " </tr>\n";
 
 echo " <tr>\n";
 // Success
-echo "      <td>$title_success</td>\n";
+echo "      <td>" . (Language::title('success')) . "</td>\n";
 echo "      <td>$matchdaySuccessSum</td>\n";
 // Earning
-echo "      <td>$title_earning</td>\n";
+echo "      <td>" . (Language::title('earning')) . "</td>\n";
 echo "      <td>" . money_format('%i',$matchdayEarningSum). " &nbsp;&euro;</td>\n";
 // Earning by bet
-echo "      <td>$title_earningByBet</td>\n";
+echo "      <td>" . (Language::title('earningByBet')) . "</td>\n";
 echo "      <td>$gainParMise</td>\n";
 echo " </tr>\n";
 
 echo " <tr>\n";
 // Success rate
-echo "      <td>$title_successRate</td>\n";
+echo "      <td>" . (Language::title('successRate')) . "</td>\n";
 echo "      <td>";
 if($matchdayBetSum==0) $tauxReussite= 0;
 echo $tauxReussite. " &nbsp;%</td>\n";
 
 // Average odds played
 $averageOdds=(round($matchdayPlayedOddsSum/$matchdayBetSum,2));
-echo "      <td>$title_oddsAveragePlayed</td>\n";
+echo "      <td>" . (Language::title('oddsAveragePlayed')) . "</td>\n";
 echo "      <td>" . $averageOdds;
 if(($averageOdds<1.8)||($averageOdds>2.3)){
     echo "&nbsp;<a href='#' class='tooltip'>&#128172;" . valOdds($averageOdds). " </a>";
@@ -227,7 +229,7 @@ echo "      <td></td>\n";
 echo " </tr>\n";
 echo "</table>\n</p>";
 
-echo "<h3>$title_profitEvolution</h3>\n";
+echo "<h3>" . (Language::title('profitEvolution')) . "</h3>\n";
 ?>
 
 <?php
@@ -273,14 +275,14 @@ for($i=-($height/(2*25));$i<($height/(2*25)+1);$i++){
     </g>
     <g class="x axis" fill="purple">
       <line x1="0" y1="<?= -($height-10);?>" x2="0" y2="<?= ($height-10);?>" stroke="#555" stroke-width="1" />
-      <text x="5" y="20" fill="black"><?= $title_MD;?>1</text>
-      <text x="<?= ($maxX*10)+5;?>" y="<?= (-($maxY*2)+15);?>" fill="black"><?= $title_MD.$maxX;?></text>
+      <text x="5" y="20" fill="black"><?= Language::title('MD');?>1</text>
+      <text x="<?= ($maxX*10)+5;?>" y="<?= (-($maxY*2)+15);?>" fill="black"><?= Language::title('MD').$maxX;?></text>
     </g>
 
   </g>
 </svg>
     
 <?php
-        echo "<h3>$title_profitByMatchday</h3>\n";
+        echo "<h3>" . (Language::title('profitByMatchday')) . "</h3>\n";
         echo $table;
 ?>

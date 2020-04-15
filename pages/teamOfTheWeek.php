@@ -3,9 +3,11 @@
 /* Author : Guy Morin */
 
 // Files to include
+use FootballPredictions\Language;
+
 require '../include/changeMD.php';
 
-echo "<h2>$icon_matchday $title_matchday ".$_SESSION['matchdayNum']."</h2>\n";
+echo "<h2>" . $icon_matchday . " " . (Language::title('matchday')) . " " . $_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $teamOfTheWeek = 0;
@@ -47,17 +49,17 @@ if(isset($_SESSION['matchdayId'])){
             }
         } 
         $pdo->exec($req);
-        popup($title_modified,"index.php?page=teamOfTheWeek");
+        popup(Language::title('modified'),"index.php?page=teamOfTheWeek");
     }
 
     // Modify form
     else {
-        echo "<h3>$title_teamOfTheWeek</h3>\n";
+        echo "<h3>" . (Language::title('teamOfTheWeek')) . "</h3>\n";
         echo "<table id='teamOfTheWeek'>\n";
         echo "  <tr>\n";
         echo "      <th> </th>\n";
-        echo "      <th>$title_player</th>\n";
-        echo "      <th>$title_rating</th>\n";
+        echo "      <th>" . (Language::title('player')) . "</th>\n";
+        echo "      <th>" . (Language::title('rating')) . "</th>\n";
         echo "      <th>&#10060;</th>\n";
         echo "  </tr>\n";
         
@@ -115,7 +117,7 @@ if(isset($_SESSION['matchdayId'])){
             echo "</tr>\n";
         }
         echo "</table>\n";
-        echo $form->submit($title_modify);
+        echo $form->submit(Language::title('modify'));
         echo "<form>\n";   
     }
 }

@@ -5,6 +5,7 @@
  * Manage championship page
  */
 namespace FootballPredictions\Section;
+use FootballPredictions\Language;
 use \PDO;
 
 class Championship
@@ -20,20 +21,20 @@ class Championship
     }
     
     static function submenu($pdo, $form, $current=null){
-        require '../lang/fr.php';
+        
         
         if(isset($_SESSION['championshipId'])){
-            $val = "  	<a href='/'>$title_homepage</a>";
+            $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
             
             if($current == 'standing'){
-                $val .= "<a class='current' href='index.php?page=championship'>$title_standing</a>";
+                $val .= "<a class='current' href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
             } else {
-                $val .= "<a href='index.php?page=championship'>$title_standing</a>";
+                $val .= "<a href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
             }
             if($current == 'dashboard'){
-                $val .= "<a class='current' href='index.php?page=dashboard'>$title_dashboard</a>";
+                $val .= "<a class='current' href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
             } else {
-                $val .= "<a href='index.php?page=dashboard'>$title_dashboard</a>";
+                $val .= "<a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
             }
         } else {
             Account::exitButton();
@@ -41,9 +42,9 @@ class Championship
         }
         
         if($current == 'create'){
-            $val .= "<a class='current' href='index.php?page=championship&create=1'>$title_createAChampionship</a>\n";
+            $val .= "<a class='current' href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a>\n";
         } else {
-            $val .= "<a href='index.php?page=championship&create=1'>$title_createAChampionship</a>\n";
+            $val .= "<a href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a>\n";
         }
         $req = "SELECT DISTINCT c.id_championship, c.name
         FROM championship c
@@ -53,7 +54,7 @@ class Championship
         if($counter > 1){
             $val .= "<form action='index.php?page=championship' method='POST'>\n";
             $val .= $form->inputAction('modify');
-            $val .= $form->label($title_modifyAChampionship);
+            $val .= $form->label(Language::title('modifyAChampionship'));
             $val .= $form->selectSubmit('id_championship', $data);
             $val .= "</form>\n";
         }
@@ -61,7 +62,7 @@ class Championship
     }
     
     static function selectChampionship($pdo, $form, $icon_quicknav){
-        require '../lang/fr.php';
+        
         $val = "<ul class='menu'>\n";
         $req = "SELECT DISTINCT c.id_championship, c.name
     FROM championship c
@@ -74,7 +75,7 @@ class Championship
             
             // Select form
             $list.="<form action='index.php' method='POST'>\n";
-            $list.= $form->labelBr($title_selectTheChampionship);
+            $list.= $form->labelBr(Language::title('selectTheChampionship'));
             $response = $pdo->query($req);
             $list.= $form->selectSubmit("championshipSelect", $response);
             $list.="</form>\n";
@@ -87,7 +88,7 @@ class Championship
             $data = $pdo->queryObj($req);
             
             $val .= "<form action='index.php' method='POST'>\n";
-            $val .=  $form->label($title_quickNav);
+            $val .=  $form->label(Language::title('quickNav'));
             $val .=  $form->inputHidden("championshipSelect",$data->id_championship.",".$data->name);
             $val .=  $form->submit($icon_quicknav." ".$data->name);
             $val .=  "</form>\n";
@@ -95,46 +96,46 @@ class Championship
             $val .=  $list;
         }
         // No championship
-        else    $val .=  "  <h2>$title_noChampionship</h2>\n";
+        else    $val .=  "  <h2>" . (Language::title('noChampionship')) . "</h2>\n";
         $val .=  "</ul>\n";
         return $val;
     }
     
     static function deletePopup($pdo, $championshipId){
-        require '../lang/fr.php';
+        
         $req="DELETE FROM championship WHERE id_championship=:id_championship;";
         $pdo->prepare($req,[
             'id_championship' => $championshipId
         ]);
         $pdo->alterAuto('championship');
-        popup($title_deleted,"index.php?page=championship");
+        popup(Language::title('deleted'),"index.php?page=championship");
     }
     
     static function createForm($pdo, $error, $form){
-        require '../lang/fr.php';
+        
         $val = $error->getError();
         $val .= "<form action='index.php?page=championship' method='POST'>\n";
         $val .= $form->inputAction('create');
-        $val .= $form->input($title_name,"name");
+        $val .= $form->input(Language::title('name'),"name");
         $val .= "<br />\n";
-        $val .= $form->submit($title_create);
+        $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n"; 
         return $val;
     }
     
     static function createPopup($pdo, $championshipName){
-        require '../lang/fr.php';
+        
         $pdo->alterAuto('championship');
         $req="INSERT INTO championship
         VALUES(NULL,:name);";
         $pdo->prepare($req,[
             'name' => $championshipName
         ]);
-        popup($title_created,"index.php?page=championship");
+        popup(Language::title('created'),"index.php?page=championship");
     }
     
     static function modifyForm($pdo, $error, $form, $championshipId){
-        require '../lang/fr.php';
+        
         $req = "SELECT * FROM championship WHERE id_championship=:id_championship;";
         $data = $pdo->prepare($req,[
             'id_championship' => $championshipId
@@ -144,9 +145,9 @@ class Championship
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden("id_championship", $data->id_championship);
-        $val .= $form->input($title_name, "name");
+        $val .= $form->input(Language::title('name'), "name");
         $val .= "<br />\n";
-        $val .= $form->submit($title_modify);
+        $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
         
         // Delete form
@@ -155,7 +156,7 @@ class Championship
     }
     
     static function modifyPopup($pdo, $championshipName, $championshipId){
-        require '../lang/fr.php';
+        
         $req="UPDATE championship
         SET name=:name
         WHERE id_championship=:id_championship;";
@@ -163,34 +164,34 @@ class Championship
             'name' => $championshipName,
             'id_championship' => $championshipId
         ]);
-        popup($title_modified,"index.php?page=championship");
+        popup(Language::title('modified'),"index.php?page=championship");
     }
     
     static function list($pdo, $standhome, $standaway){
-        require '../lang/fr.php';
+        
         $val = "<div id='standing'>\n";
         $val .= "<ul>\n";
         $val .= "  <li>";
-        if($standhome+$standaway==0) $val .= "<p>$title_general</p>";
-        else $val .= "<a href='index.php?page=championship'>$title_general</a>";
+        if($standhome+$standaway==0) $val .= "<p>" . (Language::title('general')) . "</p>";
+        else $val .= "<a href='index.php?page=championship'>" . (Language::title('general')) . "</a>";
         $val .= "  </li>\n\t<li>";
-        if($standhome==1) $val .= "<p>$title_home</p>";
-        else $val .= "<a href='index.php?page=championship&standhome=1'>$title_home</a>";
+        if($standhome==1) $val .= "<p>" . (Language::title('home')) . "</p>";
+        else $val .= "<a href='index.php?page=championship&standhome=1'>" . (Language::title('home')) . "</a>";
         $val .= "  </li>\n\t<li>";
-        if($standaway==1) $val .= "<p>$title_away</p>";
-        else $val .= "<a href='index.php?page=championship&standaway=1'>$title_away</a>\n";
+        if($standaway==1) $val .= "<p>" . (Language::title('away')) . "</p>";
+        else $val .= "<a href='index.php?page=championship&standaway=1'>" . (Language::title('away')) . "</a>\n";
         $val .= "  </li>\n";
         $val .= "</ul>\n";
         
         $val .= "    <table>\n";
         $val .= "      <tr>\n";
         $val .= "            <th> </th>\n";
-        $val .= "            <th>$title_team</th>\n";
-        $val .= "            <th>$title_pts</th>\n";
-        $val .= "            <th>$title_MD</th>\n";
-        $val .= "            <th>$title_win</th>\n";
-        $val .= "            <th>$title_draw</th>\n";
-        $val .= "            <th>$title_lose</th>\n";
+        $val .= "            <th>" . (Language::title('team')) . "</th>\n";
+        $val .= "            <th>" . (Language::title('pts')) . "</th>\n";
+        $val .= "            <th>" . (Language::title('MD')) . "</th>\n";
+        $val .= "            <th>" . (Language::title('win')) . "</th>\n";
+        $val .= "            <th>" . (Language::title('draw')) . "</th>\n";
+        $val .= "            <th>" . (Language::title('lose')) . "</th>\n";
         $val .= "      </tr>\n";
         
         $req="SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchgame,

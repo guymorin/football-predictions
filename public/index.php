@@ -11,6 +11,7 @@ use FootballPredictions\App;
 use FootballPredictions\Database;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
+use FootballPredictions\Language;
 use FootballPredictions\Section\Championship;
 use FootballPredictions\Section\Matchday;
 use FootballPredictions\Section\Player;
@@ -19,7 +20,7 @@ use FootballPredictions\Section\Team;
 use FootballPredictions\Section\Account;
 
 // Files to include
-require '../lang/fr.php';
+
 require '../include/connection.php';
 require '../include/functions.php';
 
@@ -183,7 +184,7 @@ switch($page){
 ?>
     </nav>
 	<?php require("../include/fp-menu.php");?>
-	<?= App::setTitle($title_site);?>
+	<?= App::setTitle(Language::title('site'));?>
     <h1><a href="/"><a href="/"><?= App::getTitle();?></a></h1>
 </header>
 
@@ -198,19 +199,19 @@ else {
     // Section with menu
         
     echo "<ul class='menu'>\n";
-    echo "    <li><h2>$icon_championship $title_championship</h2>\n";
+    echo "    <li><h2>$icon_championship " . (Language::title('championship')) . "</h2>\n";
     echo "       <ul>\n";
-    echo "            <li><a href='index.php?page=championship'>$title_standing</a></li>\n";
-    echo "            <li><a href='index.php?page=dashboard'>$title_dashboard</a></li>\n";
+    echo "            <li><a href='index.php?page=championship'>" . (Language::title('standing')) . "</a></li>\n";
+    echo "            <li><a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a></li>\n";
     echo "       </ul>\n";
     echo "    </li>\n";
-    echo "    <li><h2>$icon_matchday $title_matchday " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h2>\n";
+    echo "    <li><h2>$icon_matchday " . (Language::title('matchday')) . " " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h2>\n";
     if(isset($_SESSION['matchdayId'])){
         echo "        <ul>\n";
-        echo "            <li><a href='index.php?page=matchday'>$title_statistics</a></li>\n";
-        echo "            <li><a href='index.php?page=prediction'>$title_predictions</a></li>\n";
-        echo "            <li><a href='index.php?page=results'>$title_results</a></li>\n";
-        echo "            <li><a href='index.php?page=teamOfTheWeek'>$title_teamOfTheWeek</a></li>\n";
+        echo "            <li><a href='index.php?page=matchday'>" . (Language::title('statistics')) . "</a></li>\n";
+        echo "            <li><a href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a></li>\n";
+        echo "            <li><a href='index.php?page=results'>" . (Language::title('results')) . "</a></li>\n";
+        echo "            <li><a href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a></li>\n";
         echo "        </ul>\n";
     } else {
         echo "        <ul>\n";
@@ -225,7 +226,7 @@ AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
         if($counter>0){
             // Select form
             $list = "<form action='index.php' method='POST'>\n";
-            $list .= $form->label($title_selectTheMatchday);
+            $list .= $form->label(Language::title('selectTheMatchday'));
             $list .= $form->selectSubmit("matchdaySelect", $response);
             $list .= "</form>\n";
             
@@ -244,28 +245,28 @@ AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
             if($counter>0){
                 // $form->setValues($data);
                 echo "<form action='index.php' method='POST'>\n";
-                echo $form->label($title_quickNav);
+                echo $form->label(Language::title('quickNav'));
                 echo $form->inputHidden("matchdaySelect", $data->id_matchday . "," . $data->number);
-                echo $form->submit("$icon_quicknav $title_MD".$data->number);
+                echo $form->submit($icon_quicknav . " " . (Language::title('MD')) . $data->number);
                 echo "</form>\n";
             }
             
             echo $list;
             
-        } else echo "      <p>$title_noMatchday</p>\n";
+        } else echo "      <p>" . (Language::title('noMatchday')) . "</p>\n";
         
         echo "        </ul>\n";
         echo "    </li>\n";
     }
     echo "    </li>\n";
-    echo "    <li><h2>$icon_team $title_team</h2>\n";
+    echo "    <li><h2>" . $icon_team . " " . (Language::title('team')) . "</h2>\n";
     echo "        <ul>\n";
-    echo "            <li><a href='index.php?page=team'>$title_marketValue</a></li>\n";
+    echo "            <li><a href='index.php?page=team'>" . (Language::title('marketValue')) . "</a></li>\n";
     echo "        </ul>\n";
     echo "    </li>\n";
-    echo "    <li><h2>$icon_player $title_player</h2>\n";
+    echo "    <li><h2>" . $icon_player . " " . (Language::title('player')) . "</h2>\n";
     echo "        <ul>\n";
-    echo "            <li><a href='index.php?page=player'>$title_bestPlayers</a></li>\n";
+    echo "            <li><a href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a></li>\n";
     echo "        </ul>\n";
     echo "    </li>\n";
     echo "</ul>\n";

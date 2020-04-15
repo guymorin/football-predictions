@@ -68,24 +68,24 @@ class Forms
     /* Table elements */
     
     public function deleteForm($page, $name, $id, $confirm=false, $nameOther=null, $idOther=null){
-        require '../lang/fr.php';
+        
         $val = "<form action='index.php?page=$page' method='POST'>\n";
         if($confirm==true) $val .= $this->inputHidden('delete',2);
         else $val .= $this->inputAction('delete');
         $val .= $this->inputHidden($name, $id);
         isset($nameOther) ? $val .= $this->inputHidden($nameOther, $idOther) : null;
-        if($confirm==true) $val .= $this->submit($title_yes);
-        else $val .= $this->submit("&#9888 $title_delete &#9888");
+        if($confirm==true) $val .= $this->submit(Language::title('yes'));
+        else $val .= $this->submit("&#9888 Language::title('delete') &#9888");
         $val .= "</form>\n";
         return $val;
     }
     
     public function popupConfirm($page, $name, $id, $nameOther = null, $idOther = null){
-        require '../lang/fr.php';
+        
         $val = "<div id='overlay'>\n";
         $val .= "  <div class='update confirm'>\n";
         $val .= "      <p class='close'><a href='index.php?page=$page'>&times;</a></p>\n";
-        $val .= "      <p>$title_delete ?</p>\n";
+        $val .= "      <p>Language::title('delete') ?</p>\n";
         $val .= "      <span>\n";
         $val .= $this->deleteForm($page, $name, $id, true, $nameOther, $idOther);
         $val .= "      </span>\n";
@@ -93,7 +93,7 @@ class Forms
         $val .= "       <form action='index.php?page=$page' method='POST'>\n";
         $val .= $this->inputAction('modify');
         $val .= $this->inputHidden($name, $id);
-        $val .= $this->submit($title_no);
+        $val .= $this->submit(Language::title('no'));
         $val .= "       </form>\n";
         $val .= "      </span>\n";
         $val .= "  </div>\n";
@@ -206,26 +206,26 @@ class Forms
      * @return string
      */
     public function inputRadioPosition($data=null){
-        require '../lang/fr.php';
+        
 
-        $val = $this->labelId('Goalkeeper', $title_goalkeeper, 'right');
+        $val = $this->labelId('Goalkeeper', Language::title('goalkeeper'), 'right');
         if (isset($data) && $data->position=="Goalkeeper"){
             $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper', true);
         } else $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper');
 
-        $val .= $this->labelId('Defender', $title_defender, 'right');
+        $val .= $this->labelId('Defender', Language::title('defender'), 'right');
         if (isset($data) && $data->position=="Defender"){
             $val .= $this->inputRadio('Defender', 'position', 'Defender', true);
         } else $val .= $this->inputRadio('Defender', 'position', 'Defender');
 
-        $val .= $this->labelId('Midfielder', $title_midfielder, 'right');
+        $val .= $this->labelId('Midfielder', Language::title('midfielder'), 'right');
         if (isset($data) && $data->position=="Midfielder"){
             $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder', true);
         } else {
             $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder');
         }
         
-        $val .= $this->labelId('Forward', $title_forward, 'right');
+        $val .= $this->labelId('Forward', Language::title('forward'), 'right');
         if (isset($data) && $data->position=="Forward"){
             $val .= $this->inputRadio('Forward', 'position', 'Forward', true);
         } else {
@@ -276,7 +276,7 @@ class Forms
      * @return string HTML code
      */
     public function selectSubmit($name, $response){
-        require '../lang/fr.php';
+        
         $championshipId = $seasonId = 0;
         isset($_SESSION['championshipId']) ? $championshipId = $_SESSION['championshipId'] : null;
         isset($_SESSION['seasonId']) ? $seasonId = $_SESSION['seasonId'] : null;
@@ -307,7 +307,7 @@ class Forms
                     break;
                 case "matchdaySelect":
                     $val .= "  		<option value='" . $data[0] . "," . $data[1] . "'>";
-                    $val.= $title_MD.$data[1];
+                    $val.= Language::title('MD').$data[1];
                     break;
                 default:
                     $val .= "  		<option value='" . $data[0] . "," . $data[1] . "'>";
@@ -316,12 +316,12 @@ class Forms
             $val .= "</option>\n";
         }
         $val .= "    </select>\n";
-        $val .= "<noscript>".$this->submit($title_select)."</noscript>\n";
+        $val .= "<noscript>".$this->submit(Language::title('select'))."</noscript>\n";
         return $val;
     }
     
     public function selectPlayer($pdo, $name='id_player', $selected=null, $data=null){
-        require '../lang/fr.php';
+        
         if($data == null){
             $req = "SELECT j.id_player, j.name, j.firstname, c.name as team
             FROM player j
@@ -352,7 +352,7 @@ class Forms
         return $this->surround($val);
     }
     public function selectTeam($pdo, $name='id_team', $selected=null, $data=null){
-        require '../lang/fr.php';   
+           
         if($data == null){
             $req="SELECT c.id_team, c.name FROM team c
             LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team
@@ -364,7 +364,7 @@ class Forms
             ],true);
         }
                
-        $val = $this->labelBr($title_team);
+        $val = $this->labelBr(Language::title('team'));
         $val .= "     <select name='";
         if($name == null) $val .= 'id_team';
         else $val .= $name;
