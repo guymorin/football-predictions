@@ -38,9 +38,10 @@ class Errors
      * 
      * @param string $error Error message to set
      */
-    public function setError($error)
+    public function setError($name, $error=null)
     {
-        $this->errorMessage = $error;
+        if($error == null) $this->errorMessage = $name;
+        else $this->errorMessage = "$name : $error";
     }
     
     /**
@@ -50,7 +51,7 @@ class Errors
      */
     public function addError($name, $error = null)
     {
-        if($error == null) $this->errorMessage .= "$name";
+        if($error == null) $this->errorMessage .= $name;
         else $this->errorMessage .= "$name : $error";
         $this->errorMessage .= "<br />";
     }
@@ -64,57 +65,69 @@ class Errors
      */
     public function check($check, $val, $title=null)
     {
-        
-        switch($check){
-            case "Action":
-                if($val==1) return $val;
-                else return null;
-                break;
-            case "ActionDelete":
-                if($val==1 || $val==2) return $val;
-                else return null;
-                break;
-            case "Alnum":
-                if(ctype_alnum(str_replace('-','',str_replace(' ','',($val))))) return $val;
-                else {
-                    $this->addError($title, Language::title('errorAlnum'));
-                    return null;
-                }
-                break;
-            case "Date":
-                $test = explode('-', $val);
-                if(checkdate($test[1],$test[2],$test[0])) return $val;  
-                else {
-                    $this->addError($title, Language::title('errorDate'));
-                    return null;
-                }
-                break;
-            case "Digit":
-                if(ctype_digit($val)) return $val;
-                else {
-                    $this->addError($title, Language::title('errorDigit'));
-                    return null;
-                }
-                break;
-            case "Position":
-                $array=array('Goalkeeper','Defender','Midfielder','Forward');
-                if(in_array($val, $array)) return $val;
-                else {
-                    $this->addError($title, Language::title('errorPosition'));
-                    return null;
-                }
-                break;
-            case "Result":
-                $array=array('','1','D','2');
-                if(in_array($val, $array)) return $val;
-                else {
-                    $this->addError($title, Language::title('errorResult'));
-                    return null;
-                }
-                break;
-            default:
-                break;
+        if(strlen($val)==0) {
+            $this->setError($title, Language::title('errorNotField'));
+            return null;
+        } else {            
+            switch($check){
+                case "Action":
+                    if($val==1) return $val;
+                    else return null;
+                    break;
+                case "ActionDelete":
+                    if($val==1 || $val==2) return $val;
+                    else return null;
+                    break;
+                case "Alnum":
+                    if(ctype_alnum(str_replace('-','',str_replace(' ','',($val))))) return $val;
+                    else {
+                        $this->addError($title, Language::title('errorAlnum'));
+                        return null;
+                    }
+                    break;
+                case "Date":
+                    $test = explode('-', $val);
+                    if(checkdate($test[1],$test[2],$test[0])) return $val;  
+                    else {
+                        $this->addError($title, Language::title('errorDate'));
+                        return null;
+                    }
+                    break;
+                case "Digit":
+                    if(ctype_digit($val)) return $val;
+                    else {
+                        $this->addError($title, Language::title('errorDigit'));
+                        return null;
+                    }
+                    break;
+                case "Position":
+                    $array=array('Goalkeeper','Defender','Midfielder','Forward');
+                    if(in_array($val, $array)) return $val;
+                    else {
+                        $this->addError($title, Language::title('errorPosition'));
+                        return null;
+                    }
+                    break;
+                case "Result":
+                    $array=array('','1','D','2');
+                    if(in_array($val, $array)) return $val;
+                    else {
+                        $this->addError($title, Language::title('errorResult'));
+                        return null;
+                    }
+                    break;
+                case "Season":
+                    if(strlen($val) < 10) return $val;
+                    else {
+                        $this->addError($title, Language::title('errorSeasonName'));
+                        return null;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
+        
     }
 }
 ?>

@@ -19,8 +19,10 @@ use FootballPredictions\Section\Season;
 use FootballPredictions\Section\Team;
 use FootballPredictions\Section\Account;
 
-// Files to include
+// Language
+if(empty($_SESSION['language'])) Language::getBrowserLang();
 
+// Files to include
 require '../include/connection.php';
 require '../include/functions.php';
 
@@ -33,6 +35,9 @@ $form = new Forms($_POST);
         $v=explode(",",$_POST['seasonSelect']);
         $_SESSION['seasonId'] = $error->check("Digit",$v[0]);
         $_SESSION['seasonName'] = $error->check("Alnum",$v[1]);
+        $req = "UPDATE fp_user SET last_season = '" . $_SESSION['seasonId'] . "' 
+        WHERE id_fp_user = '" . $_SESSION['userId'] . "';";
+        $pdo->exec($req);
         header('Location:index.php');
     }
     // Championship selected
@@ -40,6 +45,9 @@ $form = new Forms($_POST);
         $v=explode(",",$_POST['championshipSelect']);
         $_SESSION['championshipId'] = $error->check("Digit",$v[0]);
         $_SESSION['championshipName'] = $error->check("Alnum",$v[1]);
+        $req = "UPDATE fp_user SET last_championship = '" . $_SESSION['championshipId'] . "'
+        WHERE id_fp_user = '" . $_SESSION['userId'] . "';";
+        $pdo->exec($req);
         header('Location:index.php');
     }
     // Matchday selected
@@ -68,6 +76,9 @@ if($exit==1){
     switch($page){
         case "account":
             unset($_SESSION['userLogin']);
+            unset($_SESSION['language']);
+            unset($_SESSION['theme']);
+            unset($_SESSION['role']);
             unset($_SESSION['seasonId']);
             unset($_SESSION['seasonName']);
             unset($_SESSION['championshipId']);

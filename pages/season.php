@@ -17,7 +17,11 @@ use FootballPredictions\Section\Season;
 $seasonId=0;
 $seasonName="";
 isset($_POST['id_season'])  ? $seasonId=$error->check("Digit",$_POST['id_season']) : null;
-isset($_POST['name'])       ? $seasonName=$error->check("Alnum",$_POST['name'], Language::title('name')) : null;
+
+if(isset($_POST['name'])){
+    $seasonName = $error->check("Alnum",$_POST['name'], Language::title('name'));
+    if($seasonName!='') $seasonName = $error->check("Season",$_POST['name'], Language::title('name'));
+}
 
 // First, select a season
 if(

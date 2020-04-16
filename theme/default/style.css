@@ -48,7 +48,7 @@ select, input {font-size:.8em;}
 table input {min-width:0}
 select {margin-bottom:1em}
 th,td {padding:.5em;}
-a{color:#095;text-decoration:none}
+a{color:#309;text-decoration:none}
 a:hover{text-decoration:underline}
 
 table{font-size:.9em;margin:0 auto;border:2px solid #666;border-radius:3px;min-width:50%;}
@@ -109,7 +109,7 @@ nav a {
 }
 #fp input:checked + label,
 #fp label:focus,
-#fp label:hover{color:#222;}
+#fp label:hover{color:#000;}
 
 #fp-menu {
 	position:fixed;
@@ -297,13 +297,16 @@ section #criterion table td:nth-child(3){width:3em}
 section #criterion table input[type='radio'] {margin-bottom:.3em}
 
 section form {width: 80%;margin: 0 auto}
-section form label {vertical-align: middle;width:10em;display:inline-block;}
+section form input, section form select {color:#000;font-size:.95em;}
+section form label {color:#333;vertical-align: middle;width:10em;display:inline-block;}
 section form label.right {text-align:right;padding-right:.2em}
 section form p {text-align:left;margin:.2em;padding:.4em;display:inline-block;}
 section .menu form p {margin:0;padding:0;}
 
-section form span label:first-child{margin-left:1em;}
-section form span input[type='radio']{margin-right:1em;vertical-align:bottom;}
+section form fieldset {border:1px solid #ccc;border-radius:4px;margin:.5em 0;display:inline;}
+section form legend {color:#999;}
+section form fieldset.position label:first-child{margin-left:1em;}
+section form fieldset.position input[type='radio']{margin-right:1em;vertical-align:bottom;}
 section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em}
 section #criterion table.expert {border-color:#9c6;}
 section #criterion table.expert th {background:white;color:#f30;border-color:#f60;}
@@ -397,9 +400,9 @@ button[type=submit]:hover, input[type=submit]:hover, input[type=button]:hover, i
 button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, input[type=reset]:focus {
 	background:#fff linear-gradient(#fff,#fff);
 	transition: background .5s, border .5s;
-	border:1px outset #999;
+	border:1px solid #000;
 	border-radius:5px;
-	color:#333;
+  	color:#000;
  	text-decoration: none;
  	text-shadow:none;
  	cursor: pointer;
@@ -446,10 +449,24 @@ button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, i
 .update .close a:hover, .update .close a:focus {
   background:none;
   border:none;
-  color:#333;
+  color:#000;
 }
 .update p {clear:right;}
 .update span, .update span a {
 	display:inline-block;
 }
 .confirm p, .confirm form {display:block;margin:0;padding:0}
+
+#circle {
+	color:#fff;
+	font-size:2em;
+	text-transform:uppercase;
+	vertical-align:middle;
+	background:#909;
+	border-radius:50%;
+	height:2em;
+	line-height:2em;
+	white-space: nowrap;
+	width:2em;
+	margin:0 auto;
+}

@@ -22,9 +22,9 @@ class Championship
     
     static function submenu($pdo, $form, $current=null){
         
-        
+        $val ='';
         if(isset($_SESSION['championshipId'])){
-            $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
+            $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
             
             if($current == 'standing'){
                 $val .= "<a class='current' href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
@@ -149,7 +149,6 @@ class Championship
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        
         // Delete form
         $val .= $form->deleteForm('championship', 'id_championship', $championshipId);
         return $val;

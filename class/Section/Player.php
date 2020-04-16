@@ -70,7 +70,6 @@ class Player
         
         $val .= $form->input(Language::title('name'), 'name');
         $val .= "<br />\n";
-        
         $val .= $form->input(Language::title('firstname'), 'firstname');
         $val .= "<br />\n";
         
@@ -131,7 +130,6 @@ class Player
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        $val .= "<br />\n";
         // Delete form
         $val .= $form->deleteForm('player', 'id_player', $playerId, false, 'id_team', $data->id_team);
         return $val;

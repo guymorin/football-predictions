@@ -34,8 +34,11 @@ class Forms
      * @param string $html HTML code of the form elements
      * @return string
      */
-    private function surround($html){
-        return "<{$this->surround}>$html</{$this->surround}>";
+    private function surround($html, $class=null){
+        $val = '';
+        if($class!=null) $val = "<{$this->surround} class='" . $class . "'>" . $html . "</{$this->surround}>";
+        else $val = "<{$this->surround}>$html</{$this->surround}>";
+        return $val;
     }
     
     /**
@@ -75,7 +78,7 @@ class Forms
         $val .= $this->inputHidden($name, $id);
         isset($nameOther) ? $val .= $this->inputHidden($nameOther, $idOther) : null;
         if($confirm==true) $val .= $this->submit(Language::title('yes'));
-        else $val .= $this->submit("&#9888 Language::title('delete') &#9888");
+        else $val .= $this->submit("&#9888 " . (Language::title('delete')) . " &#9888");
         $val .= "</form>\n";
         return $val;
     }
@@ -85,7 +88,7 @@ class Forms
         $val = "<div id='overlay'>\n";
         $val .= "  <div class='update confirm'>\n";
         $val .= "      <p class='close'><a href='index.php?page=$page'>&times;</a></p>\n";
-        $val .= "      <p>Language::title('delete') ?</p>\n";
+        $val .= "      <p>" . (Language::title('delete')) . " ?</p>\n";
         $val .= "      <span>\n";
         $val .= $this->deleteForm($page, $name, $id, true, $nameOther, $idOther);
         $val .= "      </span>\n";
@@ -207,32 +210,32 @@ class Forms
      */
     public function inputRadioPosition($data=null){
         
-
-        $val = $this->labelId('Goalkeeper', Language::title('goalkeeper'), 'right');
+        $val = '<legend>' . (Language::title('position')). '</legend>';
+        $val .= $this->labelId('Goalkeeper', Language::title('goalkeeper'), 'right');
         if (isset($data) && $data->position=="Goalkeeper"){
             $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper', true);
         } else $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper');
-
+        $val .= "<br />";
         $val .= $this->labelId('Defender', Language::title('defender'), 'right');
         if (isset($data) && $data->position=="Defender"){
             $val .= $this->inputRadio('Defender', 'position', 'Defender', true);
         } else $val .= $this->inputRadio('Defender', 'position', 'Defender');
-
+        $val .= "<br />";
         $val .= $this->labelId('Midfielder', Language::title('midfielder'), 'right');
         if (isset($data) && $data->position=="Midfielder"){
             $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder', true);
         } else {
             $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder');
         }
-        
+        $val .= "<br />";
         $val .= $this->labelId('Forward', Language::title('forward'), 'right');
         if (isset($data) && $data->position=="Forward"){
             $val .= $this->inputRadio('Forward', 'position', 'Forward', true);
         } else {
             $val .= $this->inputRadio('Forward', 'position', 'Forward');
         }
-        $this->surround = "span";
-        $val = $this->surround($val);
+        $this->surround = "fieldset";
+        $val = $this->surround($val, 'position');
         $this->surround = "p";
         return $val;
     }

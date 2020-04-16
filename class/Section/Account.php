@@ -27,16 +27,16 @@ class Account
         } else {
             $val .= "<a href='index.php?page=account&create=1'>Language::title('createAnAccount')</a>";
         }
-        $req = "SELECT id_fp_user, login
+        $req = "SELECT id_fp_user, name
         FROM fp_user
-        ORDER BY login;";
+        ORDER BY name;";
         $data = $pdo->query($req);
         $counter = $pdo->rowCount();
 
         if($counter > 1){
             $val .= "<form action='index.php?page=account' method='POST'>\n";
             $val .= $form->inputAction('modify');
-            $val .= $form->label(Language::title('modifynAccount'));
+            $val .= $form->label(Language::title('modifyAccount'));
             $val .= $form->selectSubmit('id_fp_user', $data);
             $val .= "</form>\n";
         }
@@ -48,28 +48,38 @@ class Account
         $val = $error->getError();
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $val .= $form->inputAction('logon');
-        $val .= $form->input(Language::title('login'), 'login');
+        $val .= $form->input(Language::title('login'), 'name');
         $val .= "<br />\n";
         $val .= $form->inputPassword(Language::title('password'), 'password');
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('logon'));
         $val .= "</form>\n";
-        $val .= Language::title('createAnAccount');
+        $val .= "<a href='index.php?page=account&create=1'>" . (Language::title('createAnAccount')) . "</a>\n";
         return $val;
     }
 
-    static function logonPopup($pdo, $login, $password){
+    static function logonPopup($pdo, $userLogin, $password){
         $val = false;
         $req="SELECT * FROM fp_user
-        WHERE login = :login;";
-        $data = $pdo->prepare($req,['login' => $login]);
+        WHERE name = :name;";
+        $data = $pdo->prepare($req,['name' => $userLogin]);
         $counter = $pdo->rowCount();
         if($counter == 1) {
             if(password_verify($password, $data->password)){
                 $val = true;
-                $_SESSION['userLogin'] = $login;
+                $_SESSION['userId'] = $data->id_fp_user;
+                $_SESSION['userLogin'] = $userLogin;
                 $_SESSION['language'] = $data->language;
                 $_SESSION['theme'] = $data->theme;
+                $_SESSION['role'] = $data->role;
+                $req1 = "SELECT name FROM season WHERE id_season = '" . $data->last_season . "'";
+                $d1 = $pdo->prepare($req1,null);
+                $_SESSION['seasonId'] = $data->last_season;
+                $_SESSION['seasonName'] = $d1->name;
+                $req1 = "SELECT name FROM championship WHERE id_championship = '" . $data->last_championship . "'";
+                $d1 = $pdo->prepare($req1,null);
+                $_SESSION['championshipId'] = $data->last_championship; 
+                $_SESSION['championshipName'] = $d1->name; 
             }
         }
         return $val;
@@ -85,187 +95,54 @@ class Account
     }
     
     static function createForm($error, $form){
-        
         $val = $error->getError();
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $val .= $form->inputAction('create');
         
-        $val .= $form->input(Language::title('login'), 'login');
-        $val .= "<br />\n";
-        
-        $val .= $form->input(Language::title('login'), 'password');
+        $val .= $form->input(Language::title('login'), 'name');
         $val .= "<br />\n";
 
-        $val .= $form->input(Language::title('login'), 'email');
+        $val .= $form->inputPassword(Language::title('password'), 'password');
+        $val .= "<br />\n";
+
+        $val .= $form->input(Language::title('emailAddress'), 'email');
         $val .= "<br />\n";
         
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
+        $val .= "<a href='index.php?page=account'>" . (Language::title('logon')) . "</a>\n";
         return $val;
     }
     
-    static function createPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition){
-        
-        $pdo->alterAuto('season_team_player');
-        $pdo->alterAuto('player');
-        $req1="INSERT INTO player
-        VALUES(NULL,:name,:firstname,:position);";
-        $pdo->prepare($req1,[
-            'name' => $playerName,
-            'firstname' => $playerFirstname,
-            'position' => $playerPosition
-        ]);
-        $playerId=$pdo->lastInsertId();
-        $req2="INSERT INTO season_team_player VALUES(NULL,:id_season,:id_team,:id_player);";
-        $pdo->prepare($req2,[
-            'id_season' => $_SESSION['seasonId'],
-            'id_team' => $teamId,
-            'id_player' => $playerId
-        ]);
-        popup(Language::title('created'),"index.php?page=player");
-    }
-    
-    static function modifyForm($pdo, $error, $form, $playerId){
-        
-        $req ="SELECT j.id_player, j.name, j.firstname, j.position, c.id_team
-        FROM player j
-        LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
-        LEFT JOIN team c ON scj.id_team=c.id_team
-        WHERE j.id_player=:id_player;";
-        $data = $pdo->prepare($req,[
-            'id_player' => $playerId
-        ]);
-        $val = $error->getError();
-        $val .= "<form action='index.php?page=player' method='POST'>\n";
-        $form->setValues($data);
-        $val .= $form->inputAction('modify');
-        $val .= $form->inputHidden('id_player', $data->id_player);
-        $val .= $form->input(Language::title('name'),'name');
-        $val .= $form->input(Language::title('firstname'),'firstname');
-        $val .= "<br />\n";
-        $val .= $form->inputRadioPosition($data);
-        $val .= "<br />\n";
-        $val .= $form->selectTeam($pdo, null, $data->id_team);
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('modify'));
-        $val .= "</form>\n";
-        $val .= "<br />\n";
-        // Delete form
-        $val .= $form->deleteForm('player', 'id_player', $playerId, false, 'id_team', $data->id_team);
-        return $val;
-    }
-    
-    static function modifyPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition){
-        
-        // Check if the player is known in Season Team Player table
-        $req = "SELECT COUNT(*) as nb
-        FROM season_team_player
-        WHERE id_season=:id_season
-        AND id_team=:id_team
-        AND id_player=:id_player;";
-        $data = $pdo->prepare($req,[
-            'id_season' => $_SESSION['seasonId'],
-            'id_team' => $teamId,
-            'id_player' => $playerId
-        ],true);
-        $req="UPDATE player
-        SET name=:name, firstname=:firstname, position=:position
-        WHERE id_player=:id_player;";
-        if($data->nb==0){
-            $req.="INSERT INTO season_team_player
-            VALUES(NULL,:id_season,:id_team,:id_player);";
-        }
-        if($data[0]==1){
-            $req.="UPDATE season_team_player SET id_season=:id_season,id_team=:id_team WHERE id_player=:id_player;";
-        }
+    static function createPopup($pdo, $userLogin, $userPassword){
+        $userPassword = password_hash($userPassword, PASSWORD_DEFAULT);
+        $pdo->alterAuto('fp_user');
+        $req="INSERT INTO fp_user
+        VALUES(NULL,:name,:password,'','" . date('Y-m-d') . "','" . $_SESSION['language'] . "','1');";
         $pdo->prepare($req,[
-            'name' => $playerName,
-            'firstname' => $playerFirstname,
-            'position' => $playerPosition,
-            'id_season' => $_SESSION['seasonId'],
-            'id_team' => $teamId,
-            'id_player' => $playerId
+            'name' => $userLogin,
+            'password' => $userPassword
         ]);
-        popup(Language::title('modified'),"index.php?page=player");
+        popup(Language::title('created'),"index.php?page=account");
+    }
+    
+    static function modifyForm($pdo, $error, $form, $userId){
+        $val = '';
+        return $val;
+    }
+    
+    static function modifyPopup($pdo, $userId, $userName){
+
     }
     
     static function list($pdo){
         
-        $req = "SELECT COUNT(e.rating) as nb,AVG(e.rating) as rating,c.name as team,j.name,j.firstname
-        FROM player j
-        LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
-        LEFT JOIN team c ON  c.id_team=scj.id_team
-        LEFT JOIN teamOfTheWeek e ON e.id_player=j.id_player
-        GROUP BY team, j.name,j.firstname
-        ORDER BY nb DESC, rating DESC,j.name,j.firstname LIMIT 0,3";
-        $data = $pdo->prepare($req,null,true);
-        $val = "<p>\n";
-        $val .= "  <table>\n";
-        $val .= "      <tr><th></th><th>Language::title('player')</th><th>Language::title('team')</th><th>Language::title('teamOfTheWeek')</th><th>Language::title('ratingAverage')</th></tr>\n";
-        $counterPodium = 0;
-        $icon = "&#129351;"; // Gold medal
-        foreach ($data as $d)
-        {
-            $counterPodium++;
-            if($counterPodium==2) $icon="&#129352;"; // Silver medal
-            else $icon="&#129353;"; // Bronze medal
-            
-            $val .= "      <td><strong>".$counterPodium."</strong></td>\n";
-            $val .= "      <td>".$icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong></td>\n";
-            $val .= "      <td>".$d->team."</td>\n";
-            $val .= "      <td>".$d->nb."</td>\n";
-            $val .= "      <td>".round($d->rating,1)."</td>\n";
-            $val .= "  </tr>\n";
-        }
-        $val .= "  </table>\n";
-        $val .= "</p>\n";
+        $req = "SELECT * FROM fp_user;";
+        $data = $pdo->prepare($req,null);
+        $val = "";
+        $val .= "<div id='circle'>" . (substr($data->name,0,1)) . "</div>\n";
+        $val .= "<p><a href='index.php?page=account&exit=1'>" . (Language::title('logoff')) . "</a></p>\n";
         
-        
-        $val .= "<h3>Language::title('bestPlayersByTeam')</h3>\n";
-        
-        $req = "SELECT COUNT(e.rating) as nb,AVG(e.rating) as rating,c.name as team,j.name,j.firstname
-    FROM player j
-    LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
-    LEFT JOIN team c ON  c.id_team=scj.id_team
-    LEFT JOIN teamOfTheWeek e ON e.id_player=j.id_player
-    GROUP BY team,j.name,j.firstname
-    ORDER BY team ASC, nb DESC, rating DESC, j.name,j.firstname ASC";
-        $data = $pdo->prepare($req,null,true);
-        $val .= "  <table>\n";
-        $val .= "      <tr><th>Language::title('team')</th><th>Language::title('player')</th><th>Language::title('teamOfTheWeek')</th><th>Language::title('ratingAverage')</th></tr>\n";
-        $counter = "";
-        foreach ($data as $d)
-        {
-            $val .= "      <td>";
-            if($counter!=$d->team){
-                $counterPodium = 0;
-                $val .= "<strong>".$d->team."</strong>";
-            }
-            
-            $counterPodium++;
-            switch($counterPodium){
-                case 1:
-                    $icon = "&#129351;"; // gold medal
-                    break;
-                case 2:
-                    $icon="&#129352;"; // silver medal
-                    break;
-                case 3:
-                    $icon="&#129353;"; // bronze medal
-                    break;
-                default:
-                    $icon="";
-            }
-            
-            $val .= "</td><td>";
-            if($icon!="") $val .= $icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong>";
-            else $val .= mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
-            $val .= "</td><td>".$d->nb."</td><td>".round($d->rating,1)."</td>\n";
-            $val .= "  </tr>\n";
-            $counter=$d->team;
-        }
-        
-        $val .= "  </table>\n";
         return $val;
     }
 }

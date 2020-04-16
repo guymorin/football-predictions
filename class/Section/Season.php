@@ -24,18 +24,18 @@ class Season
         
         $val = "";
         if(isset($_SESSION['seasonId'])) {
-            $val .= "<a href='/'>Language::title('homepage')</a>";
+            $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>";
             if($current == 'list'){
-                $val .= "<a class='current' href='index.php?page=season'>Language::title('listChampionships')</a>";
+                $val .= "<a class='current' href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
             } else {
-                $val .= "<a href='index.php?page=season'>Language::title('listChampionships')</a>";
+                $val .= "<a href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
             }
         }
         if($current == 'create'){
-            $val .= "<a class='current' href='index.php?page=season&create=1'>Language::title('createASeason')</a>";
+            $val .= "<a class='current' href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
         } else {
             Account::exitButton();
-            $val .= "<a href='index.php?page=season&create=1'>" . Language::title('createASeason') . "</a>";
+            $val .= "<a href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
         }
         $req = "SELECT id_season, name FROM season ORDER BY name;";
         $data = $pdo->query($req);
@@ -85,7 +85,7 @@ class Season
             return $val;
         }
         // No season
-        else    echo "  <h3>Language::title('noSeason')</h3>\n";
+        else    echo "  <h3>" . (Language::title('noSeason')) . "</h3>\n";
         echo "</ul>\n";
     }
     
@@ -133,7 +133,6 @@ class Season
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        
         // Delete form
         $val .= $form->deleteForm('season', 'id_season', $seasonId);
         return $val;
@@ -164,8 +163,8 @@ class Season
         ],true);
         $val = "<table>\n";
         $val .= "  <tr>\n";
-        $val .= "      <th>Language::title('championship')</th>\n";
-        $val .= "      <th>Language::title('teams')</th>\n";
+        $val .= "      <th>" . (Language::title('championship')) . "</th>\n";
+        $val .= "      <th>" . (Language::title('teams')) . "</th>\n";
         $val .= "  </tr>\n";
         
         foreach ($data as $d)

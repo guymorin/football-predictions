@@ -54,7 +54,8 @@ class Database
         $val = false;
         $req = "SELECT * FROM " . $table . " WHERE name= '" . $name . "';";
         $this->query($req);
-        if($this->rowCount()>0) $val = true;
+        $counter = $this->rowCount();
+        if($counter > 0) $val = true;
         return $val;
     }
     
