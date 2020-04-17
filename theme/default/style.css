@@ -303,10 +303,11 @@ section form label.right {text-align:right;padding-right:.2em}
 section form p {text-align:left;margin:.2em;padding:.4em;display:inline-block;}
 section .menu form p {margin:0;padding:0;}
 
-section form fieldset {border:1px solid #ccc;border-radius:4px;margin:.5em 0;display:inline;}
+section form fieldset {border:1px solid #ccc;border-radius:4px;margin:.5em;display:inline;vertical-align: top;}
 section form legend {color:#999;}
-section form fieldset.position label:first-child{margin-left:1em;}
-section form fieldset.position input[type='radio']{margin-right:1em;vertical-align:bottom;}
+section form fieldset.odds label,
+section form fieldset.result label {width:2em}
+section form fieldset.position input[type='radio']{vertical-align:bottom;}
 section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em}
 section #criterion table.expert {border-color:#9c6;}
 section #criterion table.expert th {background:white;color:#f30;border-color:#f60;}
@@ -468,5 +469,5 @@ button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, i
 	line-height:2em;
 	white-space: nowrap;
 	width:2em;
-	margin:0 auto;
+	margin:0 auto .5em auto;
 }

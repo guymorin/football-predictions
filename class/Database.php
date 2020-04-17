@@ -87,7 +87,7 @@ class Database
         $val = $val->fetch(PDO::FETCH_OBJ);
         return $val;
     }
-    
+
     public function rowCount(){
         $val = $this->response->rowCount();
         return $val;

@@ -41,6 +41,15 @@ class Forms
         return $val;
     }
     
+    private function surroundFieldset($html, $class=null){
+        $this->surround = "fieldset";
+        $val = '';
+        if($class!=null) $val = "<{$this->surround} class='" . $class . "'>" . $html . "</{$this->surround}>";
+        else $val = "<{$this->surround}>$html</{$this->surround}>";
+        $this->surround = "p";
+        return $val;
+    }
+    
     /**
      * 
      * @param array $index Data index
@@ -126,7 +135,7 @@ class Forms
     public function input($label='',$name){
          $val = '';
          if($label!='') $val.= $this->label($label);
-         $val.= "<input type='text' name='$name' value='".$this->getValue($name)."'>";
+         $val.= "<input maxlength='50' type='text' name='$name' value='".$this->getValue($name)."'>";
          $val = $this->surround($val);
          return $val;
     }
@@ -176,14 +185,30 @@ class Forms
         $val= '';
         if($label!='') $val .= $this->label($label, 'right');
         $val .= "<input type='number' step='".$step."' name='$name' value='".$value."'>";
-        $val = $this->surround($val);
+        return $val;
+    }
+    
+    public function inputNumberOdds($data = null){
+        $val= '';
+        $val .= "<legend>" . (Language::title('odds')) . "</legend>\n";
+        $odds1 = $oddsD = $odds2 = 0;
+        if(isset($data)){
+            $odds1 = $data->odds1;
+            $oddsD = $data->oddsD;
+            $odds2 = $data->odds2;
+        }
+        $val .= $this->inputNumber('1', 'odds1', $odds1, '0.01');
+        $val .= $this->inputNumber(Language::title('draw'), 'oddsD', $oddsD, '0.01');
+        $val .= $this->inputNumber('2', 'odds2', $odds2, '0.01');
+        $val .= "<br />";
+        $val = $this->surroundFieldset($val, 'odds');
         return $val;
     }
 
     public function inputPassword($label='',$name){
         $val = '';
         if($label!='') $val.= $this->label($label);
-        $val.= "<input type='password' name='$name' value='".$this->getValue($name)."'>";
+        $val.= "<input type='password' minlength='1' autocomplete='current-password' required name='$name' value='".$this->getValue($name)."'>";
         $val = $this->surround($val);
         return $val;
     }
@@ -209,34 +234,44 @@ class Forms
      * @return string
      */
     public function inputRadioPosition($data=null){
-        
         $val = '<legend>' . (Language::title('position')). '</legend>';
+        $gk = $df = $md = $fw = false;
+        if (isset($data)){
+            if($data->position=="Goalkeeper") $gk = true;
+            if($data->position=="Defender") $df = true;
+            if($data->position=="Midfielder") $md = true;
+            if($data->position=="Forward") $fw = true;
+        }
         $val .= $this->labelId('Goalkeeper', Language::title('goalkeeper'), 'right');
-        if (isset($data) && $data->position=="Goalkeeper"){
-            $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper', true);
-        } else $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper');
+        $val .= $this->inputRadio('Goalkeeper', 'position', 'Goalkeeper', $gk);
         $val .= "<br />";
         $val .= $this->labelId('Defender', Language::title('defender'), 'right');
-        if (isset($data) && $data->position=="Defender"){
-            $val .= $this->inputRadio('Defender', 'position', 'Defender', true);
-        } else $val .= $this->inputRadio('Defender', 'position', 'Defender');
+        $val .= $this->inputRadio('Defender', 'position', 'Defender', $df);
         $val .= "<br />";
         $val .= $this->labelId('Midfielder', Language::title('midfielder'), 'right');
-        if (isset($data) && $data->position=="Midfielder"){
-            $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder', true);
-        } else {
-            $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder');
-        }
+        $val .= $this->inputRadio('Midfielder', 'position', 'Midfielder', $md);
         $val .= "<br />";
         $val .= $this->labelId('Forward', Language::title('forward'), 'right');
-        if (isset($data) && $data->position=="Forward"){
-            $val .= $this->inputRadio('Forward', 'position', 'Forward', true);
-        } else {
-            $val .= $this->inputRadio('Forward', 'position', 'Forward');
+        $val .= $this->inputRadio('Forward', 'position', 'Forward', $fw);
+        $val = $this->surroundFieldset($val, 'position');
+        return $val;
+    }
+
+    public function inputRadioResult($data = null){
+        $val = '<legend>' . (Language::title('result')). '</legend>';
+        $result1 = $resultD = $result2 = false;
+        if(isset($data)){
+            if($data->result == "1") $result1 = true;
+            if($data->result == "D") $resultD = true;
+            if($data->result == "2") $result2 = true;
         }
-        $this->surround = "fieldset";
-        $val = $this->surround($val, 'position');
-        $this->surround = "p";
+        $val .= $this->labelId('1', '1', 'right');
+        $val .= $this->inputRadio('1', 'result', '1', $result1);
+        $val .= $this->labelId('D', Language::title('draw'), 'right');
+        $val .= $this->inputRadio('D', 'result', 'D', $resultD);
+        $val .= $this->labelId('2', '2', 'right');
+        $val .= $this->inputRadio('2', 'result', '2', $result2);
+        $val = $this->surroundFieldset($val, 'result');
         return $val;
     }
     
@@ -272,18 +307,49 @@ class Forms
         return $this->label($title)."<br />\n";
     }
     
+    public function select($name, $response, $id){
+        $val = "<fieldset>\n";
+        $val .= "   <legend>" . (Language::title($name)) . "</legend>";
+        $val .= "   <select name='" . $name . "'>\n";
+        while ($data = $response->fetch(PDO::FETCH_NUM)){
+            $val .= "       <option value='$data[0]'";
+            if($data[0]==$id) $val .= " selected";
+            $val .= ">$data[1]</option>\n";
+        }
+        $val .= "   </select>";
+        $val .= "</fieldset>\n";
+        return $val;
+    }
+    
+    public function selectData($name, $data, $id){
+        $val = "<fieldset>\n";
+        $val .= "   <legend>" . (Language::title($name)) . "</legend>";
+        $val .= "   <select name='" . $name . "'>\n";
+        foreach($data as $d){
+            $val .= "       <option value='$d'";
+            if($d==$id) $val .= " selected";
+            $val .= ">$d</option>\n";
+        }
+        $val .= "   </select>";
+        $val .= "</fieldset>\n";
+        return $val;
+    }
+    
     /**
      * 
      * @param string $name
      * @param array $response Result of a query
      * @return string HTML code
      */
-    public function selectSubmit($name, $response){
+    public function selectSubmit($name, $response, $autoSubmit = true){
         
         $championshipId = $seasonId = 0;
         isset($_SESSION['championshipId']) ? $championshipId = $_SESSION['championshipId'] : null;
         isset($_SESSION['seasonId']) ? $seasonId = $_SESSION['seasonId'] : null;
-        $val = "    <select name='$name' onchange='submit()'>\n";
+
+        $val = "    <select name='$name'";
+        if($autoSubmit) $val.= "onchange='submit()'";
+        $val .= ">\n";
         $val .= "        <option value='0'>...</option>\n";
         while ($data = $response->fetch(PDO::FETCH_NUM)){
             
@@ -293,8 +359,8 @@ class Forms
                 case "id_team":
                     $val .= "  		<option value='" . $data[0] . "'";
                     if(
-                    ($name=="id_championship" && $data[0]==$championshipId)
-                        ||($name=="id_season" && $data[0]==$seasonId)
+                    ($name == "id_championship" && $data[0] == $championshipId)
+                        ||($name=="id_season" && $data[0] == $seasonId)
                     ){
                         $val .= " disabled";
                     }
@@ -319,7 +385,7 @@ class Forms
             $val .= "</option>\n";
         }
         $val .= "    </select>\n";
-        $val .= "<noscript>".$this->submit(Language::title('select'))."</noscript>\n";
+        if($autoSubmit) $val .= "<noscript>".$this->submit(Language::title('select'))."</noscript>\n";
         return $val;
     }
     
@@ -367,7 +433,7 @@ class Forms
             ],true);
         }
                
-        $val = $this->labelBr(Language::title('team'));
+        $val = '<legend>' . (Language::title('team')). '</legend>';
         $val .= "     <select name='";
         if($name == null) $val .= 'id_team';
         else $val .= $name;
@@ -380,7 +446,10 @@ class Forms
             $val .= ">".$d->name."</option>\n";
         }
         $val .= "	   </select>\n";
-        return $this->surround($val);
+        $this->surround = "fieldset";
+        $val = $this->surround($val);
+        $this->surround = "p";
+        return $val;
     }
     
     /**

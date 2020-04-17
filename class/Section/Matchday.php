@@ -205,22 +205,9 @@ class Matchday
         $val .= $form->selectTeam($pdo,'team_1');
         $val .= $form->selectTeam($pdo,'team_2');
         $val .= "<br />";
-        
-        $val .= $form->labelBr(Language::title('odds'));
-        $val .= $form->inputNumber('1', 'odds1', '0', '0.01');
-        $val .= $form->inputNumber(Language::title('draw'), 'oddsD', '0', '0.01');
-        $val .= $form->inputNumber('2', 'odds2', '0', '0.01');
+        $val .= $form->inputNumberOdds();
+        $val .= $form->inputRadioResult();
         $val .= "<br />";
-        
-        $val .= $form->labelBr(Language::title('result'));
-        $val .= $form->labelId('1', '1', 'right');
-        $val .= $form->inputRadio('1', 'result', '1', false);
-        $val .= $form->labelId('D', Language::title('draw'), 'right');
-        $val .= $form->inputRadio('D', 'result', 'D', false);
-        $val .= $form->labelId('2', '2', 'right');
-        $val .= $form->inputRadio('2', 'result', '2', false);
-        $val .= "<br />";
-        
         $val .= $form->submit(Language::title('create'));
         
         $val .= "</form>\n";   
@@ -240,37 +227,16 @@ class Matchday
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden('id_matchgame',$data->id_matchgame);
-        
         $val .= $form->inputDate(Language::title('date'), 'date', $data->date);
         $val .= "<br />";
-        
         $val .= $form->selectTeam($pdo,'team_1',$data->id1);
         $val .= $form->selectTeam($pdo,'team_2',$data->id2);
         $val .= "<br />";
-        
-        $val .= $form->labelBr(Language::title('odds'));
-        $val .= $form->inputNumber('1', 'odds1', $data->odds1, '0.01');
-        $val .= $form->inputNumber(Language::title('draw'), 'oddsD', $data->oddsD, '0.01');
-        $val .= $form->inputNumber('2', 'odds2', $data->odds2, '0.01');
+        $val .= $form->inputNumberOdds($data);
+        $val .= $form->inputRadioResult($data);
         $val .= "<br />";
-        
-        $val .= $form->labelBr(Language::title('result'));
-        $val .= $form->labelId('1', '1', 'right');
-        if($data->result=="1") $val .= $form->inputRadio('1', 'result', '1', true);
-        else $val .= $form->inputRadio('1', 'result', '1', false);
-        
-        $val .= $form->labelId('D', Language::title('draw'), 'right');
-        if($data->result=="D") $val .= $form->inputRadio('D', 'result', 'D', true);
-        else $val .= $form->inputRadio('D', 'result', 'D', false);
-
-        $val .= $form->labelId('2', '2', 'right');
-        if($data->result=="2") $val .= $form->inputRadio('2', 'result', '2', true);
-        else $val .= $form->inputRadio('2', 'result', '2', false);
-        $val .= "<br />";
-        
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        
         // Delete
         $val .= $form->deleteForm('match', 'id_matchgame', $idMatch);
         

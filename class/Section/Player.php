@@ -74,8 +74,6 @@ class Player
         $val .= "<br />\n";
         
         $val .= $form->inputRadioPosition();
-        $val .= "<br />\n";
-        
         $val .= $form->selectTeam($pdo);
         $val .= "<br />\n";
         
@@ -125,7 +123,6 @@ class Player
         $val .= $form->input(Language::title('firstname'),'firstname');
         $val .= "<br />\n";
         $val .= $form->inputRadioPosition($data);
-        $val .= "<br />\n";
         $val .= $form->selectTeam($pdo, null, $data->id_team);
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));

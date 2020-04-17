@@ -15,10 +15,12 @@ use FootballPredictions\Section\Account;
 <?php
 // Values
 $userId = 0;
-$userLogin = $userPassword = "";
+$userLogin = $userPassword = $userLanguage = $userTheme = "";
 isset($_POST['id_fp_user'])  ? $userId = $error->check("Digit",$_POST['id_fp_user']) : null;
-isset($_POST['name'])       ? $userLogin = $error->check("Alnum",$_POST['name'], Language::title('login')) : null;
+isset($_POST['name'])        ? $userLogin = $error->check("Alnum",$_POST['name'], Language::title('login')) : null;
 isset($_POST['password'])    ? $userPassword = $_POST['password'] : null;
+isset($_POST['language'])    ? $userLanguage = $_POST['language'] : null;
+isset($_POST['theme'])       ? $userTheme = $_POST['theme'] : null;
 
 // Logon
 if(    
@@ -38,13 +40,6 @@ if(
         echo  Account::logonForm($pdo, $error, $form);
     }
 }
-// Delete
-elseif($delete == 1){
-    echo $form->popupConfirm('account', 'id_fp_user', $usersId);
-}
-elseif($delete == 2){
-    Account::deletePopup($pdo, $userId);
-}
 // Create
 elseif($create == 1){
     echo "<h3>" . (Language::title('createAnAccount')) . "</h3>\n";
@@ -52,18 +47,20 @@ elseif($create == 1){
     if($pdo->findName('fp_user', $userLogin))  $error->addError(Language::title('login'), Language::title('errorExists'));
     elseif($userLogin!="") Account::createPopup($pdo, $userLogin, $userPassword);
     echo Account::createForm($error, $form);
-}
-// Modify
-elseif($modify == 1){
+} 
+// Delete / Modify
+elseif($delete == 1  || $delete == 2 || $modify == 1){
     echo "<h3>" . (Language::title('modifyAnAccount')) . "</h3>\n";
-    if($pdo->findName('fp_user', $userLogin))  $error->addError(Language::title('login'), Language::title('errorExists'));
-    elseif($userLogin!="") Account::modifyPopup($pdo, $userLogin, $userId);
     echo Account::modifyForm($pdo, $error, $form, $userId);
-}
+
+    if($delete == 1) echo $form->popupConfirm('account', 'id_fp_user', $userId);
+    elseif($delete == 2) Account::deletePopup($pdo, $userId);
+    elseif($modify == 1){
+        if($userLogin!="") Account::modifyPopup($pdo, $userId, $userLogin, $userPassword, $userLanguage, $userTheme);
+    } 
 // List
-else {
+} else {
     echo "<h3>".$_SESSION['userLogin']."</h3>\n";
-    echo Account::list($pdo);
+    echo Account::modifyForm($pdo, $error, $form, $_SESSION['userId']);
 }
 ?>
-</section>

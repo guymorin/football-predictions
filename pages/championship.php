@@ -31,14 +31,6 @@ if(
     ){
     echo Championship::selectChampionship($pdo, $form, $icon_quicknav);
 }
-// Delete
-elseif($delete == 1){
-    echo $form->popupConfirm('championship', 'id_championship', $championshipId);
-}
-elseif($delete == 2){
-    if($championshipId==0) popup(Language::title('error'),"index.php?page=championship");
-    else Championship::deletePopup($pdo, $championshipId);
-}
 // Create
 elseif($create == 1){
     echo "<h3>" . (Language::title('createAChampionship')) . "</h3>\n";
@@ -46,16 +38,23 @@ elseif($create == 1){
     elseif($championshipName!="") Championship::createPopup($pdo, $championshipName);
     echo Championship::createForm($pdo, $error, $form);
 }
-// Modify
-elseif($modify == 1){
+// Delete / Modify
+elseif($delete == 1  || $delete == 2 || $modify == 1){
     echo "<h3>" . (Language::title('modifyAChampionship')) . "</h3>\n";
-    if($championshipId==0) popup(Language::title('error'),"index.php?page=championship");
-    elseif($championshipName!="") Championship::modifyPopup($pdo, $championshipName, $championshipId);
-    echo Championship::modifyForm($pdo, $error, $form, $championshipId);
+    echo Championship::modifyForm($pdo, $error, $form, $championshipId);    
+    if($delete == 1) echo $form->popupConfirm('championship', 'id_championship', $championshipId);
+    elseif($delete == 2){
+        if($championshipId==0) popup(Language::title('error'),"index.php?page=championship");
+        else Championship::deletePopup($pdo, $championshipId);
+    }    
+    elseif($modify == 1){
+        if($championshipId==0) popup(Language::title('error'),"index.php?page=championship");
+        elseif($championshipName!="") Championship::modifyPopup($pdo, $championshipName, $championshipId);
+    }
 }
 // List (standing)
 elseif(isset($_SESSION['championshipId'])&&($exit==0)){
-    echo "<h3>".$_SESSION['championshipName']." : Language::title('standing')</h3>\n";
+    echo "<h3>".$_SESSION['championshipName']." : " . (Language::title('standing')) . "</h3>\n";
     echo Championship::list($pdo, $standhome, $standaway);
 }
 ?>

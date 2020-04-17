@@ -75,6 +75,7 @@ isset($_POST['logon'])         ? $logon = $error->check("Action",$_POST['logon']
 if($exit==1){
     switch($page){
         case "account":
+            unset($_SESSION['userId']);
             unset($_SESSION['userLogin']);
             unset($_SESSION['language']);
             unset($_SESSION['theme']);
@@ -145,6 +146,10 @@ function myFunction() {
 <?php
 $current = '';
 switch($page){
+    case "account":
+        $current = 'myAccount';
+        echo Account::submenu($pdo, $form, $current);
+        break;
     case "championship":
     case "dashboard":
         if($create == 1)                $current = 'create';
