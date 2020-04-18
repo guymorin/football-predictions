@@ -79,7 +79,7 @@ class Season
             
             $val .= "<form action='index.php?page=championship' method='POST'>\n";
             $val .= $form->inputHidden("seasonSelect",$data->id_season.",".$data->name);
-            $val .= $form->label(Language::title('quickNav'));
+            $val .= $form->labelBr(Language::title('quickNav'));
             $val .= $form->submit($icon_quicknav." ".$data->name);
             $val .= "</form>\n";
             

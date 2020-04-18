@@ -309,7 +309,7 @@ section form legend {color:#999;}
 section form fieldset.odds label,
 section form fieldset.result label {width:2em}
 section form fieldset.position input[type='radio']{vertical-align:bottom;}
-section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em}
+section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em;min-width:10em;}
 section #criterion table.expert {border-color:#9c6;}
 section #criterion table.expert th {background:white;color:#f30;border-color:#f60;}
 section #criterion table.expert tr{background:#fd3}

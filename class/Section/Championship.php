@@ -88,7 +88,7 @@ class Championship
             $data = $pdo->queryObj($req);
             
             $val .= "<form action='index.php' method='POST'>\n";
-            $val .=  $form->label(Language::title('quickNav'));
+            $val .=  $form->labelBr(Language::title('quickNav'));
             $val .=  $form->inputHidden("championshipSelect",$data->id_championship.",".$data->name);
             $val .=  $form->submit($icon_quicknav." ".$data->name);
             $val .=  "</form>\n";
