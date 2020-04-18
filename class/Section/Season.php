@@ -21,22 +21,24 @@ class Season
     }
     
     static function submenu($pdo, $form, $current=null){
-        
-        $val = "";
+        $val ='';
+        $currentClass = " class='current'";
+        $classL = $classC = '';
+        switch($current){
+            case 'list':
+                $classL = $currentClass;
+                break;
+            case 'create':
+                $classC = $currentClass;
+                break;
+        }
         if(isset($_SESSION['seasonId'])) {
             $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>";
-            if($current == 'list'){
-                $val .= "<a class='current' href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
-            } else {
-                $val .= "<a href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
-            }
-        }
-        if($current == 'create'){
-            $val .= "<a class='current' href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
-        } else {
-            Account::exitButton();
-            $val .= "<a href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
-        }
+            $val .= "<a" . $classL . " href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
+            
+        } else             Account::exitButton();
+        $val .= "<a" . $classC . " href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
+        
         $req = "SELECT id_season, name FROM season ORDER BY name;";
         $data = $pdo->query($req);
         $counter = $pdo->rowCount();

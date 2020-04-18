@@ -61,15 +61,15 @@ $form = new Forms($_POST);
 $page="";
 if(isset($_GET['page'])) $page=$error->check("Alnum",$_GET['page']);
 
-$create = $modify = $delete = $exit = $logon = 0;
+$create = $modify = $delete = $exit = $logon = $modifyuser = 0;
 isset($_GET['create'])          ? $create = $error->check("Action",$_GET['create']) : null;
 $create==0 && isset($_POST['create'])  ? $create = $error->check("Action",$_POST['create']) : null;
 isset($_GET['modify'])          ? $modify = $error->check("Action",$_GET['modify']) : null;
 isset($_POST['modify'])         ? $modify = $error->check("Action",$_POST['modify']) : null;
 isset($_POST['delete'])         ? $delete = $error->check("ActionDelete",$_POST['delete']) : null;
 if(isset($_GET['exit'])) $exit=$error->check("Action",$_GET['exit']);
-isset($_POST['logon'])         ? $logon = $error->check("Action",$_POST['logon']) : null;
-
+isset($_POST['logon'])          ? $logon = $error->check("Action",$_POST['logon']) : null;
+isset($_POST['modifyuser'])     ? $modifyuser = $error->check("Action",$_POST['modifyuser']) : null;
 
 // Exit
 if($exit==1){
@@ -147,8 +147,10 @@ function myFunction() {
 $current = '';
 switch($page){
     case "account":
-        $current = 'myAccount';
-        echo Account::submenu($pdo, $form, $current);
+            if(isset($_SESSION['userLogin'])) {
+                $current = 'myAccount';
+                echo Account::submenu($pdo, $form, $current);
+            }
         break;
     case "championship":
     case "dashboard":
@@ -163,13 +165,15 @@ switch($page){
     case "prediction":
     case "results":
     case "teamOfTheWeek":
-        if($create == 1 && $page == 'matchday')  $current = 'create';
+        if($create == 1 && $page == 'matchday')         $current = 'create';
         elseif($modify == 1 && $page == 'matchday')     $current = 'modify';
-        elseif($page == 'matchday')     $current = 'statistics';
-        elseif($create == 1 && $page == 'match') $current = 'createMatch';
-        elseif($page=='prediction')     $current = 'prediction';
-        elseif($page=='results')        $current = 'results';
-        elseif($page=='teamOfTheWeek')  $current = 'teamOfTheWeek';
+        elseif($page == 'matchday'
+               && isset($_SESSION['matchdayId']))       $current = 'statistics';
+        elseif($page == 'matchday')              $current = 'list';
+        elseif($create == 1 && $page == 'match')        $current = 'createMatch';
+        elseif($page=='prediction')                     $current = 'prediction';
+        elseif($page=='results')                        $current = 'results';
+        elseif($page=='teamOfTheWeek')                  $current = 'teamOfTheWeek';
         echo Matchday::submenu($pdo, $form, $current);
         break;
     case "player":
@@ -215,6 +219,11 @@ else {
     // Section with menu
         
     echo "<ul class='menu'>\n";
+    echo "    <li><h2>$icon_account " . (Language::title('account')) . "</h2>\n";
+    echo "       <ul>\n";
+    echo "            <li><a href='index.php?page=account'>" . (Language::title('myAccount')) . "</a></li>\n";
+    echo "       </ul>\n";
+    echo "    </li>\n";
     echo "    <li><h2>$icon_championship " . (Language::title('championship')) . "</h2>\n";
     echo "       <ul>\n";
     echo "            <li><a href='index.php?page=championship'>" . (Language::title('standing')) . "</a></li>\n";
@@ -240,6 +249,9 @@ AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
         $counter = $pdo->rowCount();
         
         if($counter>0){
+            echo "        <ul>\n";
+            echo "            <li><a href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a></li>\n";
+            echo "        </ul>\n";
             // Select form
             $list = "<form action='index.php' method='POST'>\n";
             $list .= $form->label(Language::title('selectTheMatchday'));
@@ -249,7 +261,7 @@ AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
             // Quicknav button
             $req = "SELECT DISTINCT j.id_matchday, j.number FROM matchday j
             LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday
-            WHERE m.result=''
+            WHERE m.result IS NULL 
             AND j.id_season=:id_season
             AND j.id_championship=:id_championship
             ORDER BY j.number;";
@@ -269,7 +281,12 @@ AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
             
             echo $list;
             
-        } else echo "      <p>" . (Language::title('noMatchday')) . "</p>\n";
+        } else {
+            echo "      <p>" . (Language::title('noMatchday')) . "</p>\n";
+            echo "          <ul>\n";
+            echo "            <li><a href='index.php?page=matchday&create=1'>" . (Language::title('createAMatchday')) . "</a></li>\n";
+            echo "          </ul>\n";
+        }
         
         echo "        </ul>\n";
         echo "    </li>\n";

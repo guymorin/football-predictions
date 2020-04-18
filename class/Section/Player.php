@@ -15,19 +15,22 @@ class Player
     }
     
     static function submenu($pdo, $form, $current = null){
-        
+        $val ='';
+        $currentClass = " class='current'";
+        $classBP = $classC = '';
+        switch($current){
+            case 'bestPlayers':
+                $classBP = $currentClass;
+                break;
+            case 'create':
+                $classC = $currentClass;
+                break;
+        }
         $response = $pdo->query("SELECT * FROM player ORDER BY name, firstname");
         $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
-        if($current == 'bestPlayers'){
-            $val .= "<a class='current' href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a>";
-        } else {
-            $val .= "<a href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a>";
-        }
-        if($current == 'create'){
-            $val .= "<a class='current' href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a>";
-        } else {
-            $val .= "<a href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a>";
-        }
+        $val .= "<a" . $classBP . " href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a>";
+        $val .= "<a" . $classC . " href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a>";
+        
         $req = "SELECT id_player, name, firstname 
         FROM player
         ORDER BY name, firstname;";

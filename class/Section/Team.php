@@ -15,18 +15,22 @@ class Team
     }
     
     static function submenu($pdo, $form, $current=null){
-        
+        $val ='';
+        $currentClass = " class='current'";
+        $classMV = $classC = '';
+        switch($current){
+            case 'marketValue':
+                $classMV = $currentClass;
+                break;
+            case 'create':
+                $classC = $currentClass;
+                break;
+            case '':break;
+        }
         $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
-        if($current == 'marketValue'){
-            $val .= "<a class='current' href='index.php?page=team'>" . (Language::title('marketValue')) . "</a>";
-        } else {
-            $val .= "<a href='index.php?page=team'>" . (Language::title('marketValue')) . "</a>";
-        }
-        if($current == 'create'){
-            $val .= "<a class='current' href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a>\n"; 
-        } else {
-            $val .= "<a href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a>\n";
-        }
+        $val .= "<a" . $classMV . " href='index.php?page=team'>" . (Language::title('marketValue')) . "</a>";
+        $val .= "<a" . $classC . " href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a>\n";
+        
         $req = "SELECT * FROM team c ORDER BY name;";
         $data = $pdo->query($req);
         $counter = $pdo->rowCount();

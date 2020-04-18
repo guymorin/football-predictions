@@ -23,24 +23,23 @@ isset($_POST['oddsD'])          ? $oddsD=$error->check("Digit",$_POST['oddsD'], 
 isset($_POST['odds2'])          ? $odds2=$error->check("Digit",$_POST['odds2'], Language::title('odds').' 2') : null;
 isset($_POST['date'])           ? $date=$error->check("Date",$_POST['date'], Language::title('date')) : null;
 
-// Delete
-if($delete==1){
-    echo $form->popupConfirm('match', 'id_match', $idMatch);
-}
-elseif($delete==2){
-    Matchday::deletePopupMatch($pdo, $idMatch);
-}
+
 // Create
-elseif($create==1){
+if($create==1){
     echo "<h3>" . (Language::title('createAMatch')) . "</h3>\n";
 
     if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchday::createPopupMatch($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date);
     else echo Matchday::createMatchForm($pdo, $error, $form);
 }
-// Modify
-else {
+// Delete / Modify
+elseif($delete == 1  || $delete == 2 || $modify == 1){
+
     echo "<h3>" . (Language::title('modifyAMatch')) . "</h3>\n";
-    if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchday::modifyPopupMatch($pdo, $team1, $team2, $result, $idMatch);
-    elseif($idMatch>0) echo Matchday::modifyFormMatch($pdo, $error, $form, $idMatch);
-}
-?>  
+    echo Matchday::modifyFormMatch($pdo, $error, $form, $idMatch);
+    if($delete==1) echo $form->popupConfirm('match', 'id_match', $idMatch);
+    elseif($delete==2) Matchday::deletePopupMatch($pdo, $idMatch);
+    elseif($modify==1){
+        if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchday::modifyPopupMatch($pdo, $team1, $team2, $result, $idMatch);
+    }
+    
+}?>  

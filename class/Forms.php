@@ -314,7 +314,10 @@ class Forms
         while ($data = $response->fetch(PDO::FETCH_NUM)){
             $val .= "       <option value='$data[0]'";
             if($data[0]==$id) $val .= " selected";
-            $val .= ">$data[1]</option>\n";
+            $val .= ">";
+            if($name == 'role') $val .= Language::title($data[1]); 
+            else $val .= $data[1];
+            $val .= "</option>\n";
         }
         $val .= "   </select>";
         $val .= "</fieldset>\n";
@@ -346,6 +349,7 @@ class Forms
         $championshipId = $seasonId = 0;
         isset($_SESSION['championshipId']) ? $championshipId = $_SESSION['championshipId'] : null;
         isset($_SESSION['seasonId']) ? $seasonId = $_SESSION['seasonId'] : null;
+        isset($_SESSION['userId']) ? $userId = $_SESSION['userId'] : null;
 
         $val = "    <select name='$name'";
         if($autoSubmit) $val.= "onchange='submit()'";
@@ -355,12 +359,14 @@ class Forms
             
             switch($name){
                 case "id_championship":
+                case "id_fp_user":
                 case "id_season":
                 case "id_team":
                     $val .= "  		<option value='" . $data[0] . "'";
                     if(
                     ($name == "id_championship" && $data[0] == $championshipId)
                         ||($name=="id_season" && $data[0] == $seasonId)
+                        ||($name=="id_fp_user" && $data[0] == $userId)
                     ){
                         $val .= " disabled";
                     }
@@ -374,6 +380,7 @@ class Forms
                     $val .= "  		<option value='" . $data[0] . "'>";
                     $val.= mb_strtoupper($data[1],'UTF-8') . " " . ucfirst($data[2]);
                     break;
+                case "matchdayModify":
                 case "matchdaySelect":
                     $val .= "  		<option value='" . $data[0] . "," . $data[1] . "'>";
                     $val.= Language::title('MD').$data[1];

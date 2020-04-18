@@ -41,7 +41,8 @@ h3 {
  font-weight:bold;
  }
 h4 {
- font: 90% sans-serif; 
+ font: 100% sans-serif; 
+ margin:.5em;
  }
 select {min-width:10em;}
 select, input {font-size:.8em;}
@@ -248,7 +249,7 @@ section .menu {
 }
 section .menu li {
 	display:inline-block;
-	margin:0 .4em;
+	margin: .4em;
 	vertical-align:top;
 }
 section .menu li ul {clear:left;}
@@ -298,7 +299,7 @@ section #criterion table input[type='radio'] {margin-bottom:.3em}
 
 section form {width: 80%;margin: 0 auto}
 section form input, section form select {color:#000;font-size:.95em;}
-section form label {color:#333;vertical-align: middle;width:10em;display:inline-block;}
+section form label {color:#333;vertical-align: middle;min-width:10em;display:inline-block;}
 section form label.right {text-align:right;padding-right:.2em}
 section form p {text-align:left;margin:.2em;padding:.4em;display:inline-block;}
 section .menu form p {margin:0;padding:0;}
@@ -344,13 +345,12 @@ section .tooltip{
 section .tooltip:hover span,.tooltip:focus span{
   display:block; 
   position:absolute; 
-  top:.3em; 
-  left:1em;
-  background:white;
-  border:1px solid #ccf;
+  background:#63c;
   border-radius: 6px;
-  color:#564;
+  color:#fff;
+  margin-top:.5em;
   padding:.5em;
+  transition:background .5s;
 }
 
 footer {clear:both;font-size:.9em;color:#564;padding:.5em;margin-top:1em;text-align:center}
@@ -389,7 +389,7 @@ button[type=submit], input[type=submit], input[type=button], input[type=reset] {
 	border:1px outset #ccc;
 	border-radius:5px;
 	font-size:1em;
-	margin:0 .5em;
+	margin:0 .5em .5em .5em;
 	text-decoration:none;
 	text-shadow:1px 1px #fff;
 	
@@ -458,16 +458,19 @@ button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, i
 }
 .confirm p, .confirm form {display:block;margin:0;padding:0}
 
-#circle {
+#circle, #circleAdmin {
 	color:#fff;
 	font-size:2em;
 	text-transform:uppercase;
 	vertical-align:middle;
-	background:#909;
+	background:#999;
 	border-radius:50%;
 	height:2em;
 	line-height:2em;
 	white-space: nowrap;
 	width:2em;
 	margin:0 auto .5em auto;
+}
+#circleAdmin {
+	background:#909;
 }

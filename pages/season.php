@@ -32,13 +32,6 @@ if(
 ){
     echo Season::selectSeason($pdo, $form, $icon_quicknav);
 }
-// Delete
-elseif($delete == 1){
-    echo $form->popupConfirm('season', 'id_season', $seasonId);
-}
-elseif($delete == 2){
-    Season::deletePopup($pdo, $seasonId);
-}
 // Create
 elseif($create == 1){
     echo "<h3>" . (Language::title('createASeason')) . "</h3>\n";
@@ -46,16 +39,22 @@ elseif($create == 1){
     elseif($seasonName!="") Season::createPopup($pdo, $seasonName);
     echo Season::createForm($error, $form);
 }
-// Modify
-elseif($modify == 1){
+// Delete / Modify
+elseif($delete == 1  || $delete == 2 || $modify == 1){
+    
     echo "<h3>" . (Language::title('modifyASeason')) . "</h3>\n";
-    if($pdo->findName('season', $seasonName))  $error->addError(Language::title('name'), Language::title('errorExists'));
-    elseif($seasonName!="") Season::modifyPopup($pdo, $seasonName, $seasonId);
     echo Season::modifyForm($pdo, $error, $form, $seasonId);
+
+    if($delete == 1) echo $form->popupConfirm('season', 'id_season', $seasonId);
+    elseif($delete == 2) Season::deletePopup($pdo, $seasonId);
+    elseif($modify == 1){
+        if($pdo->findName('season', $seasonName))  $error->addError(Language::title('name'), Language::title('errorExists'));
+        elseif($seasonName!="") Season::modifyPopup($pdo, $seasonName, $seasonId);
+    }
 }
 // List
 else {
-    echo "<h3>" . (Language::title('listChampionships')) . " ".$_SESSION['seasonName']."</h3>\n";
+    echo "<h3>" . (Language::title('listChampionships')) . " (".$_SESSION['seasonName'].")</h3>\n";
     echo Season::list($pdo);
 }
 ?>

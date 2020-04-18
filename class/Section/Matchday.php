@@ -24,34 +24,37 @@ class Matchday
     static function submenu($pdo, $form, $current = null){
         
         $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
-        if(isset($_SESSION['matchdayId'])){
-            
-            if($current == 'statistics'){
-                $val .= "<a class='current' href='index.php?page=matchday'>" . (Language::title('statistics')) . "</a>";
-            } else {
-                $val .= "<a href='index.php?page=matchday'>" . (Language::title('statistics')) . "</a>";
-            }
-            if($current == 'prediction'){ 
-                $val .= "<a class='current' href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
-            } else {    
-                $val .= "<a href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
-            }
-            if($current == 'results'){
-                $val .= "<a class='current' href='index.php?page=results'>" . (Language::title('results')) . "</a>";
-            } else {
-                $val .= "<a href='index.php?page=results'>" . (Language::title('results')) . "</a>";
-            }
-            if($current == 'teamOfTheWeek'){
-                $val .= "<a class='current' href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
-            } else {
-                $val .= "<a href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
-            }
-            if($current == 'createMatch'){
-                $val .= "<a class='current' href='index.php?page=match&create=1'>" . (Language::title('createAMatch')) . "</a>";
-            } else {
-                $val .= "<a href='index.php?page=match&create=1'>" . (Language::title('createAMatch')) . "</a>";
-            }
-            
+        $currentClass = " class='current'";
+        $classS = $classP = $classR = $classTOTW = $classCM = $classLMD = $classCMD = '';
+        switch($current){
+            case 'statistics':
+                $classS = $currentClass;
+                break;
+            case 'prediction':
+                $classP = $currentClass;
+                break;
+            case 'results':
+                $classR = $currentClass;
+                break;
+            case 'teamOfTheWeek':
+                $classTOTW = $currentClass;
+                break;
+            case 'createMatch':
+                $classCM = $currentClass;
+                break;
+            case 'create':
+                $classCMD = $currentClass;
+                break;
+            case 'list':
+                $classLMD = $currentClass;
+                break;
+        }
+        if(isset($_SESSION['matchdayId'])){ 
+            $val .= "<a" . $classS . " href='index.php?page=matchday'>" . (Language::title('statistics')) . "</a>";
+            $val .= "<a" . $classP . " href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
+            $val .= "<a" . $classR . " href='index.php?page=results'>" . (Language::title('results')) . "</a>";
+            $val .= "<a" . $classTOTW . " href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
+            $val .= "<a" . $classCM . " href='index.php?page=match&create=1'>" . (Language::title('createAMatch')) . "</a>";
             $req = "SELECT DISTINCT mg.id_matchgame, t1.name, t2.name, mg.date
             FROM matchgame mg
             LEFT JOIN matchday md ON md.id_matchday = mg.id_matchday  
@@ -70,7 +73,8 @@ class Matchday
                 $val .= "</form>\n";
             }
         } else {
-            $val .= "<a href='index.php?page=matchday&create=1'>" . (Language::title('createAMatchday')) . "</a>\n";
+            $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
+            $val .= "<a" . $classCMD . " href='index.php?page=matchday&create=1'>" . (Language::title('createAMatchday')) . "</a>\n";
             $req = "SELECT DISTINCT id_matchday, number FROM matchday
             WHERE id_season = " . $_SESSION['seasonId'] . "
             AND id_championship = " . $_SESSION['championshipId'] . " ORDER BY number DESC;";
@@ -80,7 +84,7 @@ class Matchday
                 $val .= "<form action='index.php?page=matchday' method='POST'>\n";
                 $val .= $form->inputAction('modify');
                 $val .= $form->label(Language::title('modifyAMatchday'));
-                $val .= $form->selectSubmit('id_matchday', $data);
+                $val .= $form->selectSubmit('matchdayModify', $data);
                 $val .= "</form>\n";
             }
         }
@@ -143,7 +147,7 @@ class Matchday
         $req = "SELECT * FROM matchday WHERE id_matchday=:id_matchday;";
         $data = $pdo->prepare($req,[
             'id_matchday' => $matchdayId
-        ],true);
+        ]);
         
         $val .= $error->getError();
         $val .= " <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
@@ -151,6 +155,7 @@ class Matchday
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden("id_matchday", $data->id_matchday);
         $val .= $form->input(Language::title('number'), "number");
+        $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= " </form>\n";
         // Delete
@@ -238,13 +243,13 @@ class Matchday
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
         // Delete
-        $val .= $form->deleteForm('match', 'id_matchgame', $idMatch);
+        $val .= $form->deleteForm('match', 'id_match', $idMatch);
         
         return $val;
     }
     
-    static function list($pdo){
-        
+    static function stats($pdo){
+        require '../theme/default/theme.php';
         changeMD($pdo,"matchday");
         echo "<h3>" . (Language::title('statistics')) . "</h3>";
         $req="SELECT m.id_matchgame,
@@ -277,7 +282,7 @@ class Matchday
             $table.="         <th>" . (Language::title('success')) . "</th>\n";
             $table.="       </tr>\n";
             
-            $matchs=$success=$earningSum=$totalJouee=0;
+            $matchs = $success = $earningSum = $totalPlayed = 0;
             
             foreach ($data as $d)
             {
@@ -312,7 +317,7 @@ class Matchday
                     AND cr.home_away1='".$d->home_away1."'
                     AND cr.home_away2='".$d->home_away2."'
                     AND m.date<'".$d->date."'";
-                $r = $pdo->prepare($req,'');
+                $r = $pdo->prepare($req,null,true);
                 $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$pdo);
                 $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$pdo);
                 
@@ -337,31 +342,29 @@ class Matchday
                 +$mv2
                 +$ext
                 +$predictionsHistoryAway;
-                if($sum1>$sum2) $prediction="1";
-                elseif($sum1==$sum2) $prediction=Language::title('draw');
-                elseif($sum1<$sum2) $prediction="2";
+                if($sum1>$sum2)         $prediction = '1';
+                elseif($sum1==$sum2)    $prediction = Language::title('draw');
+                elseif($sum1<$sum2)     $prediction = '2';
                 
                 $matchs++;
-                
                 $playedOdds=0;
                 switch($prediction){
                     case "1":
                         $playedOdds = $d->odds1;
                         break;
-                    case "N":
+                    case (Language::title('draw')):
                         $playedOdds = $d->oddsD;
                         break;
                     case "2":
                         $playedOdds = $d->odds2;
                         break;
                 }
-                
-                if($prediction==$d->result){
+                if($prediction == $d->result){
                     $win = $icon_winOK;
                     $success++;
                     $earningSum += $playedOdds;
-                } elseif ($d->result!="") $win = $icon_winKO;
-                $totalJouee+=$playedOdds;
+                } elseif ($d->result != "") $win = $icon_winKO;
+                $totalPlayed += $playedOdds;
                 
                 $table.="  		<tr>\n";
                 $table.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
@@ -387,10 +390,37 @@ class Matchday
             
             echo "<p>\n";
             echo "  <table class='stats'>\n";
-            
+         
             echo "    <tr>\n";
             echo "      <td>" . (Language::title('bet')) . "</td>\n";
             echo "      <td>".$matchs."</td>\n";
+            echo "      <td>" . (Language::title('success')) . "</td>\n";
+            echo "      <td>" . $success . "</td>\n";
+            echo "    </tr>\n";
+            
+            echo "    <tr>\n";
+            echo "      <td>" . (Language::title('earning')) . "</td>\n";
+            echo "      <td>".$earning."&nbsp;&euro;</td>\n";
+            echo "      <td>" . (Language::title('successRate')) . "</td>\n";
+            echo "      <td>";
+            if($matchs>0) echo $successRate;
+            else echo 0;
+            echo "&nbsp;%</td>\n";
+            echo "    </tr>\n";
+            
+            echo "    <tr>\n";
+            echo "      <td>" . (Language::title('earningByBet')) . "</td>\n";
+            echo "      <td>$earningByBet</td>\n";
+            $averageOdds=(round($totalPlayed/$matchs,2));
+            echo "      <td>" . (Language::title('oddsAveragePlayed')) . "</td>\n";
+            echo "      <td>".$averageOdds;
+            if(($averageOdds<1.8)||($averageOdds>2.3)){
+                echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valOdds($averageOdds)."</a>";
+            }
+            echo "</td>\n";
+            echo "    </tr>\n";
+            
+            echo "    <tr>\n";
             echo "      <td>" . (Language::title('profit')) . "</td>\n";
             echo "      <td><span style='color:".valColor($benef)."'>";
             if($benef>0) echo "+";
@@ -404,37 +434,55 @@ class Matchday
             echo "</td>\n";
             echo "    </tr>\n";
             
-            echo "    <tr>\n";
-            echo "      <td>" . (Language::title('success')) . "</td>\n";
-            echo "      <td>$success</td>\n";
-            echo "      <td>" . (Language::title('earning')) . "</td>\n";
-            echo "      <td>".$earning."&nbsp;&euro;</td>\n";
-            echo "      <td>" . (Language::title('earningByBet')) . "</td>\n";
-            echo "      <td>$earningByBet</td>\n";
-            echo "    </tr>\n";
-            
-            echo "    <tr>\n";
-            echo "      <td>" . (Language::title('successRate')) . "</td>\n";
-            echo "      <td>";
-            if($matchs>0) echo $successRate;
-            else echo 0;
-            echo "&nbsp;%</td>\n";
-            $averageOdds=(round($totalJouee/$matchs,2));
-            echo "      <td>" . (Language::title('oddsAveragePlayed')) . "</td>\n";
-            echo "      <td>".$averageOdds;
-            if(($averageOdds<1.8)||($averageOdds>2.3)){
-                echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valOdds($averageOdds)."</a>";
-            }
-            echo "</td>\n";
-            echo "      <td></td>\n";
-            echo "      <td></td>\n";
-            echo "    </tr>\n";
-            
             echo "  </table>\n";
             echo "</p>\n";
             
             echo $table;
         } else echo Language::title('noStatistic');
     }
+    
+    static function list($pdo){
+        
+        $req = "SELECT md.number, COUNT(*) as nb, COUNT(mg.result) as played
+        FROM matchday md
+        LEFT JOIN matchgame mg ON mg.id_matchday=md.id_matchday
+        WHERE md.id_season = :id_season 
+        AND md.id_championship = :id_championship
+        GROUP BY md.number
+        ORDER BY md.number DESC";
+        $data = $pdo->prepare($req,[
+            'id_season' => $_SESSION['seasonId'],
+            'id_championship' => $_SESSION['championshipId']
+        ],true);
+        $val = "<table>\n";
+        $val .= "  <tr>\n";
+        $val .= "      <th>" . (Language::title('matchday')) . "</th>\n";
+        $val .= "      <th>" . (Language::title('matchNumber')) . "</th>\n";
+        $val .= "      <th>" . (Language::title('matchPlayed')) . "</th>\n";
+        $val .= "  </tr>\n";
+        
+        $counter = $pdo->rowCount();
+        if($counter>0){
+            foreach ($data as $d)
+            {
+                $val .= "  <tr>\n";
+                $val .= "      <td>" . (Language::title('MD')) . $d->number . "</td>\n";
+                $val .= "      <td>" . $d->nb . "</td>\n";
+                $val .= "      <td>" . $d->played . "</td>\n";
+                $val .= "  </tr>\n";
+            }            
+        } else {
+            $val .= "  <tr>\n";
+            $val .= "      <td>" . (Language::title('noMatchday')) . "</td>\n";
+            $val .= "      <td>0</td>\n";
+            $val .= "      <td>0</td>\n";
+            $val .= "  </tr>\n";
+        }
+
+        $val .= "</table>\n";
+        return $val;
+    }
+    
+    
 }
 ?>

@@ -15,12 +15,15 @@ use FootballPredictions\Section\Account;
 <?php
 // Values
 $userId = 0;
-$userLogin = $userPassword = $userLanguage = $userTheme = "";
+$userLogin = $userPassword = $userLanguage = $userTheme = $userRole = "";
 isset($_POST['id_fp_user'])  ? $userId = $error->check("Digit",$_POST['id_fp_user']) : null;
 isset($_POST['name'])        ? $userLogin = $error->check("Alnum",$_POST['name'], Language::title('login')) : null;
 isset($_POST['password'])    ? $userPassword = $_POST['password'] : null;
 isset($_POST['language'])    ? $userLanguage = $_POST['language'] : null;
 isset($_POST['theme'])       ? $userTheme = $_POST['theme'] : null;
+isset($_POST['role'])        ? $userRole = $_POST['role'] : null;
+
+$userLogin = strtolower($userLogin);
 
 // Logon
 if(    
@@ -47,20 +50,31 @@ elseif($create == 1){
     if($pdo->findName('fp_user', $userLogin))  $error->addError(Language::title('login'), Language::title('errorExists'));
     elseif($userLogin!="") Account::createPopup($pdo, $userLogin, $userPassword);
     echo Account::createForm($error, $form);
-} 
+}
+
 // Delete / Modify
-elseif($delete == 1  || $delete == 2 || $modify == 1){
-    echo "<h3>" . (Language::title('modifyAnAccount')) . "</h3>\n";
-    echo Account::modifyForm($pdo, $error, $form, $userId);
+elseif($delete == 1  || $delete == 2 || $modify == 1 || $modifyuser == 1){
+    if($userId == $_SESSION['userId']){
+        echo "<h3>" . (Language::title('myAccount')) . "</h3>\n";
+        echo "<h4>" . ucfirst($_SESSION['userLogin']) . "</h4>\n";
+        echo Account::modifyForm($pdo, $error, $form, $userId);
+    } else {
+        echo "<h3>" . (Language::title('modifyAnAccount')) . "</h3>\n";
+        echo Account::modifyUserForm($pdo, $error, $form, $userId);
+    }
 
     if($delete == 1) echo $form->popupConfirm('account', 'id_fp_user', $userId);
     elseif($delete == 2) Account::deletePopup($pdo, $userId);
     elseif($modify == 1){
         if($userLogin!="") Account::modifyPopup($pdo, $userId, $userLogin, $userPassword, $userLanguage, $userTheme);
+    }
+    elseif($modifyuser == 1){
+        if($userRole!="") Account::modifyUserPopup($pdo, $userId, $userRole);
     } 
 // List
 } else {
-    echo "<h3>".$_SESSION['userLogin']."</h3>\n";
+    echo "<h3>" . (Language::title('myAccount')) . "</h3>\n";
+    echo "<h4>" . ucfirst($_SESSION['userLogin']) . "</h4>\n";
     echo Account::modifyForm($pdo, $error, $form, $_SESSION['userId']);
 }
 ?>

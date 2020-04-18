@@ -23,29 +23,29 @@ class Championship
     static function submenu($pdo, $form, $current=null){
         
         $val ='';
+        $currentClass = " class='current'";
+        $classS = $classDB = $classC = '';
+        switch($current){
+            case 'standing':
+                $classS = $currentClass;
+                break;
+            case 'dashboard':
+                $classDB = $currentClass;
+                break;
+            case 'create':
+                $classC = $currentClass;
+                break;
+        }
         if(isset($_SESSION['championshipId'])){
             $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
-            
-            if($current == 'standing'){
-                $val .= "<a class='current' href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
-            } else {
-                $val .= "<a href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
-            }
-            if($current == 'dashboard'){
-                $val .= "<a class='current' href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
-            } else {
-                $val .= "<a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
-            }
+            $val .= "<a" . $classS . " href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
+            $val .= "<a" . $classDB . " href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
         } else {
             Account::exitButton();
             Season::exitButton();
         }
+        $val .= "<a" . $classC . " href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a>\n";
         
-        if($current == 'create'){
-            $val .= "<a class='current' href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a>\n";
-        } else {
-            $val .= "<a href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a>\n";
-        }
         $req = "SELECT DISTINCT c.id_championship, c.name
         FROM championship c
         ORDER BY c.name;";
