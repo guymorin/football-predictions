@@ -17,8 +17,8 @@ require '../include/changeMD.php';
 
 <?php
 // Values
-$matchdayId=0;
-$matchdayNumber="";
+$matchdayId = 0;
+$matchdayNumber = $matchdayTotalNumber = "";
 
 if(isset($_POST['matchdayModify'])){
     $v=explode(",",$_POST['matchdayModify']);
@@ -27,6 +27,8 @@ if(isset($_POST['matchdayModify'])){
 
 isset($_POST['id_matchday'])   ? $matchdayId = $error->check("Digit",$_POST['id_matchday']) : null;
 isset($_POST['number'])		   ? $matchdayNumber = $error->check("Digit",$_POST['number'], Language::title('number')) : null;
+isset($_POST['totalNumber'])   ? $matchdayTotalNumber = $error->check("Digit",$_POST['totalNumber'], Language::title('matchdayNumber')) : null;
+
 
 $idPlayer = $ratingPlayer = $deletePlayer = 0;
 isset($_POST['id_player'])	   ? $idPlayer=$error->check("Digit",$_POST['id_player']) : null;
@@ -39,9 +41,16 @@ if(isset($_POST['id_player'])
 
 // Create
 if($create==1){
-    echo "<h3>" . (Language::title('createAMatchday')) . "</h3>\n";
-    if($matchdayNumber!="") Matchday::createPopup($pdo, $matchdayNumber);
-    else echo Matchday::createForm($pdo, $error, $form);
+    if ($_SESSION['noMatchday'] == true) {
+        echo "<h3>" . (Language::title('createTheMatchdays')) . "</h3>\n";
+        echo Matchday::createMultiForm($pdo, $error, $form);
+        if($matchdayTotalNumber!="") Matchday::createMultiPopup($pdo, $matchdayTotalNumber);
+    } else {
+        echo "<h3>" . (Language::title('createAMatchday')) . "</h3>\n";
+        echo Matchday::createForm($pdo, $error, $form);
+        if($matchdayNumber!="") Matchday::createPopup($pdo, $matchdayNumber);
+    }
+    
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
@@ -58,8 +67,9 @@ else {
     if(isset($_SESSION['matchdayId'])){
         echo Matchday::stats($pdo);
     } else {
-        echo "<h3>" . (Language::title('listMatchdays')) . " (".$_SESSION['championshipName']." - ".$_SESSION['seasonName'].")</h3>\n";
-        echo Matchday::list($pdo);
+        echo "<h3>" . (Language::title('listMatchdays'));
+        echo "<h4>". $_SESSION['championshipName']." - ".$_SESSION['seasonName'] . "</h4>\n";
+        echo Matchday::list($pdo, $form);
     }
 }
 ?>

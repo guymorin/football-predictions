@@ -307,6 +307,13 @@ class Forms
         return $this->label($title)."<br />\n";
     }
     
+    /**
+     * 
+     * @param string $name Name attribute
+     * @param array $response Data to fetch
+     * @param int or string $id Selected value
+     * @return string
+     */
     public function select($name, $response, $id){
         $val = "<fieldset>\n";
         $val .= "   <legend>" . (Language::title($name)) . "</legend>";
@@ -359,20 +366,25 @@ class Forms
             
             switch($name){
                 case "id_championship":
-                case "id_fp_user":
                 case "id_season":
                 case "id_team":
                     $val .= "  		<option value='" . $data[0] . "'";
                     if(
                     ($name == "id_championship" && $data[0] == $championshipId)
                         ||($name=="id_season" && $data[0] == $seasonId)
-                        ||($name=="id_fp_user" && $data[0] == $userId)
                     ){
                         $val .= " disabled";
                     }
                     $val .= ">".$data[1];
                     break;
-                case "id_match":
+                case "id_fp_user":
+                    $val .= "  		<option value='" . $data[0] . "'";
+                    if($name=="id_fp_user" && $data[0] == $userId) {
+                            $val .= " disabled";
+                    }
+                    $val .= ">".ucfirst($data[1]);
+                    break;
+                case "id_matchgame":
                     $val .= "  		<option value='" . $data[0] . "'>";
                     $val .= $data[1] . " - " . $data[2];
                     break;
@@ -396,6 +408,14 @@ class Forms
         return $val;
     }
     
+    /**
+     * 
+     * @param unknown $pdo Database
+     * @param string $name Name attribute
+     * @param unknown $selected Selected value if needed
+     * @param unknown $data Data to display
+     * @return string
+     */
     public function selectPlayer($pdo, $name='id_player', $selected=null, $data=null){
         
         if($data == null){

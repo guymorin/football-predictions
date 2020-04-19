@@ -54,7 +54,7 @@ class Matchday
             $val .= "<a" . $classP . " href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
             $val .= "<a" . $classR . " href='index.php?page=results'>" . (Language::title('results')) . "</a>";
             $val .= "<a" . $classTOTW . " href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
-            $val .= "<a" . $classCM . " href='index.php?page=match&create=1'>" . (Language::title('createAMatch')) . "</a>";
+            $val .= "<a" . $classCM . " href='index.php?page=matchgame&create=1'>" . (Language::title('createAMatch')) . "</a>";
             $req = "SELECT DISTINCT mg.id_matchgame, t1.name, t2.name, mg.date
             FROM matchgame mg
             LEFT JOIN matchday md ON md.id_matchday = mg.id_matchday  
@@ -66,15 +66,18 @@ class Matchday
             $data = $pdo->query($req);
             $counter = $pdo->rowCount();
             if($counter > 1){
-                $val .= "<form action='index.php?page=match' method='POST'>\n";
+                $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
                 $val .= $form->inputAction('modify');
                 $val .= $form->label(Language::title('modifyAMatch'));
-                $val .= $form->selectSubmit('id_match', $data);
+                $val .= $form->selectSubmit('id_matchgame', $data);
                 $val .= "</form>\n";
             }
         } else {
             $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
-            $val .= "<a" . $classCMD . " href='index.php?page=matchday&create=1'>" . (Language::title('createAMatchday')) . "</a>\n";
+            $val .= "<a" . $classCMD . " href='index.php?page=matchday&create=1'>";
+            if ($_SESSION['noMatchday'] == true) $val .= Language::title('createTheMatchdays');
+            else  $val .= Language::title('createAMatchday');
+            $val .= "</a>\n";
             $req = "SELECT DISTINCT id_matchday, number FROM matchday
             WHERE id_season = " . $_SESSION['seasonId'] . "
             AND id_championship = " . $_SESSION['championshipId'] . " ORDER BY number DESC;";
@@ -101,20 +104,32 @@ class Matchday
     
     static function deletePopupMatch($pdo, $idMatch){
         
-        $req="DELETE FROM matchgame WHERE id_match=:id_match;";
+        $req="DELETE FROM matchgame WHERE id_matchgame=:id_matchgame;";
         $pdo->prepare($req,[
-            'id_match' => $idMatch
+            'id_matchgame' => $idMatch
         ]);
         $pdo->alterAuto('matchgame');
-        popup(Language::title('deleted'),"index.php?page=match");
+        popup(Language::title('deleted'),"index.php?page=matchgame");
     }
     
     static function createForm($pdo, $error, $form){
         
         $val = $error->getError();
-        $val .= "<form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+        $val .= "<form action='index.php?page=matchday' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= $form->input(Language::title('number'),'number');
+        $val .= $form->submit(Language::title('create'));
+        $val .= "</form>\n";
+        return $val;
+    }
+    
+    static function createMultiForm($pdo, $error, $form){
+        
+        $val = $error->getError();
+        $val .= "<form action='index.php?page=matchday&create=1' method='POST'>\n";
+        $val .= $form->inputAction('createMulti');
+        $val .= $form->input(Language::title('matchdayNumber'),'totalNumber');
+        $val .= "<br />\n";
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
         return $val;
@@ -133,13 +148,29 @@ class Matchday
         popup(Language::title('created'),"index.php?page=matchday");
     }
     
+    static function createMultiPopup($pdo, $matchdayTotalNumber){
+        
+        $pdo->alterAuto('matchday');
+        $req = '';
+        for($i=1;$i<=$matchdayTotalNumber;$i++){
+            $req .= "INSERT INTO matchday
+            VALUES(NULL,:id_season,:id_championship,$i);";            
+        }
+        $pdo->prepare($req,[
+            'id_season' => $_SESSION['seasonId'],
+            'id_championship' => $_SESSION['championshipId'],
+        ]);
+        $_SESSION['noMatchday'] = false;
+        popup(Language::title('created'),"index.php?page=matchday");
+    }
+    
     static function createPopupMatch($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date){
         
         $pdo->alterAuto('matchgame');
         $req="INSERT INTO matchgame
             VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0,0,0);";
         $pdo->exec($req);
-        popup(Language::title('created'),"index.php?page=match&create=1");
+        popup(Language::title('created'),"index.php?page=matchgame&create=1");
     }
     
     static function modifyForm($pdo, $data, $matchdayId, $error, $form){
@@ -179,21 +210,21 @@ class Matchday
         
         $req="UPDATE matchgame
             SET id_matchday = :id_matchday, team_1=:team_1, team_2 = :team_2, result = :result
-            WHERE id_match = :id_match;";
+            WHERE id_matchgame = :id_matchgame;";
         $pdo->prepare($req,[
             'id_matchday' => $_SESSION['matchdayId'],
             'team_1' => $team1,
             'team_2' => $team2,
             'result' => $result,
-            'id_match' => $idMatch
+            'id_matchgame' => $idMatch
         ]);
-        popup(Language::title('modifyAMatch'),"index.php?page=match");
+        popup(Language::title('modifyAMatch'),"index.php?page=matchgame");
     }
     
     static function createMatchForm($pdo, $error, $form){
         
         $val = $error->getError();
-        $val .= "<form action='index.php?page=match' method='POST'>\n";
+        $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= $form->inputHidden('matchdayId', $_SESSION['matchdayId']);
         
@@ -228,7 +259,7 @@ class Matchday
             'id_matchgame' => $idMatch
         ]);
         $val = $error->getError();
-        $val .= "<form action='index.php?page=match' method='POST'>\n";
+        $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= $form->inputHidden('id_matchgame',$data->id_matchgame);
@@ -243,7 +274,7 @@ class Matchday
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
         // Delete
-        $val .= $form->deleteForm('match', 'id_match', $idMatch);
+        $val .= $form->deleteForm('matchgame', 'id_matchgame', $idMatch);
         
         return $val;
     }
@@ -264,7 +295,7 @@ class Matchday
         m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchgame m
         LEFT JOIN team c1 ON m.team_1=c1.id_team
         LEFT JOIN team c2 ON m.team_2=c2.id_team
-        LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame
+        LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame
         WHERE m.id_matchday=:id_matchday ORDER BY m.date
         ;";
         $data = $pdo->prepare($req,[
@@ -275,7 +306,7 @@ class Matchday
             
             $table="	 <table class='stats'>\n";
             $table.="  		<tr>\n";
-            $table.="  		  <th>" . (Language::title('match')) . "</th>\n";
+            $table.="  		  <th>" . (Language::title('matchgame')) . "</th>\n";
             $table.="         <th>" . (Language::title('prediction')) . "</th>\n";
             $table.="         <th>" . (Language::title('result')) . "</th>\n";
             $table.="         <th>" . (Language::title('odds')) . "</th>\n";
@@ -301,7 +332,7 @@ class Matchday
                     SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
                     SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
                     FROM matchgame m
-                    LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame
+                    LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame
                     WHERE cr.motivation1='".$d->motivation1."'
                     AND cr.motivation2='".$d->motivation2."'
                     AND cr.currentForm1='".$d->currentForm1."'
@@ -441,14 +472,14 @@ class Matchday
         } else echo Language::title('noStatistic');
     }
     
-    static function list($pdo){
+    static function list($pdo, $form){
         
-        $req = "SELECT md.number, COUNT(*) as nb, COUNT(mg.result) as played
+        $req = "SELECT md.id_matchday, md.number, COUNT(*) as nb, COUNT(mg.result) as played
         FROM matchday md
         LEFT JOIN matchgame mg ON mg.id_matchday=md.id_matchday
         WHERE md.id_season = :id_season 
         AND md.id_championship = :id_championship
-        GROUP BY md.number
+        GROUP BY md.id_matchday, md.number
         ORDER BY md.number DESC";
         $data = $pdo->prepare($req,[
             'id_season' => $_SESSION['seasonId'],
@@ -466,16 +497,19 @@ class Matchday
             foreach ($data as $d)
             {
                 $val .= "  <tr>\n";
-                $val .= "      <td>" . (Language::title('MD')) . $d->number . "</td>\n";
+                $val .= "<form id='" . ($d->id_matchday) . "' action='index.php' method='POST'>\n";
+                $val .= $form->inputHidden("matchdaySelect", $d->id_matchday . "," . $d->number);
+                $val .= "<td><a href='#' onclick='document.getElementById(" . ($d->id_matchday) . ").submit();'>" . (Language::title('MD')) . ($d->number) . "</a></td>\n";
                 $val .= "      <td>" . $d->nb . "</td>\n";
                 $val .= "      <td>" . $d->played . "</td>\n";
+                $val .= "</form>\n";
                 $val .= "  </tr>\n";
             }            
         } else {
             $val .= "  <tr>\n";
             $val .= "      <td>" . (Language::title('noMatchday')) . "</td>\n";
-            $val .= "      <td>0</td>\n";
-            $val .= "      <td>0</td>\n";
+            $val .= "      <td>-</td>\n";
+            $val .= "      <td>-</td>\n";
             $val .= "  </tr>\n";
         }
 

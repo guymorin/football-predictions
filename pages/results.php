@@ -77,7 +77,7 @@ if($modify==1){
             $req.="red2='".$r2Match[$k]."'";
             $cpt=1;
         }
-        $req.=" WHERE id_match='".$k."';";
+        $req.=" WHERE id_matchgame='".$k."';";
     }
     $pdo->exec($req);
     popup(Language::title('modified'),"index.php?page=results");
@@ -110,7 +110,7 @@ else {
         echo "  <tr>\n";
         echo "      <th>" . (Language::title('date')) . "</th>\n";
         echo "      <th>" . (Language::title('notPlayed')) . "</th>\n";
-        echo "      <th>" . (Language::title('match')) . "</th>\n";
+        echo "      <th>" . (Language::title('matchgame')) . "</th>\n";
         echo "      <th>1</th>\n";
         echo "      <th>" . (Language::title('draw')) . "</th>\n";
         echo "      <th>2</th>\n";

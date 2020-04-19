@@ -21,7 +21,7 @@ c1.weather_code,
 m.result, m.date FROM matchgame m 
 LEFT JOIN team c1 ON m.team_1=c1.id_team 
 LEFT JOIN team c2 ON m.team_2=c2.id_team 
-LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
+LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame 
 WHERE m.id_matchday=:id_matchday ORDER BY m.date;";
 $data = $pdo->prepare($req,[
     'id_matchday' => $_SESSION['matchdayId']
@@ -240,7 +240,7 @@ if($counter > 0){
         SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
         SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
         FROM matchgame m
-        LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame
+        LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame
         WHERE cr.motivation1 = :motivation1
         AND cr.motivation2 = :motivation2
         AND cr.currentForm1 = :currentForm1

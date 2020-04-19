@@ -40,11 +40,11 @@ if($modify==1){
     
     foreach($idMatch as $k){
         if($rMatch[$k]!=""){
-            $req.="UPDATE matchgame SET result='".$rMatch[$k]."' WHERE id_match='".$k."';";
+            $req.="UPDATE matchgame SET result='".$rMatch[$k]."' WHERE id_matchgame='".$k."';";
         }
         $data = $pdo->prepare("SELECT COUNT(*) as nb FROM criterion 
-        WHERE id_match=:id_match;",[
-            'id_match' => $k
+        WHERE id_matchgame=:id_matchgame;",[
+            'id_matchgame' => $k
         ]);
         
         if($data->nb == 0){
@@ -121,7 +121,7 @@ if($modify==1){
             $req.="',";
             $req.="home_away2='";
             isset($doMatch2[$k]) ? $req.=$doMatch2[$k] : $req.=0;
-            $req.="' WHERE id_match='".$k."';";
+            $req.="' WHERE id_matchgame='".$k."';";
         }  
     }
     $pdo->exec($req);

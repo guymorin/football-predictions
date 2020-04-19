@@ -16,7 +16,7 @@ c1.name as name1,c2.name as name2,
 m.result, m.date FROM matchgame m 
 LEFT JOIN team c1 ON m.team_1=c1.id_team 
 LEFT JOIN team c2 ON m.team_2=c2.id_team 
-LEFT JOIN criterion cr ON cr.id_match=m.id_matchgame 
+LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame 
 WHERE m.id_matchday=:id_matchday ORDER BY m.date;";
 $data = $pdo->prepare($req,[
     'id_matchday' => $_SESSION['matchdayId']

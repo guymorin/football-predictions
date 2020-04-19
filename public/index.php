@@ -161,7 +161,7 @@ switch($page){
         echo Championship::submenu($pdo, $form, $current);
         break;
     case "matchday":
-    case "match":
+    case "matchgame":
     case "prediction":
     case "results":
     case "teamOfTheWeek":
@@ -170,7 +170,7 @@ switch($page){
         elseif($page == 'matchday'
                && isset($_SESSION['matchdayId']))       $current = 'statistics';
         elseif($page == 'matchday')              $current = 'list';
-        elseif($create == 1 && $page == 'match')        $current = 'createMatch';
+        elseif($create == 1 && $page == 'matchgame')        $current = 'createMatch';
         elseif($page=='prediction')                     $current = 'prediction';
         elseif($page=='results')                        $current = 'results';
         elseif($page=='teamOfTheWeek')                  $current = 'teamOfTheWeek';
@@ -242,13 +242,14 @@ else {
         echo "        <ul>\n";
 
         $req = "SELECT DISTINCT id_matchday, number
-FROM matchday
-WHERE id_season=" . $_SESSION['seasonId']."
-AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
+        FROM matchday
+        WHERE id_season=" . $_SESSION['seasonId']."
+        AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
         $response = $pdo->query($req);
         $counter = $pdo->rowCount();
         
         if($counter>0){
+            $_SESSION['noMatchday'] = false;
             echo "        <ul>\n";
             echo "            <li><a href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a></li>\n";
             echo "        </ul>\n";
@@ -282,9 +283,10 @@ AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
             echo $list;
             
         } else {
+            $_SESSION['noMatchday'] = true;
             echo "      <p>" . (Language::title('noMatchday')) . "</p>\n";
             echo "          <ul>\n";
-            echo "            <li><a href='index.php?page=matchday&create=1'>" . (Language::title('createAMatchday')) . "</a></li>\n";
+            echo "            <li><a href='index.php?page=matchday&create=1'>" . (Language::title('createTheMatchdays')) . "</a></li>\n";
             echo "          </ul>\n";
         }
         

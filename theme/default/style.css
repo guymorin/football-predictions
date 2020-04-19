@@ -300,7 +300,7 @@ section #criterion table input[type='radio'] {margin-bottom:.3em}
 section form {width: 80%;margin: 0 auto}
 section form input, section form select {color:#000;font-size:.95em;}
 section form label {color:#333;vertical-align: middle;min-width:10em;display:inline-block;}
-section form label.right {text-align:right;padding-right:.2em}
+section form label.right {text-align:right;padding-right:.2em;min-width:1em;}
 section form p {text-align:left;margin:.2em;padding:.4em;display:inline-block;}
 section .menu form p {margin:0;padding:0;}
 
