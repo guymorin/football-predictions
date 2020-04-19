@@ -410,10 +410,10 @@ class Forms
     
     /**
      * 
-     * @param unknown $pdo Database
+     * @param object $pdo Database
      * @param string $name Name attribute
-     * @param unknown $selected Selected value if needed
-     * @param unknown $data Data to display
+     * @param string $selected Selected value if needed
+     * @param array $data Data to display
      * @return string
      */
     public function selectPlayer($pdo, $name='id_player', $selected=null, $data=null){
