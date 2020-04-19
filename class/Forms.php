@@ -208,7 +208,7 @@ class Forms
     public function inputPassword($label='',$name){
         $val = '';
         if($label!='') $val.= $this->label($label);
-        $val.= "<input type='password' minlength='1' autocomplete='current-password' required name='$name' value='".$this->getValue($name)."'>";
+        $val.= "<input type='password' minlength='8' autocomplete='current-password' required name='$name' value='".$this->getValue($name)."'>";
         $val = $this->surround($val);
         return $val;
     }

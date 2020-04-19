@@ -30,19 +30,20 @@ class Player
         $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
         $val .= "<a" . $classBP . " href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a>";
         $val .= "<a" . $classC . " href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a>";
-        
-        $req = "SELECT id_player, name, firstname 
-        FROM player
-        ORDER BY name, firstname;";
-        $data = $pdo->query($req);
-        $counter = $pdo->rowCount();
-
-        if($counter > 1){
-            $val .= "<form action='index.php?page=player' method='POST'>\n";
-            $val .= $form->inputAction('modify');
-            $val .= $form->label(Language::title('modifyAPlayer'));
-            $val .= $form->selectSubmit('id_player', $data);
-            $val .= "</form>\n";
+        if(($_SESSION['role'])==2){
+            $req = "SELECT id_player, name, firstname 
+            FROM player
+            ORDER BY name, firstname;";
+            $data = $pdo->query($req);
+            $counter = $pdo->rowCount();
+    
+            if($counter > 1){
+                $val .= "<form action='index.php?page=player' method='POST'>\n";
+                $val .= $form->inputAction('modify');
+                $val .= $form->label(Language::title('modifyAPlayer'));
+                $val .= $form->selectSubmit('id_player', $data);
+                $val .= "</form>\n";
+            }
         }
         return $val;
     }

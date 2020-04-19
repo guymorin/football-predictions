@@ -3,6 +3,7 @@
 /* Author : Guy Morin */
 
 // Namespaces
+use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
@@ -40,6 +41,7 @@ elseif($create == 1){
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
+    App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyAChampionship')) . "</h3>\n";
     echo Championship::modifyForm($pdo, $error, $form, $championshipId);    
     if($delete == 1) echo $form->popupConfirm('championship', 'id_championship', $championshipId);

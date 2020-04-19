@@ -31,5 +31,9 @@ class App
     public static function setTitle($title){
         self::$title = $title . (isset($_SESSION['seasonName']) ? " " . $_SESSION['seasonName'] : null);
     }
+    
+    public static function exitNoAdmin(){
+        if($_SESSION['role']!='2') header("Location:index.php");
+    }
 }
 ?>

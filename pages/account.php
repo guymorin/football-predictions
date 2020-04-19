@@ -3,6 +3,7 @@
 /* Author : Guy Morin */
 
 // Namespaces
+use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
@@ -54,6 +55,7 @@ elseif($create == 1){
 
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1 || $modifyuser == 1){
+    App::exitNoAdmin();
     if($userId == $_SESSION['userId']){
         echo "<h3>" . (Language::title('myAccount')) . "</h3>\n";
         echo "<h4>" . ucfirst($_SESSION['userLogin']) . "</h4>\n";

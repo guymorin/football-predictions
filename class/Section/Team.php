@@ -30,16 +30,17 @@ class Team
         $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
         $val .= "<a" . $classMV . " href='index.php?page=team'>" . (Language::title('marketValue')) . "</a>";
         $val .= "<a" . $classC . " href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a>\n";
-        
-        $req = "SELECT * FROM team c ORDER BY name;";
-        $data = $pdo->query($req);
-        $counter = $pdo->rowCount();
-        if($counter > 1){
-            $val .= "<form action='index.php?page=team' method='POST'>\n";
-            $val .= $form->inputAction('modify');
-            $val .= $form->label(Language::title('modifyATeam'));
-            $val .= $form->selectSubmit('id_team', $data);
-            $val .= "</form>\n";
+        if(($_SESSION['role'])==2){
+            $req = "SELECT * FROM team c ORDER BY name;";
+            $data = $pdo->query($req);
+            $counter = $pdo->rowCount();
+            if($counter > 1){
+                $val .= "<form action='index.php?page=team' method='POST'>\n";
+                $val .= $form->inputAction('modify');
+                $val .= $form->label(Language::title('modifyATeam'));
+                $val .= $form->selectSubmit('id_team', $data);
+                $val .= "</form>\n";
+            }
         }
         return $val;
     }
@@ -77,8 +78,7 @@ class Team
         popup(Language::title('created'),"index.php?page=team");
     }
     
-    static function modifyForm($pdo, $error, $form, $teamId){
-        
+    static function modifyForm($pdo, $error, $form, $teamId){  
         $req = "SELECT * FROM team WHERE id_team=:id_team;";
         $data = $pdo->prepare($req,[
             'id_team' => $teamId
@@ -111,30 +111,33 @@ class Team
             'id_season' => $_SESSION['seasonId'],
             'id_championship' => $_SESSION['championshipId']
         ],true);
-        $val = $error->getError();
-        $val .= "<form action='index.php?page=team' method='POST'>\n";
-        $form->setValues($data);
-        $val .= $form->label(Language::title('modifyAMarketValue'));
-        $val .= "<table>\n";
-        $val .= "  <tr>\n";
-        $val .= "      <th>" . (Language::title('team')) . "</th>\n";
-        $val .= "      <th>" . (Language::title('marketValue')) . "</th>\n";
-        $val .= "  </tr>\n";
-        foreach ($data as $d)
-        {
+        $counter = $pdo->rowCount();
+        if($counter > 0){
+            $val = $error->getError();
+            $val .= "<form action='index.php?page=team' method='POST'>\n";
+            $form->setValues($data);
+            $val .= $form->label(Language::title('modifyAMarketValue'));
+            $val .= "<table>\n";
             $val .= "  <tr>\n";
-            $val .= "      <td>\n";
-            $val .= $form->inputHidden('id_team[]', $d->id_team);
-            $val .= $d->name;
-            $val .= "      </td>\n";
-            $val .= "      <td>\n";
-            $form->setValue('marketValue',$d->marketValue);
-            $val .= $form->input('', 'marketValue[]');
-            $val .= "      </td>\n";
+            $val .= "      <th>" . (Language::title('team')) . "</th>\n";
+            $val .= "      <th>" . (Language::title('marketValue')) . "</th>\n";
             $val .= "  </tr>\n";
-        }
-        $val .= "</table>\n";
-        $val .= $form->submit(Language::title('modify'));
+            foreach ($data as $d)
+            {
+                $val .= "  <tr>\n";
+                $val .= "      <td>\n";
+                $val .= $form->inputHidden('id_team[]', $d->id_team);
+                $val .= $d->name;
+                $val .= "      </td>\n";
+                $val .= "      <td>\n";
+                $form->setValue('marketValue',$d->marketValue);
+                $val .= $form->input('', 'marketValue[]');
+                $val .= "      </td>\n";
+                $val .= "  </tr>\n";
+            }
+            $val .= "</table>\n";
+            $val .= $form->submit(Language::title('modify'));
+        } else $val .= Language::title('noTeam');
         return $val;
     }
     

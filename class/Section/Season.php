@@ -36,19 +36,21 @@ class Season
             $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>";
             $val .= "<a" . $classL . " href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
             
-        } else             Account::exitButton();
-        $val .= "<a" . $classC . " href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
-        
-        $req = "SELECT id_season, name FROM season ORDER BY name;";
-        $data = $pdo->query($req);
-        $counter = $pdo->rowCount();
-        if($counter > 1){
-            $val .= "<form action='index.php?page=season' method='POST'>\n";
-            $val .= $form->inputAction('modify');
-            $val .= $form->label(Language::title('modifyASeason'));
-            $val .= $form->selectSubmit('id_season', $data);
-            $val .= "</form>\n";
-            
+        } else {
+            Account::exitButton();
+            $val .= "<a" . $classC . " href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
+            if(($_SESSION['role'])==2){
+                $req = "SELECT id_season, name FROM season ORDER BY name;";
+                $data = $pdo->query($req);
+                $counter = $pdo->rowCount();
+                if($counter > 1){
+                    $val .= "<form action='index.php?page=season' method='POST'>\n";
+                    $val .= $form->inputAction('modify');
+                    $val .= $form->label(Language::title('modifyASeason'));
+                    $val .= $form->selectSubmit('id_season', $data);
+                    $val .= "</form>\n";   
+                }
+            }
         }
         return $val;
     }
@@ -171,7 +173,11 @@ class Season
         
         foreach ($data as $d)
         {
-            $val .= "  <tr>\n";
+            if($d->name==$_SESSION['championshipName']) {
+                $val .= "  <tr class='current'>\n";
+            } else {
+                $val .= "  <tr>\n";     
+            }
             $val .= "      <td>" . $d->name . "</td>\n";
             $val .= "      <td>" . $d->nb . "</td>\n";
             $val .= "  </tr>\n";

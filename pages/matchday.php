@@ -3,6 +3,7 @@
 /* Author : Guy Morin */
 
 // Namespaces
+use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
@@ -54,6 +55,7 @@ if($create==1){
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
+    App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyAMatchday')) . "</h3>\n";
     echo Matchday::modifyForm($pdo, $data, $matchdayId, $error, $form); 
     if($delete == 1) echo $form->popupConfirm('matchday', 'id_matchday', $matchdayId);
@@ -62,14 +64,10 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
         if($matchdayNumber != '') Matchday::modifyPopup($pdo, $matchdayNumber, $matchdayId);   
     }
 }
-// Stats
+// List
 else {
-    if(isset($_SESSION['matchdayId'])){
-        echo Matchday::stats($pdo);
-    } else {
-        echo "<h3>" . (Language::title('listMatchdays'));
-        echo "<h4>". $_SESSION['championshipName']." - ".$_SESSION['seasonName'] . "</h4>\n";
-        echo Matchday::list($pdo, $form);
-    }
+    echo "<h3>" . (Language::title('listMatchdays'));
+    echo "<h4>". $_SESSION['championshipName']." - ".$_SESSION['seasonName'] . "</h4>\n";
+    echo Matchday::list($pdo, $form);
 }
 ?>

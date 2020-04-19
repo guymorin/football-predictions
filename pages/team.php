@@ -3,6 +3,7 @@
 /* Author : Guy Morin */
 
 // Namespaces
+use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
@@ -31,6 +32,7 @@ if($create == 1){
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
+    App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyATeam')) . "</h3>\n";
     echo Team::modifyForm($pdo, $error, $form, $teamId);
     if($delete == 1) echo $form->popupConfirm('team', 'id_team', $teamId);
@@ -40,7 +42,7 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
     }
 } else {
     echo "<h3>" . (Language::title('marketValue')) . "</h3>";
-    if(isset($val)) Team::modifyPopupMarketValue($pdo, $error, $val);
     echo Team::modifyFormMarketValue($pdo, $error, $form);
+    if(isset($val)) Team::modifyPopupMarketValue($pdo, $error, $val); 
 }
 ?>

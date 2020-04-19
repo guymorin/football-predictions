@@ -3,6 +3,7 @@
 /* Author : Guy Morin */
 
 // Namespaces
+use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
@@ -33,7 +34,7 @@ if($create==1){
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
-
+    App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyAMatch')) . "</h3>\n";
     echo Matchday::modifyFormMatch($pdo, $error, $form, $idMatch);
     if($delete==1) echo $form->popupConfirm('matchgame', 'id_matchgame', $idMatch);

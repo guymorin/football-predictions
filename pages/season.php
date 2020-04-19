@@ -3,6 +3,7 @@
 /* Author : Guy Morin */
 
 // Namespaces
+use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
@@ -41,7 +42,7 @@ elseif($create == 1){
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
-    
+    App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyASeason')) . "</h3>\n";
     echo Season::modifyForm($pdo, $error, $form, $seasonId);
 
@@ -54,7 +55,8 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
 }
 // List
 else {
-    echo "<h3>" . (Language::title('listChampionships')) . " (".$_SESSION['seasonName'].")</h3>\n";
+    echo "<h3>" . (Language::title('listChampionships')) . "</h3>\n";
+    echo "<h4>" . $_SESSION['seasonName'] . "</h4>\n";
     echo Season::list($pdo);
 }
 ?>

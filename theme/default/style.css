@@ -213,7 +213,7 @@ nav a {
 	transition:background .5s;
 }
 #fp-submenu a:last-child {border-right:1px solid #bbb}
-#fp-submenu a:hover, #fp-submenu a:focus, #fp-submenu .current {
+#fp-submenu a:hover, #fp-submenu a:focus, #fp-submenu .current, tr.current {
 	padding:.5em;
 	color:#222;
 	background:#ff7;
@@ -310,7 +310,7 @@ section form fieldset.odds label,
 section form fieldset.result label {width:2em}
 section form fieldset.position input[type='radio']{vertical-align:bottom;}
 section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em;min-width:10em;}
-section #criterion table.expert {border-color:#9c6;}
+section #criterion table.expert {border-color:#f30;}
 section #criterion table.expert th {background:white;color:#f30;border-color:#f60;}
 section #criterion table.expert tr{background:#fd3}
 section #criterion table.expert tr:nth-child(2n){background:#fe9}

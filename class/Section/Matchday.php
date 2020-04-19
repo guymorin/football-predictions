@@ -50,7 +50,8 @@ class Matchday
                 break;
         }
         if(isset($_SESSION['matchdayId'])){ 
-            $val .= "<a" . $classS . " href='index.php?page=matchday'>" . (Language::title('statistics')) . "</a>";
+            $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
+            $val .= "<a" . $classS . " href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a>";
             $val .= "<a" . $classP . " href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
             $val .= "<a" . $classR . " href='index.php?page=results'>" . (Language::title('results')) . "</a>";
             $val .= "<a" . $classTOTW . " href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
@@ -78,17 +79,19 @@ class Matchday
             if ($_SESSION['noMatchday'] == true) $val .= Language::title('createTheMatchdays');
             else  $val .= Language::title('createAMatchday');
             $val .= "</a>\n";
-            $req = "SELECT DISTINCT id_matchday, number FROM matchday
-            WHERE id_season = " . $_SESSION['seasonId'] . "
-            AND id_championship = " . $_SESSION['championshipId'] . " ORDER BY number DESC;";
-            $data = $pdo->query($req);
-            $counter = $pdo->rowCount();
-            if($counter > 1){
-                $val .= "<form action='index.php?page=matchday' method='POST'>\n";
-                $val .= $form->inputAction('modify');
-                $val .= $form->label(Language::title('modifyAMatchday'));
-                $val .= $form->selectSubmit('matchdayModify', $data);
-                $val .= "</form>\n";
+            if(($_SESSION['role'])==2){
+                $req = "SELECT DISTINCT id_matchday, number FROM matchday
+                WHERE id_season = " . $_SESSION['seasonId'] . "
+                AND id_championship = " . $_SESSION['championshipId'] . " ORDER BY number DESC;";
+                $data = $pdo->query($req);
+                $counter = $pdo->rowCount();
+                if($counter > 0){
+                    $val .= "<form action='index.php?page=matchday' method='POST'>\n";
+                    $val .= $form->inputAction('modify');
+                    $val .= $form->label(Language::title('modifyAMatchday'));
+                    $val .= $form->selectSubmit('matchdayModify', $data);
+                    $val .= "</form>\n";
+                }
             }
         }
         return $val;
@@ -281,7 +284,7 @@ class Matchday
     
     static function stats($pdo){
         require '../theme/default/theme.php';
-        changeMD($pdo,"matchday");
+        changeMD($pdo,"statistics");
         echo "<h3>" . (Language::title('statistics')) . "</h3>";
         $req="SELECT m.id_matchgame,
         cr.motivation1,cr.motivation2,
@@ -496,10 +499,18 @@ class Matchday
         if($counter>0){
             foreach ($data as $d)
             {
-                $val .= "  <tr>\n";
-                $val .= "<form id='" . ($d->id_matchday) . "' action='index.php' method='POST'>\n";
-                $val .= $form->inputHidden("matchdaySelect", $d->id_matchday . "," . $d->number);
-                $val .= "<td><a href='#' onclick='document.getElementById(" . ($d->id_matchday) . ").submit();'>" . (Language::title('MD')) . ($d->number) . "</a></td>\n";
+                if($d->number==$_SESSION['matchdayNum']) {
+                    $val .= "  <tr class='current'>\n";
+                    $val .= "      <td>" . (Language::title('MD')) . ($d->number) . "</td>\n";
+                }
+                else {
+                    $val .= "  <tr>\n";
+                    $val .= "<form id='" . ($d->id_matchday) . "' action='index.php?page=matchday' method='POST'>\n";
+                    $val .= $form->inputHidden("matchdaySelect", $d->id_matchday . "," . $d->number);
+                    $val .= "<td>";
+                    $val .= "<a href='#' onclick='document.getElementById(" . ($d->id_matchday) . ").submit();'>" . (Language::title('MD')) . ($d->number) . "</a>";
+                    $val .= "</td>\n";
+                }
                 $val .= "      <td>" . $d->nb . "</td>\n";
                 $val .= "      <td>" . $d->played . "</td>\n";
                 $val .= "</form>\n";
