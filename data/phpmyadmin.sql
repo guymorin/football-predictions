@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Jeu 02 Avril 2020 à 15:35
+-- Généré le :  Dim 19 Avril 2020 à 17:55
 -- Version du serveur :  5.7.29-0ubuntu0.18.04.1
--- Version de PHP :  7.2.24-0ubuntu0.18.04.3
+-- Version de PHP :  7.2.24-0ubuntu0.18.04.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -37,7 +37,7 @@ CREATE TABLE `championship` (
 
 INSERT INTO `championship` (`id_championship`, `name`) VALUES
 (1, 'Ligue 1'),
-(5, 'Ligue 3');
+(2, 'Ligue 3');
 
 -- --------------------------------------------------------
 
@@ -46,8 +46,8 @@ INSERT INTO `championship` (`id_championship`, `name`) VALUES
 --
 
 CREATE TABLE `criterion` (
-  `id_criteres` int(11) NOT NULL,
-  `id_match` int(11) NOT NULL,
+  `id_criterion` int(11) NOT NULL,
+  `id_matchgame` int(11) NOT NULL,
   `motivation1` int(11) NOT NULL DEFAULT '0',
   `currentForm1` int(11) NOT NULL DEFAULT '0',
   `physicalForm1` int(11) NOT NULL DEFAULT '0',
@@ -68,7 +68,7 @@ CREATE TABLE `criterion` (
 -- Contenu de la table `criterion`
 --
 
-INSERT INTO `criterion` (`id_criteres`, `id_match`, `motivation1`, `currentForm1`, `physicalForm1`, `weather1`, `bestPlayers1`, `marketValue1`, `home_away1`, `motivation2`, `currentForm2`, `physicalForm2`, `weather2`, `bestPlayers2`, `marketValue2`, `home_away2`) VALUES
+INSERT INTO `criterion` (`id_criterion`, `id_matchgame`, `motivation1`, `currentForm1`, `physicalForm1`, `weather1`, `bestPlayers1`, `marketValue1`, `home_away1`, `motivation2`, `currentForm2`, `physicalForm2`, `weather2`, `bestPlayers2`, `marketValue2`, `home_away2`) VALUES
 (1, 191, 1, -1, 0, 1, 0, 2, -1, 0, 0, -2, 0, -1, 1, 1),
 (2, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0),
 (3, 2, 1, 0, 0, 1, 0, 2, 0, 0, 1, 0, 0, 0, 1, 0),
@@ -363,21 +363,21 @@ INSERT INTO `criterion` (`id_criteres`, `id_match`, `motivation1`, `currentForm1
 -- --------------------------------------------------------
 
 --
--- Structure de la table `fp_group`
+-- Structure de la table `fp_role`
 --
 
-CREATE TABLE `fp_group` (
-  `id_fp_group` int(11) NOT NULL,
+CREATE TABLE `fp_role` (
+  `id_fp_role` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `fp_group`
+-- Contenu de la table `fp_role`
 --
 
-INSERT INTO `fp_group` (`id_fp_group`, `name`) VALUES
-(1, 'admin'),
-(2, 'user');
+INSERT INTO `fp_role` (`id_fp_role`, `name`) VALUES
+(1, 'contributor'),
+(2, 'administrator');
 
 -- --------------------------------------------------------
 
@@ -406,11 +406,23 @@ INSERT INTO `fp_theme` (`id_fp_theme`, `name`, `directory_name`) VALUES
 
 CREATE TABLE `fp_user` (
   `id_fp_user` int(11) NOT NULL,
-  `login` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `registration` date NOT NULL
+  `name` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `registration` date NOT NULL,
+  `language` varchar(2) NOT NULL DEFAULT 'fr',
+  `theme` int(11) NOT NULL DEFAULT '1',
+  `last_season` int(11) DEFAULT NULL,
+  `last_championship` int(11) DEFAULT NULL,
+  `role` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `fp_user`
+--
+
+INSERT INTO `fp_user` (`id_fp_user`, `name`, `password`, `registration`, `language`, `theme`, `last_season`, `last_championship`, `role`) VALUES
+(1, 'admin', '$2y$10$MFuDdWrH5oljEKxKLaPeeOhtFs8eGa6KOcFXFDTXsuPKMStWguLZ2', '2020-04-14', 'fr', 1, 1, 1, 2),
+(2, 'guy', '$2y$10$WStr3F5whjGJNyWAgAqcfegSl7eiUgn/CACI0yjqkOH8KMjdQxQgu', '2020-04-17', 'fr', 1, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -498,7 +510,9 @@ INSERT INTO `matchday` (`id_matchday`, `id_season`, `id_championship`, `number`)
 (27, 1, 1, 27),
 (28, 1, 1, 28),
 (29, 1, 1, 29),
-(30, 1, 1, 30);
+(30, 1, 1, 30),
+(31, 1, 2, 1),
+(32, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -511,7 +525,7 @@ CREATE TABLE `matchgame` (
   `id_matchday` int(11) NOT NULL,
   `team_1` int(11) NOT NULL,
   `team_2` int(11) NOT NULL,
-  `result` enum('1','D','2','') NOT NULL,
+  `result` enum('1','D','2') DEFAULT NULL,
   `odds1` float DEFAULT NULL,
   `oddsD` float DEFAULT NULL,
   `odds2` float DEFAULT NULL,
@@ -796,7 +810,7 @@ INSERT INTO `matchgame` (`id_matchgame`, `id_matchday`, `team_1`, `team_2`, `res
 (269, 27, 4, 14, 'D', 1.94, 3.3, 3.8, '2020-03-01', 0, 0),
 (270, 27, 8, 3, '1', 1.58, 3.9, 5.05, '2020-03-01', 0, 0),
 (271, 28, 7, 8, '1', 2.07, 3.25, 3.42, '2020-03-08', 0, 0),
-(272, 28, 19, 16, '', 4.5, 3.8, 1.69, '2020-03-07', 0, 0),
+(272, 28, 19, 16, NULL, 4.5, 3.8, 1.69, '2020-03-07', 0, 0),
 (273, 28, 9, 1, 'D', 1.54, 4, 6.55, '2020-03-06', 0, 0),
 (274, 28, 2, 13, '1', 2.34, 2.98, 3.12, '2020-03-07', 0, 0),
 (275, 28, 6, 20, '1', 1.82, 3.5, 4, '2020-03-07', 0, 0),
@@ -805,16 +819,16 @@ INSERT INTO `matchgame` (`id_matchgame`, `id_matchday`, `team_1`, `team_2`, `res
 (278, 28, 17, 5, '1', 1.73, 3.38, 4.75, '2020-03-07', 1, 0),
 (279, 28, 3, 4, 'D', 2.23, 3.12, 3.18, '2020-03-08', 1, 0),
 (280, 28, 18, 12, '1', 2, 3.2, 3.65, '2020-03-08', 0, 0),
-(281, 29, 8, 17, '', 1.85, 3.22, 4.4, '2020-03-13', 0, 0),
-(282, 29, 12, 9, '', 2.68, 2.98, 2.68, '2020-03-14', 0, 0),
-(283, 29, 1, 2, '', 2.6, 2.92, 2.85, '2020-03-14', 0, 0),
-(284, 29, 5, 7, '', 4.1, 3.4, 1.85, '2020-03-14', 0, 0),
-(285, 29, 13, 15, '', 1.91, 3.18, 4.15, '2020-03-14', 0, 0),
-(286, 29, 19, 6, '', 1.79, 3.35, 4.55, '2020-03-14', 0, 0),
-(287, 29, 20, 10, '', 2.68, 3.02, 2.65, '2020-03-14', 0, 0),
-(288, 29, 4, 18, '', 2.85, 3.02, 2.5, '2020-03-15', 0, 0),
-(289, 29, 11, 3, '', 1.66, 3.8, 4.6, '2020-03-14', 0, 0),
-(290, 29, 16, 14, '', 1.13, 8.1, 14, '2020-03-15', 0, 0);
+(281, 29, 8, 17, NULL, 1.85, 3.22, 4.4, '2020-03-13', 0, 0),
+(282, 29, 12, 9, NULL, 2.68, 2.98, 2.68, '2020-03-14', 0, 0),
+(283, 29, 1, 2, NULL, 2.6, 2.92, 2.85, '2020-03-14', 0, 0),
+(284, 29, 5, 7, NULL, 4.1, 3.4, 1.85, '2020-03-14', 0, 0),
+(285, 29, 13, 15, NULL, 1.91, 3.18, 4.15, '2020-03-14', 0, 0),
+(286, 29, 19, 6, NULL, 1.79, 3.35, 4.55, '2020-03-14', 0, 0),
+(287, 29, 20, 10, NULL, 2.68, 3.02, 2.65, '2020-03-14', 0, 0),
+(288, 29, 4, 18, NULL, 2.85, 3.02, 2.5, '2020-03-15', 0, 0),
+(289, 29, 11, 3, NULL, 1.66, 3.8, 4.6, '2020-03-14', 0, 0),
+(290, 29, 16, 14, NULL, 1.13, 8.1, 14, '2020-03-15', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -868,7 +882,7 @@ INSERT INTO `player` (`id_player`, `name`, `firstname`, `position`) VALUES
 (36, 'Castelletto', 'Jean-Charles', 'Defender'),
 (37, 'Chardonnet', 'Brendan', 'Defender'),
 (38, 'Court', 'Yoann', 'Midfielder'),
-(39, 'Larsonneur', '', 'Goalkeeper'),
+(39, 'Larsonneur', 'Gautier', 'Goalkeeper'),
 (40, 'Lasne', 'Paul', 'Midfielder'),
 (41, 'Léon', 'Donovan', 'Goalkeeper'),
 (42, 'Cadiz', 'Jhonder', 'Forward'),
@@ -969,7 +983,7 @@ INSERT INTO `player` (`id_player`, `name`, `firstname`, `position`) VALUES
 (137, 'Da Silva', 'Damien', 'Defender'),
 (138, 'Gélin', 'Jérémy', 'Defender'),
 (139, 'Mendy', 'Édouard', 'Goalkeeper'),
-(140, 'Niang M.', '', 'Forward'),
+(140, 'Niang', 'M Baye', 'Forward'),
 (141, 'Traoré', 'Hamari', 'Defender'),
 (142, 'Ajorque', 'Ludovic', 'Forward'),
 (143, 'Caci', 'Anthony', 'Defender'),
@@ -999,9 +1013,9 @@ INSERT INTO `player` (`id_player`, `name`, `firstname`, `position`) VALUES
 (167, 'Fofana', 'Youssouf', 'Midfielder'),
 (168, 'Simon', 'Moses', 'Forward'),
 (170, 'Savanier', 'Téji', 'Midfielder'),
-(171, 'Chavalerin', '', 'Midfielder'),
+(171, 'Chavalerin', 'Xavier', 'Midfielder'),
 (172, 'Claude-Maurice', '', 'Midfielder'),
-(173, 'Kurzawa', '', 'Defender'),
+(173, 'Kurzawa', 'Layvin', 'Defender'),
 (174, 'Gabriel', '', 'Defender'),
 (175, 'Lala', 'Kenny', 'Defender'),
 (176, 'Germain', 'Valère', 'Forward'),
@@ -1011,7 +1025,7 @@ INSERT INTO `player` (`id_player`, `name`, `firstname`, `position`) VALUES
 (180, 'Saar', 'Sidy', 'Midfielder'),
 (181, 'Kakuta', 'Gael', 'Forward'),
 (182, 'Gurtner', 'Régis', 'Goalkeeper'),
-(183, 'Bradaric', 'D', 'Defender'),
+(183, 'Bradaric', 'Domagoj', 'Defender'),
 (184, 'Sarabia', 'Pablo', 'Midfielder'),
 (185, 'Tait', 'Flavien', 'Midfielder'),
 (186, 'Hunou', 'Adrien', 'Forward'),
@@ -1167,7 +1181,7 @@ CREATE TABLE `pma__recent` (
 --
 
 INSERT INTO `pma__recent` (`username`, `tables`) VALUES
-('phpmyadmin', '[{\"db\":\"phpmyadmin\",\"table\":\"season_championship_team\"},{\"db\":\"phpmyadmin\",\"table\":\"championship\"},{\"db\":\"phpmyadmin\",\"table\":\"matchday\"},{\"db\":\"phpmyadmin\",\"table\":\"player\"},{\"db\":\"phpmyadmin\",\"table\":\"season_team_player\"},{\"db\":\"phpmyadmin\",\"table\":\"matchgame\"},{\"db\":\"phpmyadmin\",\"table\":\"match\"},{\"db\":\"phpmyadmin\",\"table\":\"fp_group\"},{\"db\":\"phpmyadmin\",\"table\":\"matchs\"},{\"db\":\"phpmyadmin\",\"table\":\"fp_user\"}]');
+('phpmyadmin', '[{\"db\":\"phpmyadmin\",\"table\":\"fp_theme\"},{\"db\":\"phpmyadmin\",\"table\":\"fp_role\"},{\"db\":\"phpmyadmin\",\"table\":\"criterion\"},{\"db\":\"phpmyadmin\",\"table\":\"matchgame\"},{\"db\":\"phpmyadmin\",\"table\":\"championship\"},{\"db\":\"phpmyadmin\",\"table\":\"season\"},{\"db\":\"phpmyadmin\",\"table\":\"season_championship_team\"},{\"db\":\"phpmyadmin\",\"table\":\"season_team_player\"},{\"db\":\"phpmyadmin\",\"table\":\"team\"},{\"db\":\"phpmyadmin\",\"table\":\"matchday\"}]');
 
 -- --------------------------------------------------------
 
@@ -1183,6 +1197,28 @@ CREATE TABLE `pma__relation` (
   `foreign_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
   `foreign_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Relation table';
+
+--
+-- Contenu de la table `pma__relation`
+--
+
+INSERT INTO `pma__relation` (`master_db`, `master_table`, `master_field`, `foreign_db`, `foreign_table`, `foreign_field`) VALUES
+('phpmyadmin', 'criterion', 'id_matchgame', 'phpmyadmin', 'matchgame', 'id_matchgame'),
+('phpmyadmin', 'marketValue', 'id_season', 'phpmyadmin', 'season', 'id_season'),
+('phpmyadmin', 'marketValue', 'id_team', 'phpmyadmin', 'team', 'id_team'),
+('phpmyadmin', 'matchday', 'id_championship', 'phpmyadmin', 'championship', 'id_championship'),
+('phpmyadmin', 'matchday', 'id_season', 'phpmyadmin', 'season', 'id_season'),
+('phpmyadmin', 'matchgame', 'id_matchday', 'phpmyadmin', 'matchday', 'id_matchday'),
+('phpmyadmin', 'matchgame', 'team_1', 'phpmyadmin', 'team', 'id_team'),
+('phpmyadmin', 'matchgame', 'team_2', 'phpmyadmin', 'team', 'id_team'),
+('phpmyadmin', 'season_championship_team', 'id_championship', 'phpmyadmin', 'championship', 'id_championship'),
+('phpmyadmin', 'season_championship_team', 'id_season', 'phpmyadmin', 'season', 'id_season'),
+('phpmyadmin', 'season_championship_team', 'id_team', 'phpmyadmin', 'player', 'id_player'),
+('phpmyadmin', 'season_team_player', 'id_player', 'phpmyadmin', 'player', 'id_player'),
+('phpmyadmin', 'season_team_player', 'id_season', 'phpmyadmin', 'season', 'id_season'),
+('phpmyadmin', 'season_team_player', 'id_team', 'phpmyadmin', 'team', 'id_team'),
+('phpmyadmin', 'teamOfTheWeek', 'id_matchday', 'phpmyadmin', 'matchday', 'id_matchday'),
+('phpmyadmin', 'teamOfTheWeek', 'id_player', 'phpmyadmin', 'player', 'id_player');
 
 -- --------------------------------------------------------
 
@@ -1224,6 +1260,23 @@ CREATE TABLE `pma__table_info` (
   `display_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table information for phpMyAdmin';
 
+--
+-- Contenu de la table `pma__table_info`
+--
+
+INSERT INTO `pma__table_info` (`db_name`, `table_name`, `display_field`) VALUES
+('phpmyadmin', 'championship', 'id_championship'),
+('phpmyadmin', 'criterion', 'id_criterion'),
+('phpmyadmin', 'marketValue', 'id_marketValue'),
+('phpmyadmin', 'matchday', 'id_matchday'),
+('phpmyadmin', 'matchgame', 'id_matchgame'),
+('phpmyadmin', 'player', 'id_player'),
+('phpmyadmin', 'season', 'id_season'),
+('phpmyadmin', 'season_championship_team', 'id_season_championship_team'),
+('phpmyadmin', 'season_team_player', 'id_player'),
+('phpmyadmin', 'team', 'id_team'),
+('phpmyadmin', 'teamOfTheWeek', 'id_teamOfTheWeek');
+
 -- --------------------------------------------------------
 
 --
@@ -1243,10 +1296,13 @@ CREATE TABLE `pma__table_uiprefs` (
 --
 
 INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('phpmyadmin', 'phpmyadmin', 'criterion', '{\"sorted_col\":\"`id_match` ASC\"}', '2020-03-21 22:19:00'),
-('phpmyadmin', 'phpmyadmin', 'matchgame', '[]', '2020-03-27 14:25:01'),
-('phpmyadmin', 'phpmyadmin', 'player', '{\"sorted_col\":\"`player`.`id_player`  DESC\"}', '2020-03-31 21:17:03'),
-('phpmyadmin', 'phpmyadmin', 'season_championship_team', '{\"sorted_col\":\"`season_championship_team`.`id_season_championship_team`  DESC\"}', '2020-04-02 13:34:24'),
+('phpmyadmin', 'phpmyadmin', 'criterion', '[]', '2020-04-19 14:58:24'),
+('phpmyadmin', 'phpmyadmin', 'marketValue', '{\"sorted_col\":\"`marketValue`.`id_team`  DESC\"}', '2020-04-11 12:44:10'),
+('phpmyadmin', 'phpmyadmin', 'matchday', '{\"sorted_col\":\"`matchday`.`id_matchday`  DESC\"}', '2020-04-19 14:49:41'),
+('phpmyadmin', 'phpmyadmin', 'matchgame', '[]', '2020-04-18 21:41:24'),
+('phpmyadmin', 'phpmyadmin', 'player', '{\"sorted_col\":\"`player`.`id_player`  DESC\"}', '2020-04-14 09:41:33'),
+('phpmyadmin', 'phpmyadmin', 'season_championship_team', '{\"sorted_col\":\"`season_championship_team`.`id_team`  DESC\"}', '2020-04-11 12:43:36'),
+('phpmyadmin', 'phpmyadmin', 'season_team_player', '{\"sorted_col\":\"`season_team_player`.`id_season_team_player`  DESC\"}', '2020-04-16 16:10:41'),
 ('phpmyadmin', 'phpmyadmin', 'teamOfTheWeek', '[]', '2020-03-22 20:47:05');
 
 -- --------------------------------------------------------
@@ -1326,7 +1382,8 @@ CREATE TABLE `season` (
 --
 
 INSERT INTO `season` (`id_season`, `name`) VALUES
-(1, '2019-2020');
+(1, '2019-2020'),
+(2, '2020-2021');
 
 -- --------------------------------------------------------
 
@@ -1567,7 +1624,12 @@ INSERT INTO `season_team_player` (`id_season_team_player`, `id_season`, `id_team
 (181, 1, 16, 184),
 (182, 1, 18, 185),
 (183, 1, 18, 186),
-(184, 1, 18, 187);
+(184, 1, 18, 187),
+(185, 1, 5, 39),
+(186, 1, 7, 183),
+(187, 1, 17, 171),
+(188, 1, 18, 140),
+(189, 1, 16, 173);
 
 -- --------------------------------------------------------
 
@@ -1605,8 +1667,7 @@ INSERT INTO `team` (`id_team`, `name`, `weather_code`) VALUES
 (17, 'Reims', '51454'),
 (18, 'Rennes', '35238'),
 (19, 'Strasbourg', '67482'),
-(20, 'Toulouse', '31555'),
-(21, 'Vincennes', '0');
+(20, 'Toulouse', '31555');
 
 -- --------------------------------------------------------
 
@@ -1948,14 +2009,8 @@ ALTER TABLE `championship`
 -- Index pour la table `criterion`
 --
 ALTER TABLE `criterion`
-  ADD PRIMARY KEY (`id_criteres`),
-  ADD KEY `CriteresMatch` (`id_match`);
-
---
--- Index pour la table `fp_group`
---
-ALTER TABLE `fp_group`
-  ADD PRIMARY KEY (`id_fp_group`);
+  ADD PRIMARY KEY (`id_criterion`),
+  ADD KEY `C_Match` (`id_matchgame`);
 
 --
 -- Index pour la table `fp_theme`
@@ -1967,27 +2022,33 @@ ALTER TABLE `fp_theme`
 -- Index pour la table `fp_user`
 --
 ALTER TABLE `fp_user`
-  ADD PRIMARY KEY (`id_fp_user`);
+  ADD PRIMARY KEY (`id_fp_user`),
+  ADD KEY `FPU_theme` (`theme`);
 
 --
 -- Index pour la table `marketValue`
 --
 ALTER TABLE `marketValue`
-  ADD PRIMARY KEY (`id_marketValue`);
+  ADD PRIMARY KEY (`id_marketValue`),
+  ADD KEY `MV_Season` (`id_season`),
+  ADD KEY `MV_Team` (`id_team`);
 
 --
 -- Index pour la table `matchday`
 --
 ALTER TABLE `matchday`
-  ADD PRIMARY KEY (`id_matchday`);
+  ADD PRIMARY KEY (`id_matchday`),
+  ADD KEY `MD_Season` (`id_season`),
+  ADD KEY `MD_Championship` (`id_championship`);
 
 --
 -- Index pour la table `matchgame`
 --
 ALTER TABLE `matchgame`
   ADD PRIMARY KEY (`id_matchgame`),
-  ADD KEY `Equipe1` (`team_1`),
-  ADD KEY `Equipe2` (`team_2`);
+  ADD KEY `MG_Team1` (`team_1`),
+  ADD KEY `MG_Team2` (`team_2`),
+  ADD KEY `MG_Matchday` (`id_matchday`);
 
 --
 -- Index pour la table `player`
@@ -2125,16 +2186,19 @@ ALTER TABLE `season`
 -- Index pour la table `season_championship_team`
 --
 ALTER TABLE `season_championship_team`
-  ADD PRIMARY KEY (`id_season_championship_team`);
+  ADD PRIMARY KEY (`id_season_championship_team`),
+  ADD KEY `SCT_Season` (`id_season`),
+  ADD KEY `SCT_Championship` (`id_championship`),
+  ADD KEY `SCT_Team` (`id_team`);
 
 --
 -- Index pour la table `season_team_player`
 --
 ALTER TABLE `season_team_player`
   ADD PRIMARY KEY (`id_season_team_player`),
-  ADD KEY `ClubCascade` (`id_team`),
-  ADD KEY `JoueurCascade` (`id_player`),
-  ADD KEY `SaisonCascade` (`id_season`);
+  ADD KEY `STP_Season` (`id_season`),
+  ADD KEY `STP_Team` (`id_team`),
+  ADD KEY `STP_Player` (`id_player`);
 
 --
 -- Index pour la table `team`
@@ -2147,7 +2211,8 @@ ALTER TABLE `team`
 --
 ALTER TABLE `teamOfTheWeek`
   ADD PRIMARY KEY (`id_teamOfTheWeek`),
-  ADD KEY `EquipeJoueur` (`id_player`);
+  ADD KEY `TOTW_Player` (`id_player`),
+  ADD KEY `TOTW_Matchday` (`id_matchday`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
@@ -2157,17 +2222,12 @@ ALTER TABLE `teamOfTheWeek`
 -- AUTO_INCREMENT pour la table `championship`
 --
 ALTER TABLE `championship`
-  MODIFY `id_championship` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_championship` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `criterion`
 --
 ALTER TABLE `criterion`
-  MODIFY `id_criteres` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=309;
---
--- AUTO_INCREMENT pour la table `fp_group`
---
-ALTER TABLE `fp_group`
-  MODIFY `id_fp_group` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_criterion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=309;
 --
 -- AUTO_INCREMENT pour la table `fp_theme`
 --
@@ -2177,7 +2237,7 @@ ALTER TABLE `fp_theme`
 -- AUTO_INCREMENT pour la table `fp_user`
 --
 ALTER TABLE `fp_user`
-  MODIFY `id_fp_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_fp_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `marketValue`
 --
@@ -2187,7 +2247,7 @@ ALTER TABLE `marketValue`
 -- AUTO_INCREMENT pour la table `matchday`
 --
 ALTER TABLE `matchday`
-  MODIFY `id_matchday` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_matchday` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT pour la table `matchgame`
 --
@@ -2197,7 +2257,7 @@ ALTER TABLE `matchgame`
 -- AUTO_INCREMENT pour la table `player`
 --
 ALTER TABLE `player`
-  MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=189;
+  MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
 --
 -- AUTO_INCREMENT pour la table `pma__bookmark`
 --
@@ -2232,7 +2292,7 @@ ALTER TABLE `pma__savedsearches`
 -- AUTO_INCREMENT pour la table `season`
 --
 ALTER TABLE `season`
-  MODIFY `id_season` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_season` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `season_championship_team`
 --
@@ -2242,12 +2302,12 @@ ALTER TABLE `season_championship_team`
 -- AUTO_INCREMENT pour la table `season_team_player`
 --
 ALTER TABLE `season_team_player`
-  MODIFY `id_season_team_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=186;
+  MODIFY `id_season_team_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=190;
 --
 -- AUTO_INCREMENT pour la table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT pour la table `teamOfTheWeek`
 --
@@ -2261,31 +2321,58 @@ ALTER TABLE `teamOfTheWeek`
 -- Contraintes pour la table `criterion`
 --
 ALTER TABLE `criterion`
-  ADD CONSTRAINT `CriteresMatch` FOREIGN KEY (`id_match`) REFERENCES `matchgame` (`id_matchgame`);
+  ADD CONSTRAINT `C_Match` FOREIGN KEY (`id_matchgame`) REFERENCES `matchgame` (`id_matchgame`);
+
+--
+-- Contraintes pour la table `fp_user`
+--
+ALTER TABLE `fp_user`
+  ADD CONSTRAINT `FPU_theme` FOREIGN KEY (`theme`) REFERENCES `fp_theme` (`id_fp_theme`);
+
+--
+-- Contraintes pour la table `marketValue`
+--
+ALTER TABLE `marketValue`
+  ADD CONSTRAINT `MV_Season` FOREIGN KEY (`id_season`) REFERENCES `season` (`id_season`),
+  ADD CONSTRAINT `MV_Team` FOREIGN KEY (`id_team`) REFERENCES `team` (`id_team`);
+
+--
+-- Contraintes pour la table `matchday`
+--
+ALTER TABLE `matchday`
+  ADD CONSTRAINT `MD_Championship` FOREIGN KEY (`id_championship`) REFERENCES `championship` (`id_championship`),
+  ADD CONSTRAINT `MD_Season` FOREIGN KEY (`id_season`) REFERENCES `season` (`id_season`);
 
 --
 -- Contraintes pour la table `matchgame`
 --
 ALTER TABLE `matchgame`
-  ADD CONSTRAINT `Equipe1` FOREIGN KEY (`team_1`) REFERENCES `team` (`id_team`),
-  ADD CONSTRAINT `Equipe2` FOREIGN KEY (`team_2`) REFERENCES `team` (`id_team`);
+  ADD CONSTRAINT `MG_Matchday` FOREIGN KEY (`id_matchday`) REFERENCES `matchday` (`id_matchday`),
+  ADD CONSTRAINT `MG_Team1` FOREIGN KEY (`team_1`) REFERENCES `team` (`id_team`),
+  ADD CONSTRAINT `MG_Team2` FOREIGN KEY (`team_2`) REFERENCES `team` (`id_team`);
+
+--
+-- Contraintes pour la table `season_championship_team`
+--
+ALTER TABLE `season_championship_team`
+  ADD CONSTRAINT `SCT_Championship` FOREIGN KEY (`id_championship`) REFERENCES `championship` (`id_championship`),
+  ADD CONSTRAINT `SCT_Season` FOREIGN KEY (`id_season`) REFERENCES `season` (`id_season`),
+  ADD CONSTRAINT `SCT_Team` FOREIGN KEY (`id_team`) REFERENCES `team` (`id_team`);
 
 --
 -- Contraintes pour la table `season_team_player`
 --
 ALTER TABLE `season_team_player`
-  ADD CONSTRAINT `Club` FOREIGN KEY (`id_team`) REFERENCES `team` (`id_team`),
-  ADD CONSTRAINT `ClubCascade` FOREIGN KEY (`id_team`) REFERENCES `team` (`id_team`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `Joueur` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`),
-  ADD CONSTRAINT `JoueurCascade` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `Saison` FOREIGN KEY (`id_season`) REFERENCES `season` (`id_season`),
-  ADD CONSTRAINT `SaisonCascade` FOREIGN KEY (`id_season`) REFERENCES `season` (`id_season`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `STP_Player` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`),
+  ADD CONSTRAINT `STP_Season` FOREIGN KEY (`id_season`) REFERENCES `season` (`id_season`),
+  ADD CONSTRAINT `STP_Team` FOREIGN KEY (`id_team`) REFERENCES `team` (`id_team`);
 
 --
 -- Contraintes pour la table `teamOfTheWeek`
 --
 ALTER TABLE `teamOfTheWeek`
-  ADD CONSTRAINT `EquipeJoueur` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`);
+  ADD CONSTRAINT `TOTW_Matchday` FOREIGN KEY (`id_matchday`) REFERENCES `matchday` (`id_matchday`),
+  ADD CONSTRAINT `TOTW_Player` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
