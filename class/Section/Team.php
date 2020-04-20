@@ -46,16 +46,25 @@ class Team
     }
     
     static function deletePopup($pdo, $teamId){
-        
-        $req="DELETE FROM team WHERE id_team=:id_team;";
+        $req = '';
+        $req .= "DELETE FROM marketValue WHERE id_team=:id_team;";
+        $req .= "DELETE FROM matchgame WHERE team_1=:id_team;";
+        $req .= "DELETE FROM matchgame WHERE team_2=:id_team;";
+        $req .= "DELETE FROM season_championship_team WHERE id_team=:id_team;";
+        $req .= "DELETE FROM season_team_player WHERE id_team=:id_team;";
+        $req .= "DELETE FROM team WHERE id_team=:id_team;";
         $pdo->prepare($req,[
             'id_team' => $teamId
         ]);
+        $pdo->alterAuto('marketValue');
+        $pdo->alterAuto('matchgame');
+        $pdo->alterAuto('season_championship_team');
+        $pdo->alterAuto('season_team_player');
         $pdo->alterAuto('team');
         popup(Language::title('deleted'),"index.php?page=team");
     }
-    static function createForm($pdo, $error, $form, $teamName, $weatherCode){
-        
+    
+    static function createForm($pdo, $error, $form, $teamName, $weatherCode){    
         $val = $error->getError();
         $val .= "<form action='index.php?page=team' method='POST'>\n";
         $val .= $form->inputAction('create');
@@ -71,7 +80,6 @@ class Team
     }
     
     static function createPopup($pdo, $teamName, $weatherCode){
-        
         $pdo->alterAuto('team');
         $req="INSERT INTO team VALUES(NULL, '" . $teamName . "', $weatherCode);";
         $pdo->exec($req);
@@ -100,7 +108,7 @@ class Team
     }
     
     static function modifyFormMarketValue($pdo, $error, $form){
-        
+        $val = '';
         $req = "SELECT c.*, v.marketValue
         FROM team c
         LEFT JOIN marketValue v ON v.id_team=c.id_team

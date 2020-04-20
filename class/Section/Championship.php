@@ -6,6 +6,7 @@
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use \PDO;
 
 class Championship
@@ -36,14 +37,23 @@ class Championship
                 $classC = $currentClass;
                 break;
         }
-        if(isset($_SESSION['championshipId'])){
+        if(isset($_SESSION['championshipId']) && $_SESSION['noTeam'] == false){
             $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
             $val .= "<a" . $classS . " href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
             $val .= "<a" . $classDB . " href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
         } else {
-            Account::exitButton();
-            Season::exitButton();
-            $val .= "<a" . $classC . " href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a>\n";
+            if(isset($_SESSION['championshipId'])) $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
+            else {
+                Account::exitButton();
+                Season::exitButton();
+            }
+            $val .= "<a" . $classC . " href='index.php?page=championship&create=1'>";
+            if ($_SESSION['noTeam'] == true 
+                && isset($_SESSION['seasonName'])
+                && isset($_SESSION['championshipName'])
+                ) $val .= Language::title('selectTheTeams');
+            else $val .= Language::title('createAChampionship');
+            $val .= "</a>\n";
             if(($_SESSION['role'])==2){
                 $req = "SELECT DISTINCT c.id_championship, c.name
                 FROM championship c
@@ -62,7 +72,7 @@ class Championship
         return $val;
     }
     
-    static function selectChampionship($pdo, $form, $icon_quicknav){
+    static function selectChampionship($pdo, $form){
         
         $val = "<ul class='menu'>\n";
         $req = "SELECT DISTINCT c.id_championship, c.name
@@ -73,41 +83,55 @@ class Championship
         $list="";
         
         if($counter>0){
-            
+            $val .=  "  <h3>" . (Language::title('selectTheChampionship')) . "</h3>\n";
             // Select form
             $list.="<form action='index.php' method='POST'>\n";
-            $list.= $form->labelBr(Language::title('selectTheChampionship'));
+            $list.= $form->labelBr(Language::title('championship'));
             $response = $pdo->query($req);
             $list.= $form->selectSubmit("championshipSelect", $response);
             $list.="</form>\n";
             
             // Quick nav button
             $req = "SELECT DISTINCT sct.id_championship, c.name
-        FROM season_championship_team sct
-        LEFT JOIN championship c ON c.id_championship = sct.id_championship
-        ORDER BY c.name DESC;";
+            FROM season_championship_team sct
+            LEFT JOIN championship c ON c.id_championship = sct.id_championship
+            ORDER BY c.name DESC;";
             $data = $pdo->queryObj($req);
             
             $val .= "<form action='index.php' method='POST'>\n";
             $val .=  $form->labelBr(Language::title('quickNav'));
             $val .=  $form->inputHidden("championshipSelect",$data->id_championship.",".$data->name);
-            $val .=  $form->submit($icon_quicknav." ".$data->name);
+            $val .=  $form->submit(Theme::icon('quicknav')." ".$data->name);
             $val .=  "</form>\n";
             
             $val .=  $list;
         }
         // No championship
-        else    $val .=  "  <h2>" . (Language::title('noChampionship')) . "</h2>\n";
+        else    $val .=  "  <h3>" . (Language::title('noChampionship')) . "</h3>\n";
         $val .=  "</ul>\n";
         return $val;
     }
     
     static function deletePopup($pdo, $championshipId){
-        
-        $req="DELETE FROM championship WHERE id_championship=:id_championship;";
+        $req = '';
+        $req .= "DELETE FROM teamOfTheWeek WHERE id_matchday IN (
+            SELECT id_matchday FROM matchday WHERE id_championship=:id_championship);";
+        $req .= "DELETE FROM criterion WHERE id_matchgame IN (
+            SELECT id_matchgame FROM matchgame WHERE id_matchday IN (
+                SELECT id_matchday FROM matchday WHERE id_championship=:id_championship));";
+        $req .= "DELETE FROM matchgame WHERE id_matchday IN (
+            SELECT id_matchday FROM matchday WHERE id_championship=:id_championship);";
+        $req .= "DELETE FROM matchday WHERE id_championship=:id_championship;";
+        $req .= "DELETE FROM season_championship_team WHERE id_championship=:id_championship;";
+        $req .= "DELETE FROM championship WHERE id_championship=:id_championship;";
         $pdo->prepare($req,[
             'id_championship' => $championshipId
         ]);
+        $pdo->alterAuto('teamOfTheWeek');
+        $pdo->alterAuto('criterion');
+        $pdo->alterAuto('matchgame');
+        $pdo->alterAuto('matchday');
+        $pdo->alterAuto('season_championship_team');
         $pdo->alterAuto('championship');
         popup(Language::title('deleted'),"index.php?page=championship");
     }
@@ -124,8 +148,7 @@ class Championship
         return $val;
     }
     
-    static function createPopup($pdo, $championshipName){
-        
+    static function createPopup($pdo, $championshipName){      
         $pdo->alterAuto('championship');
         $req="INSERT INTO championship
         VALUES(NULL,:name);";
@@ -133,6 +156,41 @@ class Championship
             'name' => $championshipName
         ]);
         popup(Language::title('created'),"index.php?page=championship");
+    }
+    
+    static function selectMultiForm($pdo, $error, $form){
+        $val = $error->getError();
+        $val .= "<form action='index.php?page=championship' method='POST'>\n";
+        $val .= $form->inputAction('create');
+        $req = "SELECT id_team, name FROM team
+                ORDER BY name;";
+        $data = $pdo->query($req);
+        $counter = $pdo->rowCount();
+        if($counter > 1){
+            $val .= "<form action='index.php?page=championship' method='POST'>\n";
+            $val .= $form->inputAction('selectTeams');
+            $val .= "<fieldset>\n";
+            $val .= '<legend>' . (Language::title('teams')). '</legend>';
+            $val .= $form->selectSubmit('teams[]', $data, false, true);
+            $val .= "</fieldset>\n";
+            $val .= "<br />\n";
+            $val .= $form->submit(Language::title('select'));
+            $val .= "</form>\n";
+        }
+        return $val;
+    }
+    
+    static function selectMultiPopup($pdo, $teams){
+        $pdo->alterAuto('season_championship_team');
+        $req = '';
+        foreach($teams as $t){
+            $req .= "INSERT INTO season_championship_team VALUES(NULL, "
+                . $_SESSION['seasonId'] . ","
+                . $_SESSION['championshipId'] . "," 
+                . $t . ");";
+        }
+        $pdo->exec($req);
+        popup(Language::title('selected'),"index.php?page=championship");
     }
     
     static function modifyForm($pdo, $error, $form, $championshipId){

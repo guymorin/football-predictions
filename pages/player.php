@@ -7,9 +7,10 @@ use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use FootballPredictions\Section\Player;
 
-echo "<h2>" . $icon_player . " " . (Language::title('player')) . "</h2>\n";
+echo "<h2>" . Theme::icon('player') . " " . (Language::title('player')) . "</h2>\n";
 
 // Values
 $playerId = $teamId = 0;

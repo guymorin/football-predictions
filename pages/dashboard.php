@@ -4,7 +4,7 @@
 
 use FootballPredictions\Language;
 
-echo "<h2>$icon_championship " . (Language::title('championship')) . "</h2>\n";
+echo "<h2>Theme::icon('championship') " . (Language::title('championship')) . "</h2>\n";
 echo "<h3>" . (Language::title('dashboard')) . "</h3>\n";
 
 $graph=array(0=>0);

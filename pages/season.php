@@ -7,11 +7,12 @@ use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use FootballPredictions\Section\Season;
 
 ?>
 
-<h2><?= $icon_season . " " . (Language::title('season'));?></h2>
+<h2><?= Theme::icon('season') . " " . (Language::title('season'));?></h2>
 
 <?php
 // Values
@@ -31,7 +32,7 @@ if(
     &&($modify == 0)
     &&($delete == 0)
 ){
-    echo Season::selectSeason($pdo, $form, $icon_quicknav);
+    echo Season::selectSeason($pdo, $form);
 }
 // Create
 elseif($create == 1){

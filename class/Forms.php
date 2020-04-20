@@ -351,7 +351,7 @@ class Forms
      * @param array $response Result of a query
      * @return string HTML code
      */
-    public function selectSubmit($name, $response, $autoSubmit = true){
+    public function selectSubmit($name, $response, $autoSubmit = true, $multiple = false){
         
         $championshipId = $seasonId = 0;
         isset($_SESSION['championshipId']) ? $championshipId = $_SESSION['championshipId'] : null;
@@ -359,15 +359,17 @@ class Forms
         isset($_SESSION['userId']) ? $userId = $_SESSION['userId'] : null;
 
         $val = "    <select name='$name'";
-        if($autoSubmit) $val.= "onchange='submit()'";
+        if($autoSubmit) $val .= " onchange='submit()'";
+        if($multiple)   $val .= " multiple size='10'";
         $val .= ">\n";
-        $val .= "        <option value='0'>...</option>\n";
+        if($multiple == false) $val .= "        <option value='0'>...</option>\n";
         while ($data = $response->fetch(PDO::FETCH_NUM)){
             
             switch($name){
                 case "id_championship":
                 case "id_season":
                 case "id_team":
+                case "teams[]":
                     $val .= "  		<option value='" . $data[0] . "'";
                     if(
                     ($name == "id_championship" && $data[0] == $championshipId)

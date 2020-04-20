@@ -6,6 +6,7 @@
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use \PDO;
 
 class Season
@@ -55,7 +56,7 @@ class Season
         return $val;
     }
     
-    static function selectSeason($pdo, $form, $icon_quicknav){
+    static function selectSeason($pdo, $form){
         
         $val = "<ul class='menu'>\n";
         $req = "SELECT id_season, name FROM season ORDER BY name;";
@@ -63,10 +64,10 @@ class Season
         $counter = $pdo->rowCount();
         
         if($counter>0){
-            
+            $val .= "  <h3>" . (Language::title('selectTheSeason')) . "</h3>\n";
             // Select form
             $list = "<form action='index.php?page=championship' method='POST'>\n";
-            $list.= $form->labelBr(Language::title('selectTheSeason'));
+            $list.= $form->labelBr(Language::title('season'));
             $response = $pdo->query($req);
             $list.= $form->selectSubmit("seasonSelect",$response);
             $list.= "</form>\n";
@@ -82,21 +83,39 @@ class Season
             $val .= "<form action='index.php?page=championship' method='POST'>\n";
             $val .= $form->inputHidden("seasonSelect",$data->id_season.",".$data->name);
             $val .= $form->labelBr(Language::title('quickNav'));
-            $val .= $form->submit($icon_quicknav." ".$data->name);
+            $val .= $form->submit(Theme::icon('quicknav')." ".$data->name);
             $val .= "</form>\n";
             
             $val .= $list;
-            return $val;
         }
         // No season
-        else    echo "  <h3>" . (Language::title('noSeason')) . "</h3>\n";
-        echo "</ul>\n";
+        else    $val .= "  <h3>" . (Language::title('noSeason')) . "</h3>\n";
+        $val .= "</ul>\n";
+        return $val;
     }
     
     static function deletePopup($pdo, $seasonId){
         
+        $req .= "DELETE FROM teamOfTheWeek WHERE id_matchday IN (
+            SELECT id_matchday FROM matchday WHERE WHERE id_season='".$seasonId."');";
+        $req .= "DELETE FROM criterion WHERE id_matchgame IN (
+            SELECT id_matchgame FROM matchgame WHERE id_matchday IN (
+                SELECT id_matchday FROM matchday WHERE WHERE id_season='".$seasonId."'));";
+        $req .= "DELETE FROM matchgame WHERE id_matchday IN (
+            SELECT id_matchday FROM matchday WHERE WHERE id_season='".$seasonId."');";
+        $req="DELETE FROM matchday WHERE id_season=$seasonId;";
+        $req="DELETE FROM marketValue WHERE id_season=$seasonId;";
+        $req="DELETE FROM season_team_player WHERE id_season=$seasonId;";
+        $req="DELETE FROM season_championship_team WHERE id_season=$seasonId;";
         $req="DELETE FROM season WHERE id_season=$seasonId;";
         $pdo->exec($req);
+        $pdo->alterAuto('teamOfTheWeek');
+        $pdo->alterAuto('criterion');
+        $pdo->alterAuto('matchgame');
+        $pdo->alterAuto('matchday');
+        $pdo->alterAuto('marketValue');
+        $pdo->alterAuto('season_team_player');
+        $pdo->alterAuto('season_championship_team');
         $pdo->alterAuto('season');
         popup(Language::title('deleted'),"index.php?page=season");
     }
@@ -173,7 +192,7 @@ class Season
         
         foreach ($data as $d)
         {
-            if($d->name==$_SESSION['championshipName']) {
+            if($d->name == $_SESSION['championshipName']) {
                 $val .= "  <tr class='current'>\n";
             } else {
                 $val .= "  <tr>\n";     

@@ -6,6 +6,7 @@
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use FootballPredictions\Section\Matchday;
 use FootballPredictions\Section\Championship;
 
@@ -13,7 +14,7 @@ use FootballPredictions\Section\Championship;
 require '../include/changeMD.php';
 ?>
 
-<h2><?= $icon_matchday . ' ' . (Language::title('matchday')) . ' ' . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>
+<h2><?= Theme::icon('matchday') . ' ' . (Language::title('matchday')) . ' ' . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>
 
 <?php
 if(isset($_SESSION['matchdayId'])){

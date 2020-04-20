@@ -30,7 +30,7 @@ class Database
         if($this->db==null){
             try{
                 $db = new PDO(
-                "mysql:host=$this->db_host;dbname=phpmyadmin;charset=utf8",
+                "mysql:host=$this->db_host;dbname=$this->db_name;charset=utf8",
                 $this->db_user,
                 $this->db_pass
                 );

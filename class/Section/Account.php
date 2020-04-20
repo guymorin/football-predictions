@@ -5,8 +5,8 @@
  * Manage Account page
  */
 namespace FootballPredictions\Section;
-use \PDO;
 use FootballPredictions\Language;
+use \PDO;
 
 class Account
 {
@@ -22,12 +22,21 @@ class Account
     static function submenu($pdo, $form, $current = null){
         $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
         $currentClass = " class='current'";
-        $classMA = '';
+        $classAL = $classMA = '';
         switch($current){
+            case 'listAccounts':
+                $classAL = $currentClass;
+                break;
             case 'myAccount':
                 $classMA = $currentClass;
                 break;
         }
+        if(($_SESSION['role'])==2) $val .= "<a" 
+                    . $classAL 
+                    . " href='index.php?page=accountList'>" 
+                    . (Language::title('listAccounts')) 
+                    . "</a>";
+        
         $val .= "<a" . $classMA . " href='index.php?page=account'>" . (Language::title('myAccount')) . "</a>";
         if(($_SESSION['role'])==2){
             $req = "SELECT id_fp_user, name
@@ -74,7 +83,11 @@ class Account
                 $_SESSION['userId'] = $data->id_fp_user;
                 $_SESSION['userLogin'] = $userLogin;
                 $_SESSION['language'] = $data->language;
-                $_SESSION['theme'] = $data->theme;
+                $_SESSION['themeId'] = $data->theme;
+                $r = "SELECT directory_name FROM fp_theme
+                WHERE id_fp_theme = $data->theme";
+                $d = $pdo->queryObj($r);
+                $_SESSION['directory_name'] = $d->directory_name;
                 $_SESSION['role'] = $data->role;
                 if($data->last_season!=null) {
                     $req1 = "SELECT name FROM season WHERE id_season = '" . $data->last_season . "'";
@@ -112,6 +125,9 @@ class Account
         $val .= $form->inputPassword(Language::title('password'), 'password');
         $val .= "<br />\n";
         
+        $val .= $form->inputPassword(Language::title('passwordConfirm'), 'password2');
+        $val .= "<br />\n";
+        
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
         $val .= "<a href='index.php?page=account'>" . (Language::title('logon')) . "</a>\n";
@@ -129,8 +145,16 @@ class Account
             'name' => $userLogin,
             'password' => $userPassword
         ]);
-        
-        popup(Language::title('created'),"index.php?page=account");
+        if(self::logonPopup($pdo, $userLogin, $password)) {
+            popup(Language::title('created'),"index.php?page=account");
+        }
+    }
+    
+    static function circle($login, $role){
+        $class = 'circle';
+        if($role == 2) $class = 'circleAdmin';
+        $val = "<div id='" . $class . "'>" . (substr($login,0,1)) . "</div>\n";
+        return $val;
     }
     
     static function modifyForm($pdo, $error, $form, $userId){
@@ -139,9 +163,7 @@ class Account
         $data = $pdo->prepare($req,[
             'id_fp_user' => $userId
         ]);
-        $class = 'circle';
-        if($_SESSION['role']==2) $class = 'circleAdmin';
-        $val .= "<div id='" . $class . "'>" . (substr($data->name,0,1)) . "</div>\n";
+        $val .= self::circle($data->name, $data->role);
         $val .= $error->getError();
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $form->setValues($data);
@@ -160,7 +182,7 @@ class Account
         
         $req = "SELECT id_fp_theme, name FROM fp_theme;";
         $dataTheme = $pdo->query($req);
-        $val .= $form->select('theme', $dataTheme, $_SESSION['theme'], false);
+        $val .= $form->select('theme', $dataTheme, $_SESSION['themeId'], false);
 
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
@@ -179,7 +201,7 @@ class Account
         $data = $pdo->prepare($req,[
             'id_fp_user' => $userId
         ]);
-        $val .= "<h4>" . Language::title('account') . " : " . ucfirst($data->name) . "</h4>\n";
+        $val .= "<h4>" . Language::title('login') . " : " . ucfirst($data->name) . "</h4>\n";
         $val .= $error->getError();
         if(($_SESSION['role'])==2){
             $val .= "<form action='index.php?page=account' method='POST'>\n";
@@ -208,7 +230,7 @@ class Account
         WHERE id_fp_user = '" . $userId . "';";
         $pdo->exec($req);
         $_SESSION['language'] = $userLanguage;
-        $_SESSION['theme'] = $userTheme;
+        $_SESSION['themeId'] = $userTheme;
         popup(Language::title('modified'),"index.php?page=account");
     }
     
@@ -219,11 +241,37 @@ class Account
         popup(Language::title('modified'),"index.php?page=account");
     }
     
-    static function list($pdo){
-        $req = "SELECT * FROM fp_user;";
-        $data = $pdo->prepare($req,null);
-        $val = "";
+    static function list($pdo, $form){
+        $req = "SELECT id_fp_user, name, role, registration 
+        FROM fp_user ORDER BY name";
+        $data = $pdo->prepare($req,null,true);
+        $val = "<table>\n";
+        $val .= "  <tr>\n";
+        $val .= "      <th>" . (Language::title('login')) . "</th>\n";
+        $val .= "      <th>" . (Language::title('role')) . "</th>\n";
+        $val .= "      <th>" . (Language::title('date')) . "</th>\n";
+        $val .= "  </tr>\n";
         
+        foreach ($data as $d)
+        {
+            if($d->name == $_SESSION['userLogin']) {
+                $val .= "  <tr class='current'>\n";
+            } else {
+                $val .= "  <tr>\n";
+            }
+            $val .= "<form id='" . ($d->id_fp_user) . "' action='index.php?page=account' method='POST'>\n";
+            $val .= $form->inputAction("modifyuser");
+            $val .= $form->inputHidden("id_fp_user", $d->id_fp_user);
+            $val .= "      <td>";
+            if($d->name != $_SESSION['userLogin']) $val .= "<a href='#' onclick='document.getElementById(" . ($d->id_fp_user) . ").submit();'>";
+            $val .= ucfirst($d->name);
+            if($d->name != $_SESSION['userLogin']) $val .= "</a></td>\n";
+            $val .= "      <td><small>" . self::circle($d->name, $d->role) . "</small></td>\n";
+            $val .= "      <td>" . $d->registration . "</td>\n";
+            $val .= "</form>\n";
+            $val .= "  </tr>\n";
+        }
+        $val .= "</table>\n";
         return $val;
     }
 }

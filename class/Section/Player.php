@@ -49,18 +49,21 @@ class Player
     }
     
     static function deletePopup($pdo, $teamId, $playerId){
-        
-        $req="DELETE FROM season_team_player
+        $req = '';
+        $req .= "DELETE FROM teamOfTheWeek 
+        WHERE id_player=:id_player;";
+        $req .= "DELETE FROM season_team_player
         WHERE id_season=:id_season
         AND id_team=:id_team
         AND id_player=:id_player;";
-        $req.="DELETE FROM player
+        $req .= "DELETE FROM player
         WHERE id_player=:id_player;";
-        $data=$pdo->prepare($req,[
+        $data = $pdo->prepare($req,[
             'id_season' => $_SESSION['seasonId'],
             'id_team' => $teamId,
             'id_player' => $playerId
         ]);
+        $pdo->alterAuto('teamOfTheWeek');
         $pdo->alterAuto('season_team_player');
         $pdo->alterAuto('player');
         popup(Language::title('deleted'),"index.php?page=player");

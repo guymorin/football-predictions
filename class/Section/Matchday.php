@@ -6,6 +6,7 @@
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use \PDO;
 
 class Matchday
@@ -98,19 +99,28 @@ class Matchday
     }
     
     static function deletePopup($pdo, $matchdayId){
-        
-        $req="DELETE FROM matchday WHERE id_matchday='".$matchdayId."';";
+        $req = '';
+        $req .= "DELETE FROM teamOfTheWeek WHERE id_matchday='".$matchdayId."';";
+        $req .= "DELETE FROM criterion WHERE id_matchgame IN (
+            SELECT id_matchgame FROM matchgame WHERE id_matchday='".$matchdayId."');";
+        $req .= "DELETE FROM matchgame WHERE id_matchday='".$matchdayId."';";
+        $req .= "DELETE FROM matchday WHERE id_matchday='".$matchdayId."';";
         $pdo->exec($req);
+        $pdo->alterAuto('teamOfTheWeek');
+        $pdo->alterAuto('criterion');
+        $pdo->alterAuto('matchgame');
         $pdo->alterAuto('matchday');
         popup(Language::title('deleted'),"index.php?page=matchday");
     }
     
     static function deletePopupMatch($pdo, $idMatch){
-        
-        $req="DELETE FROM matchgame WHERE id_matchgame=:id_matchgame;";
+        $req = '';
+        $req .= "DELETE FROM criterion WHERE id_matchgame=:id_matchgame;";
+        $req .= "DELETE FROM matchgame WHERE id_matchgame=:id_matchgame;";
         $pdo->prepare($req,[
             'id_matchgame' => $idMatch
         ]);
+        $pdo->alterAuto('criterion');
         $pdo->alterAuto('matchgame');
         popup(Language::title('deleted'),"index.php?page=matchgame");
     }
@@ -394,10 +404,10 @@ class Matchday
                         break;
                 }
                 if($prediction == $d->result){
-                    $win = $icon_winOK;
+                    $win = Theme::icon('winOK');
                     $success++;
                     $earningSum += $playedOdds;
-                } elseif ($d->result != "") $win = $icon_winKO;
+                } elseif ($d->result != "") $win = Theme::icon('winKO');
                 $totalPlayed += $playedOdds;
                 
                 $table.="  		<tr>\n";

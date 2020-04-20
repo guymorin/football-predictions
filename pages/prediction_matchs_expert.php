@@ -1,6 +1,7 @@
 <?php
 // Predictions matchgame expert include file
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 
 echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
 
@@ -131,16 +132,16 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('prediction')) . "</td>";
         echo "  		  <td>";
-        if($prediction == '1') echo $icon_OK;
-        else echo $icon_KO;
+        if($prediction == '1') echo Theme::icon('OK');
+        else echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
-        if($prediction == 'D') echo $icon_OK;
-        else echo $icon_KO;
+        if($prediction == 'D') echo Theme::icon('OK');
+        else echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
-        if($prediction == '2') echo $icon_OK;
-        else echo $icon_KO;
+        if($prediction == '2') echo Theme::icon('OK');
+        else echo Theme::icon('KO');
         echo "</td>\n";
         echo "          </tr>\n";
         
@@ -148,16 +149,16 @@ if($counter > 0){
         echo "  		  <td>" . (Language::title('result')) . "</td>";
         echo "  		  <td>";
         $varName = "result[$id]";
-        if($d->result == '1') echo $icon_OK;
-        else echo $icon_KO;
+        if($d->result == '1') echo Theme::icon('OK');
+        else echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
-        if($d->result == 'D') echo $icon_OK;
-        else echo $icon_KO;
+        if($d->result == 'D') echo Theme::icon('OK');
+        else echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
-        if($d->result == '2') echo $icon_OK;
-        else echo $icon_KO;
+        if($d->result == '2') echo Theme::icon('OK');
+        else echo Theme::icon('KO');
         echo "</td>\n";
         echo "          </tr>\n";
         

@@ -19,14 +19,15 @@ use FootballPredictions\Section\Player;
 use FootballPredictions\Section\Season;
 use FootballPredictions\Section\Team;
 use FootballPredictions\Section\Account;
+use FootballPredictions\Theme;
 
 // Language
 if(empty($_SESSION['language'])) Language::getBrowserLang();
 
-// Files to include
-require '../include/connection.php';
+// File to include
 require '../include/functions.php';
 
+$pdo = App::getDb();
 $error = new Errors();
 $form = new Forms($_POST);
 $page = '';
@@ -95,8 +96,7 @@ elseif(
 <html lang="fr">
 <head>
 	<meta charset="utf-8">
-    <?php require("../theme/default/theme.php");?>
-
+    <?= Theme::style();?>
 </head>
 
 <body>
@@ -113,7 +113,7 @@ function myFunction() {
 </script>
 <header>
     <nav id='fp-submenu'>
-<?= Home::submenu($pdo, $form, $page, $create, $modify);?>
+<?= Home::submenu($pdo, $form, $page, $create, $modify, $modifyuser);?>
     </nav>
     <nav id='fp'>
 	<?= Home::menu();?>

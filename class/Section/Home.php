@@ -6,6 +6,7 @@
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use \PDO;
 
 class Home
@@ -14,13 +15,15 @@ class Home
 
     }
     
-    static function submenu($pdo, $form, $page, $create, $modify ){
+    static function submenu($pdo, $form, $page, $create, $modify, $modifyuser ){
         $val = '';
         $current = '';
         switch($page){
             case "account":
+            case "accountList":
                 if(isset($_SESSION['userLogin'])) {
-                    $current = 'myAccount';
+                    if($page=='accountList') $current = 'listAccounts';
+                    elseif ($modifyuser == 0) $current = 'myAccount';
                     echo Account::submenu($pdo, $form, $current);
                 }
                 break;
@@ -77,15 +80,17 @@ class Home
     }
     
     static function homeMenu($pdo, $form){
-        require '../theme/default/theme.php';
         $val = '';
         $val .= "<ul class='menu'>\n";
-        $val .= "    <li><h2>$icon_account " . (Language::title('account')) . "</h2>\n";
+        $val .= "    <li><h2>" . Theme::icon('account') . " " . (Language::title('account')) . "</h2>\n";
         $val .= "       <ul>\n";
+        if($_SESSION['role'] == '2') {
+            $val .= "            <li><a href='index.php?page=accountList'>" . (Language::title('listAccounts')) . "</a></li>\n";
+        }
         $val .= "            <li><a href='index.php?page=account'>" . (Language::title('myAccount')) . "</a></li>\n";
         $val .= "       </ul>\n";
         $val .= "    </li>\n";
-        $val .= "    <li><h2>$icon_season " . (Language::title('season')) . "</h2>\n";
+        $val .= "    <li><h2>" . Theme::icon('season') . " " . (Language::title('season')) . "</h2>\n";
         $val .= "       <ul>\n";
         $val .= "            <li><a href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a></li>\n";
         $val .= "       </ul>\n";
@@ -98,22 +103,22 @@ class Home
         $response = $pdo->query($req);
         $counter = $pdo->rowCount();
 
-        $val .= "    <li><h2>$icon_championship " . (Language::title('championship')) . "</h2>\n";
+        $val .= "    <li><h2>" . Theme::icon('championship') . " " . (Language::title('championship')) . "</h2>\n";
         if($counter>0){
-            $_SESSION['noMatchday'] = false;
+            $_SESSION['noTeam'] = false;
             $val .= "       <ul>\n";
             $val .= "            <li><a href='index.php?page=championship'>" . (Language::title('standing')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a></li>\n";
             $val .= "       </ul>\n";
         } else {
-            $_SESSION['noMatchday'] = true;
+            $_SESSION['noTeam'] = true;
             $val .= "       <ul>\n";
             $val .= "            <li><a href='index.php?page=championship&create=1'>" . (Language::title('selectTheTeams')) . "</a></li>\n";
             $val .= "       </ul>\n";
         }
         $val .= "    </li>\n";
         
-        $val .= "    <li><h2>$icon_matchday " . (Language::title('matchday')) . " " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h2>\n";
+        $val .= "    <li><h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h2>\n";
         if(isset($_SESSION['matchdayId'])){
             $val .= "        <ul>\n";
             $val .= "            <li><a href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a></li>\n";
@@ -159,7 +164,7 @@ class Home
                     $val .= "<form action='index.php?page=matchday' method='POST'>\n";
                     $val .=  $form->label(Language::title('quickNav'));
                     $val .=  $form->inputHidden("matchdaySelect", $data->id_matchday . "," . $data->number);
-                    $val .=  $form->submit($icon_quicknav . " " . (Language::title('MD')) . $data->number);
+                    $val .=  $form->submit(Theme::icon('quicknav') . " " . (Language::title('MD')) . $data->number);
                     $val .= "</form>\n";
                 }
                 
@@ -176,12 +181,12 @@ class Home
             $val .= "    </li>\n";
         }
         $val .= "    </li>\n";
-        $val .= "    <li><h2>" . $icon_team . " " . (Language::title('team')) . "</h2>\n";
+        $val .= "    <li><h2>" . Theme::icon('team') . " " . (Language::title('team')) . "</h2>\n";
         $val .= "        <ul>\n";
         $val .= "            <li><a href='index.php?page=team'>" . (Language::title('marketValue')) . "</a></li>\n";
         $val .= "        </ul>\n";
         $val .= "    </li>\n";
-        $val .= "    <li><h2>" . $icon_player . " " . (Language::title('player')) . "</h2>\n";
+        $val .= "    <li><h2>" . Theme::icon('player') . " " . (Language::title('player')) . "</h2>\n";
         $val .= "        <ul>\n";
         $val .= "            <li><a href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a></li>\n";
         $val .= "        </ul>\n";
@@ -193,17 +198,8 @@ class Home
     static function unSet($page){
         switch($page){
             case "account":
-                unset($_SESSION['userId']);
-                unset($_SESSION['userLogin']);
-                unset($_SESSION['language']);
-                unset($_SESSION['theme']);
-                unset($_SESSION['role']);
-                unset($_SESSION['seasonId']);
-                unset($_SESSION['seasonName']);
-                unset($_SESSION['championshipId']);
-                unset($_SESSION['championshipName']);
-                unset($_SESSION['matchdayId']);
-                unset($_SESSION['matchdayNum']);
+                session_unset();
+                session_destroy();
                 break;
             case "season":
                 unset($_SESSION['seasonId']);
@@ -226,7 +222,6 @@ class Home
         }
     }
     static function menu(){
-        require '../theme/default/theme.php';
         $val = '';
         $val .= "  <input type='checkbox' id='fp-button' />\n";
         $val .= "  <label class='hamburger'  for='fp-button'>&#x2630;</label>\n";
@@ -234,14 +229,26 @@ class Home
         $val .= "  <ul>\n";
         $val .= "	 <li><a href='/'>" . (Language::title('homepage')) . "</a></li>\n";
         if(isset($_SESSION['userLogin'])){
-            $val .= "	 <li><a href='index.php?page=account'>$icon_account " . (Language::title('account')) . "</a></li>\n";
-            $val .= "	 <li><a href='index.php?page=season'>$icon_season " . (Language::title('season')) . "</a></li>\n";
+            $val .= "	 <li><a href='index.php?page=account'>"
+                            . Theme::icon('account') . " "
+                            . (Language::title('account')) . "</a></li>\n";
+            $val .= "	 <li><a href='index.php?page=season'>"
+                            . Theme::icon('season') . " "
+                            . (Language::title('season')) . "</a></li>\n";
             if(isset($_SESSION['seasonId'])){
-                $val .= "	 <li><a href='index.php?page=championship'>$icon_championship " . (Language::title('championship')) . "</a></li>\n";
+                $val .= "	 <li><a href='index.php?page=championship'>"
+                                . Theme::icon('championship') . " "
+                                . (Language::title('championship')) . "</a></li>\n";
                 if(isset($_SESSION['championshipId'])){
-                    $val .= "	 <li><a href='index.php?page=matchday'>$icon_matchday " . (Language::title('matchday')) . " ".(isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</a></li>\n";
-                    $val .= "	 <li><a href='index.php?page=team'>$icon_team " . (Language::title('team')) . "</a></li>\n";
-                    $val .= "	 <li><a href='index.php?page=player'>$icon_player " . (Language::title('player')) . "</a></li>\n";
+                    $val .= "	 <li><a href='index.php?page=matchday'>"
+                                    . Theme::icon('matchday') . " "
+                                    . (Language::title('matchday')) . " ".(isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</a></li>\n";
+                    $val .= "	 <li><a href='index.php?page=team'>"
+                                    .Theme::icon('team') . " "
+                                    . (Language::title('team')) . "</a></li>\n";
+                    $val .= "	 <li><a href='index.php?page=player'>"
+                                    .Theme::icon('player'). " "
+                                    . (Language::title('player')) . "</a></li>\n";
                 }
             }
         }

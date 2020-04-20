@@ -7,6 +7,7 @@ use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use FootballPredictions\Section\Matchday;
 use FootballPredictions\Section\Championship;
 
@@ -14,7 +15,7 @@ use FootballPredictions\Section\Championship;
 require '../include/changeMD.php';
 ?>
 
-<h2><?= $icon_matchday . ' ' . (Language::title('matchday')) . ' ' . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>
+<h2><?= Theme::icon('matchday') . ' ' . (Language::title('matchday')) . ' ' . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>
 
 <?php
 // Values
@@ -67,7 +68,8 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
 // List
 else {
     echo "<h3>" . (Language::title('listMatchdays'));
-    echo "<h4>". $_SESSION['championshipName']." - ".$_SESSION['seasonName'] . "</h4>\n";
+    echo "<h4>" . $_SESSION['championshipName']." - " 
+                . $_SESSION['seasonName'] . "</h4>\n";
     echo Matchday::list($pdo, $form);
 }
 ?>

@@ -22,6 +22,7 @@ class App
         if(self::$database == null){
             self::$database = new Database(self::DB_HOST, self::DB_NAME, self::DB_USER, self::DB_PASS);
         }
+        return self::$database;
     }
     
     public static function getTitle(){

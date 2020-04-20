@@ -4,10 +4,11 @@
 
 // Files to include
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 
 require '../include/changeMD.php';
 
-echo "<h2>" . $icon_matchday . " " . (Language::title('matchday')) . " " . $_SESSION['matchdayNum']."</h2>\n";
+echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . $_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $teamOfTheWeek = 0;
