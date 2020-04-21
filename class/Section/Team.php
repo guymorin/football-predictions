@@ -69,7 +69,7 @@ class Team
         $val .= "<form action='index.php?page=team' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('createATeam')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('team')) . "</legend>\n";
         $val .= $error->getError();
         $form->setValue('name', $teamName);
         $form->setValue('weather_code', $weatherCode);
@@ -100,7 +100,7 @@ class Team
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('modifyATeam')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('team')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->inputHidden('id_team',$teamId);
         $val .= $form->input(Language::title('name'), 'name');

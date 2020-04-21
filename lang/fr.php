@@ -61,6 +61,7 @@ $array = array(
     "lose" => "P",
     "marketValue" => "Valeur marchande",
     "matchday" => "Journée",
+    "matchdays" => "Journées",
     "matchgame" => "Match",
     "matchNumber" => "Nombre de matchs",
     "matchPlayed" => "Matchs joués",

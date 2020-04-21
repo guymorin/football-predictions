@@ -56,7 +56,7 @@ table{font-size:.9em;margin:0 auto;border:2px solid #666;border-radius:3px;min-w
 td{border:.1em solid #aaa;}
 tr:nth-child(odd){background:#efefef}
 tr:nth-child(even){background:#fff}
-th{padding:.4em;background:#fff;color:#222;font-weight:bold;}
+th{padding:.4em;background:#fff;color:#666;font-weight:bold;}
 input[type='date'] {font-size:1.2em}
 input[type='number'] {width:6em;padding:1em 0}
 
@@ -224,7 +224,7 @@ nav a {
 #fp-submenu form {display:inline}
 #fp-submenu form, #fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}
 #fp-submenu label {margin-right:.2em}
-
+#fp-submenu select {min-width:10em;}
 
 /* Section */
 
@@ -305,17 +305,23 @@ section form label.right {text-align:right;padding-right:.2em;min-width:1em;}
 section form p {text-align:left;margin:.2em;padding:.4em;display:inline-block;}
 section .menu form p {margin:0;padding:0;}
 
-section form fieldset {border:1px solid #ccc;border-radius:4px;margin:.5em;display:inline;text-align: right;vertical-align: top;}
-section form legend {color:#999;}
+section form fieldset {
+	background:#ddd;
+	border: 1px solid #aaa;
+	border-radius:4px;
+	margin:.5em;
+	display:inline;
+	text-align: right;
+	vertical-align: top;
+}
+section form fieldset legend {background:#fff;font-size:.9em;font-weight:bold;border:1px solid #aaa;border-radius:2px;color:#666;padding:.2em .8em;}
+section form fieldset fieldset {background:#ddd;border:none;}
+section form fieldset fieldset legend {background:#ddd;font-weight:bold;border:none;color:#333;}
 section form fieldset.odds label,
 section form fieldset.result label {width:2em}
 section form fieldset.position {text-align: right;}
 section form fieldset input[type='radio']{vertical-align:bottom;}
 section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em;min-width:10em;}
-section #criterion table.expert {border-color:#f30;}
-section #criterion table.expert th {background:white;color:#f30;border-color:#f60;}
-section #criterion table.expert tr{background:#fd3}
-section #criterion table.expert tr:nth-child(2n){background:#fe9}
 
 /* Standing table buttons */
 section #standing ul {display:inline;}

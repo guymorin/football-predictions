@@ -142,7 +142,7 @@ class Championship
         $val .= "<form action='index.php?page=championship' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('createAChampionship')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('championship')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->input(Language::title('name'),"name");
         $val .= "</fieldset>\n";
@@ -209,7 +209,7 @@ class Championship
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('modifyAChampionship')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('championship')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->inputHidden("id_championship", $data->id_championship);
         $val .= $form->input(Language::title('name'), "name");

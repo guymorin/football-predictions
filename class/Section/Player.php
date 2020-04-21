@@ -74,7 +74,7 @@ class Player
         $val .= "<form action='index.php?page=player' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('createAPlayer')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('player')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->input(Language::title('name'), 'name');
         $val .= "<br />\n";
@@ -127,7 +127,7 @@ class Player
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('modifyAPlayer')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('player')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->inputHidden('id_player', $data->id_player);
         $val .= $form->input(Language::title('name'),'name');

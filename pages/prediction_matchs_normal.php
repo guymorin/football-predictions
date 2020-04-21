@@ -30,12 +30,16 @@ $data = $pdo->prepare($req,[
 $counter = $pdo->rowCount();
 
 if($counter > 0){
-    // Switch form
-    echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
-    echo $form->inputAction('expert');
-    echo $form->submit(Language::title('swithToExpert'));
-    echo "</form>\n";
     
+    if($_SESSION['role']==2){
+        // Switch form
+        echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
+        echo $form->inputHidden('modify','2');
+        echo $form->inputHidden('expert','0');
+        echo $form->submit(Language::title('swithToExpert'));
+        echo "</form>\n";
+    }
+
     // Modify form
     echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";
     echo $form->inputAction('modify');

@@ -131,9 +131,9 @@ if($modify==1){
 }
 // Default page or expert page
 else {
-    
-    if($expert==1) require 'prediction_matchs_expert.php';
-    else require 'prediction_matchs_default.php';
+    changeMD($pdo,"prediction");
+    if($expert==1) require 'prediction_matchs_normal.php';
+    else require 'prediction_matchs_expert.php';
     
 }
 ?>  

@@ -8,6 +8,7 @@ namespace FootballPredictions\Section;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use \PDO;
+use FootballPredictions\Statistics;
 
 class Matchday
 {
@@ -131,7 +132,7 @@ class Matchday
         $val .= "<form action='index.php?page=matchday' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('createAMatchday')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('matchday')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->input(Language::title('number'),'number');
         $val .= "</fieldset>\n";
@@ -147,7 +148,7 @@ class Matchday
         $val .= "<form action='index.php?page=matchday&create=1' method='POST'>\n";
         $val .= $form->inputAction('createMulti');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('create')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('matchdays')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->input(Language::title('matchdayNumber'),'totalNumber');
         $val .= "</fieldset>\n";
@@ -207,7 +208,7 @@ class Matchday
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('modifyAMatchday')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('matchday')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->inputHidden("id_matchday", $data->id_matchday);
         $val .= $form->input(Language::title('number'), "number");
@@ -253,7 +254,7 @@ class Matchday
         $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('createAMatch')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('matchgame')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->inputHidden('matchdayId', $_SESSION['matchdayId']);
         
@@ -294,7 +295,7 @@ class Matchday
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('modifyAMatch')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('match')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->inputHidden('id_matchgame',$data->id_matchgame);
         $val .= $form->inputDate(Language::title('date'), 'date', $data->date);
@@ -316,7 +317,6 @@ class Matchday
     }
     
     static function stats($pdo){
-        require '../theme/default/theme.php';
         changeMD($pdo,"statistics");
         echo "<h3>" . (Language::title('statistics')) . "</h3>";
         $req="SELECT m.id_matchgame,
@@ -338,173 +338,12 @@ class Matchday
             'id_matchday' => $_SESSION['matchdayId']
         ],true);
         $counter = $pdo->rowCount();
-        if($counter > 0){
-            
-            $table="	 <table class='stats'>\n";
-            $table.="  		<tr>\n";
-            $table.="  		  <th>" . (Language::title('matchgame')) . "</th>\n";
-            $table.="         <th>" . (Language::title('prediction')) . "</th>\n";
-            $table.="         <th>" . (Language::title('result')) . "</th>\n";
-            $table.="         <th>" . (Language::title('odds')) . "</th>\n";
-            $table.="         <th>" . (Language::title('success')) . "</th>\n";
-            $table.="       </tr>\n";
-            
-            $matchs = $success = $earningSum = $totalPlayed = 0;
-            
-            foreach ($data as $d)
-            {
-                
-                // Marketvalue
-                $v1=criterion("v1",$d,$pdo);
-                $v2=criterion("v2",$d,$pdo);
-                $mv1 = round(sqrt($v1/$v2));
-                $mv2 = round(sqrt($v2/$v1));
-                
-                $dom = $d->home_away1;
-                $ext = $d->home_away2;
-                
-                // Predictions history
-                $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
-                    SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
-                    SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
-                    FROM matchgame m
-                    LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame
-                    WHERE cr.motivation1='".$d->motivation1."'
-                    AND cr.motivation2='".$d->motivation2."'
-                    AND cr.currentForm1='".$d->currentForm1."'
-                    AND cr.currentForm2='".$d->currentForm2."'
-                    AND cr.physicalForm1='".$d->physicalForm1."'
-                    AND cr.physicalForm2='".$d->physicalForm2."'
-                    AND cr.weather1='".$d->weather1."'
-                    AND cr.weather2='".$d->weather2."'
-                    AND cr.bestPlayers1='".$d->bestPlayers1."'
-                    AND cr.bestPlayers2='".$d->bestPlayers2."'
-                    AND cr.marketValue1='".$d->marketValue1."'
-                    AND cr.marketValue2='".$d->marketValue2."'
-                    AND cr.home_away1='".$d->home_away1."'
-                    AND cr.home_away2='".$d->home_away2."'
-                    AND m.date<'".$d->date."'";
-                $r = $pdo->prepare($req,null,true);
-                $predictionsHistoryHome=criterion("predictionsHistoryHome",$r,$pdo);
-                $predictionsHistoryAway=criterion("predictionsHistoryAway",$r,$pdo);
-                
-                // Sum
-                $win="";
-                
-                $sum1=
-                $d->motivation1
-                +$d->currentForm1
-                +$d->physicalForm1
-                +$d->weather1
-                +$d->bestPlayers1
-                +$mv1
-                +$dom
-                +$predictionsHistoryHome;
-                $sum2=
-                $d->motivation2
-                +$d->currentForm2
-                +$d->physicalForm2
-                +$d->weather2
-                +$d->bestPlayers2
-                +$mv2
-                +$ext
-                +$predictionsHistoryAway;
-                if($sum1>$sum2)         $prediction = '1';
-                elseif($sum1==$sum2)    $prediction = Language::title('draw');
-                elseif($sum1<$sum2)     $prediction = '2';
-                
-                $matchs++;
-                $playedOdds=0;
-                switch($prediction){
-                    case "1":
-                        $playedOdds = $d->odds1;
-                        break;
-                    case (Language::title('draw')):
-                        $playedOdds = $d->oddsD;
-                        break;
-                    case "2":
-                        $playedOdds = $d->odds2;
-                        break;
-                }
-                if($prediction == $d->result){
-                    $win = Theme::icon('winOK');
-                    $success++;
-                    $earningSum += $playedOdds;
-                } elseif ($d->result != "") $win = Theme::icon('winKO');
-                $totalPlayed += $playedOdds;
-                
-                $table.="  		<tr>\n";
-                $table.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
-                $table.="  		  <td>".$prediction."</td>\n";
-                $table.="  		  <td>";
-                if($d->result=='D') $table.=Language::title('draw');
-                else $table.=$d->result;
-                $table.="</td>\n";
-                $table.="  		  <td>".$playedOdds."</td>\n";
-                $table.="  		  <td>".$win."</td>\n";
-                $table.="       </tr>\n";
-                
-            }
-            
-            $table.="	 </table>\n";
-            
-            // Values
-            $benef=money_format('%i',$earningSum-$matchs);
-            $roi = round(($benef/$matchs)*100);
-            $successRate = (($success/$matchs)*100);
-            $earning = money_format('%i',$earningSum);
-            $earningByBet = (round($earningSum/$matchs,2));
-            
-            echo "<p>\n";
-            echo "  <table class='stats'>\n";
-         
-            echo "    <tr>\n";
-            echo "      <td>" . (Language::title('bet')) . "</td>\n";
-            echo "      <td>".$matchs."</td>\n";
-            echo "      <td>" . (Language::title('success')) . "</td>\n";
-            echo "      <td>" . $success . "</td>\n";
-            echo "    </tr>\n";
-            
-            echo "    <tr>\n";
-            echo "      <td>" . (Language::title('earning')) . "</td>\n";
-            echo "      <td>".$earning."&nbsp;&euro;</td>\n";
-            echo "      <td>" . (Language::title('successRate')) . "</td>\n";
-            echo "      <td>";
-            if($matchs>0) echo $successRate;
-            else echo 0;
-            echo "&nbsp;%</td>\n";
-            echo "    </tr>\n";
-            
-            echo "    <tr>\n";
-            echo "      <td>" . (Language::title('earningByBet')) . "</td>\n";
-            echo "      <td>$earningByBet</td>\n";
-            $averageOdds=(round($totalPlayed/$matchs,2));
-            echo "      <td>" . (Language::title('oddsAveragePlayed')) . "</td>\n";
-            echo "      <td>".$averageOdds;
-            if(($averageOdds<1.8)||($averageOdds>2.3)){
-                echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valOdds($averageOdds)."</a>";
-            }
-            echo "</td>\n";
-            echo "    </tr>\n";
-            
-            echo "    <tr>\n";
-            echo "      <td>" . (Language::title('profit')) . "</td>\n";
-            echo "      <td><span style='color:".valColor($benef)."'>";
-            if($benef>0) echo "+";
-            echo $benef."</span></td>\n";
-            echo "      <td>" . (Language::title('ROI')) . "</td>\n";
-            echo "      <td>";
-            echo "<span style='color:".valColor($roi)."'>";
-            if($roi>0) echo "+";
-            echo $roi."&nbsp;%</span>";
-            echo "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($roi)."</a>";
-            echo "</td>\n";
-            echo "    </tr>\n";
-            
-            echo "  </table>\n";
-            echo "</p>\n";
-            
-            echo $table;
+        if($counter > 0){                              
+            $stats = new Statistics();
+            $stats->prepareTable($pdo, $data);
+            $stats->summaryPrepare();
+            echo $stats->summaryTable();
+            echo $stats->statsTable();
         } else echo Language::title('noStatistic');
     }
     

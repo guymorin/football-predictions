@@ -63,7 +63,7 @@ class Account
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $val .= $form->inputAction('logon');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('logon')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('account')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->input(Language::title('login'), 'name');
         $val .= "<br />\n";
@@ -124,7 +124,7 @@ class Account
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('createAnAccount')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('account')) . "</legend>\n";
         $val .= $error->getError();
         
         $val .= $form->input(Language::title('login'), 'name');

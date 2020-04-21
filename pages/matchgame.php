@@ -7,10 +7,11 @@ use FootballPredictions\App;
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use FootballPredictions\Section\Matchday;
 
 
-echo "<h2>Theme::icon('matchday') " . (Language::title('matchday')) . " ".$_SESSION['matchdayNum']."</h2>\n";
+echo "<h2>" . (Theme::icon('matchday')) . " " . (Language::title('matchday')) . " ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $date = $result = "";

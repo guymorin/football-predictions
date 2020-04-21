@@ -125,7 +125,7 @@ class Season
         $val .= "<form action='index.php?page=season' method='POST'>\n";
         $val .= $form->inputAction('create');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('createASeason')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('season')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->input(Language::title('name'),"name");
         $val .= "</fieldset>\n";
@@ -156,7 +156,7 @@ class Season
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('modifyASeason')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('season')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->inputHidden('id_season',$data->id_season);
         $val .= $form->input(Language::title('name'),'name');
