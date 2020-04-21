@@ -127,10 +127,15 @@ class Matchday
     
     static function createForm($pdo, $error, $form){
         
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=matchday' method='POST'>\n";
         $val .= $form->inputAction('create');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('createAMatchday')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->input(Language::title('number'),'number');
+        $val .= "</fieldset>\n";
+        $val .= "<br />\n";
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
         return $val;
@@ -138,10 +143,14 @@ class Matchday
     
     static function createMultiForm($pdo, $error, $form){
         
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=matchday&create=1' method='POST'>\n";
         $val .= $form->inputAction('createMulti');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('create')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->input(Language::title('matchdayNumber'),'totalNumber');
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
@@ -193,12 +202,16 @@ class Matchday
             'id_matchday' => $matchdayId
         ]);
         
-        $val .= $error->getError();
+        $val .= '';
         $val .= " <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('modifyAMatchday')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->inputHidden("id_matchday", $data->id_matchday);
         $val .= $form->input(Language::title('number'), "number");
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= " </form>\n";
@@ -236,9 +249,12 @@ class Matchday
     
     static function createMatchForm($pdo, $error, $form){
         
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
         $val .= $form->inputAction('create');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('createAMatch')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->inputHidden('matchdayId', $_SESSION['matchdayId']);
         
         $val .= $form->inputDate(Language::title('date'), 'date', '');
@@ -255,7 +271,9 @@ class Matchday
         $val .= $form->selectTeam($pdo,'team_2');
         $val .= "<br />";
         $val .= $form->inputNumberOdds();
+        $val .= "<br />";
         $val .= $form->inputRadioResult();
+        $val .= "</fieldset>\n";
         $val .= "<br />";
         $val .= $form->submit(Language::title('create'));
         
@@ -271,10 +289,13 @@ class Matchday
         $data = $pdo->prepare($req,[
             'id_matchgame' => $idMatch
         ]);
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('modifyAMatch')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->inputHidden('id_matchgame',$data->id_matchgame);
         $val .= $form->inputDate(Language::title('date'), 'date', $data->date);
         $val .= "<br />";
@@ -282,7 +303,9 @@ class Matchday
         $val .= $form->selectTeam($pdo,'team_2',$data->id2);
         $val .= "<br />";
         $val .= $form->inputNumberOdds($data);
+        $val .= "<br />";
         $val .= $form->inputRadioResult($data);
+        $val .= "</fieldset>\n";
         $val .= "<br />";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";

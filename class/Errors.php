@@ -51,9 +51,9 @@ class Errors
      */
     public function addError($name, $error = null)
     {
+        $this->errorMessage .= "<br />";
         if($error == null) $this->errorMessage .= $name;
         else $this->errorMessage .= "$name : $error";
-        $this->errorMessage .= "<br />";
     }
     
     // Check function

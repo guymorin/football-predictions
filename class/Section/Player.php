@@ -70,11 +70,12 @@ class Player
     }
     
     static function createForm($pdo, $error, $form){
-        
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=player' method='POST'>\n";
         $val .= $form->inputAction('create');
-        
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('createAPlayer')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->input(Language::title('name'), 'name');
         $val .= "<br />\n";
         $val .= $form->input(Language::title('firstname'), 'firstname');
@@ -82,6 +83,7 @@ class Player
         
         $val .= $form->inputRadioPosition();
         $val .= $form->selectTeam($pdo);
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         
         $val .= $form->submit(Language::title('create'));
@@ -120,10 +122,13 @@ class Player
         $data = $pdo->prepare($req,[
             'id_player' => $playerId
         ]);
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=player' method='POST'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('modifyAPlayer')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->inputHidden('id_player', $data->id_player);
         $val .= $form->input(Language::title('name'),'name');
         $val .= "<br />\n";
@@ -131,6 +136,7 @@ class Player
         $val .= "<br />\n";
         $val .= $form->inputRadioPosition($data);
         $val .= $form->selectTeam($pdo, null, $data->id_team);
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";

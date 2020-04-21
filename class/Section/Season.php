@@ -121,10 +121,14 @@ class Season
     }
     static function createForm($error, $form){
         
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=season' method='POST'>\n";
         $val .= $form->inputAction('create');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('createASeason')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->input(Language::title('name'),"name");
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
@@ -147,12 +151,16 @@ class Season
         $data = $pdo->prepare($req,[
             'id_season' => $seasonId
         ]);
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=season' method='POST'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('modifyASeason')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->inputHidden('id_season',$data->id_season);
         $val .= $form->input(Language::title('name'),'name');
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";

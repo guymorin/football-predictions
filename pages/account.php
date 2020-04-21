@@ -21,7 +21,7 @@ $userLogin = $userPassword = $userPassword2 = $userLanguage = $userTheme = $user
 isset($_POST['id_fp_user'])  ? $userId = $error->check("Digit",$_POST['id_fp_user']) : null;
 isset($_POST['name'])        ? $userLogin = $error->check("Alnum",$_POST['name'], Language::title('login')) : null;
 isset($_POST['password'])    ? $userPassword = $_POST['password'] : null;
-isset($_POST['password2'])    ? $userPassword2 = $_POST['password2'] : null;
+isset($_POST['password2'])   ? $userPassword2 = $_POST['password2'] : null;
 isset($_POST['language'])    ? $userLanguage = $_POST['language'] : null;
 isset($_POST['theme'])       ? $userTheme = $_POST['theme'] : null;
 isset($_POST['role'])        ? $userRole = $_POST['role'] : null;

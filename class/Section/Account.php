@@ -58,12 +58,17 @@ class Account
     
     static function logonForm($pdo, $error, $form){
         //
-        $val = $error->getError();
+        $val = '';
+        
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $val .= $form->inputAction('logon');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('logon')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->input(Language::title('login'), 'name');
         $val .= "<br />\n";
         $val .= $form->inputPassword(Language::title('password'), 'password');
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('logon'));
         $val .= "</form>\n";
@@ -115,17 +120,19 @@ class Account
     }
     
     static function createForm($error, $form){
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $val .= $form->inputAction('create');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('createAnAccount')) . "</legend>\n";
+        $val .= $error->getError();
         
         $val .= $form->input(Language::title('login'), 'name');
         $val .= "<br />\n";
-
-        $val .= $form->inputPassword(Language::title('password'), 'password');
+                $val .= $form->inputPassword(Language::title('password'), 'password');
         $val .= "<br />\n";
-        
         $val .= $form->inputPassword(Language::title('passwordConfirm'), 'password2');
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         
         $val .= $form->submit(Language::title('create'));

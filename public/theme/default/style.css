@@ -299,13 +299,13 @@ section #criterion table input[type='radio'] {margin-bottom:.3em}
 
 section form {width: 80%;margin: 0 auto}
 section form input, section form select {color:#000;font-size:.95em;}
-section form label {color:#333;vertical-align: middle;min-width:10em;text-align:right;margin:0 .5em;display:inline-block;}
+section form label {color:#333;vertical-align: middle;text-align:right;margin:0 .5em;display:inline-block;}
 section .menu form label {text-align:center}
 section form label.right {text-align:right;padding-right:.2em;min-width:1em;}
 section form p {text-align:left;margin:.2em;padding:.4em;display:inline-block;}
 section .menu form p {margin:0;padding:0;}
 
-section form fieldset {border:1px solid #ccc;border-radius:4px;margin:.5em;display:inline;vertical-align: top;}
+section form fieldset {border:1px solid #ccc;border-radius:4px;margin:.5em;display:inline;text-align: right;vertical-align: top;}
 section form legend {color:#999;}
 section form fieldset.odds label,
 section form fieldset.result label {width:2em}
@@ -360,23 +360,23 @@ footer strong {color:#222}
 
 /* Error */
 @keyframes errorDiv {
-  0% 	{opacity:1;margin-bottom:.2em;padding:.4em;height:inherit;color:#f00;}
-  79% 	{opacity:1;margin-bottom:.2em;padding:.4em;height:inherit;color:#f00;}
-  80% 	{opacity:1;margin-bottom:.2em;padding:.4em;height:inherit;color:#f000;}
-  100% 	{opacity:0;margin-bottom:0;padding:0;height:0;color:#f000;}
+  0% 	{opacity:1;padding:.4em;height:inherit;color:#f00;}
+  80% 	{opacity:1;padding:.4em;height:inherit;color:#f00;}
+  81% 	{opacity:1;padding:.4em;height:inherit;color:#f000;}
+  100% 	{opacity:0;padding:0;height:0;color:#f000;}
 }
 .error {
-	animation-duration: 5s;
+	animation-delay: 0;
+	animation-duration: 4s;
 	animation-name: errorDiv;
 	height:0;
-	width: 80%;
 	color:#f000;
 	background:#fff;
 	border:1px solid #f93;
 	border-radius:3px;
 	margin:0;
 	padding:0;
-	display:inline-block;
+	display:block;
 	opacity:0;
 	text-align: center;
 }

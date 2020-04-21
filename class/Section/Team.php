@@ -65,14 +65,18 @@ class Team
     }
     
     static function createForm($pdo, $error, $form, $teamName, $weatherCode){    
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=team' method='POST'>\n";
         $val .= $form->inputAction('create');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('createATeam')) . "</legend>\n";
+        $val .= $error->getError();
         $form->setValue('name', $teamName);
         $form->setValue('weather_code', $weatherCode);
         $val .= $form->input(Language::title('name'), 'name');
         $val .= "<br />\n";
         $val .= $form->input(Language::title('weathercode'), 'weather_code');
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";  
@@ -91,14 +95,18 @@ class Team
         $data = $pdo->prepare($req,[
             'id_team' => $teamId
         ]);
-        $val = $error->getError();
+        $val = '';
         $val .= "<form action='index.php?page=team' method='POST'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('modifyATeam')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->inputHidden('id_team',$teamId);
         $val .= $form->input(Language::title('name'), 'name');
         $val .= "<br />\n";
         $val .= $form->input(Language::title('weathercode'), 'weather_code');
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
