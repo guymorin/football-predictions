@@ -35,12 +35,12 @@ $table = "	 <table class='benef'>\n";
 $table .= "  		<tr>\n";
 $table .= "  		  <th>" . (Language::title('matchday')) . "</th>\n";
 $table .= "  		  <th>" . (Language::title('bet')) . "</th>\n";
-$table .= "         <th>" . (Language::title('success')) . "</th>\n";
-$table .= "         <th>" . (Language::title('oddsAveragePlayed')) . "</th>\n";
-$table .= "         <th>" . (Language::title('earning')) . "</th>\n";
-$table .= "         <th>" . (Language::title('profit')) . "</th>\n";
-$table .= "         <th>" . (Language::title('profit')) . "<br />total</th>\n";
-$table .= "       </tr>\n";
+$table .= "           <th>" . (Language::title('success')) . "</th>\n";
+$table .= "           <th>" . (Language::title('oddsAveragePlayed')) . "</th>\n";
+$table .= "           <th>" . (Language::title('earning')) . "</th>\n";
+$table .= "           <th>" . (Language::title('profit')) . "</th>\n";
+$table .= "           <th>" . (Language::title('profit')) . "<br />total</th>\n";
+$table .= "         </tr>\n";
 
 $matchdayEarningSum = $matchdayMatchs = $mdEarning = $matchdaySuccess = $matchdayPlayedOdds = 
 $matchdayBetSum = $matchdaySuccessSum = $matchdayEarningSum = $matchdayPlayedOddsSum = $matchdayProfitSum = 0;
@@ -170,7 +170,7 @@ foreach ($data as $d)
     }
 }
 $table .= "	 </table>\n";
-
+// ICI
 // Values
 $roi = round(($matchdayProfitSum/$matchdayBetSum)*100);
 $tauxReussite = round(($matchdaySuccessSum/$matchdayBetSum)*100);

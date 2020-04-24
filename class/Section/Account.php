@@ -72,6 +72,7 @@ class Account
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('logon'));
         $val .= "</form>\n";
+        $val .= "<br />\n";
         $val .= "<a href='index.php?page=account&create=1'>" . (Language::title('createAnAccount')) . "</a>\n";
         return $val;
     }
@@ -137,6 +138,7 @@ class Account
         
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
+        $val .= "<br />\n";
         $val .= "<a href='index.php?page=account'>" . (Language::title('logon')) . "</a>\n";
         return $val;
     }
@@ -157,44 +159,39 @@ class Account
         }
     }
     
-    static function circle($login, $role){
-        $class = 'circle';
-        if($role == 2) $class = 'circleAdmin';
-        $val = "<div id='" . $class . "'>" . (substr($login,0,1)) . "</div>\n";
-        return $val;
-    }
-    
     static function modifyForm($pdo, $error, $form, $userId){
         $val = '';
         $req = "SELECT * FROM fp_user WHERE id_fp_user=:id_fp_user;";
         $data = $pdo->prepare($req,[
             'id_fp_user' => $userId
         ]);
-        $val .= self::circle($data->name, $data->role);
-        $val .= $error->getError();
         $val .= "<form action='index.php?page=account' method='POST'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
+        $val .= "<fieldset>\n";
+        $val .= "<legend>" . (Language::title('account')) . "</legend>\n";
+        $val .= $error->getError();
         $val .= $form->inputHidden('id_fp_user',$userId);
         $val .= $form->inputHidden('name',$data->name);
+        $val .= "<p class='center'>" . $form->label(Language::title('login')) . ucfirst($_SESSION['userLogin']) . "</p>\n";
         $form->setValue('password','');
         $val .= $form->inputPassword(Language::title('password'), 'password');
         $val .= "<br />\n";
 
         $pattern = '~([a-z][a-z])\.(php)$~';
         $replacement = '$1';
-        $subject = scandir('../lang/');
+        $subject = scandir('lang/');
         $dataLang = array_values(preg_filter($pattern, $replacement, $subject));
         $val .= $form->selectData('language', $dataLang, $_SESSION['language']);
         
         $req = "SELECT id_fp_theme, name FROM fp_theme;";
         $dataTheme = $pdo->query($req);
         $val .= $form->select('theme', $dataTheme, $_SESSION['themeId'], false);
-
+        $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        // Delete
+        $val .= "<br />\n";
         $val .= $form->deleteForm('account', 'id_fp_user', $userId);     
         
         $val .= "<p><a href='index.php?page=account&exit=1'>" . (Language::title('logoff')) . "</a></p>\n";
@@ -208,22 +205,25 @@ class Account
         $data = $pdo->prepare($req,[
             'id_fp_user' => $userId
         ]);
-        $val .= "<h4>" . Language::title('login') . " : " . ucfirst($data->name) . "</h4>\n";
-        $val .= $error->getError();
+        
         if(($_SESSION['role'])==2){
             $val .= "<form action='index.php?page=account' method='POST'>\n";
             $form->setValues($data);
             $val .= $form->inputAction('modifyuser');
+            $val .= "<fieldset>\n";
+            $val .= "<legend>" . (Language::title('account')) . "</legend>\n";
+            $val .= $error->getError();
             $val .= $form->inputHidden('id_fp_user',$userId);
-            
+            $val .= "<p class='center'>".$form->label(Language::title('login')) . ucfirst($data->name) . "</p>\n";
+            $val .= "<br />\n";
             $req = "SELECT id_fp_role, name FROM fp_role;";
             $dataRole = $pdo->query($req);
             $val .= $form->select('role', $dataRole, $data->role);
-            
+            $val .= "</fieldset>\n";
             $val .= "<br />\n";
             $val .= $form->submit(Language::title('modify'));
             $val .= "</form>\n";
-            // Delete
+            $val .= "<br />\n";
             $val .= $form->deleteForm('account', 'id_fp_user', $userId);
         }
         return $val;
@@ -273,7 +273,9 @@ class Account
             if($d->name != $_SESSION['userLogin']) $val .= "<a href='#' onclick='document.getElementById(" . ($d->id_fp_user) . ").submit();'>";
             $val .= ucfirst($d->name);
             if($d->name != $_SESSION['userLogin']) $val .= "</a></td>\n";
-            $val .= "      <td><small>" . self::circle($d->name, $d->role) . "</small></td>\n";
+            $req = "SELECT name FROM fp_role WHERE id_fp_role = '" . $d->role . "';";
+            $dataRole = $pdo->prepare($req);
+            $val .= "      <td>" . Language::title($dataRole->name) . "</small></td>\n";
             $val .= "      <td>" . $d->registration . "</td>\n";
             $val .= "</form>\n";
             $val .= "  </tr>\n";

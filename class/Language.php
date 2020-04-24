@@ -10,7 +10,7 @@ class Language
 {
     static function title($val){
         self::getBrowserLang();
-        require "../lang/{$_SESSION['language']}.php";
+        require "lang/{$_SESSION['language']}.php";
         return $array[$val];
     }
     

@@ -2,12 +2,6 @@
 /* Default theme */
 /* Author : Guy Morin */
 
-@font-face {
-font-family: 'hemi';
-src: url('hemi_head_bd_it.ttf') format('truetype');
-font-weight: normal;
-font-style: normal;
-}	
 
 html, body {
  margin: 0;
@@ -29,9 +23,8 @@ h2 {
  font: 100% sans-serif; 
  text-align:left;
  text-transform:uppercase;
- text-shadow:0 0 2px #0006;
  color:white;
- background:#777 linear-gradient(#888,#555);
+ background:#888 linear-gradient(#999,#666);
  border-radius:2px;
  margin:0;
  padding:.2em 1.8em .2em .8em;
@@ -66,8 +59,9 @@ header{
 	width:100vw;
 	height:2.35em;
 	overflow:hidden;
-	background:#fff linear-gradient(#fff,#ccc);
 	position:fixed;
+	background: #ddd;
+	border-bottom:1px solid #ccc;
 }
 header h1 {
 	margin:0;
@@ -75,10 +69,10 @@ header h1 {
 	width:97%;
 }
 header h1 a {
-	font: 70% hemi, sans-serif; 
-	text-transform:uppercase;
+	font: 50% sans-serif;
+	letter-spacing:1em;
 	text-decoration:none;
-	text-shadow:0 0 2px #fff;
+	text-transform:uppercase;
 	color:#999;
 	vertical-align: middle;
 	padding-bottom: .15em
@@ -121,7 +115,7 @@ nav a {
 	overflow:hidden;
 	padding:0;
 	list-style-type: none;
-	background:#0009;
+	background:#0002;
 }
 #fp input:not(:checked) ~ #fp-menu {
 	opacity:0;
@@ -153,7 +147,7 @@ nav a {
 	width:calc(20vw + 2em + 2px);
 	height:100vh;
 	overflow:hidden;
-	background:#999 linear-gradient(#fff,#ccc, #999);
+	background:#ddd;
 }
 #fp-menu li a
  {
@@ -192,7 +186,7 @@ nav a {
 
 /* Submenu */
 #fp-submenu {
-	background:#bbb;
+	background:#ccc;
 	color:#000c;
 	position:fixed;
 	margin-top:2.35em;
@@ -230,9 +224,9 @@ nav a {
 
 section {
 	background: #eee;
-	border:2px solid #aaa;
-	box-shadow:0 0 10px #444;
-	width:90%;
+	border:1px solid #aaa;
+	box-shadow:0 0 10px #666;
+	width:95%;
 	height:calc(100% - 7em);
 	text-align:center;
 	margin:7em auto .7em auto;
@@ -297,26 +291,26 @@ section #criterion table td:nth-child(4){width:10em;text-align:center}
 section #criterion table td:nth-child(3){width:3em}
 section #criterion table input[type='radio'] {margin-bottom:.3em}
 
-section form {width: 80%;margin: 0 auto}
+section form {text-align:center;margin: 0 auto;display:inline-block;}
 section form input, section form select {color:#000;font-size:.95em;}
 section form label {color:#333;vertical-align: middle;text-align:right;margin:0 .5em;display:inline-block;}
-section .menu form label {text-align:center}
+section .menu form label, .center {text-align:center}
 section form label.right {text-align:right;padding-right:.2em;min-width:1em;}
-section form p {text-align:left;margin:.2em;padding:.4em;display:inline-block;}
+section form p {text-align:right;margin:.2em auto;padding:.4em;}
 section .menu form p {margin:0;padding:0;}
 
 section form fieldset {
 	background:#ddd;
-	border: 1px solid #aaa;
+	border: 1px solid #ccc;
 	border-radius:4px;
 	margin:.5em;
 	display:inline;
-	text-align: right;
+	text-align: center;
 	vertical-align: top;
 }
-section form fieldset legend {background:#fff;font-size:.9em;font-weight:bold;border:1px solid #aaa;border-radius:2px;color:#666;padding:.2em .8em;}
+section form fieldset legend {display:none;}
 section form fieldset fieldset {background:#ddd;border:none;}
-section form fieldset fieldset legend {background:#ddd;font-weight:bold;border:none;color:#333;}
+section form fieldset fieldset legend {background:#ddd;font-weight:bold;border:none;color:#333;display:inline;}
 section form fieldset.odds label,
 section form fieldset.result label {width:2em}
 section form fieldset.position {text-align: right;}
@@ -466,26 +460,3 @@ button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, i
 }
 .confirm p, .confirm form {display:block;margin:0;padding:0}
 
-#circle, #circleAdmin {
-	color:#fff;
-	font:2em hemi, sans-serif;
-	font-weight:bold;
-	text-transform:uppercase;
-	vertical-align:middle;
-	background:#999;
-	border-radius:50%;
-	height:1.5em;
-	line-height:1.5em;
-	white-space: nowrap;
-	width:1.5em;
-	margin:0 auto .5em auto;
-}
-#circleAdmin {
-	background:#909;
-}
-small #circle, small #circleAdmin {
-	font-size:1.5em;
-	height:1.5em;
-	line-height:1.5em;
-	width:1.5em;
-}

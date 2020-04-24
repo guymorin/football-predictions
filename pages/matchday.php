@@ -12,7 +12,7 @@ use FootballPredictions\Section\Matchday;
 use FootballPredictions\Section\Championship;
 
 // Files to include
-require '../include/changeMD.php';
+require 'include/changeMD.php';
 ?>
 
 <h2><?= Theme::icon('matchday') . ' ' . (Language::title('matchday')) . ' ' . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>

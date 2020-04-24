@@ -85,7 +85,7 @@ class Season
             $val .= $form->labelBr(Language::title('quickNav'));
             $val .= $form->submit(Theme::icon('quicknav')." ".$data->name);
             $val .= "</form>\n";
-            
+            $val .= "<br />\n";
             $val .= $list;
         }
         // No season
@@ -164,7 +164,7 @@ class Season
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        // Delete form
+        $val .= "<br />\n";
         $val .= $form->deleteForm('season', 'id_season', $seasonId);
         return $val;
     }

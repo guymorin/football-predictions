@@ -110,7 +110,7 @@ class Team
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        // Delete
+        $val .= "<br />\n";
         $val .= $form->deleteForm('team', 'id_team', $teamId);
         return $val;
     }

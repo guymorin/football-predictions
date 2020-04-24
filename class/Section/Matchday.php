@@ -216,7 +216,7 @@ class Matchday
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= " </form>\n";
-        // Delete
+        $val .= "<br />\n";
         $val .= $form->deleteForm('matchday', 'id_matchday', $matchdayId);
         return $val;
     }
@@ -277,7 +277,6 @@ class Matchday
         $val .= "</fieldset>\n";
         $val .= "<br />";
         $val .= $form->submit(Language::title('create'));
-        
         $val .= "</form>\n";   
         return $val;
     }
@@ -310,7 +309,7 @@ class Matchday
         $val .= "<br />";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        // Delete
+        $val .= "<br />\n";
         $val .= $form->deleteForm('matchgame', 'id_matchgame', $idMatch);
         
         return $val;
@@ -319,37 +318,13 @@ class Matchday
     static function stats($pdo){
         changeMD($pdo,"statistics");
         echo "<h3>" . (Language::title('statistics')) . "</h3>";
-        $req="SELECT m.id_matchgame,
-        cr.motivation1,cr.motivation2,
-        cr.currentForm1,cr.currentForm2,
-        cr.physicalForm1,cr.physicalForm2,
-        cr.weather1,cr.weather2,
-        cr.bestPlayers1,cr.bestPlayers2,
-        cr.marketValue1,cr.marketValue2,
-        cr.home_away1,cr.home_away2,
-        c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
-        m.result, m.date, m.odds1, m.oddsD, m.odds2 FROM matchgame m
-        LEFT JOIN team c1 ON m.team_1=c1.id_team
-        LEFT JOIN team c2 ON m.team_2=c2.id_team
-        LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame
-        WHERE m.id_matchday=:id_matchday ORDER BY m.date
-        ;";
-        $data = $pdo->prepare($req,[
-            'id_matchday' => $_SESSION['matchdayId']
-        ],true);
-        $counter = $pdo->rowCount();
-        if($counter > 0){                              
-            $stats = new Statistics();
-            $stats->prepareTable($pdo, $data);
-            $stats->summaryPrepare();
-            echo $stats->summaryTable();
-            echo $stats->statsTable();
-        } else echo Language::title('noStatistic');
+        $stats = new Statistics();
+        $stats->getStats($pdo, 'matchday');
     }
     
     static function list($pdo, $form){
         
-        $req = "SELECT md.id_matchday, md.number, COUNT(*) as nb, COUNT(mg.result) as played
+        $req = "SELECT md.id_matchday, md.number as number, COUNT(*) as nb, COUNT(mg.result) as played
         FROM matchday md
         LEFT JOIN matchgame mg ON mg.id_matchday=md.id_matchday
         WHERE md.id_season = :id_season 
@@ -371,7 +346,7 @@ class Matchday
         if($counter>0){
             foreach ($data as $d)
             {
-                if($d->number==$_SESSION['matchdayNum']) {
+                if(isset($_SESSION['matchdayNum']) && $d->number==$_SESSION['matchdayNum']) {
                     $val .= "  <tr class='current'>\n";
                     $val .= "      <td>" . (Language::title('MD')) . ($d->number) . "</td>\n";
                 }

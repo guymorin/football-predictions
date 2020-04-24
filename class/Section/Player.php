@@ -80,12 +80,10 @@ class Player
         $val .= "<br />\n";
         $val .= $form->input(Language::title('firstname'), 'firstname');
         $val .= "<br />\n";
-        
         $val .= $form->inputRadioPosition();
         $val .= $form->selectTeam($pdo);
         $val .= "</fieldset>\n";
         $val .= "<br />\n";
-        
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
         return $val;
@@ -140,7 +138,7 @@ class Player
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        // Delete form
+        $val .= "<br />\n";
         $val .= $form->deleteForm('player', 'id_player', $playerId, false, 'id_team', $data->id_team);
         return $val;
     }

@@ -61,7 +61,6 @@ elseif($delete == 1  || $delete == 2 || $modify == 1 || $modifyuser == 1){
     App::exitNoAdmin();
     if($userId == $_SESSION['userId']){
         echo "<h3>" . (Language::title('myAccount')) . "</h3>\n";
-        echo "<h4>" . ucfirst($_SESSION['userLogin']) . "</h4>\n";
         echo Account::modifyForm($pdo, $error, $form, $userId);
     } else {
         echo "<h3>" . (Language::title('modifyAnAccount')) . "</h3>\n";
@@ -79,7 +78,6 @@ elseif($delete == 1  || $delete == 2 || $modify == 1 || $modifyuser == 1){
 // List
 } else {
     echo "<h3>" . (Language::title('myAccount')) . "</h3>\n";
-    echo "<h4>" . ucfirst($_SESSION['userLogin']) . "</h4>\n";
     echo Account::modifyForm($pdo, $error, $form, $_SESSION['userId']);
 }
 ?>

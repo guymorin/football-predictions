@@ -159,7 +159,7 @@ class Forms
         $val = '';
         if($label!='') $val .= $this->label($label);
         $val .= "<input type='date' name='$name' value='".$value."'>";
-        $val = $this->surround($val);
+        $val = $this->surround($val, 'center');
         return $val;
     }
     
@@ -488,7 +488,7 @@ class Forms
      */
     public function submit($title){
         $val = "<button type='submit'>$title</button>";
-        return $this->surround($val);
+        return $this->surround($val, 'center');
         ;
     }
 

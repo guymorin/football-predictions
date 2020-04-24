@@ -141,9 +141,10 @@ class Home
                 $val .= "        <ul>\n";
                 $val .= "            <li><a href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a></li>\n";
                 $val .= "        </ul>\n";
+                $val .= "<br />\n";
                 // Select form
                 $list = "<form action='index.php?page=matchday' method='POST'>\n";
-                $list .= $form->label(Language::title('selectTheMatchday'));
+                $list .= $form->labelBr(Language::title('selectTheMatchday'));
                 $list .= $form->selectSubmit("matchdaySelect", $response);
                 $list .= "</form>\n";
                 
@@ -166,6 +167,7 @@ class Home
                     $val .=  $form->inputHidden("matchdaySelect", $data->id_matchday . "," . $data->number);
                     $val .=  $form->submit(Theme::icon('quicknav') . " " . (Language::title('MD')) . $data->number);
                     $val .= "</form>\n";
+                    $val .= "<br />\n";
                 }
                 
                 $val .=  $list;

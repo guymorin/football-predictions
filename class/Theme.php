@@ -17,14 +17,14 @@ class Theme
 
     static function icon($val){
         self::getTheme();
-        require "../public/theme/{$_SESSION['directory_name']}/icons.php";
+        require "theme/{$_SESSION['directory_name']}/icons.php";
         return $array[$val];
     }
     
     
     static function style(){
         self::getTheme();
-        $url = "../public/theme/{$_SESSION['directory_name']}/style.css";
+        $url = "theme/{$_SESSION['directory_name']}/style.css";
         $val = "<link rel='stylesheet' type='text/css' media='all' href='$url' />\n";
         return $val;
     }

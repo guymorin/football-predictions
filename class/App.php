@@ -18,6 +18,9 @@ class App
     private static $title;
     private static $database;
     
+    public function __construct(){
+    }
+    
     public static function getDb(){
         if(self::$database == null){
             self::$database = new Database(self::DB_HOST, self::DB_NAME, self::DB_USER, self::DB_PASS);
@@ -30,7 +33,9 @@ class App
     }
 
     public static function setTitle($title){
-        self::$title = $title . (isset($_SESSION['seasonName']) ? " " . $_SESSION['seasonName'] : null);
+        self::$title = $title 
+                        . (isset($_SESSION['seasonName']) ? " " 
+                        . $_SESSION['seasonName'] : null) ;
     }
     
     public static function exitNoAdmin(){

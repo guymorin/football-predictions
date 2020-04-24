@@ -103,6 +103,7 @@ class Championship
             $val .=  $form->inputHidden("championshipSelect",$data->id_championship.",".$data->name);
             $val .=  $form->submit(Theme::icon('quicknav')." ".$data->name);
             $val .=  "</form>\n";
+            $val .= "<br />\n";
             
             $val .=  $list;
         }
@@ -217,7 +218,7 @@ class Championship
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
-        // Delete form
+        $val .= "<br />\n";
         $val .= $form->deleteForm('championship', 'id_championship', $championshipId);
         return $val;
     }

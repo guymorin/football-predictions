@@ -30,13 +30,15 @@ class Database
         if($this->db==null){
             try{
                 $db = new PDO(
-                "mysql:host=$this->db_host;dbname=$this->db_name;charset=utf8",
+                "mysql:dbname=$this->db_name;host=$this->db_host;charset=utf8",
                 $this->db_user,
                 $this->db_pass
                 );
             } catch (PDOException $e) {
                 die("<div class='error'>".Language::title('error')." : ". $e->getMessage()."</div>");
             }
+            
+            
             $this->db = $db;
         }
         return $this->db;
