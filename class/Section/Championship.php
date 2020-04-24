@@ -37,12 +37,12 @@ class Championship
                 $classC = $currentClass;
                 break;
         }
-        if(isset($_SESSION['championshipId']) && $_SESSION['noTeam'] == false){
+        if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0 && $_SESSION['noTeam'] == false){
             $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
             $val .= "<a" . $classS . " href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
             $val .= "<a" . $classDB . " href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
         } else {
-            if(isset($_SESSION['championshipId'])) $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
+            if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
             else {
                 Account::exitButton();
                 Season::exitButton();
@@ -125,6 +125,8 @@ class Championship
         $req .= "DELETE FROM matchday WHERE id_championship=:id_championship;";
         $req .= "DELETE FROM season_championship_team WHERE id_championship=:id_championship;";
         $req .= "DELETE FROM championship WHERE id_championship=:id_championship;";
+        $req .= "UPDATE fp_user SET  last_season = 'NULL', last_championship = 'NULL' WHERE last_championship=:id_championship;";
+        
         $pdo->prepare($req,[
             'id_championship' => $championshipId
         ]);

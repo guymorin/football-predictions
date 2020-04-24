@@ -33,7 +33,7 @@ class Season
                 $classC = $currentClass;
                 break;
         }
-        if(isset($_SESSION['seasonId'])) {
+        if(isset($_SESSION['seasonId']) && $_SESSION['seasonId']>0) {
             $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>";
             $val .= "<a" . $classL . " href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
             

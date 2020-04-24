@@ -68,7 +68,7 @@ class Matchday
             AND md.id_matchday = " . $_SESSION['matchdayId'] . " ORDER BY mg.date;";
             $data = $pdo->query($req);
             $counter = $pdo->rowCount();
-            if($counter > 1){
+            if($counter > 0){
                 $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
                 $val .= $form->inputAction('modify');
                 $val .= $form->label(Language::title('modifyAMatch'));
@@ -191,7 +191,7 @@ class Matchday
         
         $pdo->alterAuto('matchgame');
         $req="INSERT INTO matchgame
-            VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0,0,0);";
+            VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0);";
         $pdo->exec($req);
         popup(Language::title('created'),"index.php?page=matchgame&create=1");
     }
@@ -281,14 +281,12 @@ class Matchday
         return $val;
     }
     
-    static function modifyFormMatch($pdo, $error, $form, $idMatch){
+    static function modifyMatchForm($pdo, $error, $form, $idMatch){
         
         $req="SELECT m.id_matchgame,c1.name as name1,c2.name as name2,c1.id_team as id1,c2.id_team as id2, m.result, m.date, m.odds1, m.oddsD, m.odds2
             FROM matchgame m LEFT JOIN team c1 ON m.team_1=c1.id_team LEFT JOIN team c2 ON m.team_2=c2.id_team
-            WHERE m.id_matchgame = :id_matchgame;";
-        $data = $pdo->prepare($req,[
-            'id_matchgame' => $idMatch
-        ]);
+            WHERE m.id_matchgame = $idMatch;";
+        $data = $pdo->queryObj($req);
         $val = '';
         $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
         $form->setValues($data);
