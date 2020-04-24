@@ -9,7 +9,6 @@ namespace FootballPredictions;
 
 class App
 {
-
     const DB_HOST="localhost";
     const DB_NAME="phpmyadmin";
     const DB_USER="phpmyadmin";
@@ -19,6 +18,7 @@ class App
     private static $database;
     
     public function __construct(){
+        self::$database = null;
     }
     
     public static function getDb(){

@@ -7,7 +7,6 @@
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
-use \PDO;
 
 class Home
 {

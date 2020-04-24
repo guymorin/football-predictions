@@ -6,7 +6,6 @@
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
-use \PDO;
 
 class Account
 {
@@ -20,7 +19,7 @@ class Account
         }
     }
     static function submenu($pdo, $form, $current = null){
-        $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
+        $val = "<a href='/'>" . (Language::title('homepage')) . "</a>";
         $currentClass = " class='current'";
         $classAL = $classMA = '';
         switch($current){
@@ -106,6 +105,7 @@ class Account
                     $_SESSION['championshipName'] = $d1->name; 
                 }
             }
+            $val = true;
         }
         return $val;
     }

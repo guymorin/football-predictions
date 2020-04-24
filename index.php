@@ -7,17 +7,11 @@ require 'vendor/autoload.php';
 
 // Namespaces
 use FootballPredictions\App;
-use FootballPredictions\Database;
+
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;
-use FootballPredictions\Section\Championship;
 use FootballPredictions\Section\Home;
-use FootballPredictions\Section\Matchday;
-use FootballPredictions\Section\Player;
-use FootballPredictions\Section\Season;
-use FootballPredictions\Section\Team;
-use FootballPredictions\Section\Account;
 use FootballPredictions\Theme;
 
 // Language
@@ -27,6 +21,7 @@ if(empty($_SESSION['language'])) Language::getBrowserLang();
 require 'include/functions.php';
 
 $pdo = App::getDb();
+
 $error = new Errors();
 $form = new Forms($_POST);
 $page = '';

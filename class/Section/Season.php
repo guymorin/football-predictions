@@ -182,7 +182,6 @@ class Season
     }
     
     static function list($pdo){
-        
         $req = "SELECT c.name, COUNT(*) as nb
         FROM championship c
         LEFT JOIN season_championship_team scc ON c.id_championship=scc.id_championship

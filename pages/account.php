@@ -4,8 +4,6 @@
 
 // Namespaces
 use FootballPredictions\App;
-use FootballPredictions\Errors;
-use FootballPredictions\Forms;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Account;
@@ -36,9 +34,9 @@ if(
     &&($delete == 0)
 ){
     echo "<h3>" . (Language::title('logon')) . "</h3>\n";
-    if($logon == 0) echo Account::logonForm($pdo, $error, $form);
+    if($logon == 0)  echo Account::logonForm($pdo, $error, $form);
     elseif($logon == 1){
-        if(Account::logonPopup($pdo, $userLogin, $userPassword)){
+        if(Account::logonPopup($pdo, $userLogin, $userPassword)==true){
             header('Location:index.php');
         } elseif($userLogin != '') {
             $error->setError(Language::title('errorPassword'));
@@ -49,7 +47,6 @@ if(
 // Create
 elseif($create == 1){
     echo "<h3>" . (Language::title('createAnAccount')) . "</h3>\n";
-    
     if($pdo->findName('fp_user', $userLogin))  $error->addError(Language::title('login'), Language::title('errorExists'));
     elseif($userPassword != $userPassword2) $error->addError(Language::title('password'), Language::title('errorPasswordNoMatch'));
     elseif($userLogin!="") Account::createPopup($pdo, $userLogin, $userPassword);

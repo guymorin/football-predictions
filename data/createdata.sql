@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Dim 19 Avril 2020 à 17:55
+-- Généré le :  Jeu 23 Avril 2020 à 14:24
 -- Version du serveur :  5.7.29-0ubuntu0.18.04.1
 -- Version de PHP :  7.2.24-0ubuntu0.18.04.4
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `phpmyadmin`
+-- Base de données :  `footcore009`
 --
 
 -- --------------------------------------------------------
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `championship` (
   `id_championship` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `championship`
@@ -37,7 +37,8 @@ CREATE TABLE `championship` (
 
 INSERT INTO `championship` (`id_championship`, `name`) VALUES
 (1, 'Ligue 1'),
-(2, 'Ligue 3');
+(2, 'Ligue 3'),
+(3, 'Ligue 2');
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,7 @@ CREATE TABLE `criterion` (
   `bestPlayers2` int(11) NOT NULL DEFAULT '0',
   `marketValue2` int(11) NOT NULL DEFAULT '0',
   `home_away2` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `criterion`
@@ -369,7 +370,7 @@ INSERT INTO `criterion` (`id_criterion`, `id_matchgame`, `motivation1`, `current
 CREATE TABLE `fp_role` (
   `id_fp_role` int(11) NOT NULL,
   `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `fp_role`
@@ -389,7 +390,7 @@ CREATE TABLE `fp_theme` (
   `id_fp_theme` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `directory_name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `fp_theme`
@@ -414,15 +415,15 @@ CREATE TABLE `fp_user` (
   `last_season` int(11) DEFAULT NULL,
   `last_championship` int(11) DEFAULT NULL,
   `role` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `fp_user`
 --
 
 INSERT INTO `fp_user` (`id_fp_user`, `name`, `password`, `registration`, `language`, `theme`, `last_season`, `last_championship`, `role`) VALUES
-(1, 'admin', '$2y$10$MFuDdWrH5oljEKxKLaPeeOhtFs8eGa6KOcFXFDTXsuPKMStWguLZ2', '2020-04-14', 'fr', 1, 1, 1, 2),
-(2, 'guy', '$2y$10$WStr3F5whjGJNyWAgAqcfegSl7eiUgn/CACI0yjqkOH8KMjdQxQgu', '2020-04-17', 'fr', 1, 1, 2, 1);
+(1, 'admin', '$2y$10$Xc61IxpofHUjI49u0eV7Pu/SPX/GzGqZBtWYFSBBRWwrvxGlmmF0S', '2020-04-14', 'fr', 1, 1, 1, 2),
+(2, 'guy', '$2y$10$VOFagLDNb13UDp69MO4NKuDMtPiYgdGE3vlQW2jdSPCObVqFMH2F6', '2020-04-17', 'fr', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -435,7 +436,7 @@ CREATE TABLE `marketValue` (
   `id_season` int(11) NOT NULL,
   `id_team` int(11) NOT NULL,
   `marketValue` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `marketValue`
@@ -474,7 +475,7 @@ CREATE TABLE `matchday` (
   `id_season` int(11) NOT NULL,
   `id_championship` int(11) NOT NULL,
   `number` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `matchday`
@@ -532,7 +533,7 @@ CREATE TABLE `matchgame` (
   `date` date DEFAULT NULL,
   `red1` int(11) NOT NULL,
   `red2` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `matchgame`
@@ -841,7 +842,7 @@ CREATE TABLE `player` (
   `name` varchar(50) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `position` enum('Goalkeeper','Defender','Midfielder','Forward') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `player`
@@ -1034,348 +1035,13 @@ INSERT INTO `player` (`id_player`, `name`, `firstname`, `position`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `pma__bookmark`
---
-
-CREATE TABLE `pma__bookmark` (
-  `id` int(11) NOT NULL,
-  `dbase` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `user` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `label` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `query` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Bookmarks';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__central_columns`
---
-
-CREATE TABLE `pma__central_columns` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_type` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_length` text COLLATE utf8_bin,
-  `col_collation` varchar(64) COLLATE utf8_bin NOT NULL,
-  `col_isNull` tinyint(1) NOT NULL,
-  `col_extra` varchar(255) COLLATE utf8_bin DEFAULT '',
-  `col_default` text COLLATE utf8_bin
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Central list of columns';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__column_info`
---
-
-CREATE TABLE `pma__column_info` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `column_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `comment` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `mimetype` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `input_transformation` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `input_transformation_options` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Column information for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__designer_settings`
---
-
-CREATE TABLE `pma__designer_settings` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `settings_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Settings related to Designer';
-
---
--- Contenu de la table `pma__designer_settings`
---
-
-INSERT INTO `pma__designer_settings` (`username`, `settings_data`) VALUES
-('phpmyadmin', '{\"angular_direct\":\"direct\",\"relation_lines\":\"true\",\"snap_to_grid\":\"off\"}');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__export_templates`
---
-
-CREATE TABLE `pma__export_templates` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `export_type` varchar(10) COLLATE utf8_bin NOT NULL,
-  `template_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `template_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved export templates';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__favorite`
---
-
-CREATE TABLE `pma__favorite` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `tables` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Favorite tables';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__history`
---
-
-CREATE TABLE `pma__history` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `sqlquery` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='SQL history for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__navigationhiding`
---
-
-CREATE TABLE `pma__navigationhiding` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `item_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `item_type` varchar(64) COLLATE utf8_bin NOT NULL,
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Hidden items of navigation tree';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__pdf_pages`
---
-
-CREATE TABLE `pma__pdf_pages` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `page_nr` int(10) UNSIGNED NOT NULL,
-  `page_descr` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='PDF relation pages for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__recent`
---
-
-CREATE TABLE `pma__recent` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `tables` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Recently accessed tables';
-
---
--- Contenu de la table `pma__recent`
---
-
-INSERT INTO `pma__recent` (`username`, `tables`) VALUES
-('phpmyadmin', '[{\"db\":\"phpmyadmin\",\"table\":\"fp_theme\"},{\"db\":\"phpmyadmin\",\"table\":\"fp_role\"},{\"db\":\"phpmyadmin\",\"table\":\"criterion\"},{\"db\":\"phpmyadmin\",\"table\":\"matchgame\"},{\"db\":\"phpmyadmin\",\"table\":\"championship\"},{\"db\":\"phpmyadmin\",\"table\":\"season\"},{\"db\":\"phpmyadmin\",\"table\":\"season_championship_team\"},{\"db\":\"phpmyadmin\",\"table\":\"season_team_player\"},{\"db\":\"phpmyadmin\",\"table\":\"team\"},{\"db\":\"phpmyadmin\",\"table\":\"matchday\"}]');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__relation`
---
-
-CREATE TABLE `pma__relation` (
-  `master_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `master_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `master_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `foreign_db` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `foreign_table` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `foreign_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Relation table';
-
---
--- Contenu de la table `pma__relation`
---
-
-INSERT INTO `pma__relation` (`master_db`, `master_table`, `master_field`, `foreign_db`, `foreign_table`, `foreign_field`) VALUES
-('phpmyadmin', 'criterion', 'id_matchgame', 'phpmyadmin', 'matchgame', 'id_matchgame'),
-('phpmyadmin', 'marketValue', 'id_season', 'phpmyadmin', 'season', 'id_season'),
-('phpmyadmin', 'marketValue', 'id_team', 'phpmyadmin', 'team', 'id_team'),
-('phpmyadmin', 'matchday', 'id_championship', 'phpmyadmin', 'championship', 'id_championship'),
-('phpmyadmin', 'matchday', 'id_season', 'phpmyadmin', 'season', 'id_season'),
-('phpmyadmin', 'matchgame', 'id_matchday', 'phpmyadmin', 'matchday', 'id_matchday'),
-('phpmyadmin', 'matchgame', 'team_1', 'phpmyadmin', 'team', 'id_team'),
-('phpmyadmin', 'matchgame', 'team_2', 'phpmyadmin', 'team', 'id_team'),
-('phpmyadmin', 'season_championship_team', 'id_championship', 'phpmyadmin', 'championship', 'id_championship'),
-('phpmyadmin', 'season_championship_team', 'id_season', 'phpmyadmin', 'season', 'id_season'),
-('phpmyadmin', 'season_championship_team', 'id_team', 'phpmyadmin', 'player', 'id_player'),
-('phpmyadmin', 'season_team_player', 'id_player', 'phpmyadmin', 'player', 'id_player'),
-('phpmyadmin', 'season_team_player', 'id_season', 'phpmyadmin', 'season', 'id_season'),
-('phpmyadmin', 'season_team_player', 'id_team', 'phpmyadmin', 'team', 'id_team'),
-('phpmyadmin', 'teamOfTheWeek', 'id_matchday', 'phpmyadmin', 'matchday', 'id_matchday'),
-('phpmyadmin', 'teamOfTheWeek', 'id_player', 'phpmyadmin', 'player', 'id_player');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__savedsearches`
---
-
-CREATE TABLE `pma__savedsearches` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `username` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `search_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `search_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Saved searches';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__table_coords`
---
-
-CREATE TABLE `pma__table_coords` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `pdf_page_number` int(11) NOT NULL DEFAULT '0',
-  `x` float UNSIGNED NOT NULL DEFAULT '0',
-  `y` float UNSIGNED NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table coordinates for phpMyAdmin PDF output';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__table_info`
---
-
-CREATE TABLE `pma__table_info` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `display_field` varchar(64) COLLATE utf8_bin NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Table information for phpMyAdmin';
-
---
--- Contenu de la table `pma__table_info`
---
-
-INSERT INTO `pma__table_info` (`db_name`, `table_name`, `display_field`) VALUES
-('phpmyadmin', 'championship', 'id_championship'),
-('phpmyadmin', 'criterion', 'id_criterion'),
-('phpmyadmin', 'marketValue', 'id_marketValue'),
-('phpmyadmin', 'matchday', 'id_matchday'),
-('phpmyadmin', 'matchgame', 'id_matchgame'),
-('phpmyadmin', 'player', 'id_player'),
-('phpmyadmin', 'season', 'id_season'),
-('phpmyadmin', 'season_championship_team', 'id_season_championship_team'),
-('phpmyadmin', 'season_team_player', 'id_player'),
-('phpmyadmin', 'team', 'id_team'),
-('phpmyadmin', 'teamOfTheWeek', 'id_teamOfTheWeek');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__table_uiprefs`
---
-
-CREATE TABLE `pma__table_uiprefs` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `prefs` text COLLATE utf8_bin NOT NULL,
-  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Tables'' UI preferences';
-
---
--- Contenu de la table `pma__table_uiprefs`
---
-
-INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('phpmyadmin', 'phpmyadmin', 'criterion', '[]', '2020-04-19 14:58:24'),
-('phpmyadmin', 'phpmyadmin', 'marketValue', '{\"sorted_col\":\"`marketValue`.`id_team`  DESC\"}', '2020-04-11 12:44:10'),
-('phpmyadmin', 'phpmyadmin', 'matchday', '{\"sorted_col\":\"`matchday`.`id_matchday`  DESC\"}', '2020-04-19 14:49:41'),
-('phpmyadmin', 'phpmyadmin', 'matchgame', '[]', '2020-04-18 21:41:24'),
-('phpmyadmin', 'phpmyadmin', 'player', '{\"sorted_col\":\"`player`.`id_player`  DESC\"}', '2020-04-14 09:41:33'),
-('phpmyadmin', 'phpmyadmin', 'season_championship_team', '{\"sorted_col\":\"`season_championship_team`.`id_team`  DESC\"}', '2020-04-11 12:43:36'),
-('phpmyadmin', 'phpmyadmin', 'season_team_player', '{\"sorted_col\":\"`season_team_player`.`id_season_team_player`  DESC\"}', '2020-04-16 16:10:41'),
-('phpmyadmin', 'phpmyadmin', 'teamOfTheWeek', '[]', '2020-03-22 20:47:05');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__tracking`
---
-
-CREATE TABLE `pma__tracking` (
-  `db_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `table_name` varchar(64) COLLATE utf8_bin NOT NULL,
-  `version` int(10) UNSIGNED NOT NULL,
-  `date_created` datetime NOT NULL,
-  `date_updated` datetime NOT NULL,
-  `schema_snapshot` text COLLATE utf8_bin NOT NULL,
-  `schema_sql` text COLLATE utf8_bin,
-  `data_sql` longtext COLLATE utf8_bin,
-  `tracking` set('UPDATE','REPLACE','INSERT','DELETE','TRUNCATE','CREATE DATABASE','ALTER DATABASE','DROP DATABASE','CREATE TABLE','ALTER TABLE','RENAME TABLE','DROP TABLE','CREATE INDEX','DROP INDEX','CREATE VIEW','ALTER VIEW','DROP VIEW') COLLATE utf8_bin DEFAULT NULL,
-  `tracking_active` int(1) UNSIGNED NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Database changes tracking for phpMyAdmin';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__userconfig`
---
-
-CREATE TABLE `pma__userconfig` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `timevalue` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `config_data` text COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User preferences storage for phpMyAdmin';
-
---
--- Contenu de la table `pma__userconfig`
---
-
-INSERT INTO `pma__userconfig` (`username`, `timevalue`, `config_data`) VALUES
-('phpmyadmin', '2019-12-23 20:46:45', '{\"lang\":\"fr\",\"collation_connection\":\"utf8mb4_unicode_ci\"}');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__usergroups`
---
-
-CREATE TABLE `pma__usergroups` (
-  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL,
-  `tab` varchar(64) COLLATE utf8_bin NOT NULL,
-  `allowed` enum('Y','N') COLLATE utf8_bin NOT NULL DEFAULT 'N'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='User groups with configured menu items';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pma__users`
---
-
-CREATE TABLE `pma__users` (
-  `username` varchar(64) COLLATE utf8_bin NOT NULL,
-  `usergroup` varchar(64) COLLATE utf8_bin NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Users and their assignments to user groups';
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `season`
 --
 
 CREATE TABLE `season` (
   `id_season` int(11) NOT NULL,
   `name` varchar(9) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `season`
@@ -1396,7 +1062,7 @@ CREATE TABLE `season_championship_team` (
   `id_season` int(11) NOT NULL,
   `id_championship` int(11) NOT NULL,
   `id_team` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `season_championship_team`
@@ -1422,7 +1088,9 @@ INSERT INTO `season_championship_team` (`id_season_championship_team`, `id_seaso
 (17, 1, 1, 17),
 (18, 1, 1, 18),
 (19, 1, 1, 19),
-(20, 1, 1, 20);
+(20, 1, 1, 20),
+(21, 1, 2, 1),
+(22, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -1435,7 +1103,7 @@ CREATE TABLE `season_team_player` (
   `id_season` int(11) NOT NULL,
   `id_team` int(11) NOT NULL,
   `id_player` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `season_team_player`
@@ -1641,7 +1309,7 @@ CREATE TABLE `team` (
   `id_team` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `weather_code` varchar(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `team`
@@ -1680,7 +1348,7 @@ CREATE TABLE `teamOfTheWeek` (
   `id_matchday` int(11) NOT NULL,
   `id_player` int(11) NOT NULL,
   `rating` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `teamOfTheWeek`
@@ -2057,126 +1725,6 @@ ALTER TABLE `player`
   ADD PRIMARY KEY (`id_player`);
 
 --
--- Index pour la table `pma__bookmark`
---
-ALTER TABLE `pma__bookmark`
-  ADD PRIMARY KEY (`id`);
-
---
--- Index pour la table `pma__central_columns`
---
-ALTER TABLE `pma__central_columns`
-  ADD PRIMARY KEY (`db_name`,`col_name`);
-
---
--- Index pour la table `pma__column_info`
---
-ALTER TABLE `pma__column_info`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `db_name` (`db_name`,`table_name`,`column_name`);
-
---
--- Index pour la table `pma__designer_settings`
---
-ALTER TABLE `pma__designer_settings`
-  ADD PRIMARY KEY (`username`);
-
---
--- Index pour la table `pma__export_templates`
---
-ALTER TABLE `pma__export_templates`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `u_user_type_template` (`username`,`export_type`,`template_name`);
-
---
--- Index pour la table `pma__favorite`
---
-ALTER TABLE `pma__favorite`
-  ADD PRIMARY KEY (`username`);
-
---
--- Index pour la table `pma__history`
---
-ALTER TABLE `pma__history`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `username` (`username`,`db`,`table`,`timevalue`);
-
---
--- Index pour la table `pma__navigationhiding`
---
-ALTER TABLE `pma__navigationhiding`
-  ADD PRIMARY KEY (`username`,`item_name`,`item_type`,`db_name`,`table_name`);
-
---
--- Index pour la table `pma__pdf_pages`
---
-ALTER TABLE `pma__pdf_pages`
-  ADD PRIMARY KEY (`page_nr`),
-  ADD KEY `db_name` (`db_name`);
-
---
--- Index pour la table `pma__recent`
---
-ALTER TABLE `pma__recent`
-  ADD PRIMARY KEY (`username`);
-
---
--- Index pour la table `pma__relation`
---
-ALTER TABLE `pma__relation`
-  ADD PRIMARY KEY (`master_db`,`master_table`,`master_field`),
-  ADD KEY `foreign_field` (`foreign_db`,`foreign_table`);
-
---
--- Index pour la table `pma__savedsearches`
---
-ALTER TABLE `pma__savedsearches`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `u_savedsearches_username_dbname` (`username`,`db_name`,`search_name`);
-
---
--- Index pour la table `pma__table_coords`
---
-ALTER TABLE `pma__table_coords`
-  ADD PRIMARY KEY (`db_name`,`table_name`,`pdf_page_number`);
-
---
--- Index pour la table `pma__table_info`
---
-ALTER TABLE `pma__table_info`
-  ADD PRIMARY KEY (`db_name`,`table_name`);
-
---
--- Index pour la table `pma__table_uiprefs`
---
-ALTER TABLE `pma__table_uiprefs`
-  ADD PRIMARY KEY (`username`,`db_name`,`table_name`);
-
---
--- Index pour la table `pma__tracking`
---
-ALTER TABLE `pma__tracking`
-  ADD PRIMARY KEY (`db_name`,`table_name`,`version`);
-
---
--- Index pour la table `pma__userconfig`
---
-ALTER TABLE `pma__userconfig`
-  ADD PRIMARY KEY (`username`);
-
---
--- Index pour la table `pma__usergroups`
---
-ALTER TABLE `pma__usergroups`
-  ADD PRIMARY KEY (`usergroup`,`tab`,`allowed`);
-
---
--- Index pour la table `pma__users`
---
-ALTER TABLE `pma__users`
-  ADD PRIMARY KEY (`username`,`usergroup`);
-
---
 -- Index pour la table `season`
 --
 ALTER TABLE `season`
@@ -2222,7 +1770,7 @@ ALTER TABLE `teamOfTheWeek`
 -- AUTO_INCREMENT pour la table `championship`
 --
 ALTER TABLE `championship`
-  MODIFY `id_championship` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_championship` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `criterion`
 --
@@ -2259,36 +1807,6 @@ ALTER TABLE `matchgame`
 ALTER TABLE `player`
   MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
 --
--- AUTO_INCREMENT pour la table `pma__bookmark`
---
-ALTER TABLE `pma__bookmark`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `pma__column_info`
---
-ALTER TABLE `pma__column_info`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `pma__export_templates`
---
-ALTER TABLE `pma__export_templates`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `pma__history`
---
-ALTER TABLE `pma__history`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `pma__pdf_pages`
---
-ALTER TABLE `pma__pdf_pages`
-  MODIFY `page_nr` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `pma__savedsearches`
---
-ALTER TABLE `pma__savedsearches`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT pour la table `season`
 --
 ALTER TABLE `season`
@@ -2297,7 +1815,7 @@ ALTER TABLE `season`
 -- AUTO_INCREMENT pour la table `season_championship_team`
 --
 ALTER TABLE `season_championship_team`
-  MODIFY `id_season_championship_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_season_championship_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT pour la table `season_team_player`
 --

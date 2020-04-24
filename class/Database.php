@@ -37,8 +37,6 @@ class Database
             } catch (PDOException $e) {
                 die("<div class='error'>".Language::title('error')." : ". $e->getMessage()."</div>");
             }
-            
-            
             $this->db = $db;
         }
         return $this->db;
