@@ -9,9 +9,6 @@ use FootballPredictions\Theme;
 use FootballPredictions\Section\Account;
 
 ?>
-
-<h2><?= Theme::icon('account') . ' ' . (Language::title('account'));?></h2>
-
 <?php
 // Values
 $userId = 0;
@@ -33,6 +30,8 @@ if(
     &&($modify == 0)
     &&($delete == 0)
 ){
+    echo "<h2>" . (Language::title('homepage')) . "</h2>\n";
+    
     echo "<h3>" . (Language::title('logon')) . "</h3>\n";
     if($logon == 0)  echo Account::logonForm($pdo, $error, $form);
     elseif($logon == 1){
@@ -46,6 +45,7 @@ if(
 }
 // Create
 elseif($create == 1){
+    echo "<h2>" . (Language::title('homepage')) . "</h2>\n";
     echo "<h3>" . (Language::title('createAnAccount')) . "</h3>\n";
     if($pdo->findName('fp_user', $userLogin))  $error->addError(Language::title('login'), Language::title('errorExists'));
     elseif($userPassword != $userPassword2) $error->addError(Language::title('password'), Language::title('errorPasswordNoMatch'));
@@ -55,6 +55,8 @@ elseif($create == 1){
 
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1 || $modifyuser == 1){
+    
+    echo "<h2>" . Theme::icon('account') . " " . (Language::title('account')) . "</h2>\n";
     App::exitNoAdmin();
     if($userId == $_SESSION['userId']){
         echo "<h3>" . (Language::title('myAccount')) . "</h3>\n";
@@ -74,6 +76,9 @@ elseif($delete == 1  || $delete == 2 || $modify == 1 || $modifyuser == 1){
     } 
 // List
 } else {
+    
+    echo "<h2>" . Theme::icon('account') . " " . (Language::title('account')) . "</h2>\n";
+    
     echo "<h3>" . (Language::title('myAccount')) . "</h3>\n";
     echo Account::modifyForm($pdo, $error, $form, $_SESSION['userId']);
 }

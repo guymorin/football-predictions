@@ -14,9 +14,10 @@ use FootballPredictions\Section\Matchday;
 echo "<h2>" . (Theme::icon('matchday')) . " " . (Language::title('matchday')) . " ".$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
-$date = $result = "";
+$date = "";
+$result = NULL;
 $idMatch = $team1 = $team2 = $odds1 = $oddsD = $odds2 = 0;
-isset($_POST['id_matchgame'])       ? $idMatch=$error->check("Digit",$_POST['id_matchgame']) : null;
+isset($_POST['id_matchgame'])   ? $idMatch=$error->check("Digit",$_POST['id_matchgame']) : null;
 isset($_POST['team_1'])         ? $team1=$error->check("Digit",$_POST['team_1'], Language::title('team').' 1') : null;
 isset($_POST['team_2'])         ? $team2=$error->check("Digit",$_POST['team_2'], Language::title('team').' 2') : null;
 isset($_POST['result'])         ? $result=$error->check("Result",$_POST['result'], Language::title('result')) : null;
@@ -37,7 +38,7 @@ if($create==1){
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyAMatch')) . "</h3>\n";
-    echo Matchday::modifyFormMatch($pdo, $error, $form, $idMatch);
+    echo Matchday::modifyMatchForm($pdo, $error, $form, $idMatch);
     if($delete==1) echo $form->popupConfirm('matchgame', 'id_matchgame', $idMatch);
     elseif($delete==2) Matchday::deletePopupMatch($pdo, $idMatch);
     elseif($modify==1){

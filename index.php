@@ -118,7 +118,10 @@ function myFunction() {
 <section>
 <?php
     if($page!="") require("pages/" . $page . ".php");
-    else  echo Home::homeMenu($pdo, $form);
+    else {
+        echo "<h2>" . Language::title('homepage') . "</h2>\n";
+        echo Home::homeMenu($pdo, $form);
+    }
 ?>
 </section>
 <footer>

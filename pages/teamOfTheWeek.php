@@ -106,7 +106,7 @@ if(isset($_SESSION['matchdayId'])){
         $playersLeft=11-$counter;
         for($i=0;$i<$playersLeft;$i++){
             $counter++;
-            $data = $db->prepare($req,[
+            $data = $pdo->prepare($req,[
                 'id_season' => $_SESSION['seasonId'],
                 'id_championship' => $_SESSION['championshipId']
             ]);
