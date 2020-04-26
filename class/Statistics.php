@@ -64,14 +64,23 @@ class Statistics
         $req .= " FROM matchgame m
         LEFT JOIN team c1 ON m.team_1=c1.id_team
         LEFT JOIN team c2 ON m.team_2=c2.id_team
-        LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame";
-        if($page == 'dashboard') $req .= " LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-            WHERE m.result<>''
+        LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame ";
+        if($page == 'dashboard') {
+            $req .= " LEFT JOIN matchday j ON j.id_matchday=m.id_matchday 
+            WHERE m.result<>'' 
+            AND j.id_season = :id_season 
+            AND j.id_championship = :id_championship  
             ORDER BY j.number;";
-        elseif($page == 'matchday') $req .= " WHERE m.id_matchday=:id_matchday ORDER BY m.date
-        ;";
-        if($page == 'dashboard') $data = $pdo->prepare($req,null,true);
-        elseif($page == 'matchday') {
+        } elseif($page == 'matchday') {
+            $req .= " WHERE m.id_matchday=:id_matchday ORDER BY m.date;";
+        }
+
+        if($page == 'dashboard') {
+            $data = $pdo->prepare($req,[
+                'id_season' => $_SESSION['seasonId'],
+                'id_championship' => $_SESSION['championshipId'],                
+            ],true);
+        } elseif($page == 'matchday') {
             $data = $pdo->prepare($req,[
                 'id_matchday' => $_SESSION['matchdayId']
             ],true);

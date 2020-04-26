@@ -194,11 +194,14 @@ nav a {
 	color:#333;
 	transition:background .5s;
 }
-#fp-submenu a:hover, #fp-submenu a:focus, #fp-submenu .current, tr.current {
+#fp-submenu a:hover, #fp-submenu a:focus, #fp-submenu .current {
 	padding:.5em;
 	color:#fff;
-	background:#333;
+	background:#382;
 	transition:background .5s;
+}
+tr.current {
+	background:#cf7;
 }
 #fp-submenu .session {color:#444}
 #fp-submenu form, #fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}
@@ -327,9 +330,9 @@ section #standing li p {
 	border-top-left-radius:3px;
 	border-top-right-radius:3px}
 /* Current button */
-section #standing li p {background:#ff7;color:#333;}
+section #standing li p {background:#cf7;color:#333;}
 /* Hover button */
-section #standing li a:hover{text-decoration:none;background:#ff79;color:#3339}
+section #standing li a:hover{text-decoration:none;background:#cf79;color:#3339}
 section #standing th {min-width:2em}
 
 section .tooltip span{
@@ -458,7 +461,7 @@ button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, i
 	body {font-size:2em;}
 	
 	header h1 a {
-		font: 35% sans-serif;
+		font: 30% sans-serif;
 	}
 	section {
 		margin:9em auto .7em auto;

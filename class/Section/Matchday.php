@@ -362,7 +362,7 @@ class Matchday
             }            
         } else {
             $val .= "  <tr>\n";
-            $val .= "      <td colspan='3'>" . Language::title('noMatchday') . "</td>\n";
+            $val .= "      <td colspan='3'>" . Language::title('noMatchday') . " / " . Language::title('noMatch') . "</td>\n";
             $val .= "  </tr>\n";
         }
 

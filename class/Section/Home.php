@@ -118,16 +118,15 @@ class Home
         $val .= "    </li>\n";
         
         $val .= "    <li><h3>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h3>\n";
+                
+        $val .= "        <ul>\n";
+        $val .= "            <li><a href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a></li>\n";
         if(isset($_SESSION['matchdayId'])){
-            $val .= "        <ul>\n";
             $val .= "            <li><a href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=results'>" . (Language::title('results')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a></li>\n";
-            $val .= "        </ul>\n";
         } else {
-            $val .= "        <ul>\n";
-            
             $req = "SELECT DISTINCT id_matchday, number
             FROM matchday
             WHERE id_season=" . $_SESSION['seasonId']."
@@ -137,10 +136,6 @@ class Home
             
             if($counter>0){
                 $_SESSION['noMatchday'] = false;
-                $val .= "        <ul>\n";
-                $val .= "            <li><a href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a></li>\n";
-                $val .= "        </ul>\n";
-                $val .= "<br />\n";
                 // Select form
                 $list = "<form action='index.php?page=matchday' method='POST'>\n";
                 $list .= $form->labelBr(Language::title('selectTheMatchday'));
@@ -161,6 +156,7 @@ class Home
                 $counter = $pdo->rowCount();
                 if($counter>0){
                     // $form->setValues($data);
+                    $val .= "<br />\n";
                     $val .= "<form action='index.php?page=matchday' method='POST'>\n";
                     $val .=  $form->label(Language::title('quickNav'));
                     $val .=  $form->inputHidden("matchdaySelect", $data->id_matchday . "," . $data->number);
@@ -173,14 +169,10 @@ class Home
                 
             } else {
                 $_SESSION['noMatchday'] = true;
-                $val .= "          <ul>\n";
                 $val .= "            <li><a href='index.php?page=matchday&create=1'>" . (Language::title('createTheMatchdays')) . "</a></li>\n";
-                $val .= "          </ul>\n";
             }
-            
-            $val .= "        </ul>\n";
-            $val .= "    </li>\n";
         }
+        $val .= "        </ul>\n";
         $val .= "    </li>\n";
         $val .= "    <li><h3>" . Theme::icon('team') . " " . (Language::title('team')) . "</h3>\n";
         $val .= "        <ul>\n";
