@@ -7,7 +7,7 @@
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
-use \PDO;
+use FootballPredictions\Statistics;
 
 class Championship
 {
@@ -48,11 +48,15 @@ class Championship
                 Season::exitButton();
             }
             $val .= "<a" . $classC . " href='index.php?page=championship&create=1'>";
-            if ($_SESSION['noTeam'] == true 
+            if (isset($_SESSION['noTeam']) 
+                && $_SESSION['noTeam'] == true 
                 && isset($_SESSION['seasonName'])
                 && isset($_SESSION['championshipName'])
-                ) $val .= Language::title('selectTheTeams');
-            else $val .= Language::title('createAChampionship');
+                ) {
+                    $val .= Language::title('selectTheTeams');
+            } elseif(isset($_SESSION['seasonName'])){
+                    $val .= Language::title('createAChampionship');
+            }
             $val .= "</a>\n";
             if(($_SESSION['role'])==2){
                 $req = "SELECT DISTINCT c.id_championship, c.name
@@ -125,7 +129,7 @@ class Championship
         $req .= "DELETE FROM matchday WHERE id_championship=:id_championship;";
         $req .= "DELETE FROM season_championship_team WHERE id_championship=:id_championship;";
         $req .= "DELETE FROM championship WHERE id_championship=:id_championship;";
-        $req .= "UPDATE fp_user SET  last_season = 'NULL', last_championship = 'NULL' WHERE last_championship=:id_championship;";
+        $req .= "UPDATE fp_user SET last_season = NULL, last_championship = NULL WHERE last_championship=:id_championship;";
         
         $pdo->prepare($req,[
             'id_championship' => $championshipId
@@ -237,6 +241,13 @@ class Championship
         popup(Language::title('modified'),"index.php?page=championship");
     }
     
+    static function dashboard($pdo){
+        $val = "<h3>" . (Language::title('dashboard')) . "</h3>";
+        $stats = new Statistics();
+        $val .= $stats->getStats($pdo, 'dashboard');
+        return $val;
+    }
+    
     static function list($pdo, $standhome, $standaway){
         
         $val = "<div id='standing'>\n";
@@ -316,25 +327,31 @@ class Championship
             'id_championship' => $_SESSION['championshipId']
         ],true);
         
-        $counter=0;
+        $counterPos=0;
         $previousPoints=0;
-        
-        foreach ($data as $d)
-        {
-            $val .= "        <tr>\n";
-            $val .= "          <td>";
-            if($d->points!=$previousPoints){
-                $counter++;
-                $val .= $counter;
-                $previousPoints=$d->points;
+        $counter = $pdo->rowCount();
+        if($counter>0){
+            foreach ($data as $d)
+            {
+                $val .= "        <tr>\n";
+                $val .= "          <td>";
+                if($d->points!=$previousPoints){
+                    $counterPos++;
+                    $val .= $counterPos;
+                    $previousPoints=$d->points;
+                }
+                $val .= "</td>\n";
+                $val .= "          <td>".$d->name."</td>\n";
+                $val .= "          <td>".$d->points."</td>\n";
+                $val .= "          <td>".$d->matchgame."</td>\n";
+                $val .= "          <td>".$d->gagne."</td>\n";
+                $val .= "          <td>".$d->nul."</td>\n";
+                $val .= "          <td>".$d->perdu."</td>\n";
+                $val .= "        </tr>\n";
             }
-            $val .= "</td>\n";
-            $val .= "          <td>".$d->name."</td>\n";
-            $val .= "          <td>".$d->points."</td>\n";
-            $val .= "          <td>".$d->matchgame."</td>\n";
-            $val .= "          <td>".$d->gagne."</td>\n";
-            $val .= "          <td>".$d->nul."</td>\n";
-            $val .= "          <td>".$d->perdu."</td>\n";
+        } else {
+            $val .= "        <tr>\n";
+            $val .= "<td colspan='7'>" . Language::title('notPlayed') . "</td>\n";
             $val .= "        </tr>\n";
         }
     $val .= "   </table>\n";

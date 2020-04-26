@@ -32,6 +32,7 @@ if($counter > 0){
         echo $form->inputHidden('expert','1');
         echo $form->submit(Language::title('swithToDefault'));
         echo "</form>\n";
+        echo "<br />\n";
     }
     // Modify form
     echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";

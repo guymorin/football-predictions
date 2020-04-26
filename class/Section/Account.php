@@ -94,7 +94,7 @@ class Account
                 $d = $pdo->queryObj($r);
                 $_SESSION['directory_name'] = $d->directory_name;
                 $_SESSION['role'] = $data->role;
-                if($data->last_season!=null) {
+                if($data->last_season!=null && $data->last_championship!=null) {
                     $req1 = "SELECT name FROM season WHERE id_season = '" . $data->last_season . "'";
                     $d1 = $pdo->prepare($req1,null);
                     $_SESSION['seasonId'] = $data->last_season;
@@ -250,13 +250,13 @@ class Account
     
     static function list($pdo, $form){
         $req = "SELECT id_fp_user, name, role, registration 
-        FROM fp_user ORDER BY name";
+        FROM fp_user ORDER BY registration DESC";
         $data = $pdo->prepare($req,null,true);
         $val = "<table>\n";
         $val .= "  <tr>\n";
+        $val .= "      <th>" . (Language::title('date')) . "</th>\n";
         $val .= "      <th>" . (Language::title('login')) . "</th>\n";
         $val .= "      <th>" . (Language::title('role')) . "</th>\n";
-        $val .= "      <th>" . (Language::title('date')) . "</th>\n";
         $val .= "  </tr>\n";
         
         foreach ($data as $d)
@@ -266,6 +266,7 @@ class Account
             } else {
                 $val .= "  <tr>\n";
             }
+            $val .= "      <td>" . $d->registration . "</td>\n";
             $val .= "<form id='" . ($d->id_fp_user) . "' action='index.php?page=account' method='POST'>\n";
             $val .= $form->inputAction("modifyuser");
             $val .= $form->inputHidden("id_fp_user", $d->id_fp_user);
@@ -276,7 +277,6 @@ class Account
             $req = "SELECT name FROM fp_role WHERE id_fp_role = '" . $d->role . "';";
             $dataRole = $pdo->prepare($req);
             $val .= "      <td>" . Language::title($dataRole->name) . "</small></td>\n";
-            $val .= "      <td>" . $d->registration . "</td>\n";
             $val .= "</form>\n";
             $val .= "  </tr>\n";
         }

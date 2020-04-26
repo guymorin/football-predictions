@@ -6,8 +6,6 @@
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
-use FootballPredictions\Theme;
-use \PDO;
 use FootballPredictions\Statistics;
 
 class Matchday
@@ -315,9 +313,10 @@ class Matchday
     
     static function stats($pdo){
         changeMD($pdo,"statistics");
-        echo "<h3>" . (Language::title('statistics')) . "</h3>";
+        $val = "<h3>" . (Language::title('statistics')) . "</h3>";
         $stats = new Statistics();
-        $stats->getStats($pdo, 'matchday');
+        $val .= $stats->getStats($pdo, 'matchday');
+        return $val;
     }
     
     static function list($pdo, $form){
@@ -326,9 +325,9 @@ class Matchday
         FROM matchday md
         LEFT JOIN matchgame mg ON mg.id_matchday=md.id_matchday
         WHERE md.id_season = :id_season 
-        AND md.id_championship = :id_championship
+        AND md.id_championship = :id_championship  AND mg.id_matchgame > 0 
         GROUP BY md.id_matchday, md.number
-        ORDER BY md.number DESC";
+        ORDER BY md.number";
         $data = $pdo->prepare($req,[
             'id_season' => $_SESSION['seasonId'],
             'id_championship' => $_SESSION['championshipId']
@@ -363,9 +362,7 @@ class Matchday
             }            
         } else {
             $val .= "  <tr>\n";
-            $val .= "      <td>" . (Language::title('noMatchday')) . "</td>\n";
-            $val .= "      <td>-</td>\n";
-            $val .= "      <td>-</td>\n";
+            $val .= "      <td colspan='3'>" . Language::title('noMatchday') . "</td>\n";
             $val .= "  </tr>\n";
         }
 

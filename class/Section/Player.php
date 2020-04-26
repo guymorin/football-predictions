@@ -214,11 +214,16 @@ class Player
         $req = "SELECT COUNT(e.rating) as nb,AVG(e.rating) as rating,c.name as team,j.name,j.firstname
     FROM player j
     LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
-    LEFT JOIN team c ON  c.id_team=scj.id_team
+    LEFT JOIN team c ON  c.id_team=scj.id_team 
     LEFT JOIN teamOfTheWeek e ON e.id_player=j.id_player
+    WHERE c.id_team IN (SELECT id_team FROM season_championship_team 
+        WHERE id_season = :id_season AND id_championship = :id_championship)
     GROUP BY team,j.name,j.firstname
     ORDER BY team ASC, nb DESC, rating DESC, j.name,j.firstname ASC";
-        $data = $pdo->prepare($req,null,true);
+        $data = $pdo->prepare($req,[
+            'id_season' => $_SESSION['seasonId'],
+            'id_championship' => $_SESSION['championshipId']
+        ],true);
         $val .= "  <table>\n";
         $val .= "      <tr><th>" . (Language::title('team')) . "</th><th>" . (Language::title('player')) . "</th><th>" . (Language::title('teamOfTheWeek')) . "</th><th>" . (Language::title('ratingAverage')) . "</th></tr>\n";
         $counter = "";

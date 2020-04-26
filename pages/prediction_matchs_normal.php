@@ -38,6 +38,7 @@ if($counter > 0){
         echo $form->inputHidden('expert','0');
         echo $form->submit(Language::title('swithToExpert'));
         echo "</form>\n";
+        echo "<br />\n";
     }
 
     // Modify form
