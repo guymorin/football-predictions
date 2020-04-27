@@ -15,7 +15,7 @@ class Statistics
     private $earning;
     private $earningByBet;
     private $earningSum;
-    private $graph;
+    private $graph = array();
     private $home;
     private $matchs;
     private $mv1;
@@ -90,7 +90,7 @@ class Statistics
             $this->prepareTable($pdo, $data, $page);
             $this->summaryPrepare($page);
             $val .= $this->summaryTable($page);
-            $val .=  $this->statsTable($page);
+            $val .=  $this->statsTable($page, $pdo);
         } else $val .=  Language::title('noStatistic');
         return $val;
     }
@@ -222,31 +222,31 @@ class Statistics
             $this->profit = $this->earning - $this->matchs;
             
             if($page == 'dashboard' && $this->matchs == 10){
-                $this->profitSum += $this->profit;
-                $this->betSum += $this->matchs;
-                $this->successSum += $this->success;
-                $this->earningSum += $this->earning;
-                $this->playedOddsSum += $this->totalPlayed;
-                $this->nbMatchdays = $d->number;
-                $val .= "       <tr>\n";
-                $val .= "           <td><strong>" . $d->number . "</strong></td>";
-                $val .= "           <td>" . $this->matchs. " </td>\n";
-                $val .= "           <td>" . $this->success. " </td>\n";
-                $this->averageOdds = (round($this->totalPlayed / $this->matchs,2));
-                $val .= "           <td>" . $this->averageOdds. " </td>\n";
-                $val .= "           <td>" . (money_format('%i',$this->earning)). " </td>\n";
-                $val .= "           <td><span style='color:" . valColor($this->profit). " '>";
-                if($this->profit>0) $val.="+";
-                $val .= (money_format('%i',$this->profit)). " </span></td>\n";
-                $val .= "           <td><span style='color:" . valColor($this->profitSum). " '>";
-                if($this->profitSum>0) $val.="+";
-                $val .= (money_format('%i',$this->profitSum)). " </span></td>\n";
-                $val .= "       </tr>\n";
-                
-                $this->profit = $this->matchs = $this->success
-                 = $this->earning = $this->totalPlayed = 0;
-                
-                $this->graph[$d->number] = $this->profitSum;
+                    $this->profitSum += $this->profit;
+                    $this->betSum += $this->matchs;
+                    $this->successSum += $this->success;
+                    $this->earningSum += $this->earning;
+                    $this->playedOddsSum += $this->totalPlayed;
+                    $this->nbMatchdays = $d->number;
+                    $val .= "       <tr>\n";
+                    $val .= "           <td><strong>" . $d->number . "</strong></td>";
+                    $val .= "           <td>" . $this->matchs. " </td>\n";
+                    $val .= "           <td>" . $this->success. " </td>\n";
+                    $this->averageOdds = (round($this->totalPlayed / $this->matchs,2));
+                    $val .= "           <td>" . $this->averageOdds. " </td>\n";
+                    $val .= "           <td>" . (money_format('%i',$this->earning)). " </td>\n";
+                    $val .= "           <td><span style='color:" . valColor($this->profit). " '>";
+                    if($this->profit>0) $val.="+";
+                    $val .= (money_format('%i',$this->profit)). " </span></td>\n";
+                    $val .= "           <td><span style='color:" . valColor($this->profitSum). " '>";
+                    if($this->profitSum>0) $val.="+";
+                    $val .= (money_format('%i',$this->profitSum)). " </span></td>\n";
+                    $val .= "       </tr>\n";
+                    
+                    $this->profit = $this->matchs = $this->success
+                     = $this->earning = $this->totalPlayed = 0;
+                    
+                    $this->graph[$d->number] = $this->profitSum;
                 
             } elseif($page == 'matchday') {
                 $val.="  		<tr>\n";
@@ -267,18 +267,20 @@ class Statistics
         $this->table = $val;
     }
     
-    public function statsTable($page){
+    public function statsTable($page, $pdo){
         $val = '';
         $val .= $this->table;
-        if($page == 'dashboard') $val .= $this->evolution();
+        if($page == 'dashboard') $val .= $this->evolution($pdo);
         return $val;
     }
     
     public function summaryPrepare($page){
         if($page == 'dashboard'){
-            $this->roi = round(($this->profitSum / $this->betSum)*100);
-            $this->successRate = round(($this->successSum / $this->betSum)*100);
-            $this->earningByBet = (round($this->earningSum / $this->betSum,2));   
+            if($this->betSum>0){
+                $this->roi = round(($this->profitSum / $this->betSum)*100);
+                $this->successRate = round(($this->successSum / $this->betSum)*100);
+                $this->earningByBet = (round($this->earningSum / $this->betSum,2)); 
+            }
         } elseif($page == 'matchday') {
             $this->profit = money_format('%i',$this->earningSum - $this->matchs);
             $this->roi = round(($this->profit / $this->matchs)*100);
@@ -314,7 +316,9 @@ class Statistics
         $val .= "    <tr>\n";
         $val .= "      <td>" . (Language::title('earningByBet')) . "</td>\n";
         $val .= "      <td>$this->earningByBet</td>\n";
-        $this->averageOdds = (round($this->playedOddsSum / $this->betSum,2));
+        if($this->betSum>0){
+            $this->averageOdds = (round($this->playedOddsSum / $this->betSum,2));
+        }
         $val .= "      <td>" . (Language::title('oddsAveragePlayed'))
         . "</td>\n";
         $val .= "      <td>" . $this->averageOdds;
@@ -406,14 +410,19 @@ class Statistics
         return $val;
     }
     
-    public function evolution(){
+    public function evolution($pdo){
         $val = '';
         $val .= "<h3>" . (Language::title('profitEvolution')) . "</h3>\n";
-        $w = $this->nbMatchdays * 14;
+        $req = "SELECT * FROM matchday WHERE id_season = " . $_SESSION['seasonId'] . "
+            AND id_championship = " . $_SESSION['championshipId'] . ";";
+        $data = $pdo->query($req);
+        $counter = $data->rowCount();
+        $w = $counter * 14;
         $w = ceil($w/10)*10;
         $width=$w;
         $h = $this->profitSum * 6;
         $h = ceil($h/10)*10;
+        if($h < 80) $h = 500;
         $height=abs($h);
         $maxX=array_key_last($this->graph);
         $maxY=end($this->graph);;

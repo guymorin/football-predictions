@@ -194,15 +194,15 @@ class Matchday
         popup(Language::title('created'),"index.php?page=matchgame&create=1");
     }
     
-    static function modifyForm($pdo, $data, $matchdayId, $error, $form){
+    static function modifyForm($pdo, $matchdayId, $error, $form){
         
         $req = "SELECT * FROM matchday WHERE id_matchday=:id_matchday;";
         $data = $pdo->prepare($req,[
             'id_matchday' => $matchdayId
         ]);
         
-        $val .= '';
-        $val .= " <form action='index.php?page=matchday' method='POST' onsubmit='return confirm();'>\n";
+        $val = '';
+        $val .= " <form action='index.php?page=matchday' method='POST';'>\n";
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= "<fieldset>\n";

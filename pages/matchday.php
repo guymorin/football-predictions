@@ -4,12 +4,9 @@
 
 // Namespaces
 use FootballPredictions\App;
-use FootballPredictions\Errors;
-use FootballPredictions\Forms;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Matchday;
-use FootballPredictions\Section\Championship;
 
 // Files to include
 require 'include/changeMD.php';
@@ -58,7 +55,7 @@ if($create==1){
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyAMatchday')) . "</h3>\n";
-    echo Matchday::modifyForm($pdo, $data, $matchdayId, $error, $form); 
+    echo Matchday::modifyForm($pdo, $matchdayId, $error, $form); 
     if($delete == 1) echo $form->popupConfirm('matchday', 'id_matchday', $matchdayId);
     elseif($delete == 2) Matchday::deletePopup($pdo, $matchdayId);
     elseif($modify == 1){
