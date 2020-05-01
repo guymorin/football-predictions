@@ -41,7 +41,7 @@ select, input {font-size:.8em;}
 table input {min-width:0}
 select {margin-bottom:1em}
 th,td {padding:.5em;}
-a{color:#309;text-decoration:none;}
+a{color:#428;text-decoration:none;}
 a:hover{text-decoration:underline}
 
 table{font-size:.9em;margin:0 auto;border:2px solid #666;border-radius:3px;min-width:50%;}
@@ -334,7 +334,8 @@ section #standing li p {background:#cf7;color:#333;}
 /* Hover button */
 section #standing li a:hover{text-decoration:none;background:#cf79;color:#3339}
 section #standing th {min-width:2em}
-
+section #standing td:nth-child(2),
+section .player td:nth-child(2)  {text-align: left;}
 section .tooltip span{
   display:none; 
 }
@@ -465,6 +466,9 @@ button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, i
 	}
 	section {
 		margin:9em auto .7em auto;
+	}
+	table, section .graph {
+		min-width: 100%
 	}
 	.layer {
 		left:calc(80vw + 2em);

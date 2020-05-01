@@ -11,6 +11,9 @@ $array = array(
     "winOK" => "<big style='color:green'>&#x2714;</big>",
     "winKO" => "<small style='color:gray'>&times;</small>",
     "OK" => "<big>&#x2714;</big>",
-    "KO" => "<small style='color:gray'>&times;</small>"
+    "KO" => "<small style='color:gray'>&times;</small>",
+    "medalGold" =>  "&#129351;",
+    "medalSilver" =>  "&#129352;",
+    "medalBronze" =>  "&#129353;"
 )
 ?>

@@ -92,5 +92,24 @@ class Database
         $val = $this->response->rowCount();
         return $val;
     }
+    
+    public function dump(){
+        $mysqlExportPath = "data/" . date("Ymd") . "_dump.sql";
+        $command='mysqldump --opt -h' .$this->db_host .' -u' .$this->db_user .' -p' .$this->db_pass .' ' .$this->db_name .' > ' .$mysqlExportPath;
+        $worked=null;
+        $output=array();
+        exec($command,$output,$worked);
+        switch($worked){
+            case 0:
+                echo "OK ! - " . getcwd() . "/" . $mysqlExportPath;
+                break;
+            case 1:
+                echo "KO !";
+                break;
+            case 2:
+                echo "KO ?";
+                break;
+        }
+    }
 }
 ?>

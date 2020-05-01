@@ -33,9 +33,7 @@ class App
     }
 
     public static function setTitle($title){
-        self::$title = $title 
-                        . (isset($_SESSION['seasonName']) ? " " 
-                        . $_SESSION['seasonName'] : null) ;
+        self::$title = $title;
     }
     
     public static function exitNoAdmin(){

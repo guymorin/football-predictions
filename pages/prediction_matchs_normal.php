@@ -4,7 +4,6 @@
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 
-changeMD($pdo,"prediction"); // Arrows to change MD
 echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
 
 $prediction = $team1Weather = $team2Weather = $cloud = $history = "";
@@ -179,7 +178,7 @@ if($counter > 0){
             $diff = $date2->diff($date1)->format("%a");
             $cloud="";
             
-            if($diff>=0){
+            if($diff>=0 && $diff<14){
                 $api="https://api.meteo-concept.com/api/forecast/daily/".$diff."?token=1aca29e38eb644104b41975b55a6842fc4fb2bfd2f79f85682baecb1c5291a3e&insee=".$d->weather_code;
                 $weatherData = file_get_contents($api);
                 $rain=0;
@@ -312,7 +311,7 @@ if($counter > 0){
         
         // Display table
         if($d->result=="") echo $form->inputHidden('id_match[]',$d->id_matchgame);
-        echo $history[0];
+        if(isset($history[0])) echo $history[0];
         
         echo "	 <table>\n";
         

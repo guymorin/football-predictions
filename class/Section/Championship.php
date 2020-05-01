@@ -341,7 +341,14 @@ class Championship
                     $previousPoints=$d->points;
                 }
                 $val .= "</td>\n";
-                $val .= "          <td>".$d->name."</td>\n";
+                $val .= "          <td>";
+                $icon = '';
+                if($counterPos==1)$icon = Theme::icon('medalGold') . ' ';
+                elseif($counterPos==2) $icon = Theme::icon('medalSilver') . ' ';
+                elseif($counterPos==3) $icon = Theme::icon('medalBronze') . ' ';
+                if($icon != '') $val .= $icon . " <strong>" . $d->name."</strong>";
+                else $val .= $d->name;
+                $val .= "</td>\n";
                 $val .= "          <td>".$d->points."</td>\n";
                 $val .= "          <td>".$d->matchgame."</td>\n";
                 $val .= "          <td>".$d->gagne."</td>\n";

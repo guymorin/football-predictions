@@ -6,6 +6,7 @@
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use \PDO;
 
 class Player
@@ -188,15 +189,15 @@ class Player
         ORDER BY nb DESC, rating DESC,j.name,j.firstname LIMIT 0,3";
         $data = $pdo->prepare($req,null,true);
         $val = "<p>\n";
-        $val .= "  <table>\n";
+        $val .= "  <table class='player'>\n";
         $val .= "      <tr><th></th><th>" . (Language::title('player')) . "</th><th>" . (Language::title('team')) . "</th><th>" . (Language::title('teamOfTheWeek')) . "</th><th>" . (Language::title('ratingAverage')) . "</th></tr>\n";
         $counterPodium = 0;
-        $icon = "&#129351;"; // Gold medal
+        $icon =  Theme::icon('medalGold'); // Gold medal
         foreach ($data as $d)
         {
             $counterPodium++;
-            if($counterPodium==2) $icon="&#129352;"; // Silver medal
-            else $icon="&#129353;"; // Bronze medal
+            if($counterPodium==2) $icon = Theme::icon('medalSilver'); // Silver medal
+            else $icon = Theme::icon('medalBronze'); // Bronze medal
             
             $val .= "      <td><strong>".$counterPodium."</strong></td>\n";
             $val .= "      <td>".$icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong></td>\n";
@@ -224,7 +225,7 @@ class Player
             'id_season' => $_SESSION['seasonId'],
             'id_championship' => $_SESSION['championshipId']
         ],true);
-        $val .= "  <table>\n";
+        $val .= "  <table class='player'>\n";
         $val .= "      <tr><th>" . (Language::title('team')) . "</th><th>" . (Language::title('player')) . "</th><th>" . (Language::title('teamOfTheWeek')) . "</th><th>" . (Language::title('ratingAverage')) . "</th></tr>\n";
         $counter = "";
         foreach ($data as $d)
@@ -251,7 +252,7 @@ class Player
             }
             
             $val .= "</td><td>";
-            if($icon!="") $val .= $icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong>";
+            if($icon != '') $val .= $icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong>";
             else $val .= mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
             $val .= "</td><td>".$d->nb."</td><td>".round($d->rating,1)."</td>\n";
             $val .= "  </tr>\n";

@@ -4,8 +4,6 @@
 
 // Namespaces
 use FootballPredictions\App;
-use FootballPredictions\Errors;
-use FootballPredictions\Forms;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Season;
