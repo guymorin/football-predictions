@@ -1,3 +1,4 @@
 <?php
-$pdo->dump();
+$message = $pdo->dump();
+popup($message,"index.php");
 ?>

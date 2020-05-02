@@ -10,9 +10,9 @@ namespace FootballPredictions;
 class App
 {
     const DB_HOST="localhost";
-    const DB_NAME="phpmyadmin";
-    const DB_USER="phpmyadmin";
-    const DB_PASS="master";
+    const DB_NAME="fp";
+    const DB_USER="fp";
+    const DB_PASS="fp";
     
     private static $title;
     private static $database;

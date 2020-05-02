@@ -6,6 +6,7 @@
  *
  */
 namespace FootballPredictions;
+use FootballPredictions\Language;
 use \PDO;
 use \PDOException;
 
@@ -98,18 +99,21 @@ class Database
         $command='mysqldump --opt -h' .$this->db_host .' -u' .$this->db_user .' -p' .$this->db_pass .' ' .$this->db_name .' > ' .$mysqlExportPath;
         $worked=null;
         $output=array();
+        $val = '';
         exec($command,$output,$worked);
         switch($worked){
             case 0:
-                echo "OK ! - " . getcwd() . "/" . $mysqlExportPath;
+                $val .= Language::title('saved');
                 break;
             case 1:
-                echo "KO !";
+                $val .= Language::title('error') . " : " . Language::title('errorExport');
                 break;
             case 2:
-                echo "KO ?";
+                $val .= Language::title('error') . " : " . Language::title('errorPath');
                 break;
         }
+        //$val .= '<br />' . getcwd() . '/' . $mysqlExportPath;
+        return $val;
     }
 }
 ?>

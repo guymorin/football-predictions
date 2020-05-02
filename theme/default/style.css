@@ -244,7 +244,11 @@ section .menu li ul li a {
 	padding:.5em 1em;
 	margin:.2em;
 }
-
+section .menu li ul li a.red {
+	background:red;
+	color:#fff;
+	text-shadow: none;
+}
 section .menu li ul li a:hover {background:linear-gradient(#4a2,#6c4);border:1px solid green;color:white;}
 
 section #changeMD {display:inline-block;margin:0 auto;text-align:center;}
