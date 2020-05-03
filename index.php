@@ -60,11 +60,12 @@ if(isset($_GET['page'])) $page=$error->check("Alnum",$_GET['page']);
         header('Location:index.php' . $url);
     }
 // Check the page value
-$create = $modify = $delete = $exit = $logon = $modifyuser = 0;
+$create = $modify = $add = $delete = $exit = $logon = $modifyuser = 0;
 isset($_GET['create'])          ? $create = $error->check("Action",$_GET['create']) : null;
 $create==0 && isset($_POST['create'])  ? $create = $error->check("Action",$_POST['create']) : null;
 isset($_GET['modify'])          ? $modify = $error->check("Action",$_GET['modify']) : null;
 isset($_POST['modify'])         ? $modify = $error->check("Action",$_POST['modify']) : null;
+isset($_POST['add'])            ? $add = $error->check("Action",$_POST['add']) : null;
 isset($_POST['delete'])         ? $delete = $error->check("ActionDelete",$_POST['delete']) : null;
 if(isset($_GET['exit'])) $exit=$error->check("Action",$_GET['exit']);
 isset($_POST['logon'])          ? $logon = $error->check("Action",$_POST['logon']) : null;

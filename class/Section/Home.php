@@ -194,7 +194,6 @@ class Home
                 ]);
                 $counter = $pdo->rowCount();
                 if($counter>0){
-                    // $form->setValues($data);
                     $val .= "<br />\n";
                     $val .= "<form action='index.php?page=matchday' method='POST'>\n";
                     $val .=  $form->label(Language::title('quickNav'));
@@ -205,6 +204,8 @@ class Home
                 }
                 
                 $val .=  $list;
+                $val .= "<br />\n";
+                $val .= "            <li><a href='index.php?page=matchday&create=1'>" . (Language::title('createAMatchday')) . "</a></li>\n";
                 
             } else {
                 $_SESSION['noMatchday'] = true;
@@ -218,6 +219,7 @@ class Home
         $val .= "    <li><h3>" . Theme::icon('team') . " " . (Language::title('team')) . "</h3>\n";
         $val .= "        <ul>\n";
         $val .= "            <li><a href='index.php?page=team'>" . (Language::title('marketValue')) . "</a></li>\n";
+        $val .= "            <li><a href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a></li>\n";
         $val .= "        </ul>\n";
         $val .= "    </li>\n";
         
@@ -225,6 +227,7 @@ class Home
         $val .= "    <li><h3>" . Theme::icon('player') . " " . (Language::title('player')) . "</h3>\n";
         $val .= "        <ul>\n";
         $val .= "            <li><a href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a></li>\n";
+        $val .= "            <li><a href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a></li>\n";
         $val .= "        </ul>\n";
         $val .= "    </li>\n";
         $val .= "</ul>\n";

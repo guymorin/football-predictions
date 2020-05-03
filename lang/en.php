@@ -1,6 +1,8 @@
 <?php
 $array = array(
     "account" => "Account",
+    "addTeamTo" => "Add team to ",
+    "added" => "Added",
     "administrator" => "administrateur",
     "away" => "Away",
     "bestPlayers" => "Best players",

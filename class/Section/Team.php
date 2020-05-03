@@ -111,18 +111,44 @@ class Team
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
         $val .= "<br />\n";
+        $req = "SELECT * FROM season_championship_team WHERE 
+        id_season = :id_season 
+        AND id_championship = :id_championship 
+        AND id_team = :id_team;";
+        $data = $pdo->prepare($req,[
+            'id_season' => $_SESSION['seasonId'],
+            'id_championship' => $_SESSION['championshipId'],
+            'id_team' => $teamId
+        ],true);
+        $counter = $pdo->rowCount();
+        if($counter==0){
+            $val .= "<form action='index.php?page=team' method='POST'>\n";
+            $val .= $form->inputAction('add');
+            $val .= $form->inputHidden('id_team',$teamId);
+            $val .= $form->submit(Language::title('addTeamTo').$_SESSION['championshipName'].' '.$_SESSION['seasonName']);
+            $val .= "</form>\n";
+            $val .= "<br />\n";
+        }
+
         $val .= $form->deleteForm('team', 'id_team', $teamId);
         return $val;
     }
     
+    static function addPopup($pdo, $teamId){
+        $pdo->alterAuto('team');
+        $req="INSERT INTO season_championship_team VALUES(NULL, '" . $_SESSION['seasonId'] . "', '" . $_SESSION['championshipId'] . "', '" . $teamId . "');";
+        $pdo->exec($req);
+        popup(Language::title('added'),"index.php?page=team");
+    }
+    
     static function modifyFormMarketValue($pdo, $error, $form){
         $val = '';
-        $req = "SELECT c.*, v.marketValue
+        $req = "SELECT DISTINCT c.*, v.marketValue
         FROM team c
         LEFT JOIN marketValue v ON v.id_team=c.id_team
         LEFT JOIN season_championship_team scc ON scc.id_team=c.id_team
         WHERE scc.id_season=:id_season
-        AND scc. id_championship=:id_championship;";
+        AND scc. id_championship=:id_championship ORDER BY c.name;";
         $data = $pdo->prepare($req,[
             'id_season' => $_SESSION['seasonId'],
             'id_championship' => $_SESSION['championshipId']

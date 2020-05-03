@@ -4,8 +4,6 @@
 
 // Namespaces
 use FootballPredictions\App;
-use FootballPredictions\Errors;
-use FootballPredictions\Forms;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Team;
@@ -32,7 +30,7 @@ if($create == 1){
     echo Team::createForm($pdo, $error, $form, $teamName, $weatherCode);
 }
 // Delete / Modify
-elseif($delete == 1  || $delete == 2 || $modify == 1){
+elseif($delete == 1  || $delete == 2 || $modify == 1 || $add == 1){
     App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyATeam')) . "</h3>\n";
     echo Team::modifyForm($pdo, $error, $form, $teamId);
@@ -40,6 +38,9 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
     elseif($delete == 2) Team::deletePopup($pdo, $teamId);
     elseif($modify == 1){
         if($teamName!="") Team::modifyPopup($pdo, $teamName, $weatherCode, $teamId);
+    }
+    elseif($add == 1){
+        if($teamId!="") Team::addPopup($pdo, $teamId);
     }
 } else {
     echo "<h3>" . (Language::title('marketValue')) . "</h3>";
