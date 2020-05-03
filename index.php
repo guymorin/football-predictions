@@ -21,10 +21,12 @@ if(empty($_SESSION['language'])) Language::getBrowserLang();
 require 'include/functions.php';
 
 $pdo = App::getDb();
-
 $error = new Errors();
 $form = new Forms($_POST);
 $page = '';
+if($pdo==false) {
+    $page = 'install';
+}
 if(isset($_GET['page'])) $page=$error->check("Alnum",$_GET['page']);
 
 // Popup if needed
@@ -75,13 +77,14 @@ if($exit==1){
 }
 
 // Choose a season, a championship...
-if(empty($_SESSION['userLogin'])) $page="account";
-elseif(empty($_SESSION['seasonId'])) $page="season";
-elseif(
-    (empty($_SESSION['championshipId']))
-    &&($page=="")
-) $page="championship";
-
+if($page!='install'){
+    if(empty($_SESSION['userLogin'])) $page="account";
+    elseif(empty($_SESSION['seasonId'])) $page="season";
+    elseif(
+        (empty($_SESSION['championshipId']))
+        &&($page=="")
+        ) $page="championship";
+}
 
 /* Header */
 
@@ -117,7 +120,7 @@ function myFunction() {
 </header>
 <section>
 <?php
-    if($page!='' && $page!='dump') require("pages/" . $page . ".php");
+if($page!='' && $page!='dump') require("pages/" . $page . ".php");
     else {
         echo "<h2>" . Language::title('homepage') . "</h2>\n";
         echo Home::homeMenu($pdo, $form);

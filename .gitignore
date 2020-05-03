@@ -1,5 +1,5 @@
 .buildpath
 .project
-/class/App.web
-
+/class/*.inc
+/data/2*
 /vendor/

@@ -193,18 +193,25 @@ class Player
         $val .= "      <tr><th></th><th>" . (Language::title('player')) . "</th><th>" . (Language::title('team')) . "</th><th>" . (Language::title('teamOfTheWeek')) . "</th><th>" . (Language::title('ratingAverage')) . "</th></tr>\n";
         $counterPodium = 0;
         $icon =  Theme::icon('medalGold'); // Gold medal
-        foreach ($data as $d)
-        {
-            $counterPodium++;
-            if($counterPodium==2) $icon = Theme::icon('medalSilver'); // Silver medal
-            else $icon = Theme::icon('medalBronze'); // Bronze medal
-            
-            $val .= "      <td><strong>".$counterPodium."</strong></td>\n";
-            $val .= "      <td>".$icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong></td>\n";
-            $val .= "      <td>".$d->team."</td>\n";
-            $val .= "      <td>".$d->nb."</td>\n";
-            $val .= "      <td>".round($d->rating,1)."</td>\n";
-            $val .= "  </tr>\n";
+        $counter = $pdo->rowCount();
+        if($counter>0){
+            foreach ($data as $d)
+            {
+                $counterPodium++;
+                if($counterPodium==2) $icon = Theme::icon('medalSilver'); // Silver medal
+                else $icon = Theme::icon('medalBronze'); // Bronze medal
+                
+                $val .= "      <td><strong>".$counterPodium."</strong></td>\n";
+                $val .= "      <td>".$icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong></td>\n";
+                $val .= "      <td>".$d->team."</td>\n";
+                $val .= "      <td>".$d->nb."</td>\n";
+                $val .= "      <td>".round($d->rating,1)."</td>\n";
+                $val .= "  </tr>\n";
+            }
+        } else {
+            $val .= "        <tr>\n";
+            $val .= "<td colspan='5'>" . Language::title('notPlayed') . "</td>\n";
+            $val .= "        </tr>\n";
         }
         $val .= "  </table>\n";
         $val .= "</p>\n";
@@ -228,37 +235,43 @@ class Player
         $val .= "  <table class='player'>\n";
         $val .= "      <tr><th>" . (Language::title('team')) . "</th><th>" . (Language::title('player')) . "</th><th>" . (Language::title('teamOfTheWeek')) . "</th><th>" . (Language::title('ratingAverage')) . "</th></tr>\n";
         $counter = "";
-        foreach ($data as $d)
-        {
-            $val .= "      <td>";
-            if($counter!=$d->team){
-                $counterPodium = 0;
-                $val .= "<strong>".$d->team."</strong>";
+        $counterPlayers = $pdo->rowCount();
+        if($counterPlayers>0){
+            foreach ($data as $d)
+            {
+                $val .= "      <td>";
+                if($counter!=$d->team){
+                    $counterPodium = 0;
+                    $val .= "<strong>".$d->team."</strong>";
+                }
+                
+                $counterPodium++;
+                switch($counterPodium){
+                    case 1:
+                        $icon = "&#129351;"; // gold medal
+                        break;
+                    case 2:
+                        $icon="&#129352;"; // silver medal
+                        break;
+                    case 3:
+                        $icon="&#129353;"; // bronze medal
+                        break;
+                    default:
+                        $icon="";
+                }
+                
+                $val .= "</td><td>";
+                if($icon != '') $val .= $icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong>";
+                else $val .= mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
+                $val .= "</td><td>".$d->nb."</td><td>".round($d->rating,1)."</td>\n";
+                $val .= "  </tr>\n";
+                $counter=$d->team;
             }
-            
-            $counterPodium++;
-            switch($counterPodium){
-                case 1:
-                    $icon = "&#129351;"; // gold medal
-                    break;
-                case 2:
-                    $icon="&#129352;"; // silver medal
-                    break;
-                case 3:
-                    $icon="&#129353;"; // bronze medal
-                    break;
-                default:
-                    $icon="";
-            }
-            
-            $val .= "</td><td>";
-            if($icon != '') $val .= $icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong>";
-            else $val .= mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
-            $val .= "</td><td>".$d->nb."</td><td>".round($d->rating,1)."</td>\n";
-            $val .= "  </tr>\n";
-            $counter=$d->team;
+        } else {
+            $val .= "        <tr>\n";
+            $val .= "<td colspan='4'>" . Language::title('notPlayed') . "</td>\n";
+            $val .= "        </tr>\n";
         }
-        
         $val .= "  </table>\n";
         return $val;
     }

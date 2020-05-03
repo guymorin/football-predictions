@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb5
+-- version OVH
 -- https://www.phpmyadmin.net/
 --
--- Client :  localhost:3306
--- Généré le :  Lun 20 Avril 2020 à 11:26
--- Version du serveur :  5.7.29-0ubuntu0.18.04.1
--- Version de PHP :  7.2.24-0ubuntu0.18.04.4
+-- Hôte : footcore302.mysql.db
+-- Généré le :  Dim 03 mai 2020 à 17:59
+-- Version du serveur :  5.6.46-log
+-- Version de PHP :  7.0.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `FootballPredictions`
+-- Base de données :  `footcore302`
 --
 
 -- --------------------------------------------------------
@@ -68,7 +70,7 @@ CREATE TABLE `fp_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `fp_role`
+-- Déchargement des données de la table `fp_role`
 --
 
 INSERT INTO `fp_role` (`id_fp_role`, `name`) VALUES
@@ -88,7 +90,7 @@ CREATE TABLE `fp_theme` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Contenu de la table `fp_theme`
+-- Déchargement des données de la table `fp_theme`
 --
 
 INSERT INTO `fp_theme` (`id_fp_theme`, `name`, `directory_name`) VALUES
@@ -234,7 +236,7 @@ CREATE TABLE `teamOfTheWeek` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Index pour les tables exportées
+-- Index pour les tables déchargées
 --
 
 --
@@ -333,76 +335,89 @@ ALTER TABLE `teamOfTheWeek`
   ADD KEY `TOTW_Matchday` (`id_matchday`);
 
 --
--- AUTO_INCREMENT pour les tables exportées
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
 -- AUTO_INCREMENT pour la table `championship`
 --
 ALTER TABLE `championship`
-  MODIFY `id_championship` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_championship` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `criterion`
 --
 ALTER TABLE `criterion`
-  MODIFY `id_criterion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=309;
+  MODIFY `id_criterion` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `fp_theme`
 --
 ALTER TABLE `fp_theme`
   MODIFY `id_fp_theme` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT pour la table `fp_user`
 --
 ALTER TABLE `fp_user`
-  MODIFY `id_fp_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_fp_user` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `marketValue`
 --
 ALTER TABLE `marketValue`
-  MODIFY `id_marketValue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_marketValue` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `matchday`
 --
 ALTER TABLE `matchday`
-  MODIFY `id_matchday` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_matchday` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `matchgame`
 --
 ALTER TABLE `matchgame`
-  MODIFY `id_matchgame` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=291;
+  MODIFY `id_matchgame` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `player`
 --
 ALTER TABLE `player`
-  MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
+  MODIFY `id_player` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `season`
 --
 ALTER TABLE `season`
-  MODIFY `id_season` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_season` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `season_championship_team`
 --
 ALTER TABLE `season_championship_team`
-  MODIFY `id_season_championship_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_season_championship_team` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `season_team_player`
 --
 ALTER TABLE `season_team_player`
-  MODIFY `id_season_team_player` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=190;
+  MODIFY `id_season_team_player` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id_team` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_team` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT pour la table `teamOfTheWeek`
 --
 ALTER TABLE `teamOfTheWeek`
-  MODIFY `id_teamOfTheWeek` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=309;
+  MODIFY `id_teamOfTheWeek` int(11) NOT NULL AUTO_INCREMENT;
+
 --
--- Contraintes pour les tables exportées
+-- Contraintes pour les tables déchargées
 --
 
 --
@@ -461,6 +476,7 @@ ALTER TABLE `season_team_player`
 ALTER TABLE `teamOfTheWeek`
   ADD CONSTRAINT `TOTW_Matchday` FOREIGN KEY (`id_matchday`) REFERENCES `matchday` (`id_matchday`),
   ADD CONSTRAINT `TOTW_Player` FOREIGN KEY (`id_player`) REFERENCES `player` (`id_player`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

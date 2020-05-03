@@ -35,7 +35,8 @@ if(
 }
 // Create
 elseif($create == 1){
-    if ($_SESSION['noTeam'] == true
+    if (
+        (isset($_SESSION['noTeam']) && $_SESSION['noTeam'] == true)
         && isset($_SESSION['seasonName'])
         && isset($_SESSION['championshipName'])
         ) {

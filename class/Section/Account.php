@@ -139,22 +139,25 @@ class Account
         $val .= $form->submit(Language::title('create'));
         $val .= "</form>\n";
         $val .= "<br />\n";
-        $val .= "<a href='index.php?page=account'>" . (Language::title('logon')) . "</a>\n";
+        if(empty($_SESSION['install']) || $_SESSION['install']!='true') $val .= "<a href='index.php?page=account'>" . (Language::title('logon')) . "</a>\n";
         return $val;
     }
     
     static function createPopup($pdo, $userLogin, $userPassword){
         $userPassword = password_hash($userPassword, PASSWORD_DEFAULT);
         $pdo->alterAuto('fp_user');
+        $role = 1;
+        if($_SESSION['install'] == 'true') $role = 2;
         $req="INSERT INTO fp_user
         VALUES(NULL,:name,:password,'" . date('Y-m-d') . "',
         '" . $_SESSION['language'] . "',
-        '1',NULL,NULL,'1');";
+        '1',NULL,NULL,'" . $role . "');";
         $pdo->prepare($req,[
             'name' => $userLogin,
             'password' => $userPassword
         ]);
-        if(self::logonPopup($pdo, $userLogin, $password)) {
+        if(self::logonPopup($pdo, $userLogin, $userPassword)) {
+            $_SESSION['install']=false;
             popup(Language::title('created'),"index.php?page=account");
         }
     }

@@ -26,6 +26,7 @@ $userLogin = strtolower($userLogin);
 // Logon
 if(    
     (empty($_SESSION['userLogin']))
+    &&(empty($_SESSION['install'])) 
     &&($create == 0)
     &&($modify == 0)
     &&($delete == 0)
@@ -44,7 +45,10 @@ if(
     }
 }
 // Create
-elseif($create == 1){
+elseif(
+($create == 1)
+||(isset($_SESSION['install']) && $_SESSION['install']=='true')
+){
     echo "<h2>" . (Language::title('homepage')) . "</h2>\n";
     echo "<h3>" . (Language::title('createAnAccount')) . "</h3>\n";
     if($pdo->findName('fp_user', $userLogin))  $error->addError(Language::title('login'), Language::title('errorExists'));

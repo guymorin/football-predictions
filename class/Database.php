@@ -94,13 +94,13 @@ class Database
         return $val;
     }
     
-    public function dump(){
+    public function export(){
         $mysqlExportPath = "data/" . date("Ymd") . "_dump.sql";
-        $command='mysqldump --opt -h' .$this->db_host .' -u' .$this->db_user .' -p' .$this->db_pass .' ' .$this->db_name .' > ' .$mysqlExportPath;
-        $worked=null;
-        $output=array();
+        $command = 'mysqldump --opt -h' .$this->db_host .' -u' .$this->db_user .' -p' .$this->db_pass .' ' .$this->db_name .' > ' .$mysqlExportPath;
+        $worked = null;
+        $output = array();
         $val = '';
-        exec($command,$output,$worked);
+        exec($command, $output, $worked);
         switch($worked){
             case 0:
                 $val .= Language::title('saved');
@@ -113,6 +113,24 @@ class Database
                 break;
         }
         //$val .= '<br />' . getcwd() . '/' . $mysqlExportPath;
+        return $val;
+    }
+    public function import($host, $name, $user, $pass){
+        $mysqlImportFilename = "data/create.sql";
+        $command = 'mysql -h' .$host . ' -u' .$user . ' -p' .$pass . ' ' .$name .' < ' .$mysqlImportFilename;
+
+        $worked = null;
+        $output = array();
+        $val = '';
+        exec($command, $output, $worked);
+        switch($worked){
+            case 0:
+                $val .= Language::title('created');
+                break;
+            case 1:
+                $val .= Language::title('createDatabase') . " : " . Language::title('errorImport');
+                break;
+        }
         return $val;
     }
 }

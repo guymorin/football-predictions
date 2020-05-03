@@ -96,19 +96,23 @@ class Championship
             $list.="</form>\n";
             
             // Quick nav button
-            $req = "SELECT DISTINCT sct.id_championship, c.name
-            FROM season_championship_team sct
-            LEFT JOIN championship c ON c.id_championship = sct.id_championship
-            ORDER BY c.name DESC;";
-            $data = $pdo->queryObj($req);
-            
-            $val .= "<form action='index.php' method='POST'>\n";
-            $val .=  $form->labelBr(Language::title('quickNav'));
-            $val .=  $form->inputHidden("championshipSelect",$data->id_championship.",".$data->name);
-            $val .=  $form->submit(Theme::icon('quicknav')." ".$data->name);
-            $val .=  "</form>\n";
-            $val .= "<br />\n";
-            
+            $req = "SELECT * FROM season_championship_team;";
+            $data = $pdo->query($req);
+            $counter = $pdo->rowCount();
+            if($counter>0){
+                $req = "SELECT DISTINCT sct.id_championship, c.name
+                FROM season_championship_team sct
+                LEFT JOIN championship c ON c.id_championship = sct.id_championship
+                ORDER BY c.name DESC;";
+                $data = $pdo->queryObj($req);
+                
+                $val .= "<form action='index.php' method='POST'>\n";
+                $val .=  $form->labelBr(Language::title('quickNav'));
+                $val .=  $form->inputHidden("championshipSelect",$data->id_championship.",".$data->name);
+                $val .=  $form->submit(Theme::icon('quicknav')." ".$data->name);
+                $val .=  "</form>\n";
+                $val .= "<br />\n";
+            }
             $val .=  $list;
         }
         // No championship

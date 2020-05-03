@@ -5,6 +5,8 @@
  * Check values and generate an error message
  */
 namespace FootballPredictions;
+use \PDO;
+use \PDOException;
 
 class Errors
 {
@@ -56,7 +58,23 @@ class Errors
         else $this->errorMessage .= "$name : $error";
     }
     
-    // Check function
+    // Check functions
+    public function checkDb($host,$name,$user,$pass)
+    {
+        $val = '';
+        try{
+            $val = new PDO(
+                "mysql:dbname=$name;host=$host;charset=utf8",
+                $user,
+                $pass
+                );
+            $val = true;
+        } catch (PDOException $e) {
+            $this->setError(Language::title('error'), Language::title('errorConnection'));
+            $val = false;
+        }
+        return $val;
+    }
     /**
      * 
      * @param string $check Type of check (Action, Alnum, Digit, Position, Result)
@@ -81,7 +99,7 @@ class Errors
                 case "Alnum":
                     if(ctype_alnum(str_replace('-','',str_replace(' ','',($val))))) return $val;
                     else {
-                        $this->addError($title, Language::title('errorAlnum'));
+                        $this->setError($title, Language::title('errorAlnum'));
                         return null;
                     }
                     break;
