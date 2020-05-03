@@ -165,6 +165,7 @@ class Home
             $val .= "            <li><a href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=results'>" . (Language::title('results')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a></li>\n";
+            $val .= "            <li><a href='index.php?page=matchgame&create=1'>" . (Language::title('createAMatch')) . "</a></li>\n";
         } else {
             $req = "SELECT DISTINCT id_matchday, number
             FROM matchday
