@@ -89,11 +89,11 @@ class Account
                 $_SESSION['userLogin'] = $userLogin;
                 $_SESSION['language'] = $data->language;
                 $_SESSION['themeId'] = $data->theme;
+                $_SESSION['role'] = $data->role;
                 $r = "SELECT directory_name FROM fp_theme
                 WHERE id_fp_theme = $data->theme";
                 $d = $pdo->queryObj($r);
                 $_SESSION['directory_name'] = $d->directory_name;
-                $_SESSION['role'] = $data->role;
                 if($data->last_season!=null && $data->last_championship!=null) {
                     $req1 = "SELECT name FROM season WHERE id_season = '" . $data->last_season . "'";
                     $d1 = $pdo->prepare($req1,null);
