@@ -19,7 +19,7 @@ if(empty($_POST['marketValue'])){
     $teamId = $weatherCode = 0;
     isset($_POST['name'])           ? $teamName = $error->check("Alnum",$_POST['name'], Language::title('name')) : null;
     isset($_POST['id_team'])        ? $teamId = $error->check("Digit",$_POST['id_team']) : null;
-    isset($_POST['weather_code'])   ? $weatherCode = $error->check("Digit",$_POST['weather_code'], Language::title('weatherCode')) : null;
+    isset($_POST['weather_code'])   ? $weatherCode = $error->check("Alnum",$_POST['weather_code'], Language::title('weatherCode')) : null;
 }
 
 // Create
