@@ -16,69 +16,70 @@ echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " 
 // Modify
 // Modify popup
 if($modify==1){
-    isset($_POST['id_matchgame'])   ? $idMatch=$error->check("Digit",$_POST['id_matchgame']) : null;
-    isset($_POST['result'])         ? $rMatch=$error->check("Digit",$_POST['result'], Language::title('result')) : null;
-    isset($_POST['date'])           ? $dMatch=$error->check("Date",$_POST['date'], Language::title('date')) : null;
-    isset($_POST['odds1'])          ? $c1Match=$error->check("Digit",$_POST['odds1'], Language::title('odds').' 1') : null;
-    isset($_POST['oddsD'])          ? $cNMatch=$error->check("Digit",$_POST['oddsD'], Language::title('odds').' '.Language::title('draw')) : null;
-    isset($_POST['odds2'])          ? $c2Match=$error->check("Digit",$_POST['odds2'], Language::title('odds').' 2') : null;
-    isset($_POST['red1'])           ? $r1Match=$error->check("Digit",$_POST['red1'], Language::title('redCards').' 1') : null;
-    isset($_POST['red2'])           ? $r2Match=$error->check("Digit",$_POST['red2'], Language::title('redCards').' 2') : null;
+    isset($_POST['id_matchgame'])   ? $idMatch=$_POST['id_matchgame'] : null;
     $cpt=0;
     $req="";
-    foreach($idMatch as $k){
+    foreach($idMatch as $k => $v){
+        isset($_POST['result'])         ? $rMatch[$v]=$error->check("Digit",$_POST['result'][$v], Language::title('result')) : null;
+        isset($_POST['date'])           ? $dMatch[$v]=$error->check("Date",$_POST['date'][$v], Language::title('date')) : null;
+        isset($_POST['odds1'])          ? $c1Match[$v]=$error->check("Digit",$_POST['odds1'][$v], Language::title('odds').' 1') : null;
+        isset($_POST['oddsD'])          ? $cNMatch[$v]=$error->check("Digit",$_POST['oddsD'][$v], Language::title('odds').' '.Language::title('draw')) : null;
+        isset($_POST['odds2'])          ? $c2Match[$v]=$error->check("Digit",$_POST['odds2'][$v], Language::title('odds').' 2') : null;
+        isset($_POST['red1'])           ? $r1Match[$v]=$error->check("Digit",$_POST['red1'][$v], Language::title('redCards').' 1') : null;
+        isset($_POST['red2'])           ? $r2Match[$v]=$error->check("Digit",$_POST['red2'][$v], Language::title('redCards').' 2') : null;
+        
         $req.= "UPDATE matchgame SET ";
-        $req.= "result='".$rMatch[$k]."'";
+        $req.= "result='".$rMatch[$v]."'";
         $cpt=1;
-        if($dMatch[$k]!=""){
+        if($dMatch[$v]!=""){
             if($cpt==1){
                 $req.=",";
                 $cpt=0;
             }
-            $req.="date='".$dMatch[$k]."'";
+            $req.="date='".$dMatch[$v]."'";
             $cpt=1;
         }
-        if($c1Match[$k]>0){
+        if($c1Match[$v]>0){
             if($cpt==1){
                 $req.=",";
                 $cpt=0;
             }
-            $req.="odds1='".$c1Match[$k]."'";
+            $req.="odds1='".$c1Match[$v]."'";
             $cpt=1;
         }
-        if($cNMatch[$k]>0){
+        if($cNMatch[$v]>0){
             if($cpt==1){
                 $req.=",";
                 $cpt=0;
             }
-            $req.="oddsD='".$cNMatch[$k]."'";
+            $req.="oddsD='".$cNMatch[$v]."'";
             $cpt=1;
         }
-        if($c2Match[$k]>0){
+        if($c2Match[$v]>0){
             if($cpt==1){
                 $req.=",";
                 $cpt=0;
             }
-            $req.="odds2='".$c2Match[$k]."'";
+            $req.="odds2='".$c2Match[$v]."'";
             $cpt=1;
         }
-        if($r1Match[$k]>=1){
+        if($r1Match[$v]>=1){
             if($cpt==1){
                 $req.=",";
                 $cpt=0;
             }
-            $req.="red1='".$r1Match[$k]."'";
+            $req.="red1='".$r1Match[$v]."'";
             $cpt=1;
         }
-        if($r2Match[$k]>=1){
+        if($r2Match[$v]>=1){
             if($cpt==1){
                 $req.=",";
                 $cpt=0;
             }
-            $req.="red2='".$r2Match[$k]."'";
+            $req.="red2='".$r2Match[$v]."'";
             $cpt=1;
         }
-        $req.=" WHERE id_matchgame='".$k."';";
+        $req.=" WHERE id_matchgame='".$v."';";
     }
     $pdo->exec($req);
     popup(Language::title('modified'),"index.php?page=results");
@@ -122,7 +123,7 @@ else {
         {
             $form->setValues($d);
             $id=$d->id_matchgame;
-            echo $form->inputHidden('id_match[]', $d->id_matchgame);
+            echo $form->inputHidden('id_matchgame[]', $d->id_matchgame);
             echo "  <tr>\n";
             echo "      <td>".$form->inputDate("", "date[$id]", $d->date)."</td>\n";
             

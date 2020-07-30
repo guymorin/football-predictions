@@ -231,16 +231,20 @@ class Matchday
         popup(Language::title('modified'),"index.php?page=matchday");
     }
     
-    static function modifyPopupMatch($pdo, $team1, $team2, $result, $idMatch){
+    static function modifyPopupMatch($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date, $idMatch){
         
         $req="UPDATE matchgame
-            SET id_matchday = :id_matchday, team_1=:team_1, team_2 = :team_2, result = :result
+            SET id_matchday = :id_matchday, team_1=:team_1, team_2 = :team_2, result = :result, odds1= :odds1, oddsD= :oddsD, odds2= :odds2, date= :date 
             WHERE id_matchgame = :id_matchgame;";
         $pdo->prepare($req,[
             'id_matchday' => $_SESSION['matchdayId'],
             'team_1' => $team1,
             'team_2' => $team2,
             'result' => $result,
+            'odds1' => $odds1,
+            'oddsD' => $oddsD,
+            'odds2' => $odds2,
+            'date' => $date,
             'id_matchgame' => $idMatch
         ]);
         popup(Language::title('modifyAMatch'),"index.php?page=matchgame");

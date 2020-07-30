@@ -42,7 +42,7 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
     if($delete==1) echo $form->popupConfirm('matchgame', 'id_matchgame', $idMatch);
     elseif($delete==2) Matchday::deletePopupMatch($pdo, $idMatch);
     elseif($modify==1){
-        if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchday::modifyPopupMatch($pdo, $team1, $team2, $result, $idMatch);
+        if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchday::modifyPopupMatch($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date, $idMatch);
     }
     
 }?>  
