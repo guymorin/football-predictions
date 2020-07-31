@@ -141,8 +141,12 @@ class Statistics
             } elseif($page == 'matchday') {
                 $this->v1=criterion("v1",$d,$pdo);
                 $this->v2=criterion("v2",$d,$pdo);
-                $this->mv1 = round(sqrt($this->v1/$this->v2));
-                $this->mv2 = round(sqrt($this->v2/$this->v1));
+                if( ($this->v1 != 0) && ($this->v2 != 0) ){
+                    $this->mv1 = round(sqrt($this->v1/$this->v2));
+                    $this->mv2 = round(sqrt($this->v2/$this->v1));
+                } else {
+                    $this->mv1 = $this->mv2 = 0;
+                }
             }
             // Home Away
             $this->home = $d->home_away1;
