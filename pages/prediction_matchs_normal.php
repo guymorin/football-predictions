@@ -159,17 +159,28 @@ if($counter > 0){
         // Market value
         $v1=criterion("v1",$d,$pdo);
         $v2=criterion("v2",$d,$pdo);
-        $mv1 = round(sqrt($v1/$v2));
-        $mv2 = round(sqrt($v2/$v1));
+        if( ($v1 != 0) && ($v2 != 0) ){
+            $mv1 = round(sqrt($v1/$v2));
+            $mv2 = round(sqrt($v2/$v1));
+        } else {
+            $mv1 = $mv2 = 0;
+        }
         
         // Home / Away
         $dom = 0;
-        if(in_array($d->eq1,$domBonus)) $dom=1;
-        if(in_array($d->eq1,$domMalus)) $dom=(-1);
+        if(is_array($domBonus)){
+            if(in_array($d->eq1,$domBonus)) $dom=1;
+        }
+        if(is_array($domMalus)){
+            if(in_array($d->eq1,$domMalus)) $dom=(-1);
+        }
         $ext = 0;
-        if(in_array($d->eq2,$extBonus)) $ext=1;
-        if(in_array($d->eq2,$extMalus)) $ext=(-1);
-        
+        if(is_array($extBonus)){
+            if(in_array($d->eq2,$extBonus)) $ext=1;
+        }
+        if(is_array($extMalus)){
+            if(in_array($d->eq2,$extMalus)) $ext=(-1);
+        }
         // Weather
         if($d->date!=""){
             
@@ -286,11 +297,12 @@ if($counter > 0){
 // Criterion sum
         $win = "";
         $id = $d->id_matchgame;
+        
         $sum1 = 
             $d->motivation1
             +$serieC1
             +$d->physicalForm1
-            +$team1Weather
+            +intval($team1Weather)
             +$d->bestPlayers1
             +$mv1
             +$dom
@@ -299,7 +311,7 @@ if($counter > 0){
             $d->motivation2
             +$serieC2
             +$d->physicalForm2
-            +$team2Weather
+            +intval($team2Weather)
             +$d->bestPlayers2
             +$mv2
             +$ext
