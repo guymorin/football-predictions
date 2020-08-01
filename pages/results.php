@@ -8,9 +8,6 @@ use FootballPredictions\Forms;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 
-// Files to include
-require 'include/changeMD.php';
-
 echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null)."</h2>\n";
 
 // Modify

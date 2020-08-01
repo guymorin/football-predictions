@@ -8,16 +8,15 @@ use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Matchday;
 
-// Files to include
-require 'include/changeMD.php';
+// Values
+$matchdayId = 0;
+$matchdayNumber = $matchdayTotalNumber = "";
+
 ?>
 
 <h2><?= Theme::icon('matchday') . ' ' . (Language::title('matchday')) . ' ' . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>
 
 <?php
-// Values
-$matchdayId = 0;
-$matchdayNumber = $matchdayTotalNumber = "";
 
 if(isset($_POST['matchdayModify'])){
     $v=explode(",",$_POST['matchdayModify']);

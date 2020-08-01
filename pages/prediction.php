@@ -6,8 +6,6 @@
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 
-require 'include/changeMD.php';
-
 echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . $_SESSION['matchdayNum']."</h2>\n";
 
 // Values
