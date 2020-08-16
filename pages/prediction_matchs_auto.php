@@ -34,8 +34,8 @@ if($counter > 0){
         // Switch form
         echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
         echo $form->inputHidden('modify','2');
-        echo $form->inputHidden('expert','0');
-        echo $form->submit(Language::title('swithToExpert'));
+        echo $form->inputHidden('manual','0');
+        echo $form->submit(Language::title('swithToManual'));
         echo "</form>\n";
         echo "<br />\n";
     }
@@ -195,7 +195,7 @@ if($counter > 0){
                 $rain=0;
                 
                 if ($weatherData !== false){
-                    $decoded = json_decode($d);
+                    $decoded = json_decode($date1->format('Y-m-d'));
                     $city = $decoded->city;
                     $forecast = $decoded->forecast;
                     $rain=$forecast->rr1;

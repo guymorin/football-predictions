@@ -9,9 +9,9 @@ use FootballPredictions\Theme;
 echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . $_SESSION['matchdayNum']."</h2>\n";
 
 // Values
-$expert = 0;
-isset($_POST['expert'])     ? $expert=$error->check("Digit",$_POST['expert']) : null;
-if($expert==0) isset($_GET['expert'])      ? $expert=$error->check("Digit",$_GET['expert']) : null;
+$manual = 0;
+isset($_POST['manual'])     ? $manual=$error->check("Digit",$_POST['manual']) : null;
+if($manual==0) isset($_GET['manual'])      ? $manual=$error->check("Digit",$_GET['manual']) : null;
 
 // Modified popup
 if($modify==1){
@@ -124,14 +124,14 @@ if($modify==1){
         }  
     }
     $pdo->exec($req);
-    popup(Language::title('modifyPredictions'),"index.php?page=prediction&expert=".$expert);
+    popup(Language::title('modifyPredictions'),"index.php?page=prediction&manual=".$manual);
 
 }
-// Default page or expert page
+// Default page or manual page
 else {
     changeMD($pdo,"prediction");
-    if($expert==1) require 'prediction_matchs_normal.php';
-    else require 'prediction_matchs_expert.php';
+    if($manual==1) require 'prediction_matchs_auto.php';
+    else require 'prediction_matchs_manual.php';
     
 }
 ?>  

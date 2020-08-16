@@ -185,6 +185,9 @@ class Player
         LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
         LEFT JOIN team c ON  c.id_team=scj.id_team
         LEFT JOIN teamOfTheWeek e ON e.id_player=j.id_player
+        LEFT JOIN season_championship_team sct ON sct.id_team=scj.id_team 
+        WHERE sct.id_season='".$_SESSION['seasonId']."'  
+        AND sct.id_championship='".$_SESSION['championshipId']."'  
         GROUP BY team, j.name,j.firstname
         ORDER BY nb DESC, rating DESC,j.name,j.firstname LIMIT 0,3";
         $data = $pdo->prepare($req,null,true);

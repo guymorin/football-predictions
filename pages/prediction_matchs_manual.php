@@ -1,5 +1,5 @@
 <?php
-// Predictions matchgame expert include file
+// Predictions matchgame manual include file
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 
@@ -29,15 +29,15 @@ if($counter > 0){
     if($_SESSION['role']==2){
         // Switch form
         echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
-        echo $form->inputHidden('expert','1');
-        echo $form->submit(Language::title('swithToDefault'));
+        echo $form->inputHidden('manual','1');
+        echo $form->submit(Language::title('swithToAuto'));
         echo "</form>\n";
         echo "<br />\n";
     }
     // Modify form
     echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";
     echo $form->inputAction('modify');
-    echo $form->inputHidden('expert','1');
+    echo $form->inputHidden('manual','1');
     
     
     // Predictions for the matchday
@@ -66,7 +66,7 @@ if($counter > 0){
         elseif($sum1<$sum2) $prediction="2";
         if($prediction==$d->result) $win=" ";
             
-        echo "	 <table class='expert'>\n";
+        echo "	 <table class='manual'>\n";
        
         echo "  		<tr>\n";
         echo "  		  <th>".$d->date."</th>\n";

@@ -111,8 +111,8 @@ class Team
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
         $val .= "<br />\n";
-        $req = "SELECT * FROM season_championship_team WHERE 
-        id_season = :id_season 
+        $req = "SELECT * FROM season_championship_team 
+        WHERE id_season = :id_season 
         AND id_championship = :id_championship 
         AND id_team = :id_team;";
         $data = $pdo->prepare($req,[
@@ -146,9 +146,11 @@ class Team
         $req = "SELECT DISTINCT c.*, v.marketValue
         FROM team c
         LEFT JOIN marketValue v ON v.id_team=c.id_team
-        LEFT JOIN season_championship_team scc ON scc.id_team=c.id_team
+        LEFT JOIN season_championship_team scc ON scc.id_team=c.id_team 
         WHERE scc.id_season=:id_season
-        AND scc. id_championship=:id_championship ORDER BY c.name;";
+        AND scc.id_championship=:id_championship 
+        AND v.id_season=:id_season 
+        ORDER BY c.name;";
         $data = $pdo->prepare($req,[
             'id_season' => $_SESSION['seasonId'],
             'id_championship' => $_SESSION['championshipId']

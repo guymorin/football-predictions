@@ -298,6 +298,8 @@ section form label {color:#333;vertical-align: middle;text-align:right;margin:0 
 section .menu form label, .center {text-align:center}
 section form label.right {text-align:right;padding-right:.2em;min-width:1em;}
 section form p {text-align:right;margin:.2em auto;padding:.4em;}
+section form .update p {text-align:center;}
+
 section .menu form p {margin:0;padding:0;}
 
 section form fieldset {
