@@ -17,8 +17,8 @@ if($manual==0) isset($_GET['manual'])      ? $manual=$error->check("Digit",$_GET
 if($modify==1){
 
     $rMatch="";
-    isset($_POST['id_matchgame'])   ? $idMatch = $error->check("Digit",$_POST['id_matchgame']) : null;
-    isset($_POST['result'])         ? $rMatch = $error->check("Digit",$_POST['result'], Language::title('result')) : null;
+    isset($_POST['id_match'])   ? $idMatch = array_filter($_POST['id_match']) : null;
+    isset($_POST['result'])         ? $rMatch = array_filter($_POST['result']) : null;
     isset($_POST['motivation1'])    ? $moMatch1 = array_filter($_POST['motivation1']) : null;
     isset($_POST['currentForm1'])   ? $seMatch1 = array_filter($_POST['currentForm1']) : null;
     isset($_POST['physicalForm1'])  ? $foMatch1 = array_filter($_POST['physicalForm1']) : null;
@@ -36,8 +36,9 @@ if($modify==1){
     
     $pdo->alterAuto('criterion');
     $req="";
-    
+        
     foreach($idMatch as $k){
+        
         if($rMatch[$k]!=""){
             $req.="UPDATE matchgame SET result='".$rMatch[$k]."' WHERE id_matchgame='".$k."';";
         }
@@ -88,7 +89,7 @@ if($modify==1){
             $req.="physicalForm1='";
             isset($foMatch1[$k]) ? $req.=$foMatch1[$k] : $req.=0;
             $req.="',";
-            $req.="meteo1='";
+            $req.="weather1='";
             isset($meMatch1[$k]) ? $req.=$meMatch1[$k] : $req.=0;
             $req.="',";
             $req.="bestPlayers1='";
@@ -109,7 +110,7 @@ if($modify==1){
             $req.="physicalForm2='";
             isset($foMatch2[$k]) ? $req.=$foMatch2[$k] : $req.=0;
             $req.="',";
-            $req.="meteo2='";
+            $req.="weather2='";
             isset($meMatch2[$k]) ? $req.=$meMatch2[$k] : $req.=0;
             $req.="',";
             $req.="bestPlayers2='";
