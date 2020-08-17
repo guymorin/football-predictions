@@ -118,6 +118,13 @@ class Errors
                         return null;
                     }
                     break;
+                case "Num":
+                    if(is_numeric($val)) return $val;
+                    else {
+                        $this->setError($title, Language::title('errorNum'));
+                        return null;
+                    }
+                    break;
                 case "Position":
                     $array=array('Goalkeeper','Defender','Midfielder','Forward');
                     if(in_array($val, $array)) return $val;
