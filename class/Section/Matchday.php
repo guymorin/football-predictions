@@ -7,6 +7,7 @@
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
 use FootballPredictions\Statistics;
+use FootballPredictions\Theme;
 
 class Matchday
 {
@@ -356,7 +357,7 @@ class Matchday
                     $val .= "<form id='" . ($d->id_matchday) . "' action='index.php?page=matchday' method='POST'>\n";
                     $val .= $form->inputHidden("matchdaySelect", $d->id_matchday . "," . $d->number);
                     $val .= "<td>";
-                    $val .= "<a href='#' onclick='document.getElementById(" . ($d->id_matchday) . ").submit();'>" . (Language::title('MD')) . ($d->number) . "</a>";
+                    $val .= "<button type='submit' value='".((Language::title('MD')) . ($d->number))."'>" . (Theme::icon('matchday') . " " . (Language::title('MD')) . ($d->number)) . "</button>";
                     $val .= "</td>\n";
                 }
                 $val .= "      <td>" . $d->nb . "</td>\n";
