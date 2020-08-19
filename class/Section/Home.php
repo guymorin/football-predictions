@@ -115,7 +115,7 @@ class Home
             $val .= "       </ul>\n";
             $val .= "<br /><small>" . Language::title('lastSave') . " : " . $lastDump . "</small>\n";
         }
-        
+        /*
         // ACCOUNT
         $val .= "    <li><h3>" . Theme::icon('account') . " " . (Language::title('account')) . "</h3>\n";
         $val .= "       <ul>\n";
@@ -132,7 +132,7 @@ class Home
         $val .= "            <li><a href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a></li>\n";
         $val .= "       </ul>\n";
         $val .= "    </li>\n";
-        
+        */
         // CHAMPIONSHIP
         $val .= "    <li><h3>" . Theme::icon('championship') . " " . (Language::title('championship')) . "</h3>\n";
         $req = "SELECT DISTINCT id_team  
@@ -215,7 +215,7 @@ class Home
         }
         $val .= "        </ul>\n";
         $val .= "    </li>\n";
-        
+        /*
         // TEAM
         $val .= "    <li><h3>" . Theme::icon('team') . " " . (Language::title('team')) . "</h3>\n";
         $val .= "        <ul>\n";
@@ -232,6 +232,7 @@ class Home
         $val .= "        </ul>\n";
         $val .= "    </li>\n";
         $val .= "</ul>\n";
+        */
         return $val;
     }
     
