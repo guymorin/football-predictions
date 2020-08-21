@@ -204,7 +204,10 @@ tr.current {
 	background:#cf7;
 }
 tr.current td {
-	padding:1.7em 0;
+	font-weight: bold;
+}
+tr.current button {
+	opacity: 0.5;
 }
 #fp-submenu .session {color:#444}
 #fp-submenu form, #fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}

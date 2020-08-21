@@ -39,6 +39,49 @@ if($counter > 0){
     echo $form->inputAction('modify');
     echo $form->inputHidden('manual','1');
     
+    // Predictions history
+    $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
+        SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
+        SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
+        FROM matchgame m
+        LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame
+        WHERE cr.motivation1 = :motivation1
+        AND cr.motivation2 = :motivation2
+        AND cr.currentForm1 = :currentForm1
+        AND cr.currentForm2 = :currentForm2
+        AND cr.physicalForm1 = :physicalForm1
+        AND cr.physicalForm2 = :physicalForm2
+        AND cr.weather1 = :weather1
+        AND cr.weather2 = :weather2
+        AND cr.bestPlayers1 = :bestPlayers1
+        AND cr.bestPlayers2 = :bestPlayers2
+        AND cr.marketValue1 = :marketValue1
+        AND cr.marketValue2 = :marketValue2
+        AND cr.home_away1 = :home_away1
+        AND cr.home_away2 = :home_away2
+        AND m.date < :mdate;";
+    $r = $pdo->prepare($req,[
+        'motivation1' => $d->motivation1,
+        'motivation2' => $d->motivation2,
+        'currentForm1' => $d->currentForm1,
+        'currentForm2' => $d->currentForm2,
+        'physicalForm1' => $d->physicalForm1,
+        'physicalForm2' => $d->physicalForm2,
+        'weather1' => $team1Weather,
+        'weather2' => $team2Weather,
+        'bestPlayers1' => $d->bestPlayers1,
+        'bestPlayers2' => $d->bestPlayers2,
+        'marketValue1' => $d->marketValue1,
+        'marketValue2' => $d->marketValue2,
+        'home_away1' => $d->home_away1,
+        'home_away2' => $d->home_away2,
+        'mdate' => $d->date
+    ]);
+    
+    $historyHome=criterion("predictionsHistoryHome",$r,$pdo);
+    $historyDraw=criterion("msNul",$r,$pdo);
+    $historyAway=criterion("predictionsHistoryAway",$r,$pdo);
+    
     
     // Predictions for the matchday
     foreach ($data as $d)
@@ -52,7 +95,8 @@ if($counter > 0){
             +$d->weather1
             +$d->bestPlayers1
             +$d->marketValue1
-            +$d->home_away1;
+            +$d->home_away1
+            +$historyHome;
         $sum2=
             $d->motivation2
             +$d->currentForm2
@@ -60,10 +104,12 @@ if($counter > 0){
             +$d->weather2
             +$d->bestPlayers2
             +$d->marketValue2
-            +$d->home_away2;
+            +$d->home_away2
+            +$historyAway;
         if($sum1>$sum2) $prediction="1";
         elseif($sum1==$sum2) $prediction="D";
         elseif($sum1<$sum2) $prediction="2";
+        if(($historyDraw>$sum1)&&($historyDraw>$sum2)) $prediction="D";
         if($prediction==$d->result) $win=" ";
             
         echo "	 <table class='manual'>\n";
@@ -123,6 +169,15 @@ if($counter > 0){
         echo "  		  <td><input size='1' type='number' placeholder='0' name='home_away2[$id]' value='".$d->home_away2."'></td>\n";
         echo "          </tr>\n";
     
+        
+        echo "          <tr>\n";
+        echo "            <td>" . (Language::title('predictionsHistory')) . "</td>\n";
+        echo "            <td>$historyHome</td>\n";
+        echo "            <td>$historyDraw</td>\n";
+        echo "            <td>$historyAway</td>\n";
+        echo "          </tr>\n";
+        
+        
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('criterionSum')) . "</td>";
         echo "  		  <td>$sum1</td>\n";

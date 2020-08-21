@@ -17,7 +17,7 @@ if($modify==1){
     $cpt=0;
     $req="";
     foreach($idMatch as $k => $v){
-        isset($_POST['result'])         ? $rMatch[$v]=$error->check("Digit",$_POST['result'][$v], Language::title('result')) : null;
+        isset($_POST['result'])         ? $rMatch[$v]=$error->check("Alnum",$_POST['result'][$v], Language::title('result')) : null;
         isset($_POST['date'])           ? $dMatch[$v]=$error->check("Date",$_POST['date'][$v], Language::title('date')) : null;
         isset($_POST['odds1'])          ? $c1Match[$v]=$error->check("Num",$_POST['odds1'][$v], Language::title('odds').' 1') : null;
         isset($_POST['oddsD'])          ? $cNMatch[$v]=$error->check("Num",$_POST['oddsD'][$v], Language::title('odds').' '.Language::title('draw')) : null;

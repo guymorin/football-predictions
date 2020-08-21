@@ -350,7 +350,10 @@ class Matchday
             {
                 if(isset($_SESSION['matchdayNum']) && $d->number==$_SESSION['matchdayNum']) {
                     $val .= "  <tr class='current'>\n";
-                    $val .= "      <td>" . (Language::title('MD')) . ($d->number) . "</td>\n";
+                    $val .= "<form>\n";
+                    $val .= "<td>";
+                    $val .= "<button disabled type='submit' value='".((Language::title('MD')) . ($d->number))."'>" . (Theme::icon('matchday') . " " . (Language::title('MD')) . ($d->number)) . "</button>";
+                    $val .= "</td>\n";
                 }
                 else {
                     $val .= "  <tr>\n";
