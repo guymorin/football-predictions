@@ -409,8 +409,8 @@ button[type=submit], input[type=submit], input[type=button], input[type=reset] {
 }
 .update a:hover,.update a:focus,
 section .menu li ul li a:hover,section .menu li ul li a:focus,
-button[type=submit]:hover, input[type=submit]:hover, input[type=button]:hover, input[type=reset]:hover,
-button[type=submit]:focus, input[type=submit]:focus, input[type=button]:focus, input[type=reset]:focus {
+button[type=submit]:hover:enabled, input[type=submit]:hover:enabled, input[type=button]:hover:enabled, input[type=reset]:hover:enabled,
+button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=button]:focus:enabled, input[type=reset]:focus:enabled {
 	background:#fff linear-gradient(#fff,#fff);
 	transition: background .5s, border .5s;
 	border:1px solid #000;
