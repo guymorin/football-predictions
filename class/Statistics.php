@@ -199,7 +199,7 @@ class Statistics
             +$this->away
             +$this->predictionsHistoryAway;
             if($this->sum1 > $this->sum2)         $this->prediction = '1';
-            elseif($this->sum1 == $this->sum2)    $this->prediction = Language::title('draw');
+            elseif($this->sum1 == $this->sum2)    $this->prediction = 'D';
             elseif($this->sum1 < $this->sum2)     $this->prediction = '2';
             
             $this->playedOdds=0;
@@ -207,13 +207,14 @@ class Statistics
                 case "1":
                     $this->playedOdds = $d->odds1;
                     break;
-                case (Language::title('draw')):
+                case ("D"):
                     $this->playedOdds = $d->oddsD;
                     break;
                 case "2":
                     $this->playedOdds = $d->odds2;
                     break;
             }
+
             if($this->prediction == $d->result){
                 $this->win = Theme::icon('winOK');
                 $this->success++;
@@ -255,7 +256,10 @@ class Statistics
             } elseif($page == 'matchday') {
                 $val.="  		<tr>\n";
                 $val.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
-                $val.="  		  <td>".$this->prediction."</td>\n";
+                $val.="  		  <td>";
+                if($this->prediction=='D') $val.=Language::title('draw');
+                else $val.=$this->prediction;
+                $val.="</td>\n";
                 $val.="  		  <td>";
                 if($d->result=='D') $val.=Language::title('draw');
                 else $val.=$d->result;

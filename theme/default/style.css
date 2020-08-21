@@ -203,9 +203,6 @@ nav a {
 tr.current {
 	background:#cf7;
 }
-tr.current td {
-	font-weight: bold;
-}
 tr.current button {
 	opacity: 0.5;
 }
