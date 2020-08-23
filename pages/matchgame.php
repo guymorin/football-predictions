@@ -21,9 +21,9 @@ isset($_POST['id_matchgame'])   ? $idMatch=$error->check("Digit",$_POST['id_matc
 isset($_POST['team_1'])         ? $team1=$error->check("Digit",$_POST['team_1'], Language::title('team').' 1') : null;
 isset($_POST['team_2'])         ? $team2=$error->check("Digit",$_POST['team_2'], Language::title('team').' 2') : null;
 isset($_POST['result'])         ? $result=$error->check("Result",$_POST['result'], Language::title('result')) : null;
-isset($_POST['odds1'])          ? $odds1=$error->check("Digit",$_POST['odds1'], Language::title('odds').' 1') : null;
-isset($_POST['oddsD'])          ? $oddsD=$error->check("Digit",$_POST['oddsD'], Language::title('odds').' '.Language::title('draw')) : null;
-isset($_POST['odds2'])          ? $odds2=$error->check("Digit",$_POST['odds2'], Language::title('odds').' 2') : null;
+isset($_POST['odds1'])          ? $odds1=$error->check("Num",$_POST['odds1'], Language::title('odds').' 1') : null;
+isset($_POST['oddsD'])          ? $oddsD=$error->check("Num",$_POST['oddsD'], Language::title('odds').' '.Language::title('draw')) : null;
+isset($_POST['odds2'])          ? $odds2=$error->check("Num",$_POST['odds2'], Language::title('odds').' 2') : null;
 isset($_POST['date'])           ? $date=$error->check("Date",$_POST['date'], Language::title('date')) : null;
 
 

@@ -77,7 +77,7 @@ class Errors
     }
     /**
      * 
-     * @param string $check Type of check (Action, Alnum, Digit, Position, Result)
+     * @param string $check Type of check (Action, Alnum, Digit, Num, Position, Result)
      * @param int|string $val Value to check
      * @return int|string|NULL Value
      */
