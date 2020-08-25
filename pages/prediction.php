@@ -15,9 +15,8 @@ if($manual==0) isset($_GET['manual'])      ? $manual=$error->check("Digit",$_GET
 
 // Modified popup
 if($modify==1){
-
     $rMatch="";
-    isset($_POST['id_match'])   ? $idMatch = array_filter($_POST['id_match']) : null;
+    isset($_POST['id_match'])       ? $idMatch = array_filter($_POST['id_match']) : null;
     isset($_POST['result'])         ? $rMatch = array_filter($_POST['result']) : null;
     isset($_POST['motivation1'])    ? $moMatch1 = array_filter($_POST['motivation1']) : null;
     isset($_POST['currentForm1'])   ? $seMatch1 = array_filter($_POST['currentForm1']) : null;
@@ -133,6 +132,5 @@ else {
     changeMD($pdo,"prediction");
     if($manual==1) require 'prediction_matchs_auto.php';
     else require 'prediction_matchs_manual.php';
-    
 }
 ?>  

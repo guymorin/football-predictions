@@ -253,8 +253,8 @@ if($counter > 0){
             }
         }
         
-        if(($d->result!="")||(isset($d->weather1))) $team1Weather=$d->weather1;
-        if(($d->result!="")||(isset($d->weather2))) $team2Weather=$d->weather2;
+        if($d->result!="") $team1Weather=$d->weather1;
+        if($d->result!="") $team2Weather=$d->weather2;
         
         
         // Predictions history
@@ -371,13 +371,13 @@ if($counter > 0){
         echo "  		  <td>" . (Language::title('weather')) . " <big>".$cloud."</big></td>\n";
         if($d->result!="") echo "<td>".$team1Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' type='text' readonly name='meteo1[$id]' value='".$team1Weather."'></td>\n";
+            echo "  		  <td><input size='1' type='text' readonly name='weather1[$id]' value='".$team1Weather."'></td>\n";
         }
         echo "  		  <td></td>\n";
         
         if($d->result!="") echo "<td>".$team2Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' type='text' readonly name='meteo2[$id]' value='".$team2Weather."'></td>\n";
+            echo "  		  <td><input size='1' type='text' readonly name='weather2[$id]' value='".$team2Weather."'></td>\n";
         }
         
         echo "          </tr>\n";
