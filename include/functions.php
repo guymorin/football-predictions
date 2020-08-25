@@ -93,9 +93,11 @@ function criterion($type,$data,$pdo){
                     'id_season' => $_SESSION['seasonId']
                 ]);
                 
-                foreach($r as $v) $res[] = $v->team;
-                
-                if(in_array($data->eq1,$res)) $v=1;
+                if($r == null) $v=0;
+                else {
+                    foreach($r as $valTeam) $res[] = $valTeam->team;
+                    if(in_array($data->eq1,$res)) $v=1;
+                }
             }
             break;
         case "serieC2":
@@ -127,9 +129,11 @@ function criterion($type,$data,$pdo){
                     'id_season' => $_SESSION['seasonId']
                 ]);
                 
-                foreach($r as $v) $res[] = $v->team;
-                
-                if(in_array($data->eq2,$res)) $v=1;
+                if($r == null) $v=0;
+                else {
+                    foreach($r as $valTeam) $res[] = $valTeam->team;
+                    if(in_array($data->eq2,$res)) $v=1;
+                }                
             }
             break;
         case "v1":

@@ -8,7 +8,7 @@ echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
 
 $prediction = $team1Weather = $team2Weather = $cloud = $history = "";
 
-$req="SELECT m.id_matchgame,
+$req="SELECT DISTINCT m.id_matchgame,
 cr.motivation1,cr.motivation2,
 cr.currentForm1,cr.currentForm2,
 cr.physicalForm1,cr.physicalForm2,
@@ -22,8 +22,14 @@ m.result, m.date FROM matchgame m
 LEFT JOIN team c1 ON m.team_1=c1.id_team 
 LEFT JOIN team c2 ON m.team_2=c2.id_team 
 LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame 
-WHERE m.id_matchday=:id_matchday ORDER BY m.date;";
+LEFT JOIN matchday md ON md.id_matchday=m.id_matchday   
+WHERE md.id_matchday=:id_matchday 
+AND md.id_season=:id_season 
+AND md.id_championship = :id_championship 
+ORDER BY m.date;";
 $data = $pdo->prepare($req,[
+    'id_season' => $_SESSION['seasonId'],
+    'id_championship' => $_SESSION['championshipId'],
     'id_matchday' => $_SESSION['matchdayId']
 ],true);
 $counter = $pdo->rowCount();
