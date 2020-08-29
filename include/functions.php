@@ -1,7 +1,7 @@
 <?php
 use FootballPredictions\Language;
 
-function result($type,$pdo){
+function result($type,$pdo,$d='',$team1Weather=0,$team2Weather=0){
     $r='';
     switch($type){
         case "selectCriterion":
@@ -321,13 +321,13 @@ function criterion($type,$data,$pdo){
             $v = $r->marketValue;
             break;
         case "predictionsHistoryHome":
-            if(isset($data->Dom)) $v=$data->Dom;
+            if(isset($data->Home)) $v=$data->Home;
             break;
-        case "msNul":
-            if(isset($data->Nul)) $v=$data->Nul;
+        case "predictionsHistoryDraw":
+            if(isset($data->Draw)) $v=$data->Draw;
             break;
         case "predictionsHistoryAway":
-            if(isset($data->Ext)) $v=$data->Ext;
+        if(isset($data->Away)) $v=$data->Away;
             break;
     }
     return $v;

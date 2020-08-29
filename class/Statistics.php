@@ -25,6 +25,7 @@ class Statistics
     private $playedOddsSum;
     private $prediction;
     private $predictionsHistoryAway;
+    private $predictionsHistoryDraw;
     private $predictionsHistoryHome;
     private $profit;
     private $profitSum;
@@ -153,29 +154,12 @@ class Statistics
             $this->away = $d->home_away2;
             
             // Predictions history
-            $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
-                    SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
-                    SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
-                    FROM matchgame m
-                    LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame
-                    WHERE cr.motivation1='".$d->motivation1."'
-                    AND cr.motivation2='".$d->motivation2."'
-                    AND cr.currentForm1='".$d->currentForm1."'
-                    AND cr.currentForm2='".$d->currentForm2."'
-                    AND cr.physicalForm1='".$d->physicalForm1."'
-                    AND cr.physicalForm2='".$d->physicalForm2."'
-                    AND cr.weather1='".$d->weather1."'
-                    AND cr.weather2='".$d->weather2."'
-                    AND cr.bestPlayers1='".$d->bestPlayers1."'
-                    AND cr.bestPlayers2='".$d->bestPlayers2."'
-                    AND cr.marketValue1='".$d->marketValue1."'
-                    AND cr.marketValue2='".$d->marketValue2."'
-                    AND cr.home_away1='".$d->home_away1."'
-                    AND cr.home_away2='".$d->home_away2."'
-                    AND m.date<'".$d->date."'";
-            $r = $pdo->prepare($req,null,true);
+            $historyHome=$historyDraw=$historyAway=0;
+            $r = result('history',$pdo,$d,$d->weather1,$d->weather2);
             $this->predictionsHistoryHome = criterion("predictionsHistoryHome",$r,$pdo);
+            $this->predictionsHistoryDraw = criterion("predictionsHistoryDraw",$r,$pdo);
             $this->predictionsHistoryAway = criterion("predictionsHistoryAway",$r,$pdo);
+            
             
             // Sum
             $this->win = 0;

@@ -152,10 +152,10 @@ if($counter > 0){
         
         
         // Predictions history
-        $r = result('history',$pdo);
-        
+        $historyHome=$historyDraw=$historyAway=0;
+        $r = result('history',$pdo,$d,$team1Weather,$team2Weather);
         $historyHome=criterion("predictionsHistoryHome",$r,$pdo);
-        $historyDraw=criterion("msNul",$r,$pdo);
+        $historyDraw=criterion("predictionsHistoryDraw",$r,$pdo);
         $historyAway=criterion("predictionsHistoryAway",$r,$pdo);
         
 // Criterion sum
@@ -277,7 +277,7 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <td><strong>" . (Language::title('criterionSum')) . "</strong></td>\n";
         echo "  		  <td><strong>$sum1</strong></td>\n";
-        echo "  		  <td></td>\n";
+        echo "  		  <td>$historyDraw</td>\n";
         echo "  		  <td><strong>$sum2</strong></td>\n";
         echo "          </tr>\n";
         

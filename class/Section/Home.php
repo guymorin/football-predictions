@@ -178,11 +178,14 @@ class Home
             
             if($counter>0){
                 $_SESSION['noMatchday'] = false;
+                
+                /*
                 // Select form
                 $list = "<form action='index.php?page=matchday' method='POST'>\n";
                 $list .= $form->labelBr(Language::title('selectTheMatchday'));
                 $list .= $form->selectSubmit("matchdaySelect", $response);
                 $list .= "</form>\n";
+                */
                 
                 // Quicknav button
                 $req = "SELECT DISTINCT j.id_matchday, j.number FROM matchday j
@@ -206,7 +209,7 @@ class Home
                     $val .= "<br />\n";
                 }
                 
-                $val .=  $list;                
+                //$val .=  $list;                
             } else {
                 $_SESSION['noMatchday'] = true;
                 $val .= "            <li><a href='index.php?page=matchday&create=1'>" . (Language::title('createTheMatchdays')) . "</a></li>\n";

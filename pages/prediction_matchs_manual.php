@@ -24,17 +24,20 @@ if($counter > 0){
     echo $form->inputAction('modify');
     echo $form->inputHidden('manual','1');
     
-    // Predictions history
-    $r = result('history',$pdo);
-    
-    $historyHome=criterion("predictionsHistoryHome",$r,$pdo);
-    $historyDraw=criterion("msNul",$r,$pdo);
-    $historyAway=criterion("predictionsHistoryAway",$r,$pdo);
+
     
     
     // Predictions for the matchday
     foreach ($data as $d)
     {
+        // Predictions history
+        $historyHome=$historyDraw=$historyAway=0;
+        $r = result('history',$pdo, $d, $d->weather1, $d->weather2);
+        $historyHome=criterion("predictionsHistoryHome",$r,$pdo);
+        $historyDraw=criterion("predictionsHistoryDraw",$r,$pdo);
+        $historyAway=criterion("predictionsHistoryAway",$r,$pdo);
+        
+        
         $win="";
         $id=$d->id_matchgame;
         $sum1=
@@ -130,7 +133,7 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('criterionSum')) . "</td>";
         echo "  		  <td>$sum1</td>\n";
-        echo "  		  <td></td>\n";
+        echo "  		  <td>$historyDraw</td>\n";
         echo "  		  <td>$sum2</td>\n";
         echo "          </tr>\n";
     
