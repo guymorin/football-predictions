@@ -8,30 +8,8 @@ echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
 
 $prediction = $team1Weather = $team2Weather = $cloud = $history = "";
 
-$req="SELECT DISTINCT m.id_matchgame,
-cr.motivation1,cr.motivation2,
-cr.currentForm1,cr.currentForm2,
-cr.physicalForm1,cr.physicalForm2,
-cr.weather1,cr.weather2,
-cr.bestPlayers1,cr.bestPlayers2,
-cr.marketValue1,cr.marketValue2,
-cr.home_away1,cr.home_away2,
-c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
-c1.weather_code,
-m.result, m.date FROM matchgame m 
-LEFT JOIN team c1 ON m.team_1=c1.id_team 
-LEFT JOIN team c2 ON m.team_2=c2.id_team 
-LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame 
-LEFT JOIN matchday md ON md.id_matchday=m.id_matchday   
-WHERE md.id_matchday=:id_matchday 
-AND md.id_season=:id_season 
-AND md.id_championship = :id_championship 
-ORDER BY m.date;";
-$data = $pdo->prepare($req,[
-    'id_season' => $_SESSION['seasonId'],
-    'id_championship' => $_SESSION['championshipId'],
-    'id_matchday' => $_SESSION['matchdayId']
-],true);
+// Select data
+$data = result('selectCriterion',$pdo);
 $counter = $pdo->rowCount();
 
 if($counter > 0){
