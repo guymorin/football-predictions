@@ -52,103 +52,19 @@ if($counter > 0){
     
     /* Requests */
     // Best teams home
-    $req="
-    SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchs,
-    SUM(
-        CASE WHEN m.result = '1' AND m.team_1=c.id_team THEN 3 ELSE 0 END +
-        CASE WHEN m.result = 'D' AND m.team_1=c.id_team THEN 1 ELSE 0 END
-    ) as points
-    FROM team c
-    LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team
-    LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship)
-    LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday
-    WHERE scc.id_season=:id_season
-    AND scc.id_championship=:id_championship
-    AND (c.id_team=m.team_1 OR c.id_team=m.team_2)
-    AND m.result<>''
-    GROUP BY c.id_team,c.name
-    ORDER BY points DESC
-    LIMIT 0,5";
-    $r = $pdo->prepare($req,[
-        'id_season' => $_SESSION['seasonId'],
-        'id_championship' => $_SESSION['championshipId']
-    ],true);
-    
+    $r = result('bestHome',$pdo);
     foreach($r as $v) $domBonus[] = $v->id_team;
     
     // Worst teams home
-    $req="
-    SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchs,
-    SUM(
-        CASE WHEN m.result = '1' AND m.team_1=c.id_team THEN 3 ELSE 0 END +
-        CASE WHEN m.result = 'D' AND m.team_1=c.id_team THEN 1 ELSE 0 END
-    ) as points
-    FROM team c
-    LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team
-    LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship)
-    LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday
-    WHERE scc.id_season=:id_season 
-    AND scc.id_championship=:id_championship 
-    AND (c.id_team=m.team_1 OR c.id_team=m.team_2)
-    AND m.result<>''
-    GROUP BY c.id_team,c.name
-    ORDER BY points ASC
-    LIMIT 0,5";
-    $r = $pdo->prepare($req,[
-        'id_season' => $_SESSION['seasonId'],
-        'id_championship' => $_SESSION['championshipId']
-    ],true);
-    
+    $r = result('worstHome',$pdo);
     foreach($r as $v) $domMalus[] = $v->id_team;
     
     // Best teams away
-    $req="
-    SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchs,
-    SUM(
-        CASE WHEN m.result = '1' AND m.team_2=c.id_team THEN 3 ELSE 0 END +
-        CASE WHEN m.result = 'D' AND m.team_2=c.id_team THEN 1 ELSE 0 END
-    ) as points
-    FROM team c
-    LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team
-    LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship)
-    LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday
-    WHERE scc.id_season=:id_season
-    AND scc.id_championship=:id_championship
-    AND (c.id_team=m.team_1 OR c.id_team=m.team_2)
-    AND m.result<>''
-    GROUP BY c.id_team,c.name
-    ORDER BY points ASC
-    LIMIT 0,5";
-    $r = $pdo->prepare($req,[
-        'id_season' => $_SESSION['seasonId'],
-        'id_championship' => $_SESSION['championshipId']
-    ],true);
-    
+    $r = result('bestAway',$pdo);
     foreach($r as $v) $extBonus[] = $v->id_team;
     
     // Worst teams away
-    $req="
-    SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchs,
-    SUM(
-        CASE WHEN m.result = '1' AND m.team_2=c.id_team THEN 3 ELSE 0 END +
-        CASE WHEN m.result = 'D' AND m.team_2=c.id_team THEN 1 ELSE 0 END
-    ) as points
-    FROM team c
-    LEFT JOIN season_championship_team scc ON c.id_team=scc.id_team
-    LEFT JOIN matchday j ON (scc.id_season=j.id_season AND scc.id_championship=j.id_championship)
-    LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday
-    WHERE scc.id_season=:id_season
-    AND scc.id_championship=:id_championship
-    AND (c.id_team=m.team_1 OR c.id_team=m.team_2)
-    AND m.result<>''
-    GROUP BY c.id_team,c.name
-    ORDER BY points DESC
-    LIMIT 0,5";
-    $r = $pdo->prepare($req,[
-        'id_season' => $_SESSION['seasonId'],
-        'id_championship' => $_SESSION['championshipId']
-    ],true);
-    
+    $r = result('worstAway',$pdo);
     foreach($r as $v) $extMalus[] = $v->id_team;
 
     // Predictions for the matchday
@@ -258,43 +174,7 @@ if($counter > 0){
         
         
         // Predictions history
-        $req="SELECT SUM(CASE WHEN m.result = '1' THEN 1 ELSE 0 END) AS Home,
-        SUM(CASE WHEN m.result = 'D' THEN 1 ELSE 0 END) AS Draw,
-        SUM(CASE WHEN m.result = '2' THEN 1 ELSE 0 END) AS Away
-        FROM matchgame m
-        LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame
-        WHERE cr.motivation1 = :motivation1
-        AND cr.motivation2 = :motivation2
-        AND cr.currentForm1 = :currentForm1
-        AND cr.currentForm2 = :currentForm2
-        AND cr.physicalForm1 = :physicalForm1
-        AND cr.physicalForm2 = :physicalForm2
-        AND cr.weather1 = :weather1
-        AND cr.weather2 = :weather2
-        AND cr.bestPlayers1 = :bestPlayers1
-        AND cr.bestPlayers2 = :bestPlayers2
-        AND cr.marketValue1 = :marketValue1
-        AND cr.marketValue2 = :marketValue2
-        AND cr.home_away1 = :home_away1
-        AND cr.home_away2 = :home_away2
-        AND m.date < :mdate;";
-        $r = $pdo->prepare($req,[
-            'motivation1' => $d->motivation1,
-            'motivation2' => $d->motivation2,
-            'currentForm1' => $d->currentForm1,
-            'currentForm2' => $d->currentForm2,
-            'physicalForm1' => $d->physicalForm1,
-            'physicalForm2' => $d->physicalForm2,
-            'weather1' => $team1Weather,
-            'weather2' => $team2Weather,
-            'bestPlayers1' => $d->bestPlayers1,
-            'bestPlayers2' => $d->bestPlayers2,
-            'marketValue1' => $d->marketValue1,
-            'marketValue2' => $d->marketValue2,
-            'home_away1' => $d->home_away1,
-            'home_away2' => $d->home_away2,
-            'mdate' => $d->date
-        ]);
+        $r = result('history',$pdo);
         
         $historyHome=criterion("predictionsHistoryHome",$r,$pdo);
         $historyDraw=criterion("msNul",$r,$pdo);
