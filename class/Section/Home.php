@@ -162,10 +162,12 @@ class Home
         $val .= "            <li><a href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a></li>\n";
         if(isset($_SESSION['matchdayId'])){
             $val .= "            <li><a href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a></li>\n";
+        /*
             $val .= "            <li><a href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=results'>" . (Language::title('results')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=matchgame&create=1'>" . (Language::title('createAMatch')) . "</a></li>\n";
+        */
         } else {
             $req = "SELECT DISTINCT id_matchday, number
             FROM matchday
@@ -204,10 +206,7 @@ class Home
                     $val .= "<br />\n";
                 }
                 
-                $val .=  $list;
-                $val .= "<br />\n";
-                $val .= "            <li><a href='index.php?page=matchday&create=1'>" . (Language::title('createAMatchday')) . "</a></li>\n";
-                
+                $val .=  $list;                
             } else {
                 $_SESSION['noMatchday'] = true;
                 $val .= "            <li><a href='index.php?page=matchday&create=1'>" . (Language::title('createTheMatchdays')) . "</a></li>\n";
