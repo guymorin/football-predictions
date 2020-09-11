@@ -56,7 +56,7 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
 else {
     echo "<h3>" . (Language::title('listChampionships')) . "</h3>\n";
     echo "<h4>" . $_SESSION['seasonName'] . "</h4>\n";
-    echo Season::list($pdo);
+    echo Season::list($pdo,$form);
 }
 ?>
 </section>

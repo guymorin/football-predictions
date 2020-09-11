@@ -7,7 +7,6 @@
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
-use \PDO;
 
 class Season
 {
@@ -69,7 +68,7 @@ class Season
             $list = "<form action='index.php?page=championship' method='POST'>\n";
             $list.= $form->labelBr(Language::title('season'));
             $response = $pdo->query($req);
-            $list.= $form->selectSubmit("seasonSelect",$response);
+            $list.= $form->selectSubmit("seasonSelect",$response, true, true);
             $list.= "</form>\n";
             
             // Quick nav button
@@ -185,8 +184,8 @@ class Season
         popup(Language::title('modified'),"index.php?page=season");
     }
     
-    static function list($pdo){
-        $req = "SELECT c.name, COUNT(*) as nb
+    static function list($pdo, $form){
+        $req = "SELECT c.id_championship, c.name, COUNT(*) as nb
         FROM championship c
         LEFT JOIN season_championship_team scc ON c.id_championship=scc.id_championship
         WHERE scc.id_season=:id_season
@@ -205,11 +204,20 @@ class Season
         {
             if($d->name == $_SESSION['championshipName']) {
                 $val .= "  <tr class='current'>\n";
+                $val .= "<form>\n";
+                $val .= "<td>";
+                $val .= "<button disabled type='submit' value='" . ($d->id_championship) . "," . ($d->name)."'>" . (Theme::icon('championship') . " " . ($d->name)) . "</button>";
+                $val .= "</td>\n";
             } else {
-                $val .= "  <tr>\n";     
+                $val .= "  <tr>\n";
+                $val .= "<form id='" . ($d->id_championship) . "' action='index.php' method='POST'>\n";
+                $val .= $form->inputHidden("championshipSelect", $d->id_championship . "," . $d->name);
+                $val .= "<td>";
+                $val .= "<button type='submit' value='". ($d->name) . "'>" . (Theme::icon('championship') . " " . ($d->name)) . "</button>";
+                $val .= "</td>\n";
             }
-            $val .= "      <td>" . $d->name . "</td>\n";
             $val .= "      <td>" . $d->nb . "</td>\n";
+            $val .= "</form>\n";
             $val .= "  </tr>\n";
         }
         $val .= "</table>\n";

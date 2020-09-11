@@ -92,7 +92,7 @@ class Championship
             $list.="<form action='index.php' method='POST'>\n";
             $list.= $form->labelBr(Language::title('championship'));
             $response = $pdo->query($req);
-            $list.= $form->selectSubmit("championshipSelect", $response);
+            $list.= $form->selectSubmit("championshipSelect", $response, true, true);
             $list.="</form>\n";
             
             // Quick nav button
