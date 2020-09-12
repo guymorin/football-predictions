@@ -113,9 +113,11 @@ class Player
         FROM player j
         LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
         LEFT JOIN team c ON scj.id_team=c.id_team
-        WHERE j.id_player=:id_player;";
+        WHERE j.id_player=:id_player 
+        AND scj.id_season=:id_season;";
         $data = $pdo->prepare($req,[
-            'id_player' => $playerId
+            'id_player' => $playerId,
+            'id_season' => $_SESSION['seasonId']
         ]);
         $val = '';
         $val .= "<form action='index.php?page=player' method='POST'>\n";

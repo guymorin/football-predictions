@@ -50,7 +50,36 @@ if(isset($_SESSION['matchdayId'])){
                 } else {
                     $req.="UPDATE teamOfTheWeek SET rating='".$v."' WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';";
                 }
-            
+                
+                $teamPlayerId = 0;
+                $r3 = "SELECT c.id_team
+                FROM player j
+                LEFT JOIN season_team_player scj ON scj.id_player=j.id_player
+                LEFT JOIN season_championship_team scc ON scc.id_team=scj.id_team
+                LEFT JOIN team c ON c.id_team=scj.id_team 
+                WHERE scc.id_season = :id_season 
+                AND scc.id_championship = :id_championship 
+                AND j.id_player = :id_player;";
+                $data = $pdo->prepare($r3,[
+                    'id_season' => $_SESSION['seasonId'],
+                    'id_championship' => $_SESSION['championshipId'],
+                    'id_player' => $k
+                ]);
+                if($data->id_team!=null){
+                    $teamPlayerId = $data->id_team;
+                                
+                    $r4 = "SELECT COUNT(*) as nb 
+                    FROM season_team_player stp 
+                    WHERE id_season = :id_season
+                    AND id_player = :id_player;";
+                    $data = $pdo->prepare($r4,[
+                        'id_season' => $_SESSION['seasonId'],
+                        'id_player' => $k
+                    ]);
+                    if($data->nb==0){
+                        $req.="INSERT INTO season_team_player VALUES(NULL,'".$_SESSION['seasonId']."','".$teamPlayerId."','".$k."');";
+                    }
+                }
             }
         }
         $pdo->exec($req);
