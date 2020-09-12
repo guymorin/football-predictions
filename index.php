@@ -49,7 +49,7 @@ if(isset($_GET['page'])) $page=$error->check("Alnum",$_GET['page']);
         $req = "UPDATE fp_user SET last_championship = '" . $_SESSION['championshipId'] . "'
         WHERE id_fp_user = '" . $_SESSION['userId'] . "';";
         $pdo->exec($req);
-        header('Location:index.php');
+        header('Location:index.php?page=matchday');
     }
     // Matchday selected
     if(isset($_POST['matchdaySelect'])&&(!isset($_SESSION['matchdayId']))){
@@ -85,7 +85,7 @@ if($page!='install'){
     elseif(
         (empty($_SESSION['championshipId']))
         &&($page=="")
-        ) $page="championship";
+        ) $page="season";
 }
 
 /* Header */
