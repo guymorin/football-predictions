@@ -54,14 +54,10 @@ class Player
         $req .= "DELETE FROM teamOfTheWeek 
         WHERE id_player=:id_player;";
         $req .= "DELETE FROM season_team_player
-        WHERE id_season=:id_season
-        AND id_team=:id_team
-        AND id_player=:id_player;";
+        WHERE id_player=:id_player;";
         $req .= "DELETE FROM player
         WHERE id_player=:id_player;";
         $data = $pdo->prepare($req,[
-            'id_season' => $_SESSION['seasonId'],
-            'id_team' => $teamId,
             'id_player' => $playerId
         ]);
         $pdo->alterAuto('teamOfTheWeek');
@@ -163,8 +159,7 @@ class Player
         if($data->nb==0){
             $req.="INSERT INTO season_team_player
             VALUES(NULL,:id_season,:id_team,:id_player);";
-        }
-        if($data[0]==1){
+        } else {
             $req.="UPDATE season_team_player SET id_season=:id_season,id_team=:id_team WHERE id_player=:id_player;";
         }
         $pdo->prepare($req,[

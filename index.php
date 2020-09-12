@@ -118,7 +118,7 @@ function myFunction() {
 	<?= Home::menu();?>
 	</nav>
 	<?= App::setTitle(Language::title('site'));?>
-    <h1><a href="/"><a href="/"><?= App::getTitle();?></a></h1>
+    <h1><a href="/"><a href="/"><?= App::getTitle();?><?= " " . $_SESSION['seasonName'];?></a></h1>
 </header>
 <section>
 <?php
