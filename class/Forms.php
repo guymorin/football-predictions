@@ -421,7 +421,7 @@ class Forms
     public function selectPlayer($pdo, $name='id_player', $selected=null, $data=null){
         
         if($data == null){
-            $req = "SELECT j.id_player, j.name, j.firstname, c.name as team
+            $req = "SELECT DISTINCT j.id_player, j.name, j.firstname, c.name as team
             FROM player j
             LEFT JOIN season_team_player scj ON scj.id_player=j.id_player
             LEFT JOIN season_championship_team scc ON scc.id_team=scj.id_team
