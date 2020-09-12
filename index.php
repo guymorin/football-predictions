@@ -137,4 +137,3 @@ if($page!='' && $page!='dump') require("pages/" . $page . ".php");
 </body>
 
 </html>
-

@@ -12,6 +12,11 @@ echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " 
 // Values
 $teamOfTheWeek = 0;
 isset($_POST['teamOfTheWeek']) ? $teamOfTheWeek=$error->check("Action",$_POST['teamOfTheWeek']) : null;
+isset($_POST['deletePlayer']) ? $deletePlayer = $_POST['deletePlayer'] : $deletePlayer = array();
+isset($_POST['id_player']) ? $idPlayer = $_POST['id_player'] : $idPlayer = array();
+isset($_POST['rating']) ? $ratingPlayer = $_POST['rating'] : $ratingPlayer = array();
+
+$val = array_combine($idPlayer,$ratingPlayer);
 
 // Only if a matchday is selected
 if(isset($_SESSION['matchdayId'])){
@@ -22,32 +27,32 @@ if(isset($_SESSION['matchdayId'])){
     if($teamOfTheWeek==1){
         $pdo->alterAuto('teamOfTheWeek');
         $req="";
-        foreach($deletePlayer as $d){
-            $req="DELETE FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$d."';";
-            $pdo->exec($req);
+        if(sizeof($deletePlayer)>0){
+            foreach($deletePlayer as $d){
+                $r1="DELETE FROM teamOfTheWeek WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$d."';";
+                $pdo->exec($r1);
+            }
+            $pdo->alterAuto('teamOfTheWeek');
         }
-        $pdo->alterAuto('teamOfTheWeek');
         $req="";
         foreach($val as $k=>$v){
             $v=$error->check("Digit",$v);
             if(($v>0)&&(!in_array($k,$deletePlayer))){
-                $req = "SELECT COUNT(*) as nb FROM teamOfTheWeek 
+                $r2 = "SELECT COUNT(*) as nb FROM teamOfTheWeek 
                 WHERE id_matchday = :id_matchday 
                 AND id_player = :id_player;";
-                $data = $pdo->query($req,[
+                $data = $pdo->prepare($r2,[
                     'id_matchday' => $_SESSION['matchdayId'],
                     'id_player' => $k
-                ]);              
-                
+                ]);
                 if($data->nb==0){
                     $req.="INSERT INTO teamOfTheWeek VALUES(NULL,'".$_SESSION['matchdayId']."','".$k."','".$v."');";
-                }
-                if($data->nb==1){
+                } else {
                     $req.="UPDATE teamOfTheWeek SET rating='".$v."' WHERE id_matchday='".$_SESSION['matchdayId']."' AND id_player='".$k."';";
                 }
             
             }
-        } 
+        }
         $pdo->exec($req);
         popup(Language::title('modified'),"index.php?page=teamOfTheWeek");
     }
@@ -55,6 +60,7 @@ if(isset($_SESSION['matchdayId'])){
     // Modify form
     else {
         echo "<h3>" . (Language::title('teamOfTheWeek')) . "</h3>\n";
+        echo "<p><a href='/index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . " ?</a></p>";
         echo "<table id='teamOfTheWeek'>\n";
         echo "  <tr>\n";
         echo "      <th> </th>\n";
@@ -88,7 +94,7 @@ if(isset($_SESSION['matchdayId'])){
             echo "</td>\n";
             $form->setValue('rating',$d->rating);
             echo "      <td>" . $form->input('','rating[]') . "</td>\n";
-            echo "      <td><input type='checkbox' name='delete[]' value='".$d->id_player."'>";
+            echo "      <td><input type='checkbox' name='deletePlayer[]' value='".$d->id_player."'>";
             echo "</td>\n";
             echo "  </tr>\n";
         }
@@ -111,8 +117,8 @@ if(isset($_SESSION['matchdayId'])){
             ]);
             echo " <tr>\n";
             echo "  <td>".$counter."</td>\n";
-            echo "  <td>" . $form->selectPlayer($pdo) . "</td>\n";
-            echo "  <td>" . $form->input('','rating[]') . "</td>\n";
+            echo "  <td>" . $form->selectPlayer($pdo,'id_player[]') . "</td>\n";
+            echo "  <td><p><input maxlength='50' type='text' name='rating[]' value=''></p></td>\n";
             echo "  <td> </td>\n";
             echo "</tr>\n";
         }
