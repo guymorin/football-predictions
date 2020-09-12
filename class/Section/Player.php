@@ -181,7 +181,10 @@ class Player
         LEFT JOIN team c ON  c.id_team=scj.id_team
         LEFT JOIN teamOfTheWeek e ON e.id_player=j.id_player
         LEFT JOIN season_championship_team sct ON sct.id_team=scj.id_team 
-        WHERE sct.id_season='".$_SESSION['seasonId']."'  
+        LEFT JOIN matchday md ON md.id_matchday = e.id_matchday 
+        WHERE scj.id_season='".$_SESSION['seasonId']."'  
+        AND sct.id_season='".$_SESSION['seasonId']."' 
+        AND md.id_season ='".$_SESSION['seasonId']."'
         AND sct.id_championship='".$_SESSION['championshipId']."'  
         GROUP BY team, j.name,j.firstname
         ORDER BY nb DESC, rating DESC,j.name,j.firstname LIMIT 0,3";
@@ -221,8 +224,11 @@ class Player
     FROM player j
     LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
     LEFT JOIN team c ON  c.id_team=scj.id_team 
-    LEFT JOIN teamOfTheWeek e ON e.id_player=j.id_player
-    WHERE c.id_team IN (SELECT id_team FROM season_championship_team 
+    LEFT JOIN teamOfTheWeek e ON e.id_player=j.id_player 
+    LEFT JOIN matchday md ON md.id_matchday=e.id_matchday 
+    WHERE   scj.id_season = :id_season
+    AND md.id_season = :id_season 
+    AND c.id_team IN (SELECT id_team FROM season_championship_team 
         WHERE id_season = :id_season AND id_championship = :id_championship)
     GROUP BY team,j.name,j.firstname
     ORDER BY team ASC, nb DESC, rating DESC, j.name,j.firstname ASC";
