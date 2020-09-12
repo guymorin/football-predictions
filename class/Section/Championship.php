@@ -38,9 +38,10 @@ class Championship
                 break;
         }
         if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0 && $_SESSION['noTeam'] == false){
-            $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
+            $val .= "  	<a href='index.php?page=season'>" . (Theme::icon('season')) . " " . (Language::title('season')) . "</a>";
             $val .= "<a" . $classS . " href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
             $val .= "<a" . $classDB . " href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
+            $val .= "<a href='index.php?page=matchday'>" . (Theme::icon('matchday')) . " " . (Language::title('matchdays')) . "</a>";
         } else {
             if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
             else {

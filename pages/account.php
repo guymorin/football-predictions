@@ -37,7 +37,7 @@ if(
     if($logon == 0)  echo Account::logonForm($pdo, $error, $form);
     elseif($logon == 1){
         if(Account::logonPopup($pdo, $userLogin, $userPassword)==true){
-            header('Location:index.php');
+            header('Location:index.php?page=championship');
         } elseif($userLogin != '') {
             $error->setError(Language::title('errorPassword'));
         }

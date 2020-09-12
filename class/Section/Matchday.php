@@ -24,7 +24,7 @@ class Matchday
     
     static function submenu($pdo, $form, $current = null){
         
-        $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
+        $val = "  	<a href='index.php?page=championship'>" . (Theme::icon('championship')) . " " . (Language::title('championship')) . "</a>";
         $currentClass = " class='current'";
         $classS = $classP = $classR = $classTOTW = $classCM = $classLMD = $classCMD = '';
         switch($current){

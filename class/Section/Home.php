@@ -272,6 +272,7 @@ class Home
         $val .= "  <ul>\n";
         $val .= "	 <li><a href='/'>" . (Language::title('homepage')) . "</a></li>\n";
         if(isset($_SESSION['userLogin'])){
+            $val .= "	 <li><a href='/index.php?page=account&exit=1'>" . (Language::title('logoff')) . "</a></li>\n";
             $val .= "	 <li><a href='index.php?page=account'>"
                             . Theme::icon('account') . " "
                             . (Language::title('account')) . "</a></li>\n";
