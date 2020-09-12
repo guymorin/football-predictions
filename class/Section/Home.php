@@ -125,14 +125,14 @@ class Home
         $val .= "            <li><a href='index.php?page=account'>" . (Language::title('myAccount')) . "</a></li>\n";
         $val .= "       </ul>\n";
         $val .= "    </li>\n";
-        
+        */
         // SEASON
         $val .= "    <li><h3>" . Theme::icon('season') . " " . (Language::title('season')) . "</h3>\n";
         $val .= "       <ul>\n";
         $val .= "            <li><a href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a></li>\n";
         $val .= "       </ul>\n";
         $val .= "    </li>\n";
-        */
+        
         // CHAMPIONSHIP
         $val .= "    <li><h3>" . Theme::icon('championship') . " " . (Language::title('championship')) . "</h3>\n";
         $req = "SELECT DISTINCT id_team  
@@ -145,7 +145,7 @@ class Home
             $_SESSION['noTeam'] = false;
             $val .= "       <ul>\n";
             $val .= "            <li><a href='index.php?page=championship'>" . (Language::title('standing')) . "</a></li>\n";
-            $val .= "            <li><a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a></li>\n";
+            //$val .= "            <li><a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a></li>\n";
             $val .= "       </ul>\n";
         } else {
             $_SESSION['noTeam'] = true;
@@ -161,8 +161,8 @@ class Home
         $val .= "        <ul>\n";
         $val .= "            <li><a href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a></li>\n";
         if(isset($_SESSION['matchdayId'])){
-            $val .= "            <li><a href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a></li>\n";
-        /*
+        /*    $val .= "            <li><a href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a></li>\n";
+        
             $val .= "            <li><a href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=results'>" . (Language::title('results')) . "</a></li>\n";
             $val .= "            <li><a href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a></li>\n";
@@ -187,6 +187,7 @@ class Home
                 $list .= "</form>\n";
                 */
                 
+                /*
                 // Quicknav button
                 $req = "SELECT DISTINCT j.id_matchday, j.number FROM matchday j
                 LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday
@@ -208,7 +209,7 @@ class Home
                     $val .= "</form>\n";
                     $val .= "<br />\n";
                 }
-                
+                */
                 //$val .=  $list;                
             } else {
                 $_SESSION['noMatchday'] = true;
