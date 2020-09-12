@@ -115,6 +115,7 @@ class Home
             $val .= "       </ul>\n";
             $val .= "<br /><small>" . Language::title('lastSave') . " : " . $lastDump . "</small>\n";
         }
+        
         /*
         // ACCOUNT
         $val .= "    <li><h3>" . Theme::icon('account') . " " . (Language::title('account')) . "</h3>\n";
@@ -126,6 +127,7 @@ class Home
         $val .= "       </ul>\n";
         $val .= "    </li>\n";
         */
+        
         // SEASON
         $val .= "    <li><h3>" . Theme::icon('season') . " " . (Language::title('season')) . "</h3>\n";
         $val .= "       <ul>\n";
