@@ -46,6 +46,8 @@ if(isset($_GET['page'])) $page=$error->check("Alnum",$_GET['page']);
         $v=explode(",",$_POST['championshipSelect']);
         $_SESSION['championshipId'] = $error->check("Digit",$v[0]);
         $_SESSION['championshipName'] = $error->check("Alnum",$v[1]);
+        unset($_SESSION['matchdayId']);
+        unset($_SESSION['matchdayNum']);
         $req = "UPDATE fp_user SET last_championship = '" . $_SESSION['championshipId'] . "'
         WHERE id_fp_user = '" . $_SESSION['userId'] . "';";
         $pdo->exec($req);

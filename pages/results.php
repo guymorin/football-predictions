@@ -92,10 +92,15 @@ else {
         m.result, m.date, m.odds1, m.oddsD, m.odds2, m.red1, m.red2 FROM matchgame m
         LEFT JOIN team c1 ON m.team_1=c1.id_team
         LEFT JOIN team c2 ON m.team_2=c2.id_team
-        WHERE m.id_matchday=:id_matchday
+        LEFT JOIN matchday md ON md.id_matchday=m.id_matchday
+        WHERE m.id_matchday=:id_matchday 
+        AND md.id_season=:id_season 
+        AND md.id_championship=:id_championship 
         ORDER BY m.date;";
     $data = $pdo->prepare($req,[
-        'id_matchday' => $_SESSION['matchdayId']
+        'id_matchday' => $_SESSION['matchdayId'],
+        'id_season' => $_SESSION['seasonId'],
+        'id_championship' => $_SESSION['championshipId']
     ],true);
     $counter=$pdo->rowCount();
     if($counter > 0){
