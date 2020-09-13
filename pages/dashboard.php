@@ -6,7 +6,14 @@ use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Championship;
 
-echo "<h2>" . (Theme::icon('championship')) . " " . (Language::title('championship')) . "</h2>\n";
+$titlePage = '';
+if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) {
+    $titlePage = $_SESSION['championshipName'];
+} else {
+    $titlePage = Language::title('championship');
+}
+
+echo "<h2>" . (Theme::icon('championship')) . " " . $titlePage . "</h2>\n";
 
 $graph=array(0=>0);
 

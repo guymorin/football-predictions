@@ -35,7 +35,13 @@ class Season
         if(isset($_SESSION['seasonId']) && $_SESSION['seasonId']>0) {
             $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>";
             $val .= "<a" . $classL . " href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
-            $val .= "<a href='index.php?page=championship'>" . (Theme::icon('championship')) . " " . (Language::title('championship')) . "</a>";
+            $val .= "<a href='index.php?page=championship'>" . (Theme::icon('championship')) . " ";
+            if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) {
+                $val .= $_SESSION['championshipName'];
+            } else {
+                $val .= Language::title('championship');
+            }
+            $val .= "</a>";
         } else {
             Account::exitButton();
             $val .= "<a" . $classC . " href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";

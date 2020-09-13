@@ -10,9 +10,15 @@ use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Championship;
 
+$titlePage = '';
+if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) {
+    $titlePage = $_SESSION['championshipName'];
+} else {
+    $titlePage = Language::title('championship');
+}
 ?>
 
-<h2><?= Theme::icon('championship') . ' ' . (Language::title('championship'));?></h2>
+<h2><?= Theme::icon('championship') . ' ' . $titlePage;?></h2>
 
 <?php
 // Values
@@ -70,7 +76,7 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
 }
 // List (standing)
 elseif(isset($_SESSION['championshipId'])&&($exit==0)){
-    echo "<h3>".$_SESSION['championshipName']." : " . (Language::title('standing')) . "</h3>\n";
+    echo "<h3>". (Language::title('standing')) . "</h3>\n";
     echo Championship::list($pdo, $standhome, $standaway);
 }
 ?>

@@ -23,8 +23,13 @@ class Matchday
     }
     
     static function submenu($pdo, $form, $current = null){
-        
-        $val = "  	<a href='index.php?page=championship'>" . (Theme::icon('championship')) . " " . (Language::title('championship')) . "</a>";
+        $val = "<a href='index.php?page=championship'>" . (Theme::icon('championship')) . " ";
+        if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) {
+            $val .= $_SESSION['championshipName'];
+        } else {
+            $val .= Language::title('championship');
+        }
+        $val .= "</a>";
         $currentClass = " class='current'";
         $classS = $classP = $classR = $classTOTW = $classCM = $classLMD = $classCMD = '';
         switch($current){
@@ -326,12 +331,11 @@ class Matchday
     
     static function list($pdo, $form){
         
-        $req = "SELECT md.id_matchday, md.number as number, COUNT(*) as nb, COUNT(CASE WHEN mg.result IN('1','D','2') THEN 1 END) as played
+        $req = "SELECT md.id_matchday, md.number as number, COUNT(id_matchgame) as nb, COUNT(CASE WHEN mg.result IN('1','D','2') THEN 1 END) as played
         FROM matchday md
         LEFT JOIN matchgame mg ON mg.id_matchday=md.id_matchday
         WHERE md.id_season = :id_season 
-        AND md.id_championship = :id_championship
-        AND mg.id_matchgame > 0 
+        AND md.id_championship = :id_championship 
         GROUP BY md.id_matchday, md.number
         ORDER BY md.number";
         $data = $pdo->prepare($req,[
