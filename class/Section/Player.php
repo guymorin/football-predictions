@@ -109,11 +109,40 @@ class Player
     
     static function modifyForm($pdo, $error, $form, $playerId){
         
+        // Table of seasons
+        $req ="SELECT s.name as season, c.name as team
+        FROM player j
+        LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
+        LEFT JOIN team c ON scj.id_team=c.id_team
+        LEFT JOIN season s ON s.id_season=scj.id_season
+        WHERE j.id_player=:id_player
+        ORDER BY season DESC;";
+        $data = $pdo->prepare($req,[
+            'id_player' => $playerId
+            
+        ],true);
+        $counter = $pdo->rowCount();
+        if($counter>0){
+            $table = "<table>\n";
+            $table .= "   <tr>\n";
+            $table .= "       <th>" . (Language::title('season')) . "</th>\n";
+            $table .= "       <th>" . (Language::title('team')) . "</th>\n";
+            $table .= "   </tr>\n";
+            foreach($data as $d){
+                $table .= "   <tr>\n";
+                $table .= "       <td>" . $d->season . "</td>\n";
+                $table .= "       <td>" . $d->team . "</td>\n";
+                $table .= "   </tr>\n";
+            }
+            $table .= "</table>\n";
+        }
+        
         $req ="SELECT j.id_player, j.name, j.firstname, j.position, c.id_team
         FROM player j
         LEFT JOIN season_team_player scj ON j.id_player=scj.id_player
         LEFT JOIN team c ON scj.id_team=c.id_team
-        WHERE j.id_player=:id_player;";
+        WHERE j.id_player=:id_player  
+        ORDER BY scj.id_season DESC;";
         $data = $pdo->prepare($req,[
             'id_player' => $playerId
         ]);
@@ -131,12 +160,15 @@ class Player
         $val .= "<br />\n";
         $val .= $form->inputRadioPosition($data);
         $val .= $form->selectTeam($pdo, null, $data->id_team);
+        $val .= $table;
         $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('modify'));
         $val .= "</form>\n";
         $val .= "<br />\n";
         $val .= $form->deleteForm('player', 'id_player', $playerId, false, 'id_team', $data->id_team);
+        
+        
         return $val;
     }
     

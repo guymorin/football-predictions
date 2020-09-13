@@ -89,7 +89,9 @@ if(isset($_SESSION['matchdayId'])){
     // Modify form
     else {
         echo "<h3>" . (Language::title('teamOfTheWeek')) . "</h3>\n";
-        echo "<p><a href='/index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . " ?</a></p>";
+        if(($_SESSION['role'])==2){
+            echo "<p><a href='/index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . " ?</a></p>";
+        }
         echo "<table id='teamOfTheWeek'>\n";
         echo "  <tr>\n";
         echo "      <th> </th>\n";

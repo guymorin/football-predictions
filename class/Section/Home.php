@@ -132,6 +132,9 @@ class Home
         $val .= "    <li><h3>" . Theme::icon('season') . " " . (Language::title('season')) . "</h3>\n";
         $val .= "       <ul>\n";
         $val .= "            <li><a href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a></li>\n";
+        if(($_SESSION['role'])==2){
+            $val .= "<li><a href='/index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a></li>";
+        }
         $val .= "       </ul>\n";
         $val .= "    </li>\n";
         
@@ -148,6 +151,9 @@ class Home
             $val .= "       <ul>\n";
             $val .= "            <li><a href='index.php?page=championship'>" . (Language::title('standing')) . "</a></li>\n";
             //$val .= "            <li><a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a></li>\n";
+            if(($_SESSION['role'])==2){
+                $val .= "            <li><a href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a></li>\n";
+            }
             $val .= "       </ul>\n";
         } else {
             $_SESSION['noTeam'] = true;

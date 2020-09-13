@@ -33,15 +33,17 @@ class Season
                 break;
         }
         if(isset($_SESSION['seasonId']) && $_SESSION['seasonId']>0) {
-            $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>";
+            Season::exitButton();
             $val .= "<a" . $classL . " href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
-            $val .= "<a href='index.php?page=championship'>" . (Theme::icon('championship')) . " ";
-            if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) {
-                $val .= $_SESSION['championshipName'];
-            } else {
-                $val .= Language::title('championship');
-            }
+            if(isset($_SESSION['championshipId'])){
+                $val .= "<a href='index.php?page=championship'>" . (Theme::icon('championship')) . " ";
+                if($_SESSION['championshipId']>0) {
+                    $val .= $_SESSION['championshipName'];
+                } else {
+                    $val .= Language::title('championship');
+                }
             $val .= "</a>";
+            }
         } else {
             Account::exitButton();
             $val .= "<a" . $classC . " href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
@@ -63,44 +65,34 @@ class Season
     
     static function selectSeason($pdo, $form){
         
-        $val = "<ul class='menu'>\n";
-        $req = "SELECT id_season, name FROM season ORDER BY name;";
-        $pdo->query($req);
+        $val = "  <h3>" . (Language::title('selectTheSeason')) . "</h3>\n";
+        $req = "SELECT DISTINCT id_season, name
+        FROM season
+        ORDER BY name";
+        $data = $pdo->prepare($req,[],true);
         $counter = $pdo->rowCount();
-        
-        if($counter>0){
-            $val .= "  <h3>" . (Language::title('selectTheSeason')) . "</h3>\n";
-            // Select form
-            $list = "<form action='index.php?page=championship' method='POST'>\n";
-            $list.= $form->labelBr(Language::title('season'));
-            $response = $pdo->query($req);
-            $list.= $form->selectSubmit("seasonSelect",$response, true, true);
-            $list.= "</form>\n";
+        if($counter>0){   
+            $val .= "<table>\n";
+            $val .= "  <tr>\n";
+            $val .= "      <th>" . (Language::title('season')) . "</th>\n";
+            $val .= "  </tr>\n";
             
-            // Quick nav button
-            $req = "SELECT * FROM season_championship_team;";
-            $data = $pdo->query($req);
-            $counter = $pdo->rowCount();
-            if($counter>0){
-                $req = "SELECT DISTINCT sct.id_season, s.name
-                FROM season_championship_team sct
-                LEFT JOIN season s ON s.id_season = sct.id_season
-                ORDER BY s.name DESC;";
-                $data = $pdo->queryObj($req);
-                $form->setValues($data);
-                $val .= "<form action='index.php?page=championship' method='POST'>\n";
-                $val .= $form->inputHidden("seasonSelect",$data->id_season.",".$data->name);
-                $val .= $form->labelBr(Language::title('quickNav'));
-                $val .= $form->submit(Theme::icon('quicknav')." ".$data->name);
+            foreach ($data as $d)
+            {
+                $val .= "  <tr>\n";
+                $val .= "<form id='" . ($d->id_season) . "' action='index.php' method='POST'>\n";
+                $val .= $form->inputHidden("seasonSelect", $d->id_season . "," . $d->name);
+                $val .= "<td>";
+                $val .= "<button type='submit' value='". ($d->name) . "'>" . (Theme::icon('season') . " " . ($d->name)) . "</button>";
+                $val .= "</td>\n";
                 $val .= "</form>\n";
-                $val .= "<br />\n";
+                $val .= "  </tr>\n";
             }
-            $val .= $list;
+            $val .= "</table>\n";
         }
         // No season
         else    $val .= "  <h3>" . (Language::title('noSeason')) . "</h3>\n";
-        $val .= "</ul>\n";
-        return $val;
+        return $val;        
     }
     
     static function deletePopup($pdo, $seasonId){
