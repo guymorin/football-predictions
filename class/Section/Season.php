@@ -36,7 +36,7 @@ class Season
             Season::exitButton();
             $val .= "<a" . $classL . " href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
             if(isset($_SESSION['championshipId'])){
-                $val .= "<a href='index.php?page=championship'>" . (Theme::icon('championship')) . " ";
+                $val .= "<a href='index.php?page=dashboard'>" . (Theme::icon('championship')) . " ";
                 if($_SESSION['championshipId']>0) {
                     $val .= $_SESSION['championshipName'];
                 } else {
@@ -68,7 +68,7 @@ class Season
         $val = "  <h3>" . (Language::title('selectTheSeason')) . "</h3>\n";
         $req = "SELECT DISTINCT id_season, name
         FROM season
-        ORDER BY name";
+        ORDER BY name DESC";
         $data = $pdo->prepare($req,[],true);
         $counter = $pdo->rowCount();
         if($counter>0){   
@@ -204,7 +204,7 @@ class Season
                 $val .= "  <tr class='current'>\n";
                 $val .= "<form>\n";
                 $val .= "<td>";
-                $val .= "<button disabled type='submit' value='" . ($d->id_championship) . "," . ($d->name)."'>" . (Theme::icon('championship') . " " . ($d->name)) . "</button>";
+                $val .= "<button disabled type='submit' style='cursor:default;' value='" . ($d->id_championship) . "," . ($d->name)."'>" . (Theme::icon('championship') . " " . ($d->name)) . "</button>";
                 $val .= "</td>\n";
             } else {
                 $val .= "  <tr>\n";

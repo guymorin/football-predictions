@@ -149,8 +149,8 @@ class Home
         if($counter>0){
             $_SESSION['noTeam'] = false;
             $val .= "       <ul>\n";
-            $val .= "            <li><a href='index.php?page=championship'>" . (Language::title('standing')) . "</a></li>\n";
-            //$val .= "            <li><a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a></li>\n";
+            //$val .= "            <li><a href='index.php?page=championship'>" . (Language::title('standing')) . "</a></li>\n";
+            $val .= "            <li><a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a></li>\n";
             if(($_SESSION['role'])==2){
                 $val .= "            <li><a href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a></li>\n";
             }
