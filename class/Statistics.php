@@ -129,7 +129,7 @@ class Statistics
         $val = '';
         if($page == 'dashboard') {
             $val .= "<h3>" . (Language::title('profitByMatchday')) . "</h3>\n";
-            $val.= $this->prepareTableDashboard();
+            $val .= $this->prepareTableDashboard();
         }
         elseif($page == 'matchday') $val.= $this->prepareTableMatchday();
         
@@ -271,16 +271,15 @@ class Statistics
             if($this->betSum>0){
                 $this->roi = round(($this->profitSum / $this->betSum)*100);
                 $this->successRate = round(($this->successSum / $this->betSum)*100);
-                $this->earningByBet = (round($this->earningSum / $this->betSum,2)); 
+                $this->earningByBet = round($this->earningSum / $this->betSum,2); 
             }
         } elseif($page == 'matchday') {
             $this->profit = money_format('%i',$this->earningSum - $this->matchs);
             $this->roi = round(($this->profit / $this->matchs)*100);
             $this->successRate = round(($this->success / $this->matchs)*100);
             $this->earning = money_format('%i',$this->earningSum);
-            $this->earningByBet = (round($this->earningSum / $this->matchs,2));
+            $this->earningByBet = round($this->earningSum / $this->matchs,2);
         }
-
     }
     
     public function summaryTableDashboard(){
@@ -300,8 +299,7 @@ class Statistics
         $val .= "      <td>" . $this->earningSum."&nbsp;&euro;</td>\n";
         $val .= "      <td>" . (Language::title('successRate')) . "</td>\n";
         $val .= "      <td>";
-        if($this->matchs > 0) $val .= $this->successRate;
-        else $val .= 0;
+        $val .= $this->successRate;
         $val .= "&nbsp;%</td>\n";
         $val .= "    </tr>\n";
         

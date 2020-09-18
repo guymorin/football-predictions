@@ -23,7 +23,7 @@ class Matchday
     }
     
     static function submenu($pdo, $form, $current = null){
-        $val = "<a href='index.php?page=championship'>" . (Theme::icon('championship')) . " ";
+        $val = "<a href='index.php?page=dashboard'>" . (Theme::icon('championship')) . " ";
         if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) {
             $val .= $_SESSION['championshipName'];
         } else {

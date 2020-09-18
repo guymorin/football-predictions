@@ -28,7 +28,7 @@ class Player
                 break;
         }
         $response = $pdo->query("SELECT * FROM player ORDER BY name, firstname");
-        $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
+        $val = "  	<a href='index.php?page=teamOfTheWeek'>" . (Theme::icon('matchday')) . " " . (Language::title('teamOfTheWeek')) . "</a>";
         $val .= "<a" . $classBP . " href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a>";
         $val .= "<a" . $classC . " href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a>";
         if(($_SESSION['role'])==2){

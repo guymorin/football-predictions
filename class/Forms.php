@@ -426,7 +426,8 @@ class Forms
             LEFT JOIN season_team_player scj ON scj.id_player=j.id_player
             LEFT JOIN season_championship_team scc ON scc.id_team=scj.id_team
             LEFT JOIN team c ON c.id_team=scj.id_team
-            WHERE scc.id_season = :id_season
+            WHERE scj.id_season = :id_season
+            AND scc.id_season = :id_season
             AND scc.id_championship = :id_championship
             ORDER BY j.name, j.firstname;";
             $data = $pdo->prepare($req,[
