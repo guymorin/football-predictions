@@ -69,56 +69,72 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <th>".$d->date."</th>\n";
         echo "            <th>".$d->name1."</th>\n";
-        echo "            <th><input type='hidden' name='id_match[]' value='".$d->id_matchgame."'></th>\n";
+        echo "            <th>";
+        if($d->result!="") echo "<input type='hidden' name='id_match[]' value='".$d->id_matchgame."'>";
+        echo "</th>\n";
         echo "            <th>".$d->name2."</th>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('motivation')) . "</td>";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='motivation1[$id]' value='".$d->motivation1."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->motivation1."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='motivation1[$id]' value='".$d->motivation1."'></td>\n";
         echo "  		  <td></td>\n";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='motivation2[$id]' value='".$d->motivation2."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->motivation2."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='motivation2[$id]' value='".$d->motivation2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('currentForm')) . "</td>";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='currentForm1[$id]' value='".$d->currentForm1."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->currentForm1."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='currentForm1[$id]' value='".$d->currentForm1."'></td>\n";
         echo "  		  <td></td>\n";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='currentForm2[$id]' value='".$d->currentForm2."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->currentForm2."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='currentForm2[$id]' value='".$d->currentForm2."'></td>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('physicalForm')) . "</td>";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='physicalForm1[$id]' value='".$d->physicalForm1."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->physicalForm1."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='physicalForm1[$id]' value='".$d->physicalForm1."'></td>\n";
         echo "  		  <td></td>\n";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='physicalForm2[$id]' value='".$d->physicalForm2."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->physicalForm2."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='physicalForm2[$id]' value='".$d->physicalForm2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('weather')) . "</td>";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='meteo1[$id]' value='".$d->weather1."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->weather1."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='meteo1[$id]' value='".$d->weather1."'></td>\n";
         echo "  		  <td></td>\n";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='meteo2[$id]' value='".$d->weather2."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->weather2."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='meteo2[$id]' value='".$d->weather2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('bestPlayers')) . "</td>";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='bestPlayers1[$id]' value='".$d->bestPlayers1."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->bestPlayers1."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='bestPlayers1[$id]' value='".$d->bestPlayers1."'></td>\n";
         echo "  		  <td></td>\n";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='bestPlayers2[$id]' value='".$d->bestPlayers2."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->bestPlayers2."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='bestPlayers2[$id]' value='".$d->bestPlayers2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('marketValue')) . "</td>";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='marketValue1[$id]' value='".$d->marketValue1."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->marketValue1."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='marketValue1[$id]' value='".$d->marketValue1."'></td>\n";
         echo "  		  <td></td>\n";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='marketValue2[$id]' value='".$d->marketValue2."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->marketValue2."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='marketValue2[$id]' value='".$d->marketValue2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('home')) . " / " . (Language::title('away')) . "</td>";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='home_away1[$id]' value='".$d->home_away1."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->home_away1."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='home_away1[$id]' value='".$d->home_away1."'></td>\n";
         echo "  		  <td></td>\n";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='home_away2[$id]' value='".$d->home_away2."'></td>\n";
+        if($d->result!="") echo "  		  <td>".$d->home_away2."</td>\n";
+        else echo "  		  <td><input size='1' type='number' placeholder='0' name='home_away2[$id]' value='".$d->home_away2."'></td>\n";
         echo "          </tr>\n";
     
         
