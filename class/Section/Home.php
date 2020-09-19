@@ -289,7 +289,7 @@ class Home
                             . Theme::icon('season') . " "
                             . (Language::title('season')) . "</a></li>\n";
             if(isset($_SESSION['seasonId'])){
-                $val .= "	 <li><a href='index.php?page=championship'>"
+                $val .= "	 <li><a href='index.php?page=dashboard'>"
                                 . Theme::icon('championship') . " "
                                 . (Language::title('championship')) . "</a></li>\n";
                 if(isset($_SESSION['championshipId'])){
