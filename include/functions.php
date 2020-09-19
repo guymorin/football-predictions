@@ -334,7 +334,8 @@ function criterion($type,$data,$pdo){
 }
 
 function popup($text,$link){
-    echo "<div id='overlay'><div class='update'><p class='close'><a href='".$link."'>&times;</a></p><p>".$text."</p><p><a href='".$link."'>Ok</a></p></div></div>\n";    
+    echo "<div id='overlay'><div class='update'><p class='close'><a href='".$link."'>&times;</a></p><p>".$text."</p><p><a href='".$link."' id='ok'>Ok</a></p></div></div>\n";    
+    echo "<script>document.getElementById('ok').focus();</script>";
 }
 
 function changeMD($pdo,$page){
