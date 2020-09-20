@@ -277,7 +277,7 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <td><strong>" . (Language::title('criterionSum')) . "</strong></td>\n";
         echo "  		  <td><strong>$sum1</strong></td>\n";
-        echo "  		  <td>$historyDraw</td>\n";
+        echo "  		  <td><strong>$historyDraw</strong></td>\n";
         echo "  		  <td><strong>$sum2</strong></td>\n";
         echo "          </tr>\n";
         

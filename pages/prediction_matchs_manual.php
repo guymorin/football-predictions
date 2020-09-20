@@ -147,10 +147,10 @@ if($counter > 0){
         
         
         echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('criterionSum')) . "</td>";
-        echo "  		  <td>$sum1</td>\n";
-        echo "  		  <td>$historyDraw</td>\n";
-        echo "  		  <td>$sum2</td>\n";
+        echo "  		  <td><strong>" . (Language::title('criterionSum')) . "</strong></td>";
+        echo "  		  <td><strong>$sum1</strong></td>\n";
+        echo "  		  <td><strong>$historyDraw</strong></td>\n";
+        echo "  		  <td><strong>$sum2</strong></td>\n";
         echo "          </tr>\n";
     
         echo "  		<tr>\n";
