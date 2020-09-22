@@ -23,10 +23,7 @@ if($counter > 0){
     echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";
     echo $form->inputAction('modify');
     echo $form->inputHidden('manual','1');
-    
 
-    
-    
     // Predictions for the matchday
     foreach ($data as $d)
     {
@@ -36,8 +33,7 @@ if($counter > 0){
         $historyHome=criterion("predictionsHistoryHome",$r,$pdo);
         $historyDraw=criterion("predictionsHistoryDraw",$r,$pdo);
         $historyAway=criterion("predictionsHistoryAway",$r,$pdo);
-        
-        
+
         $win="";
         $id=$d->id_matchgame;
         $sum1=
@@ -70,7 +66,7 @@ if($counter > 0){
         echo "  		  <th>".$d->date."</th>\n";
         echo "            <th>".$d->name1."</th>\n";
         echo "            <th>";
-        if($d->result!="") echo "<input type='hidden' name='id_match[]' value='".$d->id_matchgame."'>";
+        echo "<input type='hidden' name='id_match[]' value='".$d->id_matchgame."'>";
         echo "</th>\n";
         echo "            <th>".$d->name2."</th>\n";
         echo "          </tr>\n";

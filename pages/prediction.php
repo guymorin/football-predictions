@@ -35,93 +35,96 @@ if($modify==1){
     
     $pdo->alterAuto('criterion');
     $req="";
+    
+    if(!empty($idMatch)){
         
-    foreach($idMatch as $k){
-        
-        if($rMatch[$k]!=""){
-            $req.="UPDATE matchgame SET result='".$rMatch[$k]."' WHERE id_matchgame='".$k."';";
+        foreach($idMatch as $k){
+            
+            if($rMatch[$k]!=""){
+                $req.="UPDATE matchgame SET result='".$rMatch[$k]."' WHERE id_matchgame='".$k."';";
+            }
+            $data = $pdo->prepare("SELECT COUNT(*) as nb FROM criterion 
+            WHERE id_matchgame=:id_matchgame;",[
+                'id_matchgame' => $k
+            ]);
+            
+            if($data->nb == 0){
+                $req.="INSERT INTO criterion VALUES(NULL,'".$k."','";
+                isset($moMatch1[$k]) ? $req.=$moMatch1[$k] : $req.=0;
+                $req.="','";
+                isset($seMatch1[$k]) ? $req.=$seMatch1[$k] : $req.=0;
+                $req.="','";
+                isset($foMatch1[$k]) ? $req.=$foMatch1[$k] : $req.=0;
+                $req.="','";
+                isset($meMatch1[$k]) ? $req.=$meMatch1[$k] : $req.=0;
+                $req.="','";
+                isset($joMatch1[$k]) ? $req.=$joMatch1[$k] : $req.=0;
+                $req.="','";
+                isset($vaMatch1[$k]) ? $req.=$vaMatch1[$k] : $req.=0;
+                $req.="','";
+                isset($doMatch1[$k]) ? $req.=$doMatch1[$k] : $req.=0;
+                $req.="','";
+                isset($moMatch2[$k]) ? $req.=$moMatch2[$k] : $req.=0;
+                $req.="','";
+                isset($seMatch2[$k]) ? $req.=$seMatch2[$k] : $req.=0;
+                $req.="','";
+                isset($foMatch2[$k]) ? $req.=$foMatch2[$k] : $req.=0;
+                $req.="','";
+                isset($meMatch2[$k]) ? $req.=$meMatch2[$k] : $req.=0;
+                $req.="','";
+                isset($joMatch2[$k]) ? $req.=$joMatch2[$k] : $req.=0;
+                $req.="','";
+                isset($vaMatch2[$k]) ? $req.=$vaMatch2[$k] : $req.=0;
+                $req.="','";
+                isset($doMatch2[$k]) ? $req.=$doMatch2[$k] : $req.=0;
+                $req.="');";
+            }
+            if($data->nb == 1){
+                $req.="UPDATE criterion SET ";
+                $req.="motivation1='";
+                isset($moMatch1[$k]) ? $req.=$moMatch1[$k] : $req.=0;
+                $req.="',";
+                $req.="currentForm1='";
+                isset($seMatch1[$k]) ? $req.=$seMatch1[$k] : $req.=0;
+                $req.="',";
+                $req.="physicalForm1='";
+                isset($foMatch1[$k]) ? $req.=$foMatch1[$k] : $req.=0;
+                $req.="',";
+                $req.="weather1='";
+                isset($meMatch1[$k]) ? $req.=$meMatch1[$k] : $req.=0;
+                $req.="',";
+                $req.="bestPlayers1='";
+                isset($joMatch1[$k]) ? $req.=$joMatch1[$k] : $req.=0;
+                $req.="',";
+                $req.="marketValue1='";
+                isset($vaMatch1[$k]) ? $req.=$vaMatch1[$k] : $req.=0;
+                $req.="',";
+                $req.="home_away1='";
+                isset($doMatch1[$k]) ? $req.=$doMatch1[$k] : $req.=0;
+                $req.="',";
+                $req.="motivation2='";
+                isset($moMatch2[$k]) ? $req.=$moMatch2[$k] : $req.=0;
+                $req.="',";
+                $req.="currentForm2='";
+                isset($seMatch2[$k]) ? $req.=$seMatch2[$k] : $req.=0;
+                $req.="',";
+                $req.="physicalForm2='";
+                isset($foMatch2[$k]) ? $req.=$foMatch2[$k] : $req.=0;
+                $req.="',";
+                $req.="weather2='";
+                isset($meMatch2[$k]) ? $req.=$meMatch2[$k] : $req.=0;
+                $req.="',";
+                $req.="bestPlayers2='";
+                isset($joMatch2[$k]) ? $req.=$joMatch2[$k] : $req.=0;
+                $req.="',";
+                $req.="marketValue2='";
+                isset($vaMatch2[$k]) ? $req.=$vaMatch2[$k] : $req.=0;
+                $req.="',";
+                $req.="home_away2='";
+                isset($doMatch2[$k]) ? $req.=$doMatch2[$k] : $req.=0;
+                $req.="' WHERE id_matchgame='".$k."';";
+            }  
         }
-        $data = $pdo->prepare("SELECT COUNT(*) as nb FROM criterion 
-        WHERE id_matchgame=:id_matchgame;",[
-            'id_matchgame' => $k
-        ]);
-        
-        if($data->nb == 0){
-            $req.="INSERT INTO criterion VALUES(NULL,'".$k."','";
-            isset($moMatch1[$k]) ? $req.=$moMatch1[$k] : $req.=0;
-            $req.="','";
-            isset($seMatch1[$k]) ? $req.=$seMatch1[$k] : $req.=0;
-            $req.="','";
-            isset($foMatch1[$k]) ? $req.=$foMatch1[$k] : $req.=0;
-            $req.="','";
-            isset($meMatch1[$k]) ? $req.=$meMatch1[$k] : $req.=0;
-            $req.="','";
-            isset($joMatch1[$k]) ? $req.=$joMatch1[$k] : $req.=0;
-            $req.="','";
-            isset($vaMatch1[$k]) ? $req.=$vaMatch1[$k] : $req.=0;
-            $req.="','";
-            isset($doMatch1[$k]) ? $req.=$doMatch1[$k] : $req.=0;
-            $req.="','";
-            isset($moMatch2[$k]) ? $req.=$moMatch2[$k] : $req.=0;
-            $req.="','";
-            isset($seMatch2[$k]) ? $req.=$seMatch2[$k] : $req.=0;
-            $req.="','";
-            isset($foMatch2[$k]) ? $req.=$foMatch2[$k] : $req.=0;
-            $req.="','";
-            isset($meMatch2[$k]) ? $req.=$meMatch2[$k] : $req.=0;
-            $req.="','";
-            isset($joMatch2[$k]) ? $req.=$joMatch2[$k] : $req.=0;
-            $req.="','";
-            isset($vaMatch2[$k]) ? $req.=$vaMatch2[$k] : $req.=0;
-            $req.="','";
-            isset($doMatch2[$k]) ? $req.=$doMatch2[$k] : $req.=0;
-            $req.="');";
-        }
-        if($data->nb == 1){
-            $req.="UPDATE criterion SET ";
-            $req.="motivation1='";
-            isset($moMatch1[$k]) ? $req.=$moMatch1[$k] : $req.=0;
-            $req.="',";
-            $req.="currentForm1='";
-            isset($seMatch1[$k]) ? $req.=$seMatch1[$k] : $req.=0;
-            $req.="',";
-            $req.="physicalForm1='";
-            isset($foMatch1[$k]) ? $req.=$foMatch1[$k] : $req.=0;
-            $req.="',";
-            $req.="weather1='";
-            isset($meMatch1[$k]) ? $req.=$meMatch1[$k] : $req.=0;
-            $req.="',";
-            $req.="bestPlayers1='";
-            isset($joMatch1[$k]) ? $req.=$joMatch1[$k] : $req.=0;
-            $req.="',";
-            $req.="marketValue1='";
-            isset($vaMatch1[$k]) ? $req.=$vaMatch1[$k] : $req.=0;
-            $req.="',";
-            $req.="home_away1='";
-            isset($doMatch1[$k]) ? $req.=$doMatch1[$k] : $req.=0;
-            $req.="',";
-            $req.="motivation2='";
-            isset($moMatch2[$k]) ? $req.=$moMatch2[$k] : $req.=0;
-            $req.="',";
-            $req.="currentForm2='";
-            isset($seMatch2[$k]) ? $req.=$seMatch2[$k] : $req.=0;
-            $req.="',";
-            $req.="physicalForm2='";
-            isset($foMatch2[$k]) ? $req.=$foMatch2[$k] : $req.=0;
-            $req.="',";
-            $req.="weather2='";
-            isset($meMatch2[$k]) ? $req.=$meMatch2[$k] : $req.=0;
-            $req.="',";
-            $req.="bestPlayers2='";
-            isset($joMatch2[$k]) ? $req.=$joMatch2[$k] : $req.=0;
-            $req.="',";
-            $req.="marketValue2='";
-            isset($vaMatch2[$k]) ? $req.=$vaMatch2[$k] : $req.=0;
-            $req.="',";
-            $req.="home_away2='";
-            isset($doMatch2[$k]) ? $req.=$doMatch2[$k] : $req.=0;
-            $req.="' WHERE id_matchgame='".$k."';";
-        }  
     }
     $pdo->exec($req);
     popup(Language::title('modifyPredictions'),"index.php?page=prediction&manual=".$manual);
