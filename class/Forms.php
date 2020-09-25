@@ -463,7 +463,7 @@ class Forms
             ],true);
         }
                
-        $val = '<legend>' . (Language::title('team')). '</legend>';
+        $val = '<legend>' . (Language::title('team')). ' ' . ($_SESSION['seasonName']) . '</legend>';
         $val .= "     <select name='";
         if($name == null) $val .= 'id_team';
         else $val .= $name;
