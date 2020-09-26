@@ -12,6 +12,8 @@ use FootballPredictions\Section\Player;
 
 echo "<h2>" . Theme::icon('player') . " " . (Language::title('player')) . "</h2>\n";
 
+include('include/checkName.php');
+
 // Values
 $playerId = $teamId = 0;
 $playerName = $playerFirstname = $playerPosition = '';
@@ -20,7 +22,6 @@ isset($_POST['name'])           ? $playerName = $error->check("Alnum",$_POST['na
 isset($_POST['firstname'])      ? $playerFirstname = $error->check("Alnum",$_POST['firstname'], Language::title('firstname')) : null;
 isset($_POST['position'])       ? $playerPosition = $error->check("Position",$_POST['position'], Language::title('position')) : null;
 isset($_POST['id_team'])        ? $teamId = $error->check("Digit",$_POST['id_team']) : null;
-
 
 // Create
 if($create==1){

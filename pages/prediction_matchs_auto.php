@@ -18,7 +18,7 @@ if($counter > 0){
         // Switch form
         echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
         echo $form->inputHidden('modify','2');
-        echo $form->inputHidden('manual','0');
+        echo $form->inputHidden('manual','1');
         echo $form->submit(Language::title('swithToManual'));
         echo "</form>\n";
         echo "<br />\n";
@@ -105,41 +105,41 @@ if($counter > 0){
                         $cloud="&#x1F323;";// Sun
                     case ($rain>=0&&$rain<1):
                         $cloud="&#x1F324;";// Low rain
-                        $meteo=1;
-                        if(round($v2/10)>round($v1/10)) $team2Weather=$meteo;
+                        $weather=1;
+                        if(round($v2/10)>round($v1/10)) $team2Weather=$weather;
                         elseif(round($v2/10)==round($v1/10)){
-                            $team1Weather=$meteo;
-                            $team2Weather=$meteo;
+                            $team1Weather=$weather;
+                            $team2Weather=$weather;
                         }
                         else {
-                            $team1Weather=$meteo;
+                            $team1Weather=$weather;
                             $team2Weather=0;
                         }
                         break;
                     case ($rain>=1&&$rain<3):
                         $cloud="&#x1F326;";// Middle rain
-                        $meteo=1;
-                        if(round($v2/10)>round($v1/10)) $team1Weather=$meteo;
+                        $weather=1;
+                        if(round($v2/10)>round($v1/10)) $team1Weather=$weather;
                         elseif(round($v2/10)==round($v1/10)){
-                            $team1Weather=$meteo;
-                            $team2Weather=$meteo;
+                            $team1Weather=$weather;
+                            $team2Weather=$weather;
                         }
                         else {
                             $team1Weather=0;
-                            $team2Weather=$meteo;
+                            $team2Weather=$weather;
                         }
                         break;
                     case ($rain>=3):
                         $cloud="&#x1F327;";//High rain
-                        $meteo=2;
-                        if(round($v2/10)>round($v1/10)) $team1Weather=$meteo;
+                        $weather=2;
+                        if(round($v2/10)>round($v1/10)) $team1Weather=$weather;
                         elseif(round($v2/10)==round($v1/10)){
-                            $team1Weather=$meteo;
-                            $team2Weather=$meteo;
+                            $team1Weather=$weather;
+                            $team2Weather=$weather;
                         }
                         else {
                             $team1Weather=0;
-                            $team2Weather=$meteo;
+                            $team2Weather=$weather;
                         }
                         break;
                 }

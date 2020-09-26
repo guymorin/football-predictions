@@ -9,9 +9,9 @@ use FootballPredictions\Theme;
 echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . $_SESSION['matchdayNum']."</h2>\n";
 
 // Values
-$manual = 0;
+$manual = '';
 isset($_POST['manual'])     ? $manual=$error->check("Digit",$_POST['manual']) : null;
-if($manual==0) isset($_GET['manual'])      ? $manual=$error->check("Digit",$_GET['manual']) : null;
+if($manual=='') isset($_GET['manual'])      ? $manual=$error->check("Digit",$_GET['manual']) : null;
 
 // Modified popup
 if($modify==1){

@@ -154,7 +154,7 @@ class Statistics
             $this->away = $d->home_away2;
             
             // Predictions history
-            $historyHome=$historyDraw=$historyAway=0;
+            $this->predictionsHistoryHome=$this->predictionsHistoryDraw=$this->predictionsHistoryAway=0;
             $r = result('history',$pdo,$d,$d->weather1,$d->weather2);
             $this->predictionsHistoryHome = criterion("predictionsHistoryHome",$r,$pdo);
             $this->predictionsHistoryDraw = criterion("predictionsHistoryDraw",$r,$pdo);
@@ -165,26 +165,27 @@ class Statistics
             $this->win = 0;
             
             $this->sum1=
-            $d->motivation1
-            +$d->currentForm1
-            +$d->physicalForm1
-            +$d->weather1
-            +$d->bestPlayers1
-            +$this->mv1
-            +$this->home
-            +$this->predictionsHistoryHome;
+                $d->motivation1
+                +$d->currentForm1
+                +$d->physicalForm1
+                +$d->weather1
+                +$d->bestPlayers1
+                +$this->mv1
+                +$this->home
+                +$this->predictionsHistoryHome;
             $this->sum2=
-            $d->motivation2
-            +$d->currentForm2
-            +$d->physicalForm2
-            +$d->weather2
-            +$d->bestPlayers2
-            +$this->mv2
-            +$this->away
-            +$this->predictionsHistoryAway;
+                $d->motivation2
+                +$d->currentForm2
+                +$d->physicalForm2
+                +$d->weather2
+                +$d->bestPlayers2
+                +$this->mv2
+                +$this->away
+                +$this->predictionsHistoryAway;
             if($this->sum1 > $this->sum2)         $this->prediction = '1';
             elseif($this->sum1 == $this->sum2)    $this->prediction = 'D';
             elseif($this->sum1 < $this->sum2)     $this->prediction = '2';
+            if(($predictionsHistoryDraw>$sum1)&&($predictionsHistoryDraw>$sum2)) $this->prediction= 'D';
             
             $this->playedOdds=0;
             switch($this->prediction){

@@ -132,10 +132,12 @@ class Forms
      * @param string $name
      * @return string HTML code
      */
-    public function input($label='',$name){
+    public function input($label='',$name,$id=null){
          $val = '';
          if($label!='') $val.= $this->label($label);
-         $val.= "<input maxlength='50' type='text' name='$name' value='".$this->getValue($name)."'>";
+         $val.= "<input maxlength='50' type='text' name='$name' ";
+         if($id!=null) $val.= "id='".$id."' ";
+         $val.= "value='".$this->getValue($name)."'>";
          $val = $this->surround($val);
          return $val;
     }

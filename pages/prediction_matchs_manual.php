@@ -14,7 +14,7 @@ if($counter > 0){
     if($_SESSION['role']==2){
         // Switch form
         echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
-        echo $form->inputHidden('manual','1');
+        echo $form->inputHidden('manual','0');
         echo $form->submit(Language::title('swithToAuto'));
         echo "</form>\n";
         echo "<br />\n";
@@ -93,9 +93,9 @@ if($counter > 0){
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('weather')) . "</td>";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='meteo1[$id]' value='".$d->weather1."'></td>\n";
+        echo "  		  <td><input size='1' type='number' placeholder='0' name='weather1[$id]' value='".$d->weather1."'></td>\n";
         echo "  		  <td></td>\n";
-        echo "  		  <td><input size='1' type='number' placeholder='0' name='meteo2[$id]' value='".$d->weather2."'></td>\n";
+        echo "  		  <td><input size='1' type='number' placeholder='0' name='weather2[$id]' value='".$d->weather2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";

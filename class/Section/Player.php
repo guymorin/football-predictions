@@ -73,7 +73,7 @@ class Player
         $val .= "<fieldset>\n";
         $val .= "<legend>" . (Language::title('player')) . "</legend>\n";
         $val .= $error->getError();
-        $val .= $form->input(Language::title('name'), 'name');
+        $val .= $form->input(Language::title('name'), 'name', 'name');
         $val .= "<br />\n";
         $val .= $form->input(Language::title('firstname'), 'firstname');
         $val .= "<br />\n";
