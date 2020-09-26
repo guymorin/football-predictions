@@ -133,7 +133,7 @@ if($modify==1){
 // Default page or manual page
 else {
     changeMD($pdo,"prediction");
-    if($manual==1) require 'prediction_matchs_auto.php';
-    else require 'prediction_matchs_manual.php';
+    if($manual==1) require 'prediction_matchs_manual.php';
+    else require 'prediction_matchs_auto.php';
 }
 ?>  
