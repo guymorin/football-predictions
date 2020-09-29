@@ -11,6 +11,7 @@ class Statistics
 {
     private $averageOdds;
     private $away;
+    private $bet;
     private $betSum;
     private $earning;
     private $earningByBet;
@@ -46,7 +47,7 @@ class Statistics
      * @param array $data Form or database data
      */
     public function __construct(){
-        $this->matchs = $this->success = $this->earningSum = $this->totalPlayed = 0;
+        $this->matchs = $this->success = $this->earningSum = $this->totalPlayed = $this->bet = 0;
     }
     
     public function getStats($pdo, $page){
@@ -68,8 +69,7 @@ class Statistics
         LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame ";
         if($page == 'dashboard') {
             $req .= " LEFT JOIN matchday j ON j.id_matchday=m.id_matchday 
-            WHERE m.result<>'' 
-            AND j.id_season = :id_season 
+            WHERE j.id_season = :id_season 
             AND j.id_championship = :id_championship  
             ORDER BY j.number;";
         } elseif($page == 'matchday') {
@@ -185,19 +185,21 @@ class Statistics
             if($this->sum1 > $this->sum2)         $this->prediction = '1';
             elseif($this->sum1 == $this->sum2)    $this->prediction = 'D';
             elseif($this->sum1 < $this->sum2)     $this->prediction = '2';
-            if(($predictionsHistoryDraw>$sum1)&&($predictionsHistoryDraw>$sum2)) $this->prediction= 'D';
+            if(($this->predictionsHistoryDraw>$sum1)&&($this->predictionsHistoryDraw>$sum2)) $this->prediction= 'D';
             
             $this->playedOdds=0;
-            switch($this->prediction){
-                case "1":
-                    $this->playedOdds = $d->odds1;
-                    break;
-                case ("D"):
-                    $this->playedOdds = $d->oddsD;
-                    break;
-                case "2":
-                    $this->playedOdds = $d->odds2;
-                    break;
+            if($d->result!=""){
+                switch($this->prediction){
+                    case "1":
+                        $this->playedOdds = $d->odds1;
+                        break;
+                    case ("D"):
+                        $this->playedOdds = $d->oddsD;
+                        break;
+                    case "2":
+                        $this->playedOdds = $d->odds2;
+                        break;
+                }
             }
 
             if($this->prediction == $d->result){
@@ -209,20 +211,24 @@ class Statistics
             
             $this->totalPlayed += $this->playedOdds;
             $this->matchs++;
-            $this->profit = $this->earning - $this->matchs;
+            if($d->result!="") $this->bet++;
             
-            if($page == 'dashboard' && $this->matchs == 10){
+            $this->profit = $this->earning - $this->bet;
+            
+            
+            
+            if( ($page == 'dashboard') && ($this->matchs == 10) && ($this->bet>0)  ){
                     $this->profitSum += $this->profit;
-                    $this->betSum += $this->matchs;
+                    $this->betSum += $this->bet;
                     $this->successSum += $this->success;
                     $this->earningSum += $this->earning;
                     $this->playedOddsSum += $this->totalPlayed;
                     $this->nbMatchdays = $d->number;
                     $val .= "       <tr>\n";
                     $val .= "           <td><strong>" . $d->number . "</strong></td>";
-                    $val .= "           <td>" . $this->matchs. " </td>\n";
+                    $val .= "           <td>" . $this->bet. " </td>\n";
                     $val .= "           <td>" . $this->success. " </td>\n";
-                    $this->averageOdds = (round($this->totalPlayed / $this->matchs,2));
+                    $this->averageOdds = (round($this->totalPlayed / $this->bet,2));
                     $val .= "           <td>" . $this->averageOdds. " </td>\n";
                     $val .= "           <td>" . (money_format('%i',$this->earning)). " </td>\n";
                     $val .= "           <td><span style='color:" . valColor($this->profit). " '>";
@@ -234,10 +240,9 @@ class Statistics
                     $val .= "       </tr>\n";
                     
                     $this->profit = $this->matchs = $this->success
-                     = $this->earning = $this->totalPlayed = 0;
+                    = $this->earning = $this->totalPlayed = $this->bet = 0;
                     
                     $this->graph[$d->number] = $this->profitSum;
-                
             } elseif($page == 'matchday') {
                 $val.="  		<tr>\n";
                 $val.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
@@ -275,11 +280,11 @@ class Statistics
                 $this->earningByBet = round($this->earningSum / $this->betSum,2); 
             }
         } elseif($page == 'matchday') {
-            $this->profit = money_format('%i',$this->earningSum - $this->matchs);
-            $this->roi = round(($this->profit / $this->matchs)*100);
-            $this->successRate = round(($this->success / $this->matchs)*100);
+            $this->profit = money_format('%i',$this->earningSum - $this->bet);
+            $this->roi = round(($this->profit / $this->bet)*100);
+            $this->successRate = round(($this->success / $this->bet)*100);
             $this->earning = money_format('%i',$this->earningSum);
-            $this->earningByBet = round($this->earningSum / $this->matchs,2);
+            $this->earningByBet = round($this->earningSum / $this->bet,2);
         }
     }
     
@@ -346,7 +351,7 @@ class Statistics
         
         $val .= "    <tr>\n";
         $val .= "      <td>" . (Language::title('bet')) . "</td>\n";
-        $val .= "      <td>". $this->matchs . "</td>\n";
+        $val .= "      <td>". $this->bet . "</td>\n";
         $val .= "      <td>" . (Language::title('success')) . "</td>\n";
         $val .= "      <td>" . $this->success . "</td>\n";
         $val .= "    </tr>\n";
@@ -364,7 +369,7 @@ class Statistics
         $val .= "    <tr>\n";
         $val .= "      <td>" . (Language::title('earningByBet')) . "</td>\n";
         $val .= "      <td>$this->earningByBet</td>\n";
-        $this->averageOdds = (round($this->totalPlayed/$this->matchs,2));
+        $this->averageOdds = (round($this->totalPlayed/$this->bet,2));
         $val .= "      <td>" . (Language::title('oddsAveragePlayed'))
         . "</td>\n";
         $val .= "      <td>" . $this->averageOdds;
