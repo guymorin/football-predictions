@@ -59,7 +59,7 @@ header{
 	height:2.35em;
 	overflow:hidden;
 	position:fixed;
-	background: #ddd;
+	background: #000;
 	border-bottom:1px solid #ccc;
 }
 header h1 {
@@ -72,7 +72,7 @@ header h1 a {
 	letter-spacing:1em;
 	text-decoration:none;
 	text-transform:uppercase;
-	color:#333;
+	color:#777;
 	vertical-align: middle;
 	padding-bottom: .15em
 }
@@ -96,13 +96,13 @@ nav a {
 	display:inline-block;
 	padding:.05em 0;
 	font-size:1.8em;
-	color:#555;
+	color:#777;
 	cursor: pointer;
 	transition:color .5s;
 }
 #fp input:checked + label,
 #fp label:focus,
-#fp label:hover{color:#000;}
+#fp label:hover{color:#ddd;}
 
 #fp-menu {
 	position:fixed;
@@ -210,7 +210,7 @@ tr.current button {
 #fp-submenu form, #fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}
 #fp-submenu form {display:inline-block; margin-top:.2em;}
 #fp-submenu label {margin-right:.2em}
-#fp-submenu select {min-width:10em;}
+#fp-submenu select {min-width:10em;font-size:.6em}
 
 /* Section */
 
