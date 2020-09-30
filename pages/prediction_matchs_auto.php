@@ -210,10 +210,10 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('currentForm')) . "</td>";
         if($d->result!="") echo "<td>".$serieC1."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='currentForm1[$id]' value='".$serieC1."' placeholder='0'></td>\n";
+        else echo "  		  <td><input size='1' type='text' name='currentForm1[$id]' readonly value='".$serieC1."'></td>\n";
         echo "  		  <td></td>\n";
         if($d->result!="") echo "<td>".$serieC2."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='currentForm2[$id]' value='".$serieC2."' placeholder='0'></td>\n";
+        else echo "  		  <td><input size='1' type='text' name='currentForm2[$id]' readonly value='".$serieC2."'></td>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('physicalForm')) . "</td>\n";
