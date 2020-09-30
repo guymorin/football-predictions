@@ -259,7 +259,10 @@ function criterion($type,$data,$pdo){
                 
                 if($r == null) $v=0;
                 else {
-                    foreach($r as $valTeam) $res[] = $valTeam->team;
+                    $res = array();
+                    foreach($r as $valTeam){
+                        $res[] = $valTeam;
+                    }
                     if(in_array($data->eq1,$res)) $v=1;
                 }
             }
@@ -268,6 +271,7 @@ function criterion($type,$data,$pdo){
             if($data->currentForm2!="") $v=$data->currentForm2;
             elseif(($_SESSION['matchdayNum']-1)>0){
                 $num = ($_SESSION['matchdayNum']-1);
+                // Did the team win in the last matchday ?
                 $req="
                     SELECT m.team_1 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_1
@@ -295,7 +299,10 @@ function criterion($type,$data,$pdo){
                 
                 if($r == null) $v=0;
                 else {
-                    foreach($r as $valTeam) $res[] = $valTeam->team;
+                    $res = array();
+                    foreach($r as $valTeam){
+                        $res[] = $valTeam;
+                    }
                     if(in_array($data->eq2,$res)) $v=1;
                 }                
             }
