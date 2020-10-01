@@ -16,7 +16,7 @@ class Season
     
     static function exitButton() {
         if(isset($_SESSION['seasonName'])){
-            echo "<a class='session' href='index.php?page=season&exit=1'>".$_SESSION['seasonName']." &#10060;</a>";
+            echo "<a class='session' href='index.php?page=season&exit=1'>". (Theme::icon('season')) . " " . (Language::title('selectTheSeason')) . "</a>";
         }
     }
     
@@ -45,7 +45,6 @@ class Season
             $val .= "</a>";
             }
         } else {
-            Account::exitButton();
             $val .= "<a" . $classC . " href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
             if(($_SESSION['role'])==2){
                 $req = "SELECT id_season, name FROM season ORDER BY name;";

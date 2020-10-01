@@ -74,6 +74,7 @@ class Player
         $val .= "<legend>" . (Language::title('player')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->input(Language::title('name'), 'name', 'name');
+        $val .= "<!-- Response --><div id='uname_response'></div>";
         $val .= "<br />\n";
         $val .= $form->input(Language::title('firstname'), 'firstname');
         $val .= "<br />\n";
@@ -155,6 +156,7 @@ class Player
         $val .= $error->getError();
         $val .= $form->inputHidden('id_player', $data->id_player);
         $val .= $form->input(Language::title('name'),'name');
+        $val .= "<span id='msgbox' style='display:none'></span>";
         $val .= "<br />\n";
         $val .= $form->input(Language::title('firstname'),'firstname');
         $val .= "<br />\n";

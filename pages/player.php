@@ -12,7 +12,6 @@ use FootballPredictions\Section\Player;
 
 echo "<h2>" . Theme::icon('player') . " " . (Language::title('player')) . "</h2>\n";
 
-include('include/checkName.php');
 
 // Values
 $playerId = $teamId = 0;
@@ -50,4 +49,34 @@ else {
     echo "<h3>" . (Language::title('bestPlayers')) . "</h3>\n";
     echo Player::list($pdo);  
 }
+
+?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+   $("#name").keyup(function(){
+
+      var name = $(this).val().trim();
+
+      if(name != ''){
+
+         $.ajax({
+            url: 'checkNameData.php',
+            type: 'post',
+            data: {name: name},
+            success: function(response){
+                $('#uname_response').html(response);
+             }
+         });
+      }else{
+         $("#uname_response").html("");
+      }
+
+    });
+
+ });
+</script>
+<?php 
+
 ?>
