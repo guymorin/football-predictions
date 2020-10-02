@@ -167,5 +167,5 @@ else {
         echo "</table>\n";
         echo $form->submit(Language::title('modify'));
         echo "</form>\n";
-    } else echo Language::title('noResult');
+    } else echo Language::title('noMatch');
 }

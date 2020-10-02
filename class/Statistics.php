@@ -92,7 +92,7 @@ class Statistics
             $this->summaryPrepare($page);
             $val .= $this->summaryTable($page);
             $val .=  $this->statsTable($page, $pdo);
-        } else $val .=  Language::title('noStatistic');
+        } else $val .=  Language::title('noMatch');
         return $val;
     }
     
