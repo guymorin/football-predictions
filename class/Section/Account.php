@@ -19,7 +19,6 @@ class Account
         }
     }
     static function submenu($pdo, $form, $current = null){
-        $val = "<a href='/'>" . (Language::title('homepage')) . "</a>";
         $currentClass = " class='current'";
         $classAL = $classMA = '';
         switch($current){
@@ -30,13 +29,14 @@ class Account
                 $classMA = $currentClass;
                 break;
         }
+        $val = "<a" . $classMA . " href='index.php?page=account'>" . (Language::title('myAccount')) . "</a>";
+        
         if(($_SESSION['role'])==2) $val .= "<a" 
                     . $classAL 
                     . " href='index.php?page=accountList'>" 
                     . (Language::title('listAccounts')) 
                     . "</a>";
         
-        $val .= "<a" . $classMA . " href='index.php?page=account'>" . (Language::title('myAccount')) . "</a>";
         if(($_SESSION['role'])==2){
             $req = "SELECT id_fp_user, name
             FROM fp_user 
@@ -164,6 +164,8 @@ class Account
     
     static function modifyForm($pdo, $error, $form, $userId){
         $val = '';
+        $val .= "<p><a href='index.php?page=account&exit=1'>" . (Language::title('logoff')) . " ?</a></p>\n";
+       
         $req = "SELECT * FROM fp_user WHERE id_fp_user=:id_fp_user;";
         $data = $pdo->prepare($req,[
             'id_fp_user' => $userId
@@ -196,8 +198,6 @@ class Account
         $val .= "</form>\n";
         $val .= "<br />\n";
         $val .= $form->deleteForm('account', 'id_fp_user', $userId);     
-        
-        $val .= "<p><a href='index.php?page=account&exit=1'>" . (Language::title('logoff')) . "</a></p>\n";
         
         return $val;
     }

@@ -208,7 +208,9 @@ class Statistics
                 $this->success++;
                 if($page == 'dashboard') $this->earning += $this->playedOdds;
                 elseif($page == 'matchday') $this->earningSum += $this->playedOdds;
-            } elseif ($d->result != "") $this->win = Theme::icon('winKO');
+            } elseif ($d->result != "") {
+                $this->win = Theme::icon('winKO');
+            } else $this->win = "?";
             
             $this->totalPlayed += $this->playedOdds;
             $this->matchs++;

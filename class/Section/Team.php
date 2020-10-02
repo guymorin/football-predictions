@@ -27,7 +27,6 @@ class Team
                 break;
             case '':break;
         }
-        $val = "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
         $val .= "<a" . $classMV . " href='index.php?page=team'>" . (Language::title('marketValue')) . "</a>";
         $val .= "<a" . $classC . " href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a>\n";
         if(($_SESSION['role'])==2){
