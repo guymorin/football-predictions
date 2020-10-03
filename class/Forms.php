@@ -452,7 +452,7 @@ class Forms
         $val .= "	   </select>\n";
         return $this->surround($val);
     }
-    public function selectTeam($pdo, $name='id_team', $selected=null, $data=null){
+    public function selectTeam($pdo, $name='id_team', $selected=null, $data=null, $player=false){
            
         if($data == null){
             $req="SELECT c.id_team, c.name FROM team c
@@ -465,7 +465,9 @@ class Forms
             ],true);
         }
                
-        $val = '<legend>' . (Language::title('team')). ' ' . ($_SESSION['seasonName']) . '</legend>';
+        $val = '<legend>' . (Language::title('team')). ' ';
+        if($player==true) $val .= ($_SESSION['seasonName']);
+        $val .= '</legend>';
         $val .= "     <select name='";
         if($name == null) $val .= 'id_team';
         else $val .= $name;

@@ -43,6 +43,8 @@ th,td {padding:.5em}
 a{color:#382;text-decoration:none;padding:0 .5em}
 a:hover{background:#5a4;color:#fff}
 
+header a:hover, table a, table a:hover{background:none}
+
 table{font-size:.9em;margin:0 auto;border:2px solid #666;border-radius:3px;min-width:50%;}
 td{border:.1em solid #aaa;}
 tr:nth-child(odd){background:#efefef}

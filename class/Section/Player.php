@@ -79,7 +79,7 @@ class Player
         $val .= $form->input(Language::title('firstname'), 'firstname');
         $val .= "<br />\n";
         $val .= $form->inputRadioPosition();
-        $val .= $form->selectTeam($pdo);
+        $val .= $form->selectTeam($pdo,'id_team',null,null,true);
         $val .= "</fieldset>\n";
         $val .= "<br />\n";
         $val .= $form->submit(Language::title('create'));
@@ -161,7 +161,7 @@ class Player
         $val .= $form->input(Language::title('firstname'),'firstname');
         $val .= "<br />\n";
         $val .= $form->inputRadioPosition($data);
-        $val .= $form->selectTeam($pdo, null, $data->id_team);
+        $val .= $form->selectTeam($pdo, null, $data->id_team, null, true);
         $val .= $table;
         $val .= "</fieldset>\n";
         $val .= "<br />\n";

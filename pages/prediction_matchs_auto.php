@@ -48,108 +48,119 @@ if($counter > 0){
     // Predictions for the matchday
     foreach ($data as $d)
     {
-        // Motivation
-        $motivC1=criterion("motivC1",$d,$pdo);
-        $motivC2=criterion("motivC2",$d,$pdo);
+        if($d->result==""){
         
-        // Current form
-        $serieC1=criterion("serieC1",$d,$pdo);
-        $serieC2=criterion("serieC2",$d,$pdo);
-        
-        // Market value
-        $v1=criterion("v1",$d,$pdo);
-        $v2=criterion("v2",$d,$pdo);
-        if( ($v1 != 0) && ($v2 != 0) ){
-            $mv1 = round(sqrt($v1/$v2));
-            $mv2 = round(sqrt($v2/$v1));
-        } else {
-            $mv1 = $mv2 = 0;
-        }
-        
-        // Home / Away
-        $dom = 0;
-        if(is_array($domBonus)){
-            if(in_array($d->eq1,$domBonus)) $dom=1;
-        }
-        if(is_array($domMalus)){
-            if(in_array($d->eq1,$domMalus)) $dom=(-1);
-        }
-        $ext = 0;
-        if(is_array($extBonus)){
-            if(in_array($d->eq2,$extBonus)) $ext=1;
-        }
-        if(is_array($extMalus)){
-            if(in_array($d->eq2,$extMalus)) $ext=(-1);
-        }
-        // Weather
-        if($d->date!=""){
+            // Motivation
+            $motivC1=criterion("motivC1",$d,$pdo);
+            $motivC2=criterion("motivC2",$d,$pdo);
             
-            $date1 = new DateTime($d->date);
-            $date2 = new DateTime(date('Y-m-d'));
-            $diff = $date2->diff($date1)->format("%a");
-            $cloud="";
+            // Current form
+            $serieC1=criterion("serieC1",$d,$pdo);
+            $serieC2=criterion("serieC2",$d,$pdo);
             
-            if($diff>=0 && $diff<14){
-                $api="https://api.meteo-concept.com/api/forecast/daily/".$diff."?token=1aca29e38eb644104b41975b55a6842fc4fb2bfd2f79f85682baecb1c5291a3e&insee=".$d->weather_code;
-                $weatherData = file_get_contents($api);
-                $rain=0;
-                
-                if ($weatherData !== false){
-                    $decoded = json_decode($date1->format('Y-m-d'));
-                    $city = $decoded->city;
-                    $forecast = $decoded->forecast;
-                    $rain=$forecast->rr1;
-                }
-                switch($rain){
-                    case ($rain==0):
-                        $cloud="&#x1F323;";// Sun
-                    case ($rain>=0&&$rain<1):
-                        $cloud="&#x1F324;";// Low rain
-                        $weather=1;
-                        if(round($v2/10)>round($v1/10)) $team2Weather=$weather;
-                        elseif(round($v2/10)==round($v1/10)){
-                            $team1Weather=$weather;
-                            $team2Weather=$weather;
-                        }
-                        else {
-                            $team1Weather=$weather;
-                            $team2Weather=0;
-                        }
-                        break;
-                    case ($rain>=1&&$rain<3):
-                        $cloud="&#x1F326;";// Middle rain
-                        $weather=1;
-                        if(round($v2/10)>round($v1/10)) $team1Weather=$weather;
-                        elseif(round($v2/10)==round($v1/10)){
-                            $team1Weather=$weather;
-                            $team2Weather=$weather;
-                        }
-                        else {
-                            $team1Weather=0;
-                            $team2Weather=$weather;
-                        }
-                        break;
-                    case ($rain>=3):
-                        $cloud="&#x1F327;";//High rain
-                        $weather=2;
-                        if(round($v2/10)>round($v1/10)) $team1Weather=$weather;
-                        elseif(round($v2/10)==round($v1/10)){
-                            $team1Weather=$weather;
-                            $team2Weather=$weather;
-                        }
-                        else {
-                            $team1Weather=0;
-                            $team2Weather=$weather;
-                        }
-                        break;
-                }
-                
+            // Market value
+            $v1=criterion("v1",$d,$pdo);
+            $v2=criterion("v2",$d,$pdo);
+            if( ($v1 != 0) && ($v2 != 0) ){
+                $mv1 = round(sqrt($v1/$v2));
+                $mv2 = round(sqrt($v2/$v1));
+            } else {
+                $mv1 = $mv2 = 0;
             }
+            
+            // Home / Away
+            $dom = 0;
+            if(is_array($domBonus)){
+                if(in_array($d->eq1,$domBonus)) $dom=1;
+            }
+            if(is_array($domMalus)){
+                if(in_array($d->eq1,$domMalus)) $dom=(-1);
+            }
+            $ext = 0;
+            if(is_array($extBonus)){
+                if(in_array($d->eq2,$extBonus)) $ext=1;
+            }
+            if(is_array($extMalus)){
+                if(in_array($d->eq2,$extMalus)) $ext=(-1);
+            }
+            // Weather
+            if($d->date!=""){
+                
+                $date1 = new DateTime($d->date);
+                $date2 = new DateTime(date('Y-m-d'));
+                $diff = $date2->diff($date1)->format("%a");
+                $cloud="";
+                
+                if($diff>=0 && $diff<14){
+                    $api="https://api.meteo-concept.com/api/forecast/daily/".$diff."?token=1aca29e38eb644104b41975b55a6842fc4fb2bfd2f79f85682baecb1c5291a3e&insee=".$d->weather_code;
+                    $weatherData = file_get_contents($api);
+                    $rain=0;
+                    
+                    if ($weatherData !== false){
+                        $decoded = json_decode($date1->format('Y-m-d'));
+                        $city = $decoded->city;
+                        $forecast = $decoded->forecast;
+                        $rain=$forecast->rr1;
+                    }
+                    switch($rain){
+                        case ($rain==0):
+                            $cloud="&#x1F323;";// Sun
+                        case ($rain>=0&&$rain<1):
+                            $cloud="&#x1F324;";// Low rain
+                            $weather=1;
+                            if(round($v2/10)>round($v1/10)) $team2Weather=$weather;
+                            elseif(round($v2/10)==round($v1/10)){
+                                $team1Weather=$weather;
+                                $team2Weather=$weather;
+                            }
+                            else {
+                                $team1Weather=$weather;
+                                $team2Weather=0;
+                            }
+                            break;
+                        case ($rain>=1&&$rain<3):
+                            $cloud="&#x1F326;";// Middle rain
+                            $weather=1;
+                            if(round($v2/10)>round($v1/10)) $team1Weather=$weather;
+                            elseif(round($v2/10)==round($v1/10)){
+                                $team1Weather=$weather;
+                                $team2Weather=$weather;
+                            }
+                            else {
+                                $team1Weather=0;
+                                $team2Weather=$weather;
+                            }
+                            break;
+                        case ($rain>=3):
+                            $cloud="&#x1F327;";//High rain
+                            $weather=2;
+                            if(round($v2/10)>round($v1/10)) $team1Weather=$weather;
+                            elseif(round($v2/10)==round($v1/10)){
+                                $team1Weather=$weather;
+                                $team2Weather=$weather;
+                            }
+                            else {
+                                $team1Weather=0;
+                                $team2Weather=$weather;
+                            }
+                            break;
+                    }
+                    
+                }
+            }
+        // Else = there is a result
+        } else {
+            $motivC1 = $d->motivation1;
+            $motivC2 = $d->motivation2;
+            $serieC1 = $d->currentForm1;
+            $serieC2 = $d->currentForm2;
+            $team1Weather = $d->weather1;
+            $team2Weather = $d->weather2;
+            $mv1 = $d->marketValue1;
+            $mv2 = $d->marketValue2;
+            $dom = $d->home_away1;
+            $ext = $d->home_away2;
         }
-        
-        if($d->result!="") $team1Weather=$d->weather1;
-        if($d->result!="") $team2Weather=$d->weather2;
-        
         
         // Predictions history
         $historyHome=$historyDraw=$historyAway=0;
@@ -163,7 +174,7 @@ if($counter > 0){
         $id = $d->id_matchgame;
         
         $sum1 = 
-            $d->motivation1
+            $motivC1
             +$serieC1
             +$d->physicalForm1
             +intval($team1Weather)
@@ -172,7 +183,7 @@ if($counter > 0){
             +$dom
             +$historyHome;
         $sum2 = 
-            $d->motivation2
+            $motivC2
             +$serieC2
             +$d->physicalForm2
             +intval($team2Weather)
@@ -180,6 +191,8 @@ if($counter > 0){
             +$mv2
             +$ext
             +$historyAway;
+       
+            
         if($sum1>$sum2)      $prediction = "1";
         elseif($sum1==$sum2) $prediction = "D";
         elseif($sum1<$sum2)  $prediction = "2";
@@ -251,19 +264,19 @@ if($counter > 0){
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('marketValue')) . "</td>\n";
-        if($d->result!="") echo "<td>".$d->marketValue1."</td>\n";
+        if($d->result!="") echo "<td>".$mv1."</td>\n";
         else echo "  		  <td><input size='1' type='text' readonly name='marketValue1[$id]' value='".$mv1."'></td>\n";
         echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$d->marketValue2."</td>\n";
+        if($d->result!="") echo "<td>".$mv2."</td>\n";
         else echo "  		  <td><input size='1' type='text' readonly name='marketValue2[$id]' value='".$mv2."'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('home')) . " / " . (Language::title('away')) . "</td>";
-        if($d->result!="") echo "<td>".$d->home_away1."</td>\n";
+        if($d->result!="") echo "<td>".$dom."</td>\n";
         else echo "  		  <td><input size='1' type='text' readonly name='home_away1[$id]' value='".$dom."'></td>\n";
         echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$d->home_away2."</td>\n";
+        if($d->result!="") echo "<td>".$ext."</td>\n";
         else echo "  		  <td><input size='1' type='text' readonly name='home_away2[$id]' value='".$ext."'></td>\n";
         echo "          </tr>\n";
         
