@@ -315,16 +315,22 @@ if($counter > 0){
             echo "  		  <td>" . (Language::title('result')) . "</td>\n";
             echo "  		  <td>";
             $varName = "result[$id]";
-            if($d->result == '1') echo Theme::icon('OK');
-            else echo Theme::icon('KO');
+            if($d->result == '1'){
+                if($d->result == $prediction) echo Theme::icon('winOK');
+                else echo Theme::icon('OK');
+            } else echo Theme::icon('KO');
             echo "</td>\n";
             echo "  		  <td>";
-            if($d->result == 'D') echo Theme::icon('OK');
-            else echo Theme::icon('KO');
+            if($d->result == 'D'){
+                if($d->result == $prediction) echo Theme::icon('winOK');
+                else echo Theme::icon('OK');
+            } else echo Theme::icon('KO');
             echo "</td>\n";
             echo "  		  <td>";
-            if($d->result == '2') echo Theme::icon('OK');
-            else echo Theme::icon('KO');
+            if($d->result == '2'){
+                if($d->result == $prediction) echo Theme::icon('winOK');
+                else echo Theme::icon('OK');
+            } else echo Theme::icon('KO');
             echo "</td>\n";
             echo "          </tr>\n";
         }

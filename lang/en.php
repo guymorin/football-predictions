@@ -75,6 +75,7 @@ $array = array(
     "lose" => "L",
     "marketValue" => "Marketvalue",
     "matchday" => "Matchday",
+    "matchdayNext" => "Next matchday",
     "matchdays" => "Matchdays",
     "matchgame" => "Match",
     "matchNumber" => "Number of matchgame",

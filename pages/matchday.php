@@ -62,8 +62,9 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
     }
 }
 // List
-else {
-    echo "<h3>" . (Language::title('listMatchdays'));
+else {   
+    
+    echo "<h3>" . (Language::title('listMatchdays')) . "</h3>";
     echo "<h4>" . $_SESSION['championshipName']." - " 
                 . $_SESSION['seasonName'] . "</h4>\n";
     echo Matchday::list($pdo, $form);
