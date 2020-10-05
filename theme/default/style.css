@@ -47,9 +47,9 @@ header a:hover, table a, table a:hover{background:none}
 
 table{font-size:.9em;margin:0 auto;border:2px solid #666;border-radius:3px;min-width:50%;}
 td{border:.1em solid #aaa;}
-tr:nth-child(odd){background:#efefef}
-tr:nth-child(even){background:#fff}
-th{padding:.4em;background:#fff;color:#888;font-weight:bold;}
+tr:nth-child(odd){background:#ccc}
+tr:nth-child(even){background:#ddd}
+th{padding:.4em;background:#888;color:#fff;font-weight:normal}
 input[type='date'] {font-size:1.2em}
 input[type='number'] {width:6em;padding:1em 0}
 
