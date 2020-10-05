@@ -57,6 +57,10 @@ if($counter > 0){
             // Current form
             $serieC1=criterion("serieC1",$d,$pdo);
             $serieC2=criterion("serieC2",$d,$pdo);
+
+            // Physical form
+            $physicalC1=criterion("physicalC1",$d,$pdo);
+            $physicalC2=criterion("physicalC2",$d,$pdo);
             
             // Market value
             $v1=criterion("v1",$d,$pdo);
@@ -154,6 +158,8 @@ if($counter > 0){
             $motivC2 = $d->motivation2;
             $serieC1 = $d->currentForm1;
             $serieC2 = $d->currentForm2;
+            $physicalC1 = $d->physicalForm1;
+            $physicalC2 = $d->physicalForm1;
             $team1Weather = $d->weather1;
             $team2Weather = $d->weather2;
             $mv1 = $d->marketValue1;
@@ -176,7 +182,7 @@ if($counter > 0){
         $sum1 = 
             $motivC1
             +$serieC1
-            +$d->physicalForm1
+            +$physicalC1
             +intval($team1Weather)
             +$d->bestPlayers1
             +$mv1
@@ -185,7 +191,7 @@ if($counter > 0){
         $sum2 = 
             $motivC2
             +$serieC2
-            +$d->physicalForm2
+            +$physicalC2
             +intval($team2Weather)
             +$d->bestPlayers2
             +$mv2
@@ -230,11 +236,11 @@ if($counter > 0){
         
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('physicalForm')) . "</td>\n";
-        if($d->result!="") echo "<td>".$d->physicalForm1."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='physicalForm1[$id]' value='".$d->physicalForm1."' placeholder='0'></td>\n";
+        if($d->result!="") echo "<td>".$physicalC1."</td>\n";
+        else echo "  		  <td><input size='1' type='number' name='physicalForm1[$id]' value='".$physicalC1."' placeholder='0'></td>\n";
         echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$d->physicalForm2."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='physicalForm2[$id]' value='".$d->physicalForm2."' placeholder='0'></td>\n";
+        if($d->result!="") echo "<td>".$physicalC2."</td>\n";
+        else echo "  		  <td><input size='1' type='number' name='physicalForm2[$id]' value='".$physicalC2."' placeholder='0'></td>\n";
         echo "          </tr>\n";
         
         
