@@ -70,9 +70,6 @@ class Home
                 break;
             default:
                 Account::exitButton();
-                Season::exitButton();
-                Championship::exitButton();
-                Matchday::exitButton();
                 break;
         }
         return $val;
@@ -81,8 +78,14 @@ class Home
     static function homeMenu($pdo, $form){
         $val = '';
         $val .= "<ul class='menu'>\n";
-        // DATABASE
-        if($_SESSION['role'] == '2') {
+        
+        if($_SESSION['role'] != '2') {
+          
+            $val .= "<h4>" . Language::title('site') . "</h4>";
+            $val .= "<h5>" . Language::title('siteSubTitle') . "</h5>";
+            
+        } else {
+            // DATABASE
             $val .= "    <li><h3>" . ucfirst(Language::title('siteData')) . "</h3>\n";
             $dir    = 'data';
             
@@ -114,69 +117,39 @@ class Home
             $val .= "            <li><a class='$class' href='index.php?page=dump'>" . (Language::title('save')) . "</a></li>\n";
             $val .= "       </ul>\n";
             $val .= "<br /><small>" . Language::title('lastSave') . " : " . $lastDump . "</small>\n";
-        }
         
-        /*
-        // ACCOUNT
-        $val .= "    <li><h3>" . Theme::icon('account') . " " . (Language::title('account')) . "</h3>\n";
-        $val .= "       <ul>\n";
-        if($_SESSION['role'] == '2') {
-            $val .= "            <li><a href='index.php?page=accountList'>" . (Language::title('listAccounts')) . "</a></li>\n";
-        }
-        $val .= "            <li><a href='index.php?page=account'>" . (Language::title('myAccount')) . "</a></li>\n";
-        $val .= "       </ul>\n";
-        $val .= "    </li>\n";
-        */
+            // SEASON
+            $val .= "    <li><h3>" . Theme::icon('season') . " " . (Language::title('season')) . "</h3>\n";
         
-        // SEASON
-        $val .= "    <li><h3>" . Theme::icon('season') . " " . (Language::title('season')) . "</h3>\n";
-        $val .= "       <ul>\n";
-        $val .= "            <li><a href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a></li>\n";
-        if(($_SESSION['role'])==2){
-            $val .= "<li><a href='/index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a></li>";
-        }
-        $val .= "       </ul>\n";
-        $val .= "    </li>\n";
-        
-        // CHAMPIONSHIP
-        $val .= "    <li><h3>" . Theme::icon('championship') . " " . (Language::title('championship')) . "</h3>\n";
-        $req = "SELECT DISTINCT id_team  
-            FROM season_championship_team  
-            WHERE id_season=" . $_SESSION['seasonId']."
-            AND id_championship=" . $_SESSION['championshipId'] . ";";
-        $response = $pdo->query($req);
-        $counter = $pdo->rowCount();
-        if($counter>0){
-            $_SESSION['noTeam'] = false;
             $val .= "       <ul>\n";
-            //$val .= "            <li><a href='index.php?page=championship'>" . (Language::title('standing')) . "</a></li>\n";
-            $val .= "            <li><a href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a></li>\n";
-            if(($_SESSION['role'])==2){
-                $val .= "            <li><a href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a></li>\n";
+            $val .= "<li><a href='/index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a></li>";
+            $val .= "       </ul>\n";
+        
+        
+            $val .= "    </li>\n";
+        
+            // CHAMPIONSHIP
+            $val .= "    <li><h3>" . Theme::icon('championship') . " " . (Language::title('championship')) . "</h3>\n";
+                   
+            $val .= "       <ul>\n";
+            $req = "SELECT DISTINCT id_team  
+                FROM season_championship_team  
+                WHERE id_season=" . $_SESSION['seasonId']."
+                AND id_championship=" . $_SESSION['championshipId'] . ";";
+            $response = $pdo->query($req);
+            $counter = $pdo->rowCount();
+            if($counter>0){
+                $_SESSION['noTeam'] = false;
+                    $val .= "            <li><a href='index.php?page=championship&create=1'>" . (Language::title('createAChampionship')) . "</a></li>\n";
+            } else {
+                $_SESSION['noTeam'] = true;
+                $val .= "            <li><a href='index.php?page=championship&create=1'>" . (Language::title('selectTheTeams')) . "</a></li>\n";
             }
             $val .= "       </ul>\n";
-        } else {
-            $_SESSION['noTeam'] = true;
-            $val .= "       <ul>\n";
-            $val .= "            <li><a href='index.php?page=championship&create=1'>" . (Language::title('selectTheTeams')) . "</a></li>\n";
-            $val .= "       </ul>\n";
-        }
-        $val .= "    </li>\n";
+            $val .= "    </li>\n";
         
         // MATCHDAY
-        $val .= "    <li><h3>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h3>\n";
                 
-        $val .= "        <ul>\n";
-        $val .= "            <li><a href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a></li>\n";
-        if(isset($_SESSION['matchdayId'])){
-        /*    $val .= "            <li><a href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a></li>\n";
-        
-            $val .= "            <li><a href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a></li>\n";
-            $val .= "            <li><a href='index.php?page=results'>" . (Language::title('results')) . "</a></li>\n";
-            $val .= "            <li><a href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a></li>\n";
-            $val .= "            <li><a href='index.php?page=matchgame&create=1'>" . (Language::title('createAMatch')) . "</a></li>\n";
-        */
-        } else {
             $req = "SELECT DISTINCT id_matchday, number
             FROM matchday
             WHERE id_season=" . $_SESSION['seasonId']."
@@ -186,64 +159,16 @@ class Home
             
             if($counter>0){
                 $_SESSION['noMatchday'] = false;
-                
-                /*
-                // Select form
-                $list = "<form action='index.php?page=matchday' method='POST'>\n";
-                $list .= $form->labelBr(Language::title('selectTheMatchday'));
-                $list .= $form->selectSubmit("matchdaySelect", $response);
-                $list .= "</form>\n";
-                */
-                
-                /*
-                // Quicknav button
-                $req = "SELECT DISTINCT j.id_matchday, j.number FROM matchday j
-                LEFT JOIN matchgame m ON m.id_matchday=j.id_matchday
-                WHERE m.result IS NULL
-                AND j.id_season=:id_season
-                AND j.id_championship=:id_championship
-                ORDER BY j.number;";
-                $data = $pdo->prepare($req,[
-                    'id_season' => $_SESSION['seasonId'],
-                    'id_championship' => $_SESSION['championshipId']
-                ]);
-                $counter = $pdo->rowCount();
-                if($counter>0){
-                    $val .= "<br />\n";
-                    $val .= "<form action='index.php?page=matchday' method='POST'>\n";
-                    $val .=  $form->label(Language::title('quickNav'));
-                    $val .=  $form->inputHidden("matchdaySelect", $data->id_matchday . "," . $data->number);
-                    $val .=  $form->submit(Theme::icon('quicknav') . " " . (Language::title('MD')) . $data->number);
-                    $val .= "</form>\n";
-                    $val .= "<br />\n";
-                }
-                */
-                //$val .=  $list;                
             } else {
                 $_SESSION['noMatchday'] = true;
+                $val .= "    <li><h3>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</h3>\n";
+                $val .= "        <ul>\n";
                 $val .= "            <li><a href='index.php?page=matchday&create=1'>" . (Language::title('createTheMatchdays')) . "</a></li>\n";
+                $val .= "        </ul>\n";
+                $val .= "    </li>\n";
             }
         }
-        $val .= "        </ul>\n";
-        $val .= "    </li>\n";
-        /*
-        // TEAM
-        $val .= "    <li><h3>" . Theme::icon('team') . " " . (Language::title('team')) . "</h3>\n";
-        $val .= "        <ul>\n";
-        $val .= "            <li><a href='index.php?page=team'>" . (Language::title('marketValue')) . "</a></li>\n";
-        $val .= "            <li><a href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a></li>\n";
-        $val .= "        </ul>\n";
-        $val .= "    </li>\n";
         
-        // PLAYER
-        $val .= "    <li><h3>" . Theme::icon('player') . " " . (Language::title('player')) . "</h3>\n";
-        $val .= "        <ul>\n";
-        $val .= "            <li><a href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a></li>\n";
-        $val .= "            <li><a href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a></li>\n";
-        $val .= "        </ul>\n";
-        $val .= "    </li>\n";
-        $val .= "</ul>\n";
-        */
         return $val;
     }
     

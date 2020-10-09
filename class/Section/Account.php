@@ -15,7 +15,7 @@ class Account
     
     static function exitButton() {
         if(isset($_SESSION['userLogin'])){
-            echo "<a class='session' href='index.php?page=account&exit=1'>".ucfirst($_SESSION['userLogin'])." &#10060;</a>";
+            echo "<a class='session' href='index.php?page=account&exit=1'>".(Language::title('logoff')) . " [" . ucfirst($_SESSION['userLogin'])."]</a>";
         }
     }
     static function submenu($pdo, $form, $current = null){
