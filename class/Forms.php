@@ -87,7 +87,7 @@ class Forms
         $val .= $this->inputHidden($name, $id);
         isset($nameOther) ? $val .= $this->inputHidden($nameOther, $idOther) : null;
         if($confirm==true) $val .= $this->submit(Language::title('yes'));
-        else $val .= $this->submit("&#9888 " . (Language::title('delete')) . " &#9888");
+        else $val .= $this->submit((Language::title('delete')));
         $val .= "</form>\n";
         return $val;
     }

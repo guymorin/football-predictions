@@ -299,112 +299,119 @@ class Statistics
     
     public function summaryTableDashboard(){
         $val = '';
-        $val .= "<p>\n";
-        $val .= "<table class='stats'>\n";
-        
-        $val .= "    <tr>\n";
-        $val .= "      <td>" . (Language::title('bet')) . "</td>\n";
-        $val .= "      <td>". $this->betSum . "</td>\n";
-        $val .= "      <td>" . (Language::title('success')) . "</td>\n";
-        $val .= "      <td>" . $this->successSum . "</td>\n";
-        $val .= "    </tr>\n";
-        
-        $val .= "    <tr>\n";
-        $val .= "      <td>" . (Language::title('earning')) . "</td>\n";
-        $val .= "      <td>" . $this->earningSum."&nbsp;&euro;</td>\n";
-        $val .= "      <td>" . (Language::title('successRate')) . "</td>\n";
-        $val .= "      <td>";
-        $val .= $this->successRate;
-        $val .= "&nbsp;%</td>\n";
-        $val .= "    </tr>\n";
-        
-        $val .= "    <tr>\n";
-        $val .= "      <td>" . (Language::title('earningByBet')) . "</td>\n";
-        $val .= "      <td>$this->earningByBet</td>\n";
-        if($this->betSum>0){
-            $this->averageOdds = (round($this->playedOddsSum / $this->betSum,2));
+        if($this->betSum > 0){
+            $val .= "<p>\n";
+            $val .= "<table class='stats'>\n";
+            
+            $val .= "    <tr>\n";
+            $val .= "      <td>" . (Language::title('bet')) . "</td>\n";
+            $val .= "      <td>". $this->betSum . "</td>\n";
+            $val .= "      <td>" . (Language::title('success')) . "</td>\n";
+            $val .= "      <td>" . $this->successSum . "</td>\n";
+            $val .= "    </tr>\n";
+            
+            $val .= "    <tr>\n";
+            $val .= "      <td>" . (Language::title('earning')) . "</td>\n";
+            $val .= "      <td>" . $this->earningSum."&nbsp;&euro;</td>\n";
+            $val .= "      <td>" . (Language::title('successRate')) . "</td>\n";
+            $val .= "      <td>";
+            $val .= $this->successRate;
+            $val .= "&nbsp;%</td>\n";
+            $val .= "    </tr>\n";
+            
+            $val .= "    <tr>\n";
+            $val .= "      <td>" . (Language::title('earningByBet')) . "</td>\n";
+            $val .= "      <td>$this->earningByBet</td>\n";
+            if($this->betSum>0){
+                $this->averageOdds = (round($this->playedOddsSum / $this->betSum,2));
+            }
+            $val .= "      <td>" . (Language::title('oddsAveragePlayed'))
+            . "</td>\n";
+            $val .= "      <td>" . $this->averageOdds;
+            if(($this->averageOdds < 1.8)||($this->averageOdds > 2.3)){
+                $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;"
+                    . valOdds($this->averageOdds)."</a>";
+            }
+            $val .= "</td>\n";
+            $val .= "    </tr>\n";
+            
+            $val .= "    <tr>\n";
+            $val .= "      <td>" . (Language::title('profit')) . "</td>\n";
+            $val .= "      <td><span style='color:" . valColor($this->profitSum) . "'>";
+            if($this->profitSum>0) $val .= "+";
+            $val .= $this->profitSum."</span></td>\n";
+            $val .= "      <td>" . (Language::title('ROI')) . "</td>\n";
+            $val .= "      <td>";
+            $val .= "<span style='color:" . valColor($this->roi) . "'>";
+            if($this->roi>0) $val .= "+";
+            $val .= $this->roi."&nbsp;%</span>";
+            $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($this->roi)."</a>";
+            $val .= "</td>\n";
+            $val .= "    </tr>\n";
+            
+            $val .= "</table>\n";
+            $val .= "</p>\n";
+            
         }
-        $val .= "      <td>" . (Language::title('oddsAveragePlayed'))
-        . "</td>\n";
-        $val .= "      <td>" . $this->averageOdds;
-        if(($this->averageOdds < 1.8)||($this->averageOdds > 2.3)){
-            $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;"
-                . valOdds($this->averageOdds)."</a>";
-        }
-        $val .= "</td>\n";
-        $val .= "    </tr>\n";
-        
-        $val .= "    <tr>\n";
-        $val .= "      <td>" . (Language::title('profit')) . "</td>\n";
-        $val .= "      <td><span style='color:" . valColor($this->profitSum) . "'>";
-        if($this->profitSum>0) $val .= "+";
-        $val .= $this->profitSum."</span></td>\n";
-        $val .= "      <td>" . (Language::title('ROI')) . "</td>\n";
-        $val .= "      <td>";
-        $val .= "<span style='color:" . valColor($this->roi) . "'>";
-        if($this->roi>0) $val .= "+";
-        $val .= $this->roi."&nbsp;%</span>";
-        $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($this->roi)."</a>";
-        $val .= "</td>\n";
-        $val .= "    </tr>\n";
-        
-        $val .= "</table>\n";
-        $val .= "</p>\n";
         return $val;
     }
     
     public function summaryTableMatchday(){
         $val = '';
-        $val .= "<p>\n";
-        $val .= "<table class='stats'>\n";
-        
-        $val .= "    <tr>\n";
-        $val .= "      <td>" . (Language::title('bet')) . "</td>\n";
-        $val .= "      <td>". $this->bet . "</td>\n";
-        $val .= "      <td>" . (Language::title('success')) . "</td>\n";
-        $val .= "      <td>" . $this->success . "</td>\n";
-        $val .= "    </tr>\n";
-        
-        $val .= "    <tr>\n";
-        $val .= "      <td>" . (Language::title('earning')) . "</td>\n";
-        $val .= "      <td>" . $this->earning."&nbsp;&euro;</td>\n";
-        $val .= "      <td>" . (Language::title('successRate')) . "</td>\n";
-        $val .= "      <td>";
-        if($this->matchs > 0) $val .= $this->successRate;
-        else $val .= 0;
-        $val .= "&nbsp;%</td>\n";
-        $val .= "    </tr>\n";
-        
-        $val .= "    <tr>\n";
-        $val .= "      <td>" . (Language::title('earningByBet')) . "</td>\n";
-        $val .= "      <td>$this->earningByBet</td>\n";
-        if($this->bet>0) $this->averageOdds = (round($this->totalPlayed/$this->bet,2));
-        $val .= "      <td>" . (Language::title('oddsAveragePlayed'))
-        . "</td>\n";
-        $val .= "      <td>" . $this->averageOdds;
-        if(($this->averageOdds < 1.8)||($this->averageOdds > 2.3)){
-            $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;"
-                . valOdds($this->averageOdds)."</a>";
+        if($this->bet > 0){
+            
+            $val .= "<p>\n";
+            $val .= "<table class='stats'>\n";
+            
+            $val .= "    <tr>\n";
+            $val .= "      <td>" . (Language::title('bet')) . "</td>\n";
+            $val .= "      <td>". $this->bet . "</td>\n";
+            $val .= "      <td>" . (Language::title('success')) . "</td>\n";
+            $val .= "      <td>" . $this->success . "</td>\n";
+            $val .= "    </tr>\n";
+            
+            $val .= "    <tr>\n";
+            $val .= "      <td>" . (Language::title('earning')) . "</td>\n";
+            $val .= "      <td>" . $this->earning."&nbsp;&euro;</td>\n";
+            $val .= "      <td>" . (Language::title('successRate')) . "</td>\n";
+            $val .= "      <td>";
+            if($this->matchs > 0) $val .= $this->successRate;
+            else $val .= 0;
+            $val .= "&nbsp;%</td>\n";
+            $val .= "    </tr>\n";
+            
+            $val .= "    <tr>\n";
+            $val .= "      <td>" . (Language::title('earningByBet')) . "</td>\n";
+            $val .= "      <td>$this->earningByBet</td>\n";
+            if($this->bet>0) $this->averageOdds = (round($this->totalPlayed/$this->bet,2));
+            $val .= "      <td>" . (Language::title('oddsAveragePlayed'))
+            . "</td>\n";
+            $val .= "      <td>" . $this->averageOdds;
+            if(($this->averageOdds < 1.8)||($this->averageOdds > 2.3)){
+                $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;"
+                    . valOdds($this->averageOdds)."</a>";
+            }
+            $val .= "</td>\n";
+            $val .= "    </tr>\n";
+            
+            $val .= "    <tr>\n";
+            $val .= "      <td>" . (Language::title('profit')) . "</td>\n";
+            $val .= "      <td><span style='color:" . valColor($this->profit) . "'>";
+            if($this->profit>0) $val .= "+";
+            $val .= $this->profit."</span></td>\n";
+            $val .= "      <td>" . (Language::title('ROI')) . "</td>\n";
+            $val .= "      <td>";
+            $val .= "<span style='color:" . valColor($this->roi) . "'>";
+            if($this->roi>0) $val .= "+";
+            $val .= $this->roi."&nbsp;%</span>";
+            $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($this->roi)."</a>";
+            $val .= "</td>\n";
+            $val .= "    </tr>\n";
+            
+            $val .= "</table>\n";
+            $val .= "</p>\n";
+            
         }
-        $val .= "</td>\n";
-        $val .= "    </tr>\n";
-        
-        $val .= "    <tr>\n";
-        $val .= "      <td>" . (Language::title('profit')) . "</td>\n";
-        $val .= "      <td><span style='color:" . valColor($this->profit) . "'>";
-        if($this->profit>0) $val .= "+";
-        $val .= $this->profit."</span></td>\n";
-        $val .= "      <td>" . (Language::title('ROI')) . "</td>\n";
-        $val .= "      <td>";
-        $val .= "<span style='color:" . valColor($this->roi) . "'>";
-        if($this->roi>0) $val .= "+";
-        $val .= $this->roi."&nbsp;%</span>";
-        $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($this->roi)."</a>";
-        $val .= "</td>\n";
-        $val .= "    </tr>\n";
-        
-        $val .= "</table>\n";
-        $val .= "</p>\n";
         return $val;
     }
     
