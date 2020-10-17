@@ -28,6 +28,12 @@ class Statistics
     private $predictionsHistoryAway;
     private $predictionsHistoryDraw;
     private $predictionsHistoryHome;
+    private $prob1;
+    private $probD;
+    private $prob2;
+    private $probOdds1;
+    private $probOddsD;
+    private $probOdds2;
     private $profit;
     private $profitSum;
     private $roi;
@@ -35,6 +41,7 @@ class Statistics
     private $successRate;
     private $successSum;
     private $sum1;
+    private $sumD;
     private $sum2;
     private $table;
     private $totalPlayed;
@@ -183,26 +190,33 @@ class Statistics
                 +$this->mv2
                 +$this->away
                 +$this->predictionsHistoryAway;
-            if($this->sum1 > $this->sum2)         $this->prediction = '1';
-            elseif($this->sum1 == $this->sum2)    $this->prediction = 'D';
-            elseif($this->sum1 < $this->sum2)     $this->prediction = '2';
-            if(($this->predictionsHistoryDraw>$this->sum1)&&($this->predictionsHistoryDraw>$this->sum2)) $this->prediction= 'D';
+            
+            $this->sumD=setSumD($this->sum1, $this->sum2, $this->predictionsHistoryDraw);
+            
+            $this->prob1 = setProb('1',$this->sum1, $this->sumD, $this->sum2);
+            $this->probD = setProb('D',$this->sum1, $this->sumD, $this->sum2);
+            $this->prob2 = setProb('2',$this->sum1, $this->sumD, $this->sum2);
+            $this->probOdds1 = setProbOdds($this->prob1);
+            $this->probOddsD = setProbOdds($this->probD);
+            $this->probOdds2 = setProbOdds($this->prob2);
+            
+           
+            $this->prediction = setPrediction($this->sum1, $this->sumD, $this->sum2);
             
             $this->playedOdds=0;
-            if($d->result!=""){
-                switch($this->prediction){
-                    case "1":
-                        $this->playedOdds = $d->odds1;
-                        break;
-                    case ("D"):
-                        $this->playedOdds = $d->oddsD;
-                        break;
-                    case "2":
-                        $this->playedOdds = $d->odds2;
-                        break;
-                }
+            switch($this->prediction){
+                case "1":
+                    $this->playedOdds = $d->odds1;
+                    break;
+                case ("D"):
+                    $this->playedOdds = $d->oddsD;
+                    break;
+                case "2":
+                    $this->playedOdds = $d->odds2;
+                    break;
             }
 
+               
             if($this->prediction == $d->result){
                 $this->win = Theme::icon('winOK');
                 $this->success++;
@@ -247,12 +261,9 @@ class Statistics
             } elseif($page == 'matchday') {
                 $val.="  		<tr>\n";
                 $val.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
-                $val.="  		  <td><small>".$this->sum1."</small></td>\n";
-                $val.="  		  <td><small>";
-                if($this->predictionsHistoryDraw==0) $val.="-";
-                else $val.= $this->predictionsHistoryDraw;
-                $val.="</small></td>\n";
-                $val.="  		  <td><small>".$this->sum2."</small></td>\n";
+                $val.="  		  <td><small>".$this->sum1."<br />".$this->probOdds1."</small></td>\n";
+                $val.="  		  <td><small>".$this->sumD."<br />".$this->probOddsD."</small></td>\n";
+                $val.="  		  <td><small>".$this->sum2."<br />".$this->probOdds2."</small></td>\n";
                 $val.="  		  <td><strong>";
                 if($this->prediction=='D') $val.=Language::title('draw');
                 else $val.=$this->prediction;
@@ -261,7 +272,21 @@ class Statistics
                 if($d->result=='D') $val.=Language::title('draw');
                 else $val.=$d->result;
                 $val.="</strong></td>\n";
-                $val.="  		  <td>".$this->playedOdds."</td>\n";
+                
+                $valueBet = '<br />'.Theme::icon('moneyEuro');
+                switch($this->prediction){
+                    case '1':
+                        if($this->probOdds1 > $this->playedOdds) $valueBet='';
+                        break;
+                    case 'D':
+                        if($this->probOddsD > $this->playedOdds) $valueBet='';
+                        break;
+                    case '2':
+                        if($this->probOdds2 > $this->playedOdds) $valueBet='';
+                        break;
+                }
+                
+                $val.="  		  <td>".$this->playedOdds.$valueBet."</td>\n";
                 $val.="  		  <td>".$this->win."</td>\n";
                 $val.="       </tr>\n";
             }

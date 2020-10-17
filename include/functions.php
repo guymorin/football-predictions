@@ -1,6 +1,55 @@
 <?php
 use FootballPredictions\Language;
 
+function setProb($prob,$sum1,$sumD,$sum2){
+    $val='';
+    $sum=abs($sum1)+abs($sumD)+abs($sum2);
+    if($sum<3){
+        $sum1 = $sum1 + $sum;
+        $sumD = $sumD + $sum;
+        $sum2 = $sum2 + $sum;
+        $sum=$sum1+$sumD+$sum2;
+    }
+    if($sum==0) $val=1/3;
+    else {    
+        switch($prob){
+            case '1':
+                $val = $sum1 / $sum;
+                break;
+            case 'D':
+                $val = $sumD / $sum;
+                break;
+            case '2':
+                $val = $sum2 / $sum;
+                break;
+        }
+    }
+    $val = round($val * 100,1);
+    return $val;
+}
+
+function setProbOdds($val){
+    if($val<1) $val=10;
+    $val = round(100/$val,2);
+    return $val;
+}
+
+function setPrediction($sum1,$sumD,$sum2){
+    $val='';
+    if($sum1>$sum2)      $val = "1";
+    elseif($sum1==$sum2) $val = "D";
+    elseif($sum1<$sum2)  $val = "2";
+    if(($sumD>$sum1)&&($sumD>$sum2)) $val="D";
+    return $val;
+}
+
+function setSumD($sum1,$sum2,$historyDraw){
+    $val = ($sum1+$sum2)/2;
+    $val = intval($val);
+    $val = $val + $historyDraw;
+    return $val;
+}
+
 function result($type,$pdo,$d='',$team1Weather=0,$team2Weather=0){
     $r='';
     switch($type){

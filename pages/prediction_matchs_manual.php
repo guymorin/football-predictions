@@ -54,10 +54,9 @@ if($counter > 0){
             +$d->marketValue2
             +$d->home_away2
             +$historyAway;
-        if($sum1>$sum2) $prediction="1";
-        elseif($sum1==$sum2) $prediction="D";
-        elseif($sum1<$sum2) $prediction="2";
-        if(($historyDraw>$sum1)&&($historyDraw>$sum2)) $prediction="D";
+        $sumD=setSumD($sum1, $sum2, $historyDraw);
+        
+        $prediction = setPrediction($sum1, $sumD, $sum2);
         if($prediction==$d->result) $win=" ";
             
         echo "	 <table class='manual'>\n";
@@ -131,7 +130,7 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <td><strong>" . (Language::title('criterionSum')) . "</strong></td>";
         echo "  		  <td><strong>$sum1</strong></td>\n";
-        echo "  		  <td><strong>$historyDraw</strong></td>\n";
+        echo "  		  <td><strong>$sumD</strong></td>\n";
         echo "  		  <td><strong>$sum2</strong></td>\n";
         echo "          </tr>\n";
     

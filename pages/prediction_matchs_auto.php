@@ -198,12 +198,10 @@ if($counter > 0){
             +$ext
             +$historyAway;
        
-            
-        if($sum1>$sum2)      $prediction = "1";
-        elseif($sum1==$sum2) $prediction = "D";
-        elseif($sum1<$sum2)  $prediction = "2";
-        if(($historyDraw>$sum1)&&($historyDraw>$sum2)) $prediction="D";
+        $sumD = setSumD($sum1,$sum2,$historyDraw);
         
+        $prediction = setPrediction($sum1, $sumD, $sum2);
+       
         // Display table
         if($d->result=="") echo $form->inputHidden('id_match[]',$d->id_matchgame);
         if(isset($history[0])) echo $history[0];
@@ -296,7 +294,7 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <td><strong>" . (Language::title('criterionSum')) . "</strong></td>\n";
         echo "  		  <td><strong>$sum1</strong></td>\n";
-        echo "  		  <td><strong>$historyDraw</strong></td>\n";
+        echo "  		  <td><strong>$sumD</strong></td>\n";
         echo "  		  <td><strong>$sum2</strong></td>\n";
         echo "          </tr>\n";
         
