@@ -196,11 +196,12 @@ class Statistics
             $this->prob1 = setProb('1',$this->sum1, $this->sumD, $this->sum2);
             $this->probD = setProb('D',$this->sum1, $this->sumD, $this->sum2);
             $this->prob2 = setProb('2',$this->sum1, $this->sumD, $this->sum2);
-            $this->probOdds1 = setProbOdds($this->prob1);
-            $this->probOddsD = setProbOdds($this->probD);
-            $this->probOdds2 = setProbOdds($this->prob2);
+            $this->probOdds1 = $this->setProbOdds($this->prob1);
+            $this->probOddsD = $this->setProbOdds($this->probD);
+            $this->probOdds2 = $this->setProbOdds($this->prob2);
+            if($this->probOdds1==99) $this->probOdds1 = $this->probOddsD * 2;
+            if($this->probOdds2==99) $this->probOdds2 = $this->probOddsD * 2;
             
-           
             $this->prediction = setPrediction($this->sum1, $this->sumD, $this->sum2);
             
             $this->playedOdds=0;
@@ -286,7 +287,7 @@ class Statistics
                         break;
                 }
                 
-                $val.="  		  <td>".$this->playedOdds.$valueBet."</td>\n";
+                $val.="  		  <td>".number_format($this->playedOdds,2).$valueBet."</td>\n";
                 $val.="  		  <td>".$this->win."</td>\n";
                 $val.="       </tr>\n";
             }
@@ -411,7 +412,7 @@ class Statistics
             if($this->bet>0) $this->averageOdds = (round($this->totalPlayed/$this->bet,2));
             $val .= "      <td>" . (Language::title('oddsAveragePlayed'))
             . "</td>\n";
-            $val .= "      <td>" . $this->averageOdds;
+            $val .= "      <td>" . number_format($this->averageOdds,2);
             if(($this->averageOdds < 1.8)||($this->averageOdds > 2.3)){
                 $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;"
                     . valOdds($this->averageOdds)."</a>";
@@ -503,6 +504,11 @@ class Statistics
         $val .= "</div>\n";
         return $val;
     }
-
+    
+    function setProbOdds($v){
+        if($v<1) $v=99;
+        else $v = round(100/$v,2);
+        return $v;
+    }
 }
 ?>
