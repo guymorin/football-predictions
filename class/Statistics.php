@@ -244,7 +244,7 @@ class Statistics
                     $val .= "           <td>" . $this->bet. " </td>\n";
                     $val .= "           <td>" . $this->success. " </td>\n";
                     $this->averageOdds = (round($this->totalPlayed / $this->bet,2));
-                    $val .= "           <td>" . $this->averageOdds. " </td>\n";
+                    $val .= "           <td>" . number_format($this->averageOdds,2). " </td>\n";
                     $val .= "           <td>" . (money_format('%i',$this->earning)). " </td>\n";
                     $val .= "           <td><span style='color:" . valColor($this->profit). " '>";
                     if($this->profit>0) $val.="+";
@@ -261,9 +261,9 @@ class Statistics
             } elseif($page == 'matchday') {
                 $val.="  		<tr>\n";
                 $val.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
-                $val.="  		  <td><small>".$this->sum1."<br />".$this->probOdds1."</small></td>\n";
-                $val.="  		  <td><small>".$this->sumD."<br />".$this->probOddsD."</small></td>\n";
-                $val.="  		  <td><small>".$this->sum2."<br />".$this->probOdds2."</small></td>\n";
+                $val.="  		  <td><small>".$this->sum1."<br />(".number_format($this->probOdds1,2).")</small></td>\n";
+                $val.="  		  <td><small>".$this->sumD."<br />(".number_format($this->probOddsD,2).")</small></td>\n";
+                $val.="  		  <td><small>".$this->sum2."<br />(".number_format($this->probOdds2,2).")</small></td>\n";
                 $val.="  		  <td><strong>";
                 if($this->prediction=='D') $val.=Language::title('draw');
                 else $val.=$this->prediction;
@@ -352,7 +352,7 @@ class Statistics
             }
             $val .= "      <td>" . (Language::title('oddsAveragePlayed'))
             . "</td>\n";
-            $val .= "      <td>" . $this->averageOdds;
+            $val .= "      <td>" . number_format($this->averageOdds,2);
             if(($this->averageOdds < 1.8)||($this->averageOdds > 2.3)){
                 $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;"
                     . valOdds($this->averageOdds)."</a>";
