@@ -286,13 +286,13 @@ class Player
                 $counterPodium++;
                 switch($counterPodium){
                     case 1:
-                        $icon = "&#129351;"; // gold medal
+                        $icon = Theme::icon('medalGold');
                         break;
                     case 2:
-                        $icon="&#129352;"; // silver medal
+                        $icon= Theme::icon('medalSilver');
                         break;
                     case 3:
-                        $icon="&#129353;"; // bronze medal
+                        $icon= Theme::icon('medalBronze');
                         break;
                     default:
                         $icon="";

@@ -1,4 +1,6 @@
 <?php
+use FootballPredictions\Theme;
+
 $array = array(
     "account" => "Compte",
     "addTeamTo" => "Ajouter l'équipe à ",
@@ -12,7 +14,7 @@ $array = array(
     "carefulToo" => "Jeu&nbsp;trop prudent&nbsp;!",
     "championship" => "Championnat",
     "contributor" => "contributeur",
-    "create" => "&#x270F;&#xFE0F; Créer",
+    "create" => Theme::icon('create')." Créer",
     "created" => "Création",
     "createAChampionship" => "Créer un championnat",
     "createAMatch" => "Créer un match",
@@ -28,7 +30,7 @@ $array = array(
     "dashboard" => "Tableau de bord",
     "date" => "Date",
     "defender" => "Défenseur",
-    "delete" => "&#128465; Supprimer",
+    "delete" => Theme::icon('delete')." Supprimer",
     "deleted" => "Suppression",
     "draw" => "N",
     "earning" => "Gain",

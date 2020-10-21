@@ -28,12 +28,6 @@ function setProb($prob,$sum1,$sumD,$sum2){
     return $val;
 }
 
-function setProbOdds($val){
-    if($val<1) $val=10;
-    $val = round(100/$val,2);
-    return $val;
-}
-
 function setPrediction($sum1,$sumD,$sum2){
     $val='';
     if($sum1>$sum2)      $val = "1";

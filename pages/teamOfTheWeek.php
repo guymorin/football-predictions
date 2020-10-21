@@ -97,7 +97,7 @@ if(isset($_SESSION['matchdayId'])){
         echo "      <th> </th>\n";
         echo "      <th>" . (Language::title('player')) . "</th>\n";
         echo "      <th>" . (Language::title('rating')) . "</th>\n";
-        echo "      <th>&#10060;</th>\n";
+        echo "      <th>" . Theme::icon('delete') . "</th>\n";
         echo "  </tr>\n";
         
         $counter=0;
