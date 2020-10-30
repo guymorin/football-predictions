@@ -20,6 +20,7 @@ class Home
         switch($page){
             case "account":
             case "accountList":
+                Account::exitButton();
                 if(isset($_SESSION['userLogin'])) {
                     if($page=='accountList') $current = 'listAccounts';
                     elseif ($modifyuser == 0) $current = 'myAccount';
@@ -110,9 +111,17 @@ class Home
         $val .= "  <ul>\n";
         $val .= "	 <li><a href='/'>" . (Language::title('homepage')) . "</a></li>\n";
         if(isset($_SESSION['userLogin'])){
-            $val .= "	 <li><a href='/index.php?page=account&exit=1'>" . (Language::title('logoff')) . "</a></li>\n";
-            $val .= "	 <li><a href='index.php?page=admin'>"
-                    . (Language::title('administration')) . "</a></li>\n";
+            $val .= "	 <li><a href='/index.php?page=account&exit=1'>" 
+                . Theme::icon('exit') . " "
+                . (Language::title('logoff')) . "</a></li>\n";
+            
+            // Admin page link
+            if(($_SESSION['role'])==2){
+                $val .= "	 <li><a href='index.php?page=admin'>"
+                            . Theme::icon('admin') . " "
+                            . (Language::title('administration')) . "</a></li>\n";
+            }
+            
             $val .= "	 <li><a href='index.php?page=account'>"
                             . Theme::icon('account') . " "
                             . (Language::title('account')) . "</a></li>\n";

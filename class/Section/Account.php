@@ -6,6 +6,7 @@
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 
 class Account
 {
@@ -15,7 +16,9 @@ class Account
     
     static function exitButton() {
         if(isset($_SESSION['userLogin'])){
-            echo "<a class='session' href='index.php?page=account&exit=1'>".(Language::title('logoff')) . " [" . ucfirst($_SESSION['userLogin'])."]</a>";
+            echo "<a class='session' href='index.php?page=account&exit=1'>"
+                .(Theme::icon('exit')) . " " 
+                .(Language::title('logoff')) . " [" . ucfirst($_SESSION['userLogin'])."]</a>";
         }
     }
     static function submenu($pdo, $form, $current = null){
@@ -30,28 +33,7 @@ class Account
                 break;
         }
         $val = "<a" . $classMA . " href='index.php?page=account'>" . (Language::title('myAccount')) . "</a>";
-        
-        if(($_SESSION['role'])==2) $val .= "<a" 
-                    . $classAL 
-                    . " href='index.php?page=accountList'>" 
-                    . (Language::title('listAccounts')) 
-                    . "</a>";
-        
-        if(($_SESSION['role'])==2){
-            $req = "SELECT id_fp_user, name
-            FROM fp_user 
-            ORDER BY name;";
-            $data = $pdo->query($req);
-            $counter = $pdo->rowCount();
-            
-            if($counter > 1){
-                $val .= "<form action='index.php?page=account' method='POST'>\n";
-                $val .= $form->inputAction('modifyuser');
-                $val .= $form->label(Language::title('modifyAnAccount'));
-                $val .= $form->selectSubmit('id_fp_user', $data);
-                $val .= "</form>\n";
-            }
-        }
+
         return $val;
     }
     
@@ -164,8 +146,7 @@ class Account
     
     static function modifyForm($pdo, $error, $form, $userId){
         $val = '';
-        $val .= "<p><a href='index.php?page=account&exit=1'>" . (Language::title('logoff')) . " ?</a></p>\n";
-       
+      
         $req = "SELECT * FROM fp_user WHERE id_fp_user=:id_fp_user;";
         $data = $pdo->prepare($req,[
             'id_fp_user' => $userId

@@ -44,20 +44,6 @@ class Season
                 }
             $val .= "</a>";
             }
-        } else {
-            $val .= "<a" . $classC . " href='index.php?page=season&create=1'>" . (Language::title('createASeason')) . "</a>";
-            if(($_SESSION['role'])==2){
-                $req = "SELECT id_season, name FROM season ORDER BY name;";
-                $data = $pdo->query($req);
-                $counter = $pdo->rowCount();
-                if($counter > 1){
-                    $val .= "<form action='index.php?page=season' method='POST'>\n";
-                    $val .= $form->inputAction('modify');
-                    $val .= $form->label(Language::title('modifyASeason'));
-                    $val .= $form->selectSubmit('id_season', $data);
-                    $val .= "</form>\n";   
-                }
-            }
         }
         return $val;
     }

@@ -1,9 +1,11 @@
 <?php 
 $array = array(
     "account" => "&#128100;",
+    "admin" => "&#128295;",
     "championship" => "&#127942;",
     "create" => "&#x270F;&#xFE0F;",
     "delete" => "&#128465;",
+    "exit" => "&#128682;",
     "homepage" => "&#127968;",
     "KO" => "<small style='color:gray'>&times;</small>",
     "matchday" => "&#x1f4c6;",

@@ -48,31 +48,6 @@ class Championship
                 Account::exitButton();
                 Season::exitButton();
             }
-            $val .= "<a" . $classC . " href='index.php?page=championship&create=1'>";
-            if (isset($_SESSION['noTeam']) 
-                && $_SESSION['noTeam'] == true 
-                && isset($_SESSION['seasonName'])
-                && isset($_SESSION['championshipName'])
-                ) {
-                    $val .= Language::title('selectTheTeams');
-            } elseif(isset($_SESSION['seasonName'])){
-                    $val .= Language::title('createAChampionship');
-            }
-            $val .= "</a>\n";
-            if(($_SESSION['role'])==2){
-                $req = "SELECT DISTINCT c.id_championship, c.name
-                FROM championship c
-                ORDER BY c.name;";
-                $data = $pdo->query($req);
-                $counter = $pdo->rowCount();
-                if($counter > 1){
-                    $val .= "<form action='index.php?page=championship' method='POST'>\n";
-                    $val .= $form->inputAction('modify');
-                    $val .= $form->label(Language::title('modifyAChampionship'));
-                    $val .= $form->selectSubmit('id_championship', $data);
-                    $val .= "</form>\n";
-                }
-            }
         }
         return $val;
     }
