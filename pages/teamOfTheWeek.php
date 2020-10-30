@@ -95,9 +95,9 @@ if(isset($_SESSION['matchdayId'])){
         echo "<table id='teamOfTheWeek'>\n";
         echo "  <tr>\n";
         echo "      <th> </th>\n";
-        echo "      <th>" . (Language::title('player')) . "</th>\n";
-        echo "      <th>" . (Language::title('rating')) . "</th>\n";
-        echo "      <th>" . Theme::icon('delete') . "</th>\n";
+        echo "      <th>" . Language::title('player') . "</th>\n";
+        echo "      <th>" . Language::title('rating') . "</th>\n";
+        echo "      <th>" . Language::title('delete') . "</th>\n";
         echo "  </tr>\n";
         
         $counter=0;

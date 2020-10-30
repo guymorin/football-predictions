@@ -5,6 +5,7 @@ $array = array(
     "account" => "Account",
     "addTeamTo" => "Add team to ",
     "added" => "Added",
+    "administration" => "administration",
     "administrator" => "administrateur",
     "away" => "Away",
     "bestPlayers" => "Best players",

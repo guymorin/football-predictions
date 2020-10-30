@@ -282,8 +282,8 @@ function criterion($type,$data,$pdo){
                     WHERE j.number = :number
                     AND m.team_1 = :team_1
                     AND m.result = '1'
-                    AND s.id_championship = :id_championship 
-                    AND s.id_season = :id_season 
+                    AND j.id_championship = :id_championship 
+                    AND j.id_season = :id_season 
                     UNION
                     SELECT m.team_2 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_2
@@ -291,8 +291,8 @@ function criterion($type,$data,$pdo){
                     WHERE j.number = :number
                     AND m.team_2 = :team_1
                     AND m.result = '2'
-                    AND s.id_championship = :id_championship
-                    AND s.id_season = :id_season;";
+                    AND j.id_championship = :id_championship
+                    AND j.id_season = :id_season;";
                 $r = $pdo->prepare($req,[
                     'number' => $num,
                     'team_1' => $data->eq1,
@@ -322,8 +322,8 @@ function criterion($type,$data,$pdo){
                     WHERE j.number = :number
                     AND m.team_1 = :team_2
                     AND m.result='1'
-                    AND s.id_championship = :id_championship
-                    AND s.id_season = :id_season
+                    AND j.id_championship = :id_championship
+                    AND j.id_season = :id_season
                     UNION
                     SELECT m.team_2 as team FROM matchgame m
                     LEFT JOIN season_championship_team s ON s.id_team=m.team_2
@@ -331,8 +331,8 @@ function criterion($type,$data,$pdo){
                     WHERE j.number = :number
                     AND m.team_2 = :team_2
                     AND m.result = '2'
-                    AND s.id_championship = :id_championship
-                    AND s.id_season = :id_season;";
+                    AND j.id_championship = :id_championship
+                    AND j.id_season = :id_season;";
                 $r = $pdo->prepare($req,[
                     'number' => $num,
                     'team_2' => $data->eq2,

@@ -124,12 +124,8 @@ function myFunction() {
 </header>
 <section>
 <?php
-if($page!='' && $page!='dump') require("pages/" . $page . ".php");
-    else {
-        echo "<h2>" . Language::title('homepage') . "</h2>\n";
-        echo Home::homeMenu($pdo, $form);
-        if($page=='dump') require 'pages/dump.php';
-    }
+if($page!='') require("pages/" . $page . ".php");
+else  header('Location:index.php?page=season');
 ?>
 </section>
 <footer>
