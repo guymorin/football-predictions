@@ -81,24 +81,6 @@ class Matchday
             }
         } else {
             $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
-            $val .= "<a" . $classCMD . " href='index.php?page=matchday&create=1'>";
-            if ($_SESSION['noMatchday'] == true) $val .= Language::title('createTheMatchdays');
-            else  $val .= Language::title('createAMatchday');
-            $val .= "</a>\n";
-            if(($_SESSION['role'])==2){
-                $req = "SELECT DISTINCT id_matchday, number FROM matchday
-                WHERE id_season = " . $_SESSION['seasonId'] . "
-                AND id_championship = " . $_SESSION['championshipId'] . " ORDER BY number DESC;";
-                $data = $pdo->query($req);
-                $counter = $pdo->rowCount();
-                if($counter > 0){
-                    $val .= "<form action='index.php?page=matchday' method='POST'>\n";
-                    $val .= $form->inputAction('modify');
-                    $val .= $form->label(Language::title('modifyAMatchday'));
-                    $val .= $form->selectSubmit('matchdayModify', $data);
-                    $val .= "</form>\n";
-                }
-            }
         }
         return $val;
     }

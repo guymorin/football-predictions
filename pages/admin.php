@@ -72,18 +72,17 @@ use FootballPredictions\Theme;
     }
     
     // SEASON
-    if(isset($_SESSION['seasonId'])){
-        
         $val .= "    <h3>" . ucfirst(Language::title('season')) . "</h3>\n";
         // Create
         $val .= "   <form action='index.php?page=season&create=1' method='POST'>\n";
         $val .= "            <button type='submit'> " . (Language::title('createASeason')) . "</button>\n";
         $val .= "   </form>\n";
+        if(isset($_SESSION['seasonId'])){
         // Modify
         $req = "SELECT id_season, name FROM season ORDER BY name;";
         $data = $pdo->query($req);
         $counter = $pdo->rowCount();
-        if($counter > 1){
+        if($counter > 0){
             $val .= "<form action='index.php?page=season' method='POST'>\n";
             $val .= $form->inputAction('modify');
             $val .= $form->label(Language::title('modifyASeason'));
@@ -129,6 +128,8 @@ use FootballPredictions\Theme;
         }
         
         // MATCHDAY
+        $val .= "   <h3>" . ucfirst(Language::title('matchday')) . "</h3>\n";
+        
         $req = "SELECT DISTINCT id_matchday, number
                 FROM matchday
                 WHERE id_season=" . $_SESSION['seasonId']."
@@ -138,9 +139,27 @@ use FootballPredictions\Theme;
         
         if($counter>0){
             $_SESSION['noMatchday'] = false;
+            if(isset($_SESSION['matchdayId'])){
+                $val .= "   <form action='/index.php?page=matchday&create=1' method='POST'>\n";
+                $val .= "            <button type='submit'>" . (Language::title('createAMatchday')) . "</button>\n";
+                $val .= "   </form>\n";
+                if(($_SESSION['role'])==2){
+                    $req = "SELECT DISTINCT id_matchday, number FROM matchday
+                WHERE id_season = " . $_SESSION['seasonId'] . "
+                AND id_championship = " . $_SESSION['championshipId'] . " ORDER BY number DESC;";
+                    $data = $pdo->query($req);
+                    $counter = $pdo->rowCount();
+                    if($counter > 0){
+                        $val .= "<form action='index.php?page=matchday' method='POST'>\n";
+                        $val .= $form->inputAction('modify');
+                        $val .= $form->label(Language::title('modifyAMatchday'));
+                        $val .= $form->selectSubmit('matchdayModify', $data);
+                        $val .= "</form>\n";
+                    }
+                }
+            }
         } else {
             $_SESSION['noMatchday'] = true;
-            $val .= "   <h3>" . ucfirst(Language::title('matchday')) . "</h3>\n";
             $val .= "   <form action='/index.php?page=matchday&create=1' method='POST'>\n";
             $val .= "            <button type='submit'>" . (Language::title('createTheMatchdays')) . "</button>\n";
             $val .= "   </form>\n";

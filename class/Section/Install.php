@@ -48,10 +48,11 @@ class Install
             $info .= "    \$DB_USER='" . $user . "';\n";
             $info .= "    \$DB_PASS='" . $pass . "';\n";
             $info .= "?>";
-            file_put_contents('class/AppConnect.inc', $info);
+            $file='install/AppConnect.inc';
+            file_put_contents($file, $info);
         }
         $_SESSION['install'] = 'true';
-        popup($val,"index.php");
+        popup($val,"index.php?page=account&create=1");
     }
 }
 ?>

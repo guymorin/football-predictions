@@ -24,13 +24,13 @@ class App
     public static function getDb(){
         if(self::$database == null){
             $info = false;
-            $dir = 'class';
+            $dir = 'install';
             $files = scandir($dir);
             foreach($files as $f){
                 if($f == 'AppConnect.inc') $info = true;
             }
             if($info){
-                require 'AppConnect.inc';
+                require 'install/AppConnect.inc';
                 self::$DB_HOST = $DB_HOST;
                 self::$DB_NAME = $DB_NAME;
                 self::$DB_USER = $DB_USER;

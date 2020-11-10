@@ -54,6 +54,7 @@ $array = array(
     "errorPosition" => "invalid position",
     "errorResult" => "invalid result",
     "errorSeasonName" => "9 characters max.",
+    "errorWritable" => "Writable access needed on the installation repository",
     "exit" => "Exit",
     "exited" => "Exited",
     "firstname" => "Firstname",

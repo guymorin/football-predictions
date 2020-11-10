@@ -24,6 +24,9 @@ echo "<h3>" . (Language::title('createDatabase')) . "</h3>\n";
 if($test){
     echo Install::createPopup($DbHost, $DbName, $DbUser, $DbPass);
 }
-echo Install::createForm($error, $form);
+$folder = 'install';
+if(!is_writable($folder)){
+    echo Language::title('errorWritable');
+} else echo Install::createForm($error, $form);
 
 ?>

@@ -10,7 +10,7 @@ use FootballPredictions\Section\Season;
 
 ?>
 
-<h2><?= Theme::icon('season') . " " . (Language::title('season'));?></h2>
+<h2><?= Theme::icon('season') . " " . Language::title('season');?></h2>
 
 <?php
 // Values
@@ -34,7 +34,7 @@ if(
 }
 // Create
 elseif($create == 1){
-    echo "<h3>" . (Language::title('createASeason')) . "</h3>\n";
+    echo "<h3>" . Language::title('createASeason') . "</h3>\n";
     if($pdo->findName('season', $seasonName))  $error->addError(Language::title('name'), Language::title('errorExists'));
     elseif($seasonName!="") Season::createPopup($pdo, $seasonName);
     echo Season::createForm($error, $form);

@@ -92,7 +92,16 @@ class Championship
             $val .=  $list;
         }
         // No championship
-        else    $val .=  "  <h3>" . (Language::title('noChampionship')) . "</h3>\n";
+        else {
+            $val .=  "  <h3>" . (Language::title('noChampionship')) . "</h3>\n";
+            // Create if admin
+            if(($_SESSION['role'])==2){
+                $val .= "   <form action='index.php?page=championship&create=1' method='POST'>\n";
+                $val .= "            <button type='submit'>" . (Language::title('createAChampionship')) . "</button>\n";
+                $val .= "   </form>\n";
+            }
+        }
+
         $val .=  "</ul>\n";
         return $val;
     }

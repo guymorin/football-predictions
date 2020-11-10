@@ -56,7 +56,7 @@ class Season
         ORDER BY name DESC";
         $data = $pdo->prepare($req,[],true);
         $counter = $pdo->rowCount();
-        if($counter>0){   
+        if($counter>0){
             $val .= "<table>\n";
             $val .= "  <tr>\n";
             $val .= "      <th>" . (Language::title('season')) . "</th>\n";
@@ -76,7 +76,17 @@ class Season
             $val .= "</table>\n";
         }
         // No season
-        else    $val .= "  <h3>" . (Language::title('noSeason')) . "</h3>\n";
+        else {
+            $val .= "  <h4>" . (Language::title('noSeason')) . "</h4>\n";
+        
+            // Create if admin
+            if(($_SESSION['role'])==2){
+                $val .= "   <form action='index.php?page=season&create=1' method='POST'>\n";
+                $val .= "            <button type='submit'> " . (Language::title('createASeason')) . "</button>\n";
+                $val .= "   </form>\n";
+            }
+        }
+        
         return $val;        
     }
     
@@ -177,33 +187,45 @@ class Season
         $data = $pdo->prepare($req,[
             'id_season' => $_SESSION['seasonId']
         ],true);
-        $val = "<table>\n";
-        $val .= "  <tr>\n";
-        $val .= "      <th>" . (Language::title('championship')) . "</th>\n";
-        $val .= "      <th>" . (Language::title('teams')) . "</th>\n";
-        $val .= "  </tr>\n";
-        
-        foreach ($data as $d)
-        {
-            if($d->name == $_SESSION['championshipName']) {
-                $val .= "  <tr class='current'>\n";
-                $val .= "<form>\n";
-                $val .= "<td>";
-                $val .= "<button disabled type='submit' style='cursor:default;' value='" . ($d->id_championship) . "," . ($d->name)."'>" . (Theme::icon('championship') . " " . ($d->name)) . "</button>";
-                $val .= "</td>\n";
-            } else {
-                $val .= "  <tr>\n";
-                $val .= "<form id='" . ($d->id_championship) . "' action='index.php' method='POST'>\n";
-                $val .= $form->inputHidden("championshipSelect", $d->id_championship . "," . $d->name);
-                $val .= "<td>";
-                $val .= "<button type='submit' value='". ($d->name) . "'>" . (Theme::icon('championship') . " " . ($d->name)) . "</button>";
-                $val .= "</td>\n";
-            }
-            $val .= "      <td>" . $d->nb . "</td>\n";
-            $val .= "</form>\n";
+        $counter= $pdo->rowCount();
+        if($counter>0){
+            $val = "<table>\n";
+            $val .= "  <tr>\n";
+            $val .= "      <th>" . (Language::title('championship')) . "</th>\n";
+            $val .= "      <th>" . (Language::title('teams')) . "</th>\n";
             $val .= "  </tr>\n";
+            
+            foreach ($data as $d)
+            {
+                if($d->name == $_SESSION['championshipName']) {
+                    $val .= "  <tr class='current'>\n";
+                    $val .= "<form>\n";
+                    $val .= "<td>";
+                    $val .= "<button disabled type='submit' style='cursor:default;' value='" . ($d->id_championship) . "," . ($d->name)."'>" . (Theme::icon('championship') . " " . ($d->name)) . "</button>";
+                    $val .= "</td>\n";
+                } else {
+                    $val .= "  <tr>\n";
+                    $val .= "<form id='" . ($d->id_championship) . "' action='index.php' method='POST'>\n";
+                    $val .= $form->inputHidden("championshipSelect", $d->id_championship . "," . $d->name);
+                    $val .= "<td>";
+                    $val .= "<button type='submit' value='". ($d->name) . "'>" . (Theme::icon('championship') . " " . ($d->name)) . "</button>";
+                    $val .= "</td>\n";
+                }
+                $val .= "      <td>" . $d->nb . "</td>\n";
+                $val .= "</form>\n";
+                $val .= "  </tr>\n";
+            }
+            $val .= "</table>\n";
+        } else {
+            $val .= "  <h4>" . (Language::title('noChampionship')) . "</h4>\n";
+            // Create if admin
+            if(($_SESSION['role'])==2){
+                $val .= "   <form action='index.php?page=championship&create=1' method='POST'>\n";
+                $val .= "            <button type='submit'>" . (Language::title('createAChampionship')) . "</button>\n";
+                $val .= "   </form>\n";
+            }
         }
-        $val .= "</table>\n";
+
         return $val;
     }
 }
