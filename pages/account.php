@@ -49,8 +49,15 @@ elseif(
 ($create == 1)
 ||(isset($_SESSION['install']) && $_SESSION['install']=='true')
 ){
-    echo "<h2>" . (Language::title('homepage')) . "</h2>\n";
-    echo "<h3>" . (Language::title('createAnAccount')) . "</h3>\n";
+    echo "<h2>";
+    if($_SESSION['install'] == 'true') echo Language::title('install');
+    else echo Language::title('homepage');
+    echo "</h2>\n";
+    
+    echo "<h3>";
+    if($_SESSION['install'] == 'true') echo Language::title('createAnAdmin');
+    else echo Language::title('createAnAccount');
+    echo "</h3>\n";
     if($pdo->findName('fp_user', $userLogin))  $error->addError(Language::title('login'), Language::title('errorExists'));
     elseif($userPassword != $userPassword2) $error->addError(Language::title('password'), Language::title('errorPasswordNoMatch'));
     elseif($userLogin!="") Account::createPopup($pdo, $userLogin, $userPassword);

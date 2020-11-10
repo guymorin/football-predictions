@@ -6,6 +6,7 @@
 use FootballPredictions\App;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
+use FootballPredictions\Section\Championship;
 use FootballPredictions\Section\Season;
 
 ?>
@@ -52,9 +53,13 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
         elseif($seasonName!="") Season::modifyPopup($pdo, $seasonName, $seasonId);
     }
 }
+// First, select a championship
+else if(empty($_SESSION['championshipId'])){
+            echo Championship::selectChampionship($pdo, $form);
+}
 // List
 else {
-    echo "<h3>" . (Language::title('listChampionships')) . "</h3>\n";
+    echo "<h3>" . Language::title('listChampionships') . "</h3>\n";
     echo "<h4>" . $_SESSION['seasonName'] . "</h4>\n";
     echo Season::list($pdo,$form);
 }

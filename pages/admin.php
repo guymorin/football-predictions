@@ -164,6 +164,48 @@ use FootballPredictions\Theme;
             $val .= "            <button type='submit'>" . (Language::title('createTheMatchdays')) . "</button>\n";
             $val .= "   </form>\n";
         }
+        
+        // TEAM
+        $val .= "   <h3>" . ucfirst(Language::title('team')) . "</h3>\n";
+        $val .= "   <form action='/index.php?page=team&create=1' method='POST'>\n";
+        $val .= "            <button type='submit'>" . (Language::title('createATeam')) . "</button>\n";
+        $val .= "   </form>\n";
+        
+        if(($_SESSION['role'])==2){
+            $req = "SELECT * FROM team c ORDER BY name;";
+            $data = $pdo->query($req);
+            $counter = $pdo->rowCount();
+            if($counter > 1){
+                $val .= "<form action='index.php?page=team' method='POST'>\n";
+                $val .= $form->inputAction('modify');
+                $val .= $form->label(Language::title('modifyATeam'));
+                $val .= $form->selectSubmit('id_team', $data);
+                $val .= "</form>\n";
+            }
+        }
+        
+        // PLAYER
+        $val .= "   <h3>" . ucfirst(Language::title('player')) . "</h3>\n";
+        $val .= "   <form action='/index.php?page=player&create=1' method='POST'>\n";
+        $val .= "            <button type='submit'>" . (Language::title('createAPlayer')) . "</button>\n";
+        $val .= "   </form>\n";
+        
+        if(($_SESSION['role'])==2){
+            $req = "SELECT id_player, name, firstname
+            FROM player
+            ORDER BY name, firstname;";
+            $data = $pdo->query($req);
+            $counter = $pdo->rowCount();
+            
+            if($counter > 1){
+                $val .= "<form action='index.php?page=player' method='POST'>\n";
+                $val .= $form->inputAction('modify');
+                $val .= $form->label(Language::title('modifyAPlayer'));
+                $val .= $form->selectSubmit('id_player', $data);
+                $val .= "</form>\n";
+            }
+        }
+        
     }
 
     echo $val;
