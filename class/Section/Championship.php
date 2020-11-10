@@ -162,11 +162,12 @@ class Championship
         $val = '';
         $val .= "<form action='index.php?page=championship' method='POST'>\n";
         $val .= $form->inputAction('create');
+        $val .= "</form>\n";
         $req = "SELECT id_team, name FROM team
                 ORDER BY name;";
         $data = $pdo->query($req);
         $counter = $pdo->rowCount();
-        if($counter > 1){
+        if($counter > 0){
             $val .= "<form action='index.php?page=championship' method='POST'>\n";
             $val .= $form->inputAction('selectTeams');
             $val .= $error->getError();
@@ -177,6 +178,15 @@ class Championship
             $val .= "<br />\n";
             $val .= $form->submit(Language::title('select'));
             $val .= "</form>\n";
+        } else {
+            $val .= "  <h4>" . (Language::title('noTeam')) . "</h4>\n";
+            // Create if admin
+            if(($_SESSION['role'])==2){
+                $val .= "   <form action='index.php?page=team&create=1' method='POST'>\n";
+                $val .= "            <button type='submit'>" . Language::title('createATeam') . "</button>\n";
+                $val .= "   </form>\n";
+            }
+            
         }
         return $val;
     }

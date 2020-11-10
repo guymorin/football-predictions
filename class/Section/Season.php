@@ -182,13 +182,13 @@ class Season
         FROM championship c
         LEFT JOIN season_championship_team scc ON c.id_championship=scc.id_championship
         WHERE scc.id_season=:id_season
-        GROUP BY c.name
+        GROUP BY c.name, c.id_championship 
         ORDER BY c.name";
         $data = $pdo->prepare($req,[
             'id_season' => $_SESSION['seasonId']
         ],true);
         $counter= $pdo->rowCount();
-        if($counter>0){
+        if($counter>0){ 
             $val = "<table>\n";
             $val .= "  <tr>\n";
             $val .= "      <th>" . (Language::title('championship')) . "</th>\n";
@@ -221,8 +221,21 @@ class Season
             // Create if admin
             if(($_SESSION['role'])==2){
                 $val .= "   <form action='index.php?page=championship&create=1' method='POST'>\n";
-                $val .= "            <button type='submit'>" . (Language::title('createAChampionship')) . "</button>\n";
+                $req = "SELECT DISTINCT id_team
+                    FROM season_championship_team
+                    WHERE id_season=" . $_SESSION['seasonId']."
+                    AND id_championship=" . $_SESSION['championshipId'] . ";";
+                $response = $pdo->query($req);
+                $counter = $pdo->rowCount();
+                if($counter>0){
+                    $_SESSION['noTeam'] = false;
+                    $val .= "            <button type='submit'>" . (Language::title('createAChampionship')) . "</button>\n";
+                } else {
+                    $_SESSION['noTeam'] = true;
+                    $val .= "            <button type='submit'>". (Language::title('selectTheTeams')) . "</button>\n";
+                }
                 $val .= "   </form>\n";
+                
             }
         }
 
