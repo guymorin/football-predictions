@@ -21,6 +21,7 @@ $array = array(
     "createAMatch" => "Créer un match",
     "createAMatchday" => "Créer une journée",
     "createAnAccount" => "Créer un compte",
+    "createAnAdmin" => "Créer un compte administrateur",
     "createAPlayer" => "Créer un joueur",
     "createASeason" => "Créer une saison",
     "createATeam" => "Créer une équipe",
