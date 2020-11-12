@@ -332,7 +332,7 @@ class Matchday
             $quickNav .= "<table>\n";
             $quickNav .= "  <tr>\n";
             $quickNav .= "      <td>" . (Language::title('matchdayNext')) . " :</td>\n";
-            $quickNav .= "<form id='" . ($d->id_matchday) . "' action='index.php?page=statistics' method='POST'>\n";
+            $quickNav .= "<form id='" . ($data->id_matchday) . "' action='index.php?page=statistics' method='POST'>\n";
             $quickNav .= $form->inputHidden("matchdaySelect", $data->id_matchday . "," . $data->number);
             $quickNav .= "  <td>";
             $quickNav .= "<button type='submit' value='".((Language::title('MD')) . ($data->number))."'>" . (Theme::icon('matchday') . " " . (Language::title('MD')) . ($data->number)) . "</button>";

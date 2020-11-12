@@ -37,7 +37,9 @@ class Championship
                 $classC = $currentClass;
                 break;
         }
-        if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0 && $_SESSION['noTeam'] == false){
+        if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0 &&
+            (empty($_SESSION['noTeam']) or $_SESSION['noTeam'] == false)
+            ){
             $val .= "  	<a href='index.php?page=season'>" . (Theme::icon('season')) . " " . $_SESSION['seasonName'] . "</a>";
             $val .= "<a" . $classDB . " href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
             $val .= "<a" . $classS . " href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";

@@ -1,0 +1,674 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FP\n"
+"POT-Creation-Date: 2020-11-10 17:43+0100\n"
+"PO-Revision-Date: 2020-11-10 17:43+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: _\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: default.php:5
+msgid "Account"
+msgstr "Compte"
+
+#: default.php:6
+msgid "Add team to "
+msgstr "Ajouter l'équipe à "
+
+#: default.php:7
+msgid "Added"
+msgstr "Ajouté"
+
+#: default.php:8
+msgid "administration"
+msgstr "administration"
+
+#: default.php:9
+msgid "administrator"
+msgstr "administrateur"
+
+#: default.php:10
+msgid "Away"
+msgstr "Extérieur"
+
+#: default.php:11
+msgid "Best players"
+msgstr "Meilleurs joueurs"
+
+#: default.php:12
+msgid "Best players by team"
+msgstr "Meilleurs joueurs par équipe"
+
+#: default.php:13
+msgid "Bet"
+msgstr "Mise"
+
+#: default.php:14
+msgid "Careful game!"
+msgstr "Jeu prudent !"
+
+#: default.php:15
+msgid "Too careful game!"
+msgstr "Jeu trop prudent !"
+
+#: default.php:16
+msgid "Championship"
+msgstr "Championnat"
+
+#: default.php:17
+msgid "contributor"
+msgstr "contributeur"
+
+#: default.php:18
+msgid "Create"
+msgstr "Créer"
+
+#: default.php:19
+msgid "Created"
+msgstr "Créé"
+
+#: default.php:20
+msgid "Create a championship"
+msgstr "Créer un championnat"
+
+#: default.php:21
+msgid "Create a match"
+msgstr "Créer un match"
+
+#: default.php:22
+msgid "Create a matchday"
+msgstr "Créer une journée"
+
+#: default.php:23
+msgid "Create an account"
+msgstr "Créer un compte"
+
+#: default.php:24
+msgid "Create an administrator account"
+msgstr "Créer un compte administrateur"
+
+#: default.php:25
+msgid "Create a player"
+msgstr "Créer un joueur"
+
+#: default.php:26
+msgid "Create a season"
+msgstr "Créer une saison"
+
+#: default.php:27
+msgid "Create a team"
+msgstr "Créer une équipe"
+
+#: default.php:28
+msgid "Create the database"
+msgstr "Créer la base de données"
+
+#: default.php:29
+msgid "Create the matchdays"
+msgstr "Créer les journées"
+
+#: default.php:30
+msgid "Criterion sum"
+msgstr "Somme des critères"
+
+#: default.php:31
+msgid "Current form"
+msgstr "Série en cours"
+
+#: default.php:32
+msgid "Dashboard"
+msgstr "Tableau de bord"
+
+#: default.php:33
+msgid "Date"
+msgstr "Date"
+
+#: default.php:34
+msgid "Defender"
+msgstr "Défenseur"
+
+#: default.php:35
+msgid "Delete"
+msgstr "Supprimer"
+
+#: default.php:36
+msgid "Deleted"
+msgstr "Supprimé"
+
+#: default.php:37
+msgid "D"
+msgstr "N"
+
+#: default.php:38
+msgid "Earning"
+msgstr "Gain"
+
+#: default.php:39
+msgid "Earning by bet"
+msgstr "Gain par mise"
+
+#: default.php:40
+msgid "E-mail address"
+msgstr "Adresse e-mail"
+
+#: default.php:41
+msgid "Error"
+msgstr "Erreur"
+
+#: default.php:42
+msgid "alphanumeric characters only"
+msgstr "caractères alphanumériques uniquement"
+
+#: default.php:43
+msgid "problem with the database connection"
+msgstr "problème de connexion à la base de données"
+
+#: default.php:44
+msgid "invalid date"
+msgstr "date invalide"
+
+#: default.php:45
+msgid "integer numeric characters only"
+msgstr "caractères numériques entiers uniquement"
+
+#: default.php:46
+msgid "this name already exists"
+msgstr "ce nom existe déjà"
+
+#: default.php:47
+msgid "problem with the export"
+msgstr "problème avec l'exportation"
+
+#: default.php:48
+msgid "some fields have not been filled in correctly"
+msgstr "certains champs n'ont pas été remplis correctement"
+
+#: default.php:49
+msgid "problem with the import"
+msgstr "problème avec l'importation"
+
+#: default.php:50
+msgid "field not filled"
+msgstr "champ non rempli"
+
+#: default.php:51
+msgid "numeric characters only"
+msgstr "caractères numériques uniquement"
+
+#: default.php:52
+msgid "invalid username or password"
+msgstr "nom d'utilisateur ou mot de passe invalide"
+
+#: default.php:53
+msgid "those passwords didn't match"
+msgstr "les mots de passe ne correspondent pas"
+
+#: default.php:54
+msgid "invalid path"
+msgstr "chemin invalide"
+
+#: default.php:55
+msgid "invalid position"
+msgstr "poste invalide"
+
+#: default.php:56
+msgid "invalid result"
+msgstr "résultat invalide"
+
+#: default.php:57
+msgid "9 characters max."
+msgstr "9 caractères max."
+
+#: default.php:58
+msgid "Writable access needed on the installation repository"
+msgstr "Un accès en écriture est nécessaire sur le répertoire d'installation"
+
+#: default.php:59
+msgid "Exit"
+msgstr "Sortie"
+
+#: default.php:60
+msgid "Exited"
+msgstr "Sorti"
+
+#: default.php:61
+msgid "Firstname"
+msgstr "Prénom"
+
+#: default.php:62
+msgid "Forward"
+msgstr "Attaquant"
+
+#: default.php:63
+msgid "General"
+msgstr "Général"
+
+#: default.php:64
+msgid "Goalkeeper"
+msgstr "Gardien"
+
+#: default.php:65
+msgid "Home"
+msgstr "Domicile"
+
+#: default.php:66
+msgid "Homepage"
+msgstr "Page d'accueil"
+
+#: default.php:67
+msgid "Install"
+msgstr "Installation"
+
+#: default.php:68
+msgid "Host"
+msgstr "Hôte"
+
+#: default.php:69 default.php:103
+msgid "Name"
+msgstr "Nom"
+
+#: default.php:70
+msgid "User"
+msgstr "Utilisateur"
+
+#: default.php:71 default.php:115
+msgid "Password"
+msgstr "Mot de passe"
+
+#: default.php:72
+msgid "Language"
+msgstr "Langue"
+
+#: default.php:73
+msgid "List of accounts"
+msgstr "Liste de comptes"
+
+#: default.php:74
+msgid "Last backup"
+msgstr "Dernière sauvegarde"
+
+#: default.php:75
+msgid "List of championship"
+msgstr "Liste de championnats"
+
+#: default.php:76
+msgid "List of matchdays"
+msgstr "Liste de journées"
+
+#: default.php:77
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: default.php:78
+msgid "Log on"
+msgstr "Se connecter"
+
+#: default.php:79
+msgid "Log off"
+msgstr "Se déconnecter"
+
+#: default.php:80
+msgid "L"
+msgstr "P"
+
+#: default.php:81
+msgid "Marketvalue"
+msgstr "Valeur marchande"
+
+#: default.php:82
+msgid "Matchday"
+msgstr "Journée"
+
+#: default.php:83
+msgid "Next matchday"
+msgstr "Prochaine journée"
+
+#: default.php:84
+msgid "Matchdays"
+msgstr "Journées"
+
+#: default.php:85
+msgid "Matchgame"
+msgstr "Match"
+
+#: default.php:86
+msgid "Number of matchgame"
+msgstr "Nombre de matchs"
+
+#: default.php:87
+msgid "Played matchgames"
+msgstr "Matchs joués"
+
+#: default.php:88
+msgid "MD"
+msgstr "J"
+
+#: default.php:89
+msgid "Midfielder"
+msgstr "Milieur"
+
+#: default.php:90
+msgid "Modify"
+msgstr "Modifier"
+
+#: default.php:91
+msgid "Modified"
+msgstr "Modifié"
+
+#: default.php:92
+msgid "Modify a championship"
+msgstr "Modifier un championnat"
+
+#: default.php:93
+msgid "Modify a matchgame"
+msgstr "Modifier un match"
+
+#: default.php:94
+msgid "Modify an account"
+msgstr "Modifier un compte"
+
+#: default.php:95
+msgid "Modify a player"
+msgstr "Modifier un joueur"
+
+#: default.php:96
+msgid "Modify predictions"
+msgstr "Modifier les pronostics"
+
+#: default.php:97
+msgid "Modify a season"
+msgstr "Modifier une saison"
+
+#: default.php:98
+msgid "Modify a team"
+msgstr "Modifier une équipe"
+
+#: default.php:99
+msgid "Modify a marketvalue"
+msgstr "Modifier une valeur marchande"
+
+#: default.php:100
+msgid "Modify a matchday"
+msgstr "Modifier une journée"
+
+#: default.php:101
+msgid "Motivation"
+msgstr "Motivation"
+
+#: default.php:102
+msgid "My account"
+msgstr "Mon compte"
+
+#: default.php:104
+msgid "No"
+msgstr "Non"
+
+#: default.php:105
+msgid "Not played"
+msgstr "Non joué"
+
+#: default.php:106
+msgid "No championship"
+msgstr "Aucun championnat"
+
+#: default.php:107
+msgid "No matchgame"
+msgstr "Aucun match"
+
+#: default.php:108
+msgid "No matchday"
+msgstr "Auune journée"
+
+#: default.php:109
+msgid "No season"
+msgstr "Aucune siason"
+
+#: default.php:110
+msgid "No team"
+msgstr "Aucune équipe"
+
+#: default.php:111
+msgid "Number"
+msgstr "Numéro"
+
+#: default.php:112
+msgid "Number of matchdays"
+msgstr "Nombre de journées"
+
+#: default.php:113
+msgid "Odds"
+msgstr "Cote"
+
+#: default.php:114
+msgid "Average<br />played<br />odds"
+msgstr "Cote<br />moyenne<br />jouée"
+
+#: default.php:116
+msgid "Confirm password"
+msgstr "Confirmer le mot de passe"
+
+#: default.php:117
+msgid "Physical form"
+msgstr "Forme physique"
+
+#: default.php:118
+msgid "Player"
+msgstr "Joueur"
+
+#: default.php:119
+msgid "Position"
+msgstr "Poste"
+
+#: default.php:120
+msgid "Prediction"
+msgstr "Pronostic"
+
+#: default.php:121
+msgid "Predictions"
+msgstr "Pronostics"
+
+#: default.php:122
+msgid "Predictions history"
+msgstr "Historique des pronostics"
+
+#: default.php:123
+msgid "Profit"
+msgstr "Bénéfice"
+
+#: default.php:124
+msgid "Profit by matchday"
+msgstr "Bénéfice par journée"
+
+#: default.php:125
+msgid "Profit evolution"
+msgstr "Évolution du bénéfice"
+
+#: default.php:126
+msgid "Pts"
+msgstr "Pts"
+
+#: default.php:127
+msgid "Quick nav"
+msgstr "Navigation rapide"
+
+#: default.php:128
+msgid "Rating"
+msgstr "Note"
+
+#: default.php:129
+msgid "Average rating"
+msgstr "Note moyenne"
+
+#: default.php:130
+msgid "Red cards"
+msgstr "Cartons rouges"
+
+#: default.php:131
+msgid "Result"
+msgstr "Résultat"
+
+#: default.php:132
+msgid "Results"
+msgstr "Résultats"
+
+#: default.php:133
+msgid "ROI"
+msgstr "ROI"
+
+#: default.php:134
+msgid "ROI is losing!"
+msgstr "Le ROI est perdant !"
+
+#: default.php:135
+msgid "ROI is neutral!"
+msgstr "Le ROI est neutre !"
+
+#: default.php:136
+msgid "ROI wins!"
+msgstr "Le ROI est gagnant !"
+
+#: default.php:137
+msgid "ROI is excellent!"
+msgstr "Le ROI est excellent !"
+
+#: default.php:138
+msgid "Role"
+msgstr "Rôle"
+
+#: default.php:139
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: default.php:140
+msgid "Saved"
+msgstr "Sauvegardé"
+
+#: default.php:141
+msgid "Season"
+msgstr "Saison"
+
+#: default.php:142
+msgid "Select"
+msgstr "Sélectionner"
+
+#: default.php:143
+msgid "Select another season"
+msgstr "Sélectionner une autre saison"
+
+#: default.php:144
+msgid "Selected"
+msgstr "Sélectionné"
+
+#: default.php:145
+msgid "Select a championship"
+msgstr "Sélectionner un championnat"
+
+#: default.php:146
+msgid "Select a matchday"
+msgstr "Sélectionner une journée"
+
+#: default.php:147
+msgid "Select a player"
+msgstr "Sélectionner un joueur"
+
+#: default.php:148
+msgid "Select a season"
+msgstr "Sélectionner une saison"
+
+#: default.php:149
+msgid "Select the teams"
+msgstr "Sélectionner les équipes"
+
+#: default.php:150
+msgid "Speculative game!"
+msgstr "Jeu spéculateur !"
+
+#: default.php:151
+msgid "Too speculative game!"
+msgstr "Jeu trop sépculateur !"
+
+#: default.php:152
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: default.php:153
+msgid "Standing"
+msgstr "Classement"
+
+#: default.php:154
+msgid "Success"
+msgstr "Succès"
+
+#: default.php:155
+msgid "Success rate"
+msgstr "Taux de réussite"
+
+#: default.php:156
+msgid "Switch to semi-automatical"
+msgstr "Basculer en mode semi-automatique"
+
+#: default.php:157
+msgid "Switch to manual mode"
+msgstr "Basculer en mode manuel"
+
+#: default.php:158
+msgid "Team"
+msgstr "Équipe"
+
+#: default.php:159
+msgid "Teams"
+msgstr "Équipes"
+
+#: default.php:160
+msgid "Team of the week"
+msgstr "Équipe type"
+
+#: default.php:161
+msgid "Theme"
+msgstr "Thème"
+
+#: default.php:162
+msgid "FP"
+msgstr "PDF"
+
+#: default.php:163
+msgid "Football predictions"
+msgstr "Pronostics de football"
+
+#: default.php:164
+msgid "Website datas"
+msgstr "Données du site web"
+
+#: default.php:165
+msgid "Yes"
+msgstr "Oui"
+
+#: default.php:167
+msgid "Weather"
+msgstr "Météo"
+
+#: default.php:168
+msgid "Weather code"
+msgstr "Code météo"
+
+#: default.php:169
+msgid "W"
+msgstr "G"
+
+#~ msgid ""
+#~ "This is how the story goes.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Voici comment l'histoire se déroule.\n"
+#~ "\n"
+
+#~ msgid "G"
+#~ msgstr "W"

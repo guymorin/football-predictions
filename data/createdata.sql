@@ -410,7 +410,7 @@ CREATE TABLE `fp_user` (
   `name` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `registration` date NOT NULL,
-  `language` varchar(2) NOT NULL DEFAULT 'fr',
+  `language` varchar(5) NOT NULL DEFAULT 'en_US',
   `theme` int(11) NOT NULL DEFAULT '1',
   `last_season` int(11) DEFAULT NULL,
   `last_championship` int(11) DEFAULT NULL,
@@ -422,8 +422,7 @@ CREATE TABLE `fp_user` (
 --
 
 INSERT INTO `fp_user` (`id_fp_user`, `name`, `password`, `registration`, `language`, `theme`, `last_season`, `last_championship`, `role`) VALUES
-(1, 'admin', '$2y$10$Xc61IxpofHUjI49u0eV7Pu/SPX/GzGqZBtWYFSBBRWwrvxGlmmF0S', '2020-04-14', 'fr', 1, 1, 1, 2),
-(2, 'guy', '$2y$10$VOFagLDNb13UDp69MO4NKuDMtPiYgdGE3vlQW2jdSPCObVqFMH2F6', '2020-04-17', 'fr', 1, 1, 1, 1);
+(1, 'admin', '$2y$10$Xc61IxpofHUjI49u0eV7Pu/SPX/GzGqZBtWYFSBBRWwrvxGlmmF0S', '2020-04-14', 'en_US', 1, 1, 1, 2);
 
 -- --------------------------------------------------------
 

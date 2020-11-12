@@ -4,7 +4,7 @@
 /* Author : Guy Morin */
 // Class
 require 'vendor/autoload.php';
-
+require 'lang/localization.php';
 // Namespaces
 use FootballPredictions\App;
 
@@ -83,11 +83,7 @@ if($exit==1){
 // Choose a season, a championship...
 if($page!='install'){
     if(empty($_SESSION['userLogin'])) $page="account";
-    elseif(empty($_SESSION['seasonId'])) $page="season";
-    elseif(
-        (empty($_SESSION['championshipId']))
-        &&($page=="")
-        ) $page="season";
+
 }
 
 /* Header */
@@ -96,7 +92,6 @@ if($page!='install'){
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<meta charset="utf-8">
     <?= Theme::style();?>
 </head>
 
@@ -120,7 +115,12 @@ function myFunction() {
 	<?= Home::menu();?>
 	</nav>
 	<?= App::setTitle(Language::title('site'));?>
-    <h1><a href="/"><a href="/"><?= App::getTitle();?><?= " " . $_SESSION['seasonName'];?></a></h1>
+    <h1><a href="/"><?= App::getTitle();?>
+    <?php
+        if(isset($_SESSION['seasonName'])) {
+            echo " " . $_SESSION['seasonName'];
+        }
+    ?></a></h1>
 </header>
 <section>
 <?php

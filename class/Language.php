@@ -10,7 +10,8 @@ class Language
 {
     static function title($val){
         self::getBrowserLang();
-        require "lang/{$_SESSION['language']}.php";
+        // Using default with gettext function and 'po' files 
+        require "lang/default.php";
         return $array[$val];
     }
     
@@ -19,11 +20,13 @@ class Language
             $val = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
             switch($val){
                 case 'en':
+                    $_SESSION['language'] = 'en_US';
+                    break;
                 case 'fr':
-                    $_SESSION['language'] = $val;
+                    $_SESSION['language'] = 'fr_FR';
                     break;
                 default:
-                    $_SESSION['language'] = 'en';
+                    $_SESSION['language'] = 'en_US';
                     break;
             }
         }

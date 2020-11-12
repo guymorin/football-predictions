@@ -107,7 +107,7 @@ CREATE TABLE `fp_user` (
   `name` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `registration` date NOT NULL,
-  `language` varchar(2) NOT NULL DEFAULT 'fr',
+  `language` varchar(5) NOT NULL DEFAULT 'en_US',
   `theme` int(11) NOT NULL DEFAULT '1',
   `last_season` int(11) DEFAULT NULL,
   `last_championship` int(11) DEFAULT NULL,

@@ -101,7 +101,7 @@ if($counter > 0){
                     $rain=0;
                     
                     if ($weatherData !== false){
-                        $decoded = json_decode($date1->format('Y-m-d'));
+                        $decoded = json_decode($weatherData);
                         $city = $decoded->city;
                         $forecast = $decoded->forecast;
                         $rain=$forecast->rr1;

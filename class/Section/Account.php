@@ -164,10 +164,12 @@ class Account
         $val .= $form->inputPassword(Language::title('password'), 'password');
         $val .= "<br />\n";
 
-        $pattern = '~([a-z][a-z])\.(php)$~';
+        $pattern = '~([a-z]{2}_[A-Z]{2})(?!\.pot)$~';
         $replacement = '$1';
-        $subject = scandir('lang/');
+        $subject = scandir('lang/locale');
+        
         $dataLang = array_values(preg_filter($pattern, $replacement, $subject));
+        
         $val .= $form->selectData('language', $dataLang, $_SESSION['language']);
         
         $req = "SELECT id_fp_theme, name FROM fp_theme;";
