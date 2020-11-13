@@ -23,7 +23,7 @@ h2 {
  text-align:center;
  text-transform:uppercase;
  color:#fff;
- background:#888;
+ background:#aaa linear-gradient(to left,#ccc,#999,#ccc);
  border-radius:2px;
  margin:0;
  padding:.2em 1.8em;
@@ -50,7 +50,7 @@ table{font-size:.9em;margin:0 auto;border:2px solid #666;border-radius:3px;min-w
 td{border:.1em solid #aaa;}
 tr:nth-child(odd){background:#ccc}
 tr:nth-child(even){background:#ddd}
-th{padding:.4em;background:#888;color:#fff;font-weight:normal}
+th{padding:.4em;background:#888 linear-gradient(#888,#666);color:#fff;font-weight:normal}
 input[type='date'] {font-size:1.2em}
 input[type='number'] {width:6em;padding:1em 0}
 
