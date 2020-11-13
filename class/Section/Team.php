@@ -6,6 +6,7 @@
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
+use FootballPredictions\Theme;
 use \PDO;
 
 class Team
@@ -27,9 +28,10 @@ class Team
                 break;
             case '':break;
         }
+        $val .= "  	<a href='index.php?page=matchday'>" . (Theme::icon('matchday')) . " " . (Language::title('matchdays')) . "</a>";
         $val .= "<a" . $classMV . " href='index.php?page=team'>" . (Language::title('marketValue')) . "</a>";
-        $val .= "<a" . $classC . " href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a>\n";
-        if(($_SESSION['role'])==2){
+        if(($_SESSION['role'])==2){           
+            $val .= "<a" . $classC . " href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a>\n";
             $req = "SELECT * FROM team c ORDER BY name;";
             $data = $pdo->query($req);
             $counter = $pdo->rowCount();
@@ -41,6 +43,7 @@ class Team
                 $val .= "</form>\n";
             }
         }
+        $val .= "<a href='index.php?page=player'>" . (Theme::icon('player')) . " " . (Language::title('player')) . "</a>";        
         return $val;
     }
     
@@ -156,10 +159,12 @@ class Team
         ],true);
         $counter = $pdo->rowCount();
         if($counter > 0){
-            $val = $error->getError();
-            $val .= "<form action='index.php?page=team' method='POST'>\n";
-            $form->setValues($data);
-            $val .= $form->label(Language::title('modifyAMarketValue'));
+            if(($_SESSION['role'])==2){ 
+                $val = $error->getError();
+                $val .= "<form action='index.php?page=team' method='POST'>\n";
+                $form->setValues($data);
+                $val .= $form->label(Language::title('modifyAMarketValue'));
+            }
             $val .= "<table>\n";
             $val .= "  <tr>\n";
             $val .= "      <th>" . (Language::title('team')) . "</th>\n";
@@ -169,17 +174,21 @@ class Team
             {
                 $val .= "  <tr>\n";
                 $val .= "      <td>\n";
-                $val .= $form->inputHidden('id_team[]', $d->id_team);
+                if(($_SESSION['role'])==2) $val .= $form->inputHidden('id_team[]', $d->id_team);
                 $val .= $d->name;
                 $val .= "      </td>\n";
                 $val .= "      <td>\n";
-                $form->setValue('marketValue',$d->marketValue);
-                $val .= $form->input('', 'marketValue[]');
+                if(($_SESSION['role'])==2){ 
+                    $form->setValue('marketValue',$d->marketValue);
+                    $val .= $form->input('', 'marketValue[]');
+                } else $val.= $d->marketValue;
                 $val .= "      </td>\n";
                 $val .= "  </tr>\n";
             }
             $val .= "</table>\n";
-            $val .= $form->submit(Language::title('modify'));
+            if(($_SESSION['role'])==2){ 
+                $val .= $form->submit(Language::title('modify'));
+            }
         } else $val .= Language::title('noTeam');
         return $val;
     }

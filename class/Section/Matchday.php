@@ -58,27 +58,30 @@ class Matchday
         if(isset($_SESSION['matchdayId'])){ 
             $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
             $val .= "<a" . $classS . " href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a>";
-            $val .= "<a" . $classP . " href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
-            $val .= "<a" . $classR . " href='index.php?page=results'>" . (Language::title('results')) . "</a>";
-            $val .= "<a" . $classTOTW . " href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
-            $val .= "<a" . $classCM . " href='index.php?page=matchgame&create=1'>" . (Language::title('createAMatch')) . "</a>";
-            $req = "SELECT DISTINCT mg.id_matchgame, t1.name, t2.name, mg.date
-            FROM matchgame mg
-            LEFT JOIN matchday md ON md.id_matchday = mg.id_matchday  
-            LEFT JOIN team t1 ON mg.team_1 = t1.id_team 
-            LEFT JOIN team t2 ON mg.team_2 = t2.id_team 
-            WHERE md.id_season = " . $_SESSION['seasonId'] . "
-            AND md.id_championship = " . $_SESSION['championshipId'] . " 
-            AND md.id_matchday = " . $_SESSION['matchdayId'] . " ORDER BY mg.date;";
-            $data = $pdo->query($req);
-            $counter = $pdo->rowCount();
-            if($counter > 0){
-                $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
-                $val .= $form->inputAction('modify');
-                $val .= $form->label(Language::title('modifyAMatch'));
-                $val .= $form->selectSubmit('id_matchgame', $data);
-                $val .= "</form>\n";
+            if(($_SESSION['role'])==2){
+                $val .= "<a" . $classP . " href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
+                $val .= "<a" . $classR . " href='index.php?page=results'>" . (Language::title('results')) . "</a>";
+                $val .= "<a" . $classTOTW . " href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
+                $val .= "<a" . $classCM . " href='index.php?page=matchgame&create=1'>" . (Language::title('createAMatch')) . "</a>";
+                $req = "SELECT DISTINCT mg.id_matchgame, t1.name, t2.name, mg.date
+                FROM matchgame mg
+                LEFT JOIN matchday md ON md.id_matchday = mg.id_matchday  
+                LEFT JOIN team t1 ON mg.team_1 = t1.id_team 
+                LEFT JOIN team t2 ON mg.team_2 = t2.id_team 
+                WHERE md.id_season = " . $_SESSION['seasonId'] . "
+                AND md.id_championship = " . $_SESSION['championshipId'] . " 
+                AND md.id_matchday = " . $_SESSION['matchdayId'] . " ORDER BY mg.date;";
+                $data = $pdo->query($req);
+                $counter = $pdo->rowCount();
+                if($counter > 0){
+                    $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
+                    $val .= $form->inputAction('modify');
+                    $val .= $form->label(Language::title('modifyAMatch'));
+                    $val .= $form->selectSubmit('id_matchgame', $data);
+                    $val .= "</form>\n";
+                }
             }
+            $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . " " . (Language::title('teams')) . "</a>";
         } else {
             $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
         }

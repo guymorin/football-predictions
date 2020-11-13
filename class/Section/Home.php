@@ -128,11 +128,11 @@ class Home
             $val .= "	 <li><a href='index.php?page=season'>"
                             . Theme::icon('season') . " "
                             . (Language::title('season')) . "</a></li>\n";
-            if(isset($_SESSION['seasonId'])){
-                $val .= "	 <li><a href='index.php?page=dashboard'>"
+            if(isset($_SESSION['seasonId']) and isset($_SESSION['championshipId'])){
+                    
+                    $val .= "	 <li><a href='index.php?page=dashboard'>"
                                 . Theme::icon('championship') . " "
                                 . (Language::title('championship')) . "</a></li>\n";
-                if(isset($_SESSION['championshipId'])){
                     $val .= "	 <li><a href='index.php?page=matchday'>"
                                     . Theme::icon('matchday') . " "
                                     . (Language::title('matchday')) . " ".(isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum']:NULL)."</a></li>\n";
@@ -142,7 +142,6 @@ class Home
                     $val .= "	 <li><a href='index.php?page=player'>"
                                     .Theme::icon('player'). " "
                                     . (Language::title('player')) . "</a></li>\n";
-                }
             }
         }
         $val .= "  </ul>\n";

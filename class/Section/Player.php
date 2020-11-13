@@ -28,10 +28,12 @@ class Player
                 break;
         }
         $response = $pdo->query("SELECT * FROM player ORDER BY name, firstname");
-        $val = "  	<a href='index.php?page=teamOfTheWeek'>" . (Theme::icon('matchday')) . " " . (Language::title('teamOfTheWeek')) . "</a>";
+        $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . " " . (Language::title('teams')) . "</a>";
         $val .= "<a" . $classBP . " href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a>";
-        $val .= "<a" . $classC . " href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a>";
+        
         if(($_SESSION['role'])==2){
+        $val .= "<a" . $classC . " href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a>";
+        
             $req = "SELECT id_player, name, firstname 
             FROM player
             ORDER BY name, firstname;";
@@ -46,6 +48,7 @@ class Player
                 $val .= "</form>\n";
             }
         }
+        
         return $val;
     }
     

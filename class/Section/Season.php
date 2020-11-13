@@ -197,7 +197,7 @@ class Season
             
             foreach ($data as $d)
             {
-                if($d->name == $_SESSION['championshipName']) {
+                if(isset($_SESSION['championshipName']) and ($d->name == $_SESSION['championshipName']) ) {
                     $val .= "  <tr class='current'>\n";
                     $val .= "<form>\n";
                     $val .= "<td>";

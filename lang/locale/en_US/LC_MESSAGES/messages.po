@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: FP\n"
-"POT-Creation-Date: 2020-11-10 16:50+0100\n"
-"PO-Revision-Date: 2020-11-10 17:42+0100\n"
+"POT-Creation-Date: 2020-11-12 17:52+0100\n"
+"PO-Revision-Date: 2020-11-12 17:52+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -68,7 +68,7 @@ msgid "contributor"
 msgstr ""
 
 #: default.php:18
-msgid " Create"
+msgid "Create"
 msgstr ""
 
 #: default.php:19

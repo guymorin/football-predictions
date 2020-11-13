@@ -249,7 +249,7 @@ section .menu li ul li a {
 	padding:.5em 1em;
 	margin:.2em;
 }
-section .menu li ul li a.red {
+section a.red {
 	background:red;
 	color:#fff;
 	text-shadow: none;

@@ -33,7 +33,7 @@ class Account
                 break;
         }
         $val = "<a" . $classMA . " href='index.php?page=account'>" . (Language::title('myAccount')) . "</a>";
-
+        $val.= "<a href='index.php?page=season'>" . (Theme::icon('season')) . " " . (Language::title('season')) . "</a>";
         return $val;
     }
     
