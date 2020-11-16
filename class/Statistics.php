@@ -128,7 +128,7 @@ class Statistics
     public function prepareTableMatchday(){
         $val = '';
         $val.= "<p>\n";
-        $val.="<table class='stats'>\n";
+        $val.="<table class='statsMatchday'>\n";
         $val.="  		<tr>\n";
         $val.="  		  <th>" . (Language::title('matchgame')) . "</th>\n";
         $val.="  		  <th colspan='3'>".Language::title('criterionSum')."</th>\n";
@@ -248,7 +248,8 @@ class Statistics
                     $this->playedOddsSum += $this->totalPlayed;
                     $this->nbMatchdays = $d->number;
                     $val .= "       <tr>\n";
-                    $val .= "           <td><strong>" . $d->number . "</strong></td>";
+                    $val .= "           <td>" . Theme::icon('matchday') . " ";
+                    $val .= Language::title('MD').$d->number . "</td>\n";
                     $val .= "           <td>" . $this->bet. " </td>\n";
                     $val .= "           <td>" . $this->success. " </td>\n";
                     $this->averageOdds = (round($this->totalPlayed / $this->bet,2));
@@ -268,7 +269,8 @@ class Statistics
                     $this->graph[$d->number] = $this->profitSum;
             } elseif($page == 'matchday') {
                 $val.="  		<tr>\n";
-                $val.="  		  <td>".$d->name1." - ".$d->name2."</td>\n";
+                $val.="  		  <td>".Theme::icon('team')." ".$d->name1;
+                $val.="<br />".Theme::icon('team')." ".$d->name2."</td>\n";
                 $val.="  		  <td><small>".$this->sum1."<br />(".number_format($this->probOdds1,2).")</small></td>\n";
                 $val.="  		  <td><small>".$this->sumD."<br />(".number_format($this->probOddsD,2).")</small></td>\n";
                 $val.="  		  <td><small>".$this->sum2."<br />(".number_format($this->probOdds2,2).")</small></td>\n";

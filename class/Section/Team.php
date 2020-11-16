@@ -165,7 +165,7 @@ class Team
                 $form->setValues($data);
                 $val .= $form->label(Language::title('modifyAMarketValue'));
             }
-            $val .= "<table>\n";
+            $val .= "<table class='team'>\n";
             $val .= "  <tr>\n";
             $val .= "      <th>" . (Language::title('team')) . "</th>\n";
             $val .= "      <th>" . (Language::title('marketValue')) . "</th>\n";
@@ -175,7 +175,7 @@ class Team
                 $val .= "  <tr>\n";
                 $val .= "      <td>\n";
                 if(($_SESSION['role'])==2) $val .= $form->inputHidden('id_team[]', $d->id_team);
-                $val .= $d->name;
+                $val .= Theme::icon('team') . " " . $d->name;
                 $val .= "      </td>\n";
                 $val .= "      <td>\n";
                 if(($_SESSION['role'])==2){ 

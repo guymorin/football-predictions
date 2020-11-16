@@ -134,7 +134,8 @@ else {
             else  echo $form->inputRadio("", "result[$id]", "", false);
             echo "</td>\n";
             
-            echo "  	<td>" . $d->name1." - " . $d->name2."</td>\n";
+            echo "  	<td>" . Theme::icon('team') . " " . $d->name1 . "<br />";
+            echo Theme::icon('team') . " " . $d->name2."</td>\n";
             
             echo "  	<td>";
             if($d->result=="1") echo $form->inputRadio("1", "result[$id]", "1", true);

@@ -268,13 +268,18 @@ section #changeMD {
 section #leftArrow {float:left;}
 section #rightArrow {float:right;}
 section #leftArrow, section #rightArrow {
-	display:block; width:4em; height:4em;
+	display:block; width:10em; height:4em; text-overflow:ellipsis;
 }
 section a {font-weight: bold;}
 section li a {font-weight: normal;}
 section table.stats th,
 section table.stats td{width:1.5em;height:2em}
-section table.stats th:first-child{width:15em}
+section table.benef td:first-child{text-align: left}
+section table.team td:first-child,
+section table.stats th:first-child,
+section table.statsMatchday td:first-child{width:10em;text-align:left}
+section table.prediction th:first-child,
+section table.prediction td:first-child{width:12em;text-align:left}
 section .graph {
 	background:#efefef;
 	border: 2px solid #666;
@@ -285,13 +290,14 @@ section .graph {
 section .graph svg {	padding:.5em;}
 
 
-section #results td:nth-child(3){width:20em;}
+section #results td:nth-child(3){width:10em;text-align:left}
 
 
 section #teamOfTheWeek td:nth-child(2){width:20em;}
 
 section #criterion table {margin-bottom:1em}
-section #criterion table td:first-child {width:20em;}
+section #criterion table td:first-child,
+section #criterion table td:first-child {width:10em;text-align:left}
 section #criterion table td:nth-child(2),
 section #criterion table td:nth-child(3),
 section #criterion table td:nth-child(4){width:10em;text-align:center}
@@ -347,7 +353,10 @@ section #standing li p {background:#cf7;color:#333;}
 section #standing li a:hover{text-decoration:none;background:#cf79;color:#3339}
 section #standing th {min-width:2em}
 section #standing td:nth-child(2),
-section .player td:nth-child(2)  {text-align: left;}
+section .player td:nth-child(2),
+section .player td:nth-child(3),
+section .playerTeam td:first-child,
+section .playerTeam td:nth-child(2)  {text-align: left;}
 section .tooltip span{
   display:none; 
 }

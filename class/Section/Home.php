@@ -27,6 +27,11 @@ class Home
                     echo Account::submenu($pdo, $form, $current);
                 }
                 break;
+            case "admin":
+                Account::exitButton();
+                $val .= "<a href='index.php?page=admin' class='current'>" . ucfirst(Language::title('administration')) . "</a>";
+                $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>\n";
+                break;
             case "championship":
             case "dashboard":
                 if($create == 1)                $current = 'create';

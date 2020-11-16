@@ -205,7 +205,7 @@ class Season
                     $val .= "</td>\n";
                 } else {
                     $val .= "  <tr>\n";
-                    $val .= "<form id='" . ($d->id_championship) . "' action='index.php' method='POST'>\n";
+                    $val .= "<form id='" . ($d->id_championship) . "' action='index.php?page=dashboard' method='POST'>\n";
                     $val .= $form->inputHidden("championshipSelect", $d->id_championship . "," . $d->name);
                     $val .= "<td>";
                     $val .= "<button type='submit' value='". ($d->name) . "'>" . (Theme::icon('championship') . " " . ($d->name)) . "</button>";

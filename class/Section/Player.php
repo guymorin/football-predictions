@@ -231,6 +231,7 @@ class Player
         $val .= "      <tr><th></th><th>" . (Language::title('player')) . "</th><th>" . (Language::title('team')) . "</th><th>" . (Language::title('teamOfTheWeek')) . "</th><th>" . (Language::title('ratingAverage')) . "</th></tr>\n";
         $counterPodium = 0;
         $icon =  Theme::icon('medalGold'); // Gold medal
+        $iconPlayer = Theme::icon('player')." "; // Player icon
         $counter = $pdo->rowCount();
         if($counter>0){
             foreach ($data as $d)
@@ -240,7 +241,7 @@ class Player
                 else $icon = Theme::icon('medalBronze'); // Bronze medal
                 
                 $val .= "      <td><strong>".$counterPodium."</strong></td>\n";
-                $val .= "      <td>".$icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong></td>\n";
+                $val .= "      <td>".$icon." ".$iconPlayer."<strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong></td>\n";
                 $val .= "      <td>".$d->team."</td>\n";
                 $val .= "      <td>".$d->nb."</td>\n";
                 $val .= "      <td>".round($d->rating,1)."</td>\n";
@@ -273,7 +274,7 @@ class Player
             'id_season' => $_SESSION['seasonId'],
             'id_championship' => $_SESSION['championshipId']
         ],true);
-        $val .= "  <table class='player'>\n";
+        $val .= "  <table class='playerTeam'>\n";
         $val .= "      <tr><th>" . (Language::title('team')) . "</th><th>" . (Language::title('player')) . "</th><th>" . (Language::title('teamOfTheWeek')) . "</th><th>" . (Language::title('ratingAverage')) . "</th></tr>\n";
         $counter = "";
         $counterPlayers = $pdo->rowCount();
@@ -283,7 +284,7 @@ class Player
                 $val .= "      <td>";
                 if($counter!=$d->team){
                     $counterPodium = 0;
-                    $val .= "<strong>".$d->team."</strong>";
+                    $val .= Theme::icon('team')." ".$d->team;
                 }
                 
                 $counterPodium++;
@@ -302,8 +303,8 @@ class Player
                 }
                 
                 $val .= "</td><td>";
-                if($icon != '') $val .= $icon." <strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong>";
-                else $val .= mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
+                if($icon != '') $val .= $icon." ".$iconPlayer."<strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong>";
+                else $val .= $iconPlayer." ".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
                 $val .= "</td><td>".$d->nb."</td><td>".round($d->rating,1)."</td>\n";
                 $val .= "  </tr>\n";
                 $counter=$d->team;

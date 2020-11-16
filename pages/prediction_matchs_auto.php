@@ -206,13 +206,15 @@ if($counter > 0){
         if($d->result=="") echo $form->inputHidden('id_match[]',$d->id_matchgame);
         if(isset($history[0])) echo $history[0];
         
-        echo "	 <table>\n";
-        
+        echo "	 <table class='prediction'>\n";
         echo "  		<tr>\n";
-        echo "  		  <th>".$d->date."\n";
-        echo "            <th>".$d->name1."</th>\n";
-        echo "            <th></th>\n";
-        echo "            <th>".$d->name2."</th>\n";
+        echo "  		  <th><small>".$d->date."</small><br />";
+        echo Theme::icon('team')." ".$d->name1."<br />";
+        echo Theme::icon('team')." ".$d->name2;
+        echo "</th>\n";
+        echo "            <th>1</th>\n";
+        echo "            <th>". Language::title('draw') ."</th>\n";
+        echo "            <th>2</th>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";

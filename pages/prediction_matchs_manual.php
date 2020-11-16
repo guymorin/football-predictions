@@ -59,15 +59,19 @@ if($counter > 0){
         $prediction = setPrediction($sum1, $sumD, $sum2);
         if($prediction==$d->result) $win=" ";
             
-        echo "	 <table class='manual'>\n";
-       
+        echo "	 <table class='prediction manual'>\n";
         echo "  		<tr>\n";
-        echo "  		  <th>".$d->date."</th>\n";
-        echo "            <th>".$d->name1."</th>\n";
+        echo "  		  <th><small>".$d->date."</small><br />";
+        echo Theme::icon('team')." ".$d->name1."<br />";
+        echo Theme::icon('team')." ".$d->name2;
+        echo "</th>\n";
+        echo "            <th>1</th>\n";
         echo "            <th>";
+        
+        echo Language::title('draw');
         echo "<input type='hidden' name='id_match[]' value='".$d->id_matchgame."'>";
         echo "</th>\n";
-        echo "            <th>".$d->name2."</th>\n";
+        echo "            <th>2</th>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
