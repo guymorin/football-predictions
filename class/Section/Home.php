@@ -7,6 +7,7 @@
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
+use FootballPredictions\Menu\Submenu;
 
 class Home
 {
@@ -20,15 +21,15 @@ class Home
         switch($page){
             case "account":
             case "accountList":
-                Account::exitButton();
+                Submenu::exitAccount();
                 if(isset($_SESSION['userLogin'])) {
                     if($page=='accountList') $current = 'listAccounts';
                     elseif ($modifyuser == 0) $current = 'myAccount';
-                    echo Account::submenu($pdo, $form, $current);
+                    echo Submenu::menuAccount($pdo, $form, $current);
                 }
                 break;
             case "admin":
-                Account::exitButton();
+                Submenu::exitAccount();
                 $val .= "<a href='index.php?page=admin' class='current'>" . ucfirst(Language::title('administration')) . "</a>";
                 $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>\n";
                 break;
@@ -38,7 +39,7 @@ class Home
                 elseif($modify == 1 && $page == 'championship') $current = 'modify';
                 elseif($page == 'championship') $current = 'standing';
                 elseif($page=='dashboard')      $current = 'dashboard';
-                echo Championship::submenu($pdo, $form, $current);
+                echo Submenu::menuChampionship($pdo, $form, $current);
                 break;
             case "matchday":
             case "matchgame":
@@ -54,28 +55,28 @@ class Home
                 elseif($page=='prediction')                     $current = 'prediction';
                 elseif($page=='results')                        $current = 'results';
                 elseif($page=='teamOfTheWeek')                  $current = 'teamOfTheWeek';
-                echo Matchday::submenu($pdo, $form, $current);
+                echo Submenu::menuMatchday($pdo, $form, $current);
                 break;
             case "player":
                 if($create == 1)        $current = 'create';
                 elseif($modify == 1)    $current = 'modify';
                 else                    $current = 'bestPlayers';
-                echo Player::submenu($pdo, $form, $current);
+                echo Submenu::menuPlayer($pdo, $form, $current);
                 break;
             case "season":
                 if($create == 1)        $current = 'create';
                 elseif($modify == 1)    $current = 'modify';
                 else                    $current = 'list';
-                echo Season::submenu($pdo, $form, $current);
+                echo Submenu::menuSeason($pdo, $form, $current);
                 break;
             case "team":
                 if($create == 1 && $page == 'team')        $current = 'create';
                 elseif($modify == 1 && $page == 'team')    $current = 'modify';
                 else                                       $current = 'marketValue';
-                echo Team::submenu($pdo, $form, $current);
+                echo Submenu::menuTeam($pdo, $form, $current);
                 break;
             default:
-                Account::exitButton();
+                Submenu::exitAccount();
                 break;
         }
         return $val;

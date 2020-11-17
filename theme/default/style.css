@@ -42,7 +42,8 @@ table input {min-width:0}
 select {margin-bottom:1em}
 th,td {padding:.5em}
 a{color:#382;text-decoration:none;padding:0 .5em}
-a:hover{background:#5a4;color:#fff}
+a:hover{background:#5a4;color:#fff;}
+section a:hover{border-radius:4px}
 
 header a:hover, table a, table a:hover{background:none}
 

@@ -15,38 +15,6 @@ class Team
 
     }
     
-    static function submenu($pdo, $form, $current=null){
-        $val ='';
-        $currentClass = " class='current'";
-        $classMV = $classC = '';
-        switch($current){
-            case 'marketValue':
-                $classMV = $currentClass;
-                break;
-            case 'create':
-                $classC = $currentClass;
-                break;
-            case '':break;
-        }
-        $val .= "  	<a href='index.php?page=matchday'>" . (Theme::icon('matchday')) . " " . (Language::title('matchdays')) . "</a>";
-        $val .= "<a" . $classMV . " href='index.php?page=team'>" . (Language::title('marketValue')) . "</a>";
-        if(($_SESSION['role'])==2){           
-            $val .= "<a" . $classC . " href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a>\n";
-            $req = "SELECT * FROM team c ORDER BY name;";
-            $data = $pdo->query($req);
-            $counter = $pdo->rowCount();
-            if($counter > 1){
-                $val .= "<form action='index.php?page=team' method='POST'>\n";
-                $val .= $form->inputAction('modify');
-                $val .= $form->label(Language::title('modifyATeam'));
-                $val .= $form->selectSubmit('id_team', $data);
-                $val .= "</form>\n";
-            }
-        }
-        $val .= "<a href='index.php?page=player'>" . (Theme::icon('player')) . " " . (Language::title('player')) . "</a>";        
-        return $val;
-    }
-    
     static function deletePopup($pdo, $teamId){
         $req = '';
         $req .= "DELETE FROM marketValue WHERE id_team=:id_team;";

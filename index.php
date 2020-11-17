@@ -7,7 +7,6 @@ require 'vendor/autoload.php';
 require 'lang/localization.php';
 // Namespaces
 use FootballPredictions\App;
-
 use FootballPredictions\Errors;
 use FootballPredictions\Forms;
 use FootballPredictions\Language;

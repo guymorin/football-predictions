@@ -14,29 +14,6 @@ class Account
 
     }
     
-    static function exitButton() {
-        if(isset($_SESSION['userLogin'])){
-            echo "<a class='session' href='index.php?page=account&exit=1'>"
-                .(Theme::icon('exit')) . " " 
-                .(Language::title('logoff')) . " [" . ucfirst($_SESSION['userLogin'])."]</a>";
-        }
-    }
-    static function submenu($pdo, $form, $current = null){
-        $currentClass = " class='current'";
-        $classAL = $classMA = '';
-        switch($current){
-            case 'listAccounts':
-                $classAL = $currentClass;
-                break;
-            case 'myAccount':
-                $classMA = $currentClass;
-                break;
-        }
-        $val = "<a" . $classMA . " href='index.php?page=account'>" . (Language::title('myAccount')) . "</a>";
-        $val.= "<a href='index.php?page=season'>" . (Theme::icon('season')) . " " . (Language::title('season')) . "</a>";
-        return $val;
-    }
-    
     static function logonForm($pdo, $error, $form){
         //
         $val = '';

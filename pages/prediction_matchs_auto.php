@@ -208,7 +208,8 @@ if($counter > 0){
         
         echo "	 <table class='prediction'>\n";
         echo "  		<tr>\n";
-        echo "  		  <th><small>".$d->date."</small><br />";
+        echo "  		  <th>".Theme::icon('matchday')." ".Language::title('MD').$_SESSION['matchdayNum'];
+        echo ", ".$d->date."<br />";
         echo Theme::icon('team')." ".$d->name1."<br />";
         echo Theme::icon('team')." ".$d->name2;
         echo "</th>\n";

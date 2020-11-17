@@ -14,79 +14,6 @@ class Matchday
     public function __construct(){
 
     }
-
-    static function exitButton() {
-        
-        if(isset($_SESSION['matchdayId'])){
-            echo "<a class='session' href='index.php?page=matchday&exit=1'>" . (Language::title('MD')) . $_SESSION['matchdayNum'] . " &#10060;</a>";
-        }
-    }
-    
-    static function submenu($pdo, $form, $current = null){
-        $val = "<a href='index.php?page=dashboard'>" . (Theme::icon('championship')) . " ";
-        if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) {
-            $val .= $_SESSION['championshipName'];
-        } else {
-            $val .= Language::title('championship');
-        }
-        $val .= "</a>";
-        $currentClass = " class='current'";
-        $classS = $classP = $classR = $classTOTW = $classCM = $classLMD = $classCMD = '';
-        switch($current){
-            case 'statistics':
-                $classS = $currentClass;
-                break;
-            case 'prediction':
-                $classP = $currentClass;
-                break;
-            case 'results':
-                $classR = $currentClass;
-                break;
-            case 'teamOfTheWeek':
-                $classTOTW = $currentClass;
-                break;
-            case 'createMatch':
-                $classCM = $currentClass;
-                break;
-            case 'create':
-                $classCMD = $currentClass;
-                break;
-            case 'list':
-                $classLMD = $currentClass;
-                break;
-        }
-        if(isset($_SESSION['matchdayId'])){ 
-            $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
-            $val .= "<a" . $classS . " href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a>";
-            if(($_SESSION['role'])==2){
-                $val .= "<a" . $classP . " href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
-                $val .= "<a" . $classR . " href='index.php?page=results'>" . (Language::title('results')) . "</a>";
-                $val .= "<a" . $classTOTW . " href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
-                $val .= "<a" . $classCM . " href='index.php?page=matchgame&create=1'>" . (Language::title('createAMatch')) . "</a>";
-                $req = "SELECT DISTINCT mg.id_matchgame, t1.name, t2.name, mg.date
-                FROM matchgame mg
-                LEFT JOIN matchday md ON md.id_matchday = mg.id_matchday  
-                LEFT JOIN team t1 ON mg.team_1 = t1.id_team 
-                LEFT JOIN team t2 ON mg.team_2 = t2.id_team 
-                WHERE md.id_season = " . $_SESSION['seasonId'] . "
-                AND md.id_championship = " . $_SESSION['championshipId'] . " 
-                AND md.id_matchday = " . $_SESSION['matchdayId'] . " ORDER BY mg.date;";
-                $data = $pdo->query($req);
-                $counter = $pdo->rowCount();
-                if($counter > 0){
-                    $val .= "<form action='index.php?page=matchgame' method='POST'>\n";
-                    $val .= $form->inputAction('modify');
-                    $val .= $form->label(Language::title('modifyAMatch'));
-                    $val .= $form->selectSubmit('id_matchgame', $data);
-                    $val .= "</form>\n";
-                }
-            }
-            $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . " " . (Language::title('teams')) . "</a>";
-        } else {
-            $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
-        }
-        return $val;
-    }
     
     static function deletePopup($pdo, $matchdayId){
         $req = '';
@@ -285,7 +212,7 @@ class Matchday
         $form->setValues($data);
         $val .= $form->inputAction('modify');
         $val .= "<fieldset>\n";
-        $val .= "<legend>" . (Language::title('match')) . "</legend>\n";
+        $val .= "<legend>" . (Language::title('matchday')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->inputHidden('id_matchgame',$data->id_matchgame);
         $val .= $form->inputDate(Language::title('date'), 'date', $data->date);

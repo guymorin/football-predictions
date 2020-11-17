@@ -14,45 +14,6 @@ class Championship
     public function __construct(){
 
     }
-
-    static function exitButton() {
-        if(isset($_SESSION['championshipName'])){
-            echo "<a class='session' href='index.php?page=championship&exit=1'>".$_SESSION['championshipName']." &#10060;</a>";
-        }
-    }
-    
-    static function submenu($pdo, $form, $current=null){
-        
-        $val ='';
-        $currentClass = " class='current'";
-        $classS = $classDB = $classC = '';
-        switch($current){
-            case 'standing':
-                $classS = $currentClass;
-                break;
-            case 'dashboard':
-                $classDB = $currentClass;
-                break;
-            case 'create':
-                $classC = $currentClass;
-                break;
-        }
-        if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0 &&
-            (empty($_SESSION['noTeam']) or $_SESSION['noTeam'] == false)
-            ){
-            $val .= "  	<a href='index.php?page=season'>" . (Theme::icon('season')) . " " . $_SESSION['seasonName'] . "</a>";
-            $val .= "<a" . $classDB . " href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
-            $val .= "<a" . $classS . " href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
-            $val .= "<a href='index.php?page=matchday'>" . (Theme::icon('matchday')) . " " . (Language::title('matchdays')) . "</a>";
-        } else {
-            if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
-            else {
-                Account::exitButton();
-                Season::exitButton();
-            }
-        }
-        return $val;
-    }
     
     static function selectChampionship($pdo, $form){
         

@@ -13,41 +13,8 @@ class Season
     public function __construct(){
 
     }
-    
-    static function exitButton() {
-        if(isset($_SESSION['seasonName'])){
-            echo "<a class='session' href='index.php?page=season&exit=1'>". (Theme::icon('season')) . " " . (Language::title('selectTheSeason')) . "</a>";
-        }
-    }
-    
-    static function submenu($pdo, $form, $current=null){
-        $val ='';
-        $currentClass = " class='current'";
-        $classL = $classC = '';
-        switch($current){
-            case 'list':
-                $classL = $currentClass;
-                break;
-            case 'create':
-                $classC = $currentClass;
-                break;
-        }
-        if(isset($_SESSION['seasonId']) && $_SESSION['seasonId']>0) {
-            Season::exitButton();
-            $val .= "<a" . $classL . " href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
-            if(isset($_SESSION['championshipId'])){
-                $val .= "<a href='index.php?page=dashboard'>" . (Theme::icon('championship')) . " ";
-                if($_SESSION['championshipId']>0) {
-                    $val .= $_SESSION['championshipName'];
-                } else {
-                    $val .= Language::title('championship');
-                }
-            $val .= "</a>";
-            }
-        }
-        return $val;
-    }
-    
+        
+        
     static function selectSeason($pdo, $form){
         
         $val = "  <h3>" . (Language::title('selectTheSeason')) . "</h3>\n";

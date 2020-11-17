@@ -15,43 +15,6 @@ class Player
 
     }
     
-    static function submenu($pdo, $form, $current = null){
-        $val ='';
-        $currentClass = " class='current'";
-        $classBP = $classC = '';
-        switch($current){
-            case 'bestPlayers':
-                $classBP = $currentClass;
-                break;
-            case 'create':
-                $classC = $currentClass;
-                break;
-        }
-        $response = $pdo->query("SELECT * FROM player ORDER BY name, firstname");
-        $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . " " . (Language::title('teams')) . "</a>";
-        $val .= "<a" . $classBP . " href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a>";
-        
-        if(($_SESSION['role'])==2){
-        $val .= "<a" . $classC . " href='index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . "</a>";
-        
-            $req = "SELECT id_player, name, firstname 
-            FROM player
-            ORDER BY name, firstname;";
-            $data = $pdo->query($req);
-            $counter = $pdo->rowCount();
-    
-            if($counter > 1){
-                $val .= "<form action='index.php?page=player' method='POST'>\n";
-                $val .= $form->inputAction('modify');
-                $val .= $form->label(Language::title('modifyAPlayer'));
-                $val .= $form->selectSubmit('id_player', $data);
-                $val .= "</form>\n";
-            }
-        }
-        
-        return $val;
-    }
-    
     static function deletePopup($pdo, $teamId, $playerId){
         $req = '';
         $req .= "DELETE FROM teamOfTheWeek 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: FP\n"
-"POT-Creation-Date: 2020-11-12 17:51+0100\n"
-"PO-Revision-Date: 2020-11-12 17:51+0100\n"
+"POT-Creation-Date: 2020-11-16 10:41+0100\n"
+"PO-Revision-Date: 2020-11-16 10:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -279,7 +279,7 @@ msgstr "Nom"
 msgid "User"
 msgstr "Utilisateur"
 
-#: default.php:71 default.php:115
+#: default.php:71 default.php:116
 msgid "Password"
 msgstr "Mot de passe"
 
@@ -408,258 +408,266 @@ msgid "My account"
 msgstr "Mon compte"
 
 #: default.php:104
+msgid "Next"
+msgstr "Suivant"
+
+#: default.php:105
 msgid "No"
 msgstr "Non"
 
-#: default.php:105
+#: default.php:106
 msgid "Not played"
 msgstr "Non joué"
 
-#: default.php:106
+#: default.php:107
 msgid "No championship"
 msgstr "Aucun championnat"
 
-#: default.php:107
+#: default.php:108
 msgid "No matchgame"
 msgstr "Aucun match"
 
-#: default.php:108
+#: default.php:109
 msgid "No matchday"
 msgstr "Auune journée"
 
-#: default.php:109
+#: default.php:110
 msgid "No season"
 msgstr "Aucune siason"
 
-#: default.php:110
+#: default.php:111
 msgid "No team"
 msgstr "Aucune équipe"
 
-#: default.php:111
+#: default.php:112
 msgid "Number"
 msgstr "Numéro"
 
-#: default.php:112
+#: default.php:113
 msgid "Number of matchdays"
 msgstr "Nombre de journées"
 
-#: default.php:113
+#: default.php:114
 msgid "Odds"
 msgstr "Cote"
 
-#: default.php:114
+#: default.php:115
 msgid "Average<br />played<br />odds"
 msgstr "Cote<br />moyenne<br />jouée"
 
-#: default.php:116
+#: default.php:117
 msgid "Confirm password"
 msgstr "Confirmer le mot de passe"
 
-#: default.php:117
+#: default.php:118
 msgid "Physical form"
 msgstr "Forme physique"
 
-#: default.php:118
+#: default.php:119
 msgid "Player"
 msgstr "Joueur"
 
-#: default.php:119
+#: default.php:120
 msgid "Position"
 msgstr "Poste"
 
-#: default.php:120
+#: default.php:121
 msgid "Prediction"
 msgstr "Pronostic"
 
-#: default.php:121
+#: default.php:122
 msgid "Predictions"
 msgstr "Pronostics"
 
-#: default.php:122
+#: default.php:123
 msgid "Predictions history"
 msgstr "Historique des pronostics"
 
-#: default.php:123
+#: default.php:124
+msgid "Previous"
+msgstr "Précédent"
+
+#: default.php:125
 msgid "Profit"
 msgstr "Bénéfice"
 
-#: default.php:124
+#: default.php:126
 msgid "Profit by matchday"
 msgstr "Bénéfice par journée"
 
-#: default.php:125
+#: default.php:127
 msgid "Profit evolution"
 msgstr "Évolution du bénéfice"
 
-#: default.php:126
+#: default.php:128
 msgid "Pts"
 msgstr "Pts"
 
-#: default.php:127
+#: default.php:129
 msgid "Quick nav"
 msgstr "Navigation rapide"
 
-#: default.php:128
+#: default.php:130
 msgid "Rating"
 msgstr "Note"
 
-#: default.php:129
+#: default.php:131
 msgid "Average rating"
 msgstr "Note moyenne"
 
-#: default.php:130
+#: default.php:132
 msgid "Red cards"
 msgstr "Cartons rouges"
 
-#: default.php:131
+#: default.php:133
 msgid "Result"
 msgstr "Résultat"
 
-#: default.php:132
+#: default.php:134
 msgid "Results"
 msgstr "Résultats"
 
-#: default.php:133
+#: default.php:135
 msgid "ROI"
 msgstr "ROI"
 
-#: default.php:134
+#: default.php:136
 msgid "ROI is losing!"
 msgstr "Le ROI est perdant !"
 
-#: default.php:135
+#: default.php:137
 msgid "ROI is neutral!"
 msgstr "Le ROI est neutre !"
 
-#: default.php:136
+#: default.php:138
 msgid "ROI wins!"
 msgstr "Le ROI est gagnant !"
 
-#: default.php:137
+#: default.php:139
 msgid "ROI is excellent!"
 msgstr "Le ROI est excellent !"
 
-#: default.php:138
+#: default.php:140
 msgid "Role"
 msgstr "Rôle"
 
-#: default.php:139
+#: default.php:141
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: default.php:140
+#: default.php:142
 msgid "Saved"
 msgstr "Sauvegardé"
 
-#: default.php:141
+#: default.php:143
 msgid "Season"
 msgstr "Saison"
 
-#: default.php:142
+#: default.php:144
 msgid "Select"
 msgstr "Sélectionner"
 
-#: default.php:143
+#: default.php:145
 msgid "Select another season"
 msgstr "Sélectionner une autre saison"
 
-#: default.php:144
+#: default.php:146
 msgid "Selected"
 msgstr "Sélectionné"
 
-#: default.php:145
+#: default.php:147
 msgid "Select a championship"
 msgstr "Sélectionner un championnat"
 
-#: default.php:146
+#: default.php:148
 msgid "Select a matchday"
 msgstr "Sélectionner une journée"
 
-#: default.php:147
+#: default.php:149
 msgid "Select a player"
 msgstr "Sélectionner un joueur"
 
-#: default.php:148
+#: default.php:150
 msgid "Select a season"
 msgstr "Sélectionner une saison"
 
-#: default.php:149
+#: default.php:151
 msgid "Select the teams"
 msgstr "Sélectionner les équipes"
 
-#: default.php:150
+#: default.php:152
 msgid "Speculative game!"
 msgstr "Jeu spéculateur !"
 
-#: default.php:151
+#: default.php:153
 msgid "Too speculative game!"
 msgstr "Jeu trop sépculateur !"
 
-#: default.php:152
+#: default.php:154
 msgid "Statistics"
 msgstr "Statistiques"
 
-#: default.php:153
+#: default.php:155
 msgid "Standing"
 msgstr "Classement"
 
-#: default.php:154
+#: default.php:156
 msgid "Success"
 msgstr "Succès"
 
-#: default.php:155
+#: default.php:157
 msgid "Success rate"
 msgstr "Taux de réussite"
 
-#: default.php:156
+#: default.php:158
 msgid "Switch to semi-automatical"
 msgstr "Basculer en mode semi-automatique"
 
-#: default.php:157
+#: default.php:159
 msgid "Switch to manual mode"
 msgstr "Basculer en mode manuel"
 
-#: default.php:158
+#: default.php:160
 msgid "Team"
 msgstr "Équipe"
 
-#: default.php:159
+#: default.php:161
 msgid "Teams"
 msgstr "Équipes"
 
-#: default.php:160
+#: default.php:162
 msgid "Team of the week"
 msgstr "Équipe type"
 
-#: default.php:161
+#: default.php:163
 msgid "Theme"
 msgstr "Thème"
 
-#: default.php:162
+#: default.php:164
 msgid "FP"
 msgstr "PDF"
 
-#: default.php:163
+#: default.php:165
 msgid "Football predictions"
 msgstr "Pronostics de football"
 
-#: default.php:164
+#: default.php:166
 msgid "Website datas"
 msgstr "Données du site web"
 
-#: default.php:165
+#: default.php:167
 msgid "Yes"
 msgstr "Oui"
 
-#: default.php:167
+#: default.php:169
 msgid "Weather"
 msgstr "Météo"
 
-#: default.php:168
+#: default.php:170
 msgid "Weather code"
 msgstr "Code météo"
 
-#: default.php:169
+#: default.php:171
 msgid "W"
 msgstr "G"
 

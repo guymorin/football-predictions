@@ -1,7 +1,8 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: FP\n"
-"POT-Creation-Date: 2020-11-12 17:52+0100\n"
+"POT-Creation-Date: 2020-11-16 10:40+0100\n"
 "PO-Revision-Date: 2020-11-12 17:52+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -15,650 +16,666 @@ msgstr ""
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: default.php:5
+#: football-predictions/lang/default.php:5
 msgid "Account"
 msgstr ""
 
-#: default.php:6
+#: football-predictions/lang/default.php:6
 msgid "Add team to "
 msgstr ""
 
-#: default.php:7
+#: football-predictions/lang/default.php:7
 msgid "Added"
 msgstr ""
 
-#: default.php:8
+#: football-predictions/lang/default.php:8
 msgid "administration"
 msgstr ""
 
-#: default.php:9
+#: football-predictions/lang/default.php:9
 msgid "administrator"
 msgstr ""
 
-#: default.php:10
+#: football-predictions/lang/default.php:10
 msgid "Away"
 msgstr ""
 
-#: default.php:11
+#: football-predictions/lang/default.php:11
 msgid "Best players"
 msgstr ""
 
-#: default.php:12
+#: football-predictions/lang/default.php:12
 msgid "Best players by team"
 msgstr ""
 
-#: default.php:13
+#: football-predictions/lang/default.php:13
 msgid "Bet"
 msgstr ""
 
-#: default.php:14
+#: football-predictions/lang/default.php:14
 msgid "Careful game!"
 msgstr ""
 
-#: default.php:15
+#: football-predictions/lang/default.php:15
 msgid "Too careful game!"
 msgstr ""
 
-#: default.php:16
+#: football-predictions/lang/default.php:16
 msgid "Championship"
 msgstr ""
 
-#: default.php:17
+#: football-predictions/lang/default.php:17
 msgid "contributor"
 msgstr ""
 
-#: default.php:18
+#: football-predictions/lang/default.php:18
 msgid "Create"
 msgstr ""
 
-#: default.php:19
+#: football-predictions/lang/default.php:19
 msgid "Created"
 msgstr ""
 
-#: default.php:20
+#: football-predictions/lang/default.php:20
 msgid "Create a championship"
 msgstr ""
 
-#: default.php:21
+#: football-predictions/lang/default.php:21
 msgid "Create a match"
 msgstr ""
 
-#: default.php:22
+#: football-predictions/lang/default.php:22
 msgid "Create a matchday"
 msgstr ""
 
-#: default.php:23
+#: football-predictions/lang/default.php:23
 msgid "Create an account"
 msgstr ""
 
-#: default.php:24
+#: football-predictions/lang/default.php:24
 msgid "Create an administrator account"
 msgstr ""
 
-#: default.php:25
+#: football-predictions/lang/default.php:25
 msgid "Create a player"
 msgstr ""
 
-#: default.php:26
+#: football-predictions/lang/default.php:26
 msgid "Create a season"
 msgstr ""
 
-#: default.php:27
+#: football-predictions/lang/default.php:27
 msgid "Create a team"
 msgstr ""
 
-#: default.php:28
+#: football-predictions/lang/default.php:28
 msgid "Create the database"
 msgstr ""
 
-#: default.php:29
+#: football-predictions/lang/default.php:29
 msgid "Create the matchdays"
 msgstr ""
 
-#: default.php:30
+#: football-predictions/lang/default.php:30
 msgid "Criterion sum"
 msgstr ""
 
-#: default.php:31
+#: football-predictions/lang/default.php:31
 msgid "Current form"
 msgstr ""
 
-#: default.php:32
+#: football-predictions/lang/default.php:32
 msgid "Dashboard"
 msgstr ""
 
-#: default.php:33
+#: football-predictions/lang/default.php:33
 msgid "Date"
 msgstr ""
 
-#: default.php:34
+#: football-predictions/lang/default.php:34
 msgid "Defender"
 msgstr ""
 
-#: default.php:35
+#: football-predictions/lang/default.php:35
 msgid "Delete"
 msgstr ""
 
-#: default.php:36
+#: football-predictions/lang/default.php:36
 msgid "Deleted"
 msgstr ""
 
-#: default.php:37
+#: football-predictions/lang/default.php:37
 msgid "D"
 msgstr ""
 
-#: default.php:38
+#: football-predictions/lang/default.php:38
 msgid "Earning"
 msgstr ""
 
-#: default.php:39
+#: football-predictions/lang/default.php:39
 msgid "Earning by bet"
 msgstr ""
 
-#: default.php:40
+#: football-predictions/lang/default.php:40
 msgid "E-mail address"
 msgstr ""
 
-#: default.php:41
+#: football-predictions/lang/default.php:41
 msgid "Error"
 msgstr ""
 
-#: default.php:42
+#: football-predictions/lang/default.php:42
 msgid "alphanumeric characters only"
 msgstr ""
 
-#: default.php:43
+#: football-predictions/lang/default.php:43
 msgid "problem with the database connection"
 msgstr ""
 
-#: default.php:44
+#: football-predictions/lang/default.php:44
 msgid "invalid date"
 msgstr ""
 
-#: default.php:45
+#: football-predictions/lang/default.php:45
 msgid "integer numeric characters only"
 msgstr ""
 
-#: default.php:46
+#: football-predictions/lang/default.php:46
 msgid "this name already exists"
 msgstr ""
 
-#: default.php:47
+#: football-predictions/lang/default.php:47
 msgid "problem with the export"
 msgstr ""
 
-#: default.php:48
+#: football-predictions/lang/default.php:48
 msgid "some fields have not been filled in correctly"
 msgstr ""
 
-#: default.php:49
+#: football-predictions/lang/default.php:49
 msgid "problem with the import"
 msgstr ""
 
-#: default.php:50
+#: football-predictions/lang/default.php:50
 msgid "field not filled"
 msgstr ""
 
-#: default.php:51
+#: football-predictions/lang/default.php:51
 msgid "numeric characters only"
 msgstr ""
 
-#: default.php:52
+#: football-predictions/lang/default.php:52
 msgid "invalid username or password"
 msgstr ""
 
-#: default.php:53
+#: football-predictions/lang/default.php:53
 msgid "those passwords didn't match"
 msgstr ""
 
-#: default.php:54
+#: football-predictions/lang/default.php:54
 msgid "invalid path"
 msgstr ""
 
-#: default.php:55
+#: football-predictions/lang/default.php:55
 msgid "invalid position"
 msgstr ""
 
-#: default.php:56
+#: football-predictions/lang/default.php:56
 msgid "invalid result"
 msgstr ""
 
-#: default.php:57
+#: football-predictions/lang/default.php:57
 msgid "9 characters max."
 msgstr ""
 
-#: default.php:58
+#: football-predictions/lang/default.php:58
 msgid "Writable access needed on the installation repository"
 msgstr ""
 
-#: default.php:59
+#: football-predictions/lang/default.php:59
 msgid "Exit"
 msgstr ""
 
-#: default.php:60
+#: football-predictions/lang/default.php:60
 msgid "Exited"
 msgstr ""
 
-#: default.php:61
+#: football-predictions/lang/default.php:61
 msgid "Firstname"
 msgstr ""
 
-#: default.php:62
+#: football-predictions/lang/default.php:62
 msgid "Forward"
 msgstr ""
 
-#: default.php:63
+#: football-predictions/lang/default.php:63
 msgid "General"
 msgstr ""
 
-#: default.php:64
+#: football-predictions/lang/default.php:64
 msgid "Goalkeeper"
 msgstr ""
 
-#: default.php:65
+#: football-predictions/lang/default.php:65
 msgid "Home"
 msgstr ""
 
-#: default.php:66
+#: football-predictions/lang/default.php:66
 msgid "Homepage"
 msgstr ""
 
-#: default.php:67
+#: football-predictions/lang/default.php:67
 msgid "Install"
 msgstr ""
 
-#: default.php:68
+#: football-predictions/lang/default.php:68
 msgid "Host"
 msgstr ""
 
-#: default.php:69 default.php:103
+#: football-predictions/lang/default.php:69
+#: football-predictions/lang/default.php:103
 msgid "Name"
 msgstr ""
 
-#: default.php:70
+#: football-predictions/lang/default.php:70
 msgid "User"
 msgstr ""
 
-#: default.php:71 default.php:115
+#: football-predictions/lang/default.php:71
+#: football-predictions/lang/default.php:116
 msgid "Password"
 msgstr ""
 
-#: default.php:72
+#: football-predictions/lang/default.php:72
 msgid "Language"
 msgstr ""
 
-#: default.php:73
+#: football-predictions/lang/default.php:73
 msgid "List of accounts"
 msgstr ""
 
-#: default.php:74
+#: football-predictions/lang/default.php:74
 msgid "Last backup"
 msgstr ""
 
-#: default.php:75
+#: football-predictions/lang/default.php:75
 msgid "List of championship"
 msgstr ""
 
-#: default.php:76
+#: football-predictions/lang/default.php:76
 msgid "List of matchdays"
 msgstr ""
 
-#: default.php:77
+#: football-predictions/lang/default.php:77
 msgid "Username"
 msgstr ""
 
-#: default.php:78
+#: football-predictions/lang/default.php:78
 msgid "Log on"
 msgstr ""
 
-#: default.php:79
+#: football-predictions/lang/default.php:79
 msgid "Log off"
 msgstr ""
 
-#: default.php:80
+#: football-predictions/lang/default.php:80
 msgid "L"
 msgstr ""
 
-#: default.php:81
+#: football-predictions/lang/default.php:81
 msgid "Marketvalue"
 msgstr ""
 
-#: default.php:82
+#: football-predictions/lang/default.php:82
 msgid "Matchday"
 msgstr ""
 
-#: default.php:83
+#: football-predictions/lang/default.php:83
 msgid "Next matchday"
 msgstr ""
 
-#: default.php:84
+#: football-predictions/lang/default.php:84
 msgid "Matchdays"
 msgstr ""
 
-#: default.php:85
+#: football-predictions/lang/default.php:85
 msgid "Matchgame"
 msgstr ""
 
-#: default.php:86
+#: football-predictions/lang/default.php:86
 msgid "Number of matchgame"
 msgstr ""
 
-#: default.php:87
+#: football-predictions/lang/default.php:87
 msgid "Played matchgames"
 msgstr ""
 
-#: default.php:88
+#: football-predictions/lang/default.php:88
 msgid "MD"
 msgstr ""
 
-#: default.php:89
+#: football-predictions/lang/default.php:89
 msgid "Midfielder"
 msgstr ""
 
-#: default.php:90
+#: football-predictions/lang/default.php:90
 msgid "Modify"
 msgstr ""
 
-#: default.php:91
+#: football-predictions/lang/default.php:91
 msgid "Modified"
 msgstr ""
 
-#: default.php:92
+#: football-predictions/lang/default.php:92
 msgid "Modify a championship"
 msgstr ""
 
-#: default.php:93
+#: football-predictions/lang/default.php:93
 msgid "Modify a matchgame"
 msgstr ""
 
-#: default.php:94
+#: football-predictions/lang/default.php:94
 msgid "Modify an account"
 msgstr ""
 
-#: default.php:95
+#: football-predictions/lang/default.php:95
 msgid "Modify a player"
 msgstr ""
 
-#: default.php:96
+#: football-predictions/lang/default.php:96
 msgid "Modify predictions"
 msgstr ""
 
-#: default.php:97
+#: football-predictions/lang/default.php:97
 msgid "Modify a season"
 msgstr ""
 
-#: default.php:98
+#: football-predictions/lang/default.php:98
 msgid "Modify a team"
 msgstr ""
 
-#: default.php:99
+#: football-predictions/lang/default.php:99
 msgid "Modify a marketvalue"
 msgstr ""
 
-#: default.php:100
+#: football-predictions/lang/default.php:100
 msgid "Modify a matchday"
 msgstr ""
 
-#: default.php:101
+#: football-predictions/lang/default.php:101
 msgid "Motivation"
 msgstr ""
 
-#: default.php:102
+#: football-predictions/lang/default.php:102
 msgid "My account"
 msgstr ""
 
-#: default.php:104
+#: football-predictions/lang/default.php:104
+msgid "Next"
+msgstr ""
+
+#: football-predictions/lang/default.php:105
 msgid "No"
 msgstr ""
 
-#: default.php:105
+#: football-predictions/lang/default.php:106
 msgid "Not played"
 msgstr ""
 
-#: default.php:106
+#: football-predictions/lang/default.php:107
 msgid "No championship"
 msgstr ""
 
-#: default.php:107
+#: football-predictions/lang/default.php:108
 msgid "No matchgame"
 msgstr ""
 
-#: default.php:108
+#: football-predictions/lang/default.php:109
 msgid "No matchday"
 msgstr ""
 
-#: default.php:109
+#: football-predictions/lang/default.php:110
 msgid "No season"
 msgstr ""
 
-#: default.php:110
+#: football-predictions/lang/default.php:111
 msgid "No team"
 msgstr ""
 
-#: default.php:111
+#: football-predictions/lang/default.php:112
 msgid "Number"
 msgstr ""
 
-#: default.php:112
+#: football-predictions/lang/default.php:113
 msgid "Number of matchdays"
 msgstr ""
 
-#: default.php:113
+#: football-predictions/lang/default.php:114
 msgid "Odds"
 msgstr ""
 
-#: default.php:114
+#: football-predictions/lang/default.php:115
 msgid "Average<br />played<br />odds"
 msgstr ""
 
-#: default.php:116
+#: football-predictions/lang/default.php:117
 msgid "Confirm password"
 msgstr ""
 
-#: default.php:117
+#: football-predictions/lang/default.php:118
 msgid "Physical form"
 msgstr ""
 
-#: default.php:118
+#: football-predictions/lang/default.php:119
 msgid "Player"
 msgstr ""
 
-#: default.php:119
+#: football-predictions/lang/default.php:120
 msgid "Position"
 msgstr ""
 
-#: default.php:120
+#: football-predictions/lang/default.php:121
 msgid "Prediction"
 msgstr ""
 
-#: default.php:121
+#: football-predictions/lang/default.php:122
 msgid "Predictions"
 msgstr ""
 
-#: default.php:122
+#: football-predictions/lang/default.php:123
 msgid "Predictions history"
 msgstr ""
 
-#: default.php:123
+#: football-predictions/lang/default.php:124
+msgid "Previous"
+msgstr ""
+
+#: football-predictions/lang/default.php:125
 msgid "Profit"
 msgstr ""
 
-#: default.php:124
+#: football-predictions/lang/default.php:126
 msgid "Profit by matchday"
 msgstr ""
 
-#: default.php:125
+#: football-predictions/lang/default.php:127
 msgid "Profit evolution"
 msgstr ""
 
-#: default.php:126
+#: football-predictions/lang/default.php:128
 msgid "Pts"
 msgstr ""
 
-#: default.php:127
+#: football-predictions/lang/default.php:129
 msgid "Quick nav"
 msgstr ""
 
-#: default.php:128
+#: football-predictions/lang/default.php:130
 msgid "Rating"
 msgstr ""
 
-#: default.php:129
+#: football-predictions/lang/default.php:131
 msgid "Average rating"
 msgstr ""
 
-#: default.php:130
+#: football-predictions/lang/default.php:132
 msgid "Red cards"
 msgstr ""
 
-#: default.php:131
+#: football-predictions/lang/default.php:133
 msgid "Result"
 msgstr ""
 
-#: default.php:132
+#: football-predictions/lang/default.php:134
 msgid "Results"
 msgstr ""
 
-#: default.php:133
+#: football-predictions/lang/default.php:135
 msgid "ROI"
 msgstr ""
 
-#: default.php:134
+#: football-predictions/lang/default.php:136
 msgid "ROI is losing!"
 msgstr ""
 
-#: default.php:135
+#: football-predictions/lang/default.php:137
 msgid "ROI is neutral!"
 msgstr ""
 
-#: default.php:136
+#: football-predictions/lang/default.php:138
 msgid "ROI wins!"
 msgstr ""
 
-#: default.php:137
+#: football-predictions/lang/default.php:139
 msgid "ROI is excellent!"
 msgstr ""
 
-#: default.php:138
+#: football-predictions/lang/default.php:140
 msgid "Role"
 msgstr ""
 
-#: default.php:139
+#: football-predictions/lang/default.php:141
 msgid "Save"
 msgstr ""
 
-#: default.php:140
+#: football-predictions/lang/default.php:142
 msgid "Saved"
 msgstr ""
 
-#: default.php:141
+#: football-predictions/lang/default.php:143
 msgid "Season"
 msgstr ""
 
-#: default.php:142
+#: football-predictions/lang/default.php:144
 msgid "Select"
 msgstr ""
 
-#: default.php:143
+#: football-predictions/lang/default.php:145
 msgid "Select another season"
 msgstr ""
 
-#: default.php:144
+#: football-predictions/lang/default.php:146
 msgid "Selected"
 msgstr ""
 
-#: default.php:145
+#: football-predictions/lang/default.php:147
 msgid "Select a championship"
 msgstr ""
 
-#: default.php:146
+#: football-predictions/lang/default.php:148
 msgid "Select a matchday"
 msgstr ""
 
-#: default.php:147
+#: football-predictions/lang/default.php:149
 msgid "Select a player"
 msgstr ""
 
-#: default.php:148
+#: football-predictions/lang/default.php:150
 msgid "Select a season"
 msgstr ""
 
-#: default.php:149
+#: football-predictions/lang/default.php:151
 msgid "Select the teams"
 msgstr ""
 
-#: default.php:150
+#: football-predictions/lang/default.php:152
 msgid "Speculative game!"
 msgstr ""
 
-#: default.php:151
+#: football-predictions/lang/default.php:153
 msgid "Too speculative game!"
 msgstr ""
 
-#: default.php:152
+#: football-predictions/lang/default.php:154
 msgid "Statistics"
 msgstr ""
 
-#: default.php:153
+#: football-predictions/lang/default.php:155
 msgid "Standing"
 msgstr ""
 
-#: default.php:154
+#: football-predictions/lang/default.php:156
 msgid "Success"
 msgstr ""
 
-#: default.php:155
+#: football-predictions/lang/default.php:157
 msgid "Success rate"
 msgstr ""
 
-#: default.php:156
+#: football-predictions/lang/default.php:158
 msgid "Switch to semi-automatical"
 msgstr ""
 
-#: default.php:157
+#: football-predictions/lang/default.php:159
 msgid "Switch to manual mode"
 msgstr ""
 
-#: default.php:158
+#: football-predictions/lang/default.php:160
 msgid "Team"
 msgstr ""
 
-#: default.php:159
+#: football-predictions/lang/default.php:161
 msgid "Teams"
 msgstr ""
 
-#: default.php:160
+#: football-predictions/lang/default.php:162
 msgid "Team of the week"
 msgstr ""
 
-#: default.php:161
+#: football-predictions/lang/default.php:163
 msgid "Theme"
 msgstr ""
 
-#: default.php:162
+#: football-predictions/lang/default.php:164
 msgid "FP"
 msgstr ""
 
-#: default.php:163
+#: football-predictions/lang/default.php:165
 msgid "Football predictions"
 msgstr ""
 
-#: default.php:164
+#: football-predictions/lang/default.php:166
 msgid "Website datas"
 msgstr ""
 
-#: default.php:165
+#: football-predictions/lang/default.php:167
 msgid "Yes"
 msgstr ""
 
-#: default.php:167
+#: football-predictions/lang/default.php:169
 msgid "Weather"
 msgstr ""
 
-#: default.php:168
+#: football-predictions/lang/default.php:170
 msgid "Weather code"
 msgstr ""
 
-#: default.php:169
+#: football-predictions/lang/default.php:171
 msgid "W"
+msgstr ""
+
+#: football-predictions/lib/php-gettext-1.0.12/examples/pigs_dropin.php:77
+msgid ""
+"This is how the story goes.\n"
+"\n"
 msgstr ""
