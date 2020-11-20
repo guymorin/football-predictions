@@ -1,8 +1,8 @@
 <?php 
 /**
  * 
- * Class Matchday
- * Manage Matchday page
+ * Class Submenu
+ * Manage Submenu page
  */
 namespace FootballPredictions\Menu;
 use FootballPredictions\Language;
@@ -30,7 +30,6 @@ class Submenu
         }
     }
     
-    
     static function menuAccount($pdo, $form, $current = null){
         $currentClass = " class='current'";
         $classAL = $classMA = '';
@@ -44,6 +43,14 @@ class Submenu
         }
         $val = "<a" . $classMA . " href='index.php?page=account'>" . (Language::title('myAccount')) . "</a>";
         $val.= "<a href='index.php?page=season'>" . (Theme::icon('season')) . " " . (Language::title('season')) . "</a>";
+        return $val;
+    }
+    
+    static function menuAdmin($pdo, $form, $current = null){
+        $val = '';
+        Submenu::exitAccount();
+        $val .= "<a href='index.php?page=admin' class='current'>" . ucfirst(Language::title('administration')) . "</a>";
+        $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>\n";
         return $val;
     }
     
@@ -140,7 +147,7 @@ class Submenu
                     $val .= "</form>\n";
                 }
             }
-            $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . " " . (Language::title('teams')) . "</a>";
+            $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . "&nbsp;" . (Language::title('teams')) . "</a>";
         } else {
             $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
         }
@@ -161,7 +168,7 @@ class Submenu
                 break;
         }
         $response = $pdo->query("SELECT * FROM player ORDER BY name, firstname");
-        $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . " " . (Language::title('teams')) . "</a>";
+        $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . "&nbsp;" . (Language::title('teams')) . "</a>";
         $val .= "<a" . $classBP . " href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a>";
         
         if(($_SESSION['role'])==2){

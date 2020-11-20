@@ -17,7 +17,6 @@ if($manual=='') isset($_GET['manual'])      ? $manual=$error->check("Digit",$_GE
 if($modify==1){
     $rMatch="";
     isset($_POST['id_match'])       ? $idMatch = array_filter($_POST['id_match']) : null;
-    isset($_POST['result'])         ? $rMatch = array_filter($_POST['result']) : null;
     isset($_POST['motivation1'])    ? $moMatch1 = array_filter($_POST['motivation1']) : null;
     isset($_POST['currentForm1'])   ? $seMatch1 = array_filter($_POST['currentForm1']) : null;
     isset($_POST['physicalForm1'])  ? $foMatch1 = array_filter($_POST['physicalForm1']) : null;
@@ -40,9 +39,7 @@ if($modify==1){
         
         foreach($idMatch as $k){
             
-            if($rMatch[$k]!=""){
-                $req.="UPDATE matchgame SET result='".$rMatch[$k]."' WHERE id_matchgame='".$k."';";
-            }
+
             $data = $pdo->prepare("SELECT COUNT(*) as nb FROM criterion 
             WHERE id_matchgame=:id_matchgame;",[
                 'id_matchgame' => $k

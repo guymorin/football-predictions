@@ -17,6 +17,7 @@ $array = array(
     "OK" => "<big>&#x2714;</big>",
     "player" => "&#127939;",
     "quicknav" => "&#128640;",
+    "redcard" => "&#128997;",
     "season" => "&#127937;",
     "team" => "&#127933;",
     "winOK" => "<big style='color:green'>&#x2714;</big>",

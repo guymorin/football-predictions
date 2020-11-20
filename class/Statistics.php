@@ -28,6 +28,8 @@ class Statistics
     private $predictionsHistoryAway;
     private $predictionsHistoryDraw;
     private $predictionsHistoryHome;
+    private $predictionsTrend1;
+    private $predictionsTrend2;
     private $prob1;
     private $probD;
     private $prob2;
@@ -175,6 +177,16 @@ class Statistics
             $this->predictionsHistoryDraw = criterion("predictionsHistoryDraw",$r,$pdo);
             $this->predictionsHistoryAway = criterion("predictionsHistoryAway",$r,$pdo);
             
+            // Trend
+            $this->predictionsTrend1= $this->predictionsTrend2 = 0;
+            if($page == 'matchday' and $_SESSION['matchdayNum']>3) {
+                $trendTeam1 = criterion('trendTeam1', $d, $pdo);
+                $trendTeam2 = criterion('trendTeam2', $d, $pdo);
+                if($trendTeam1>4 and $trendTeam2<2){
+                    $this->predictionsTrend1 = 1;
+                    $this->predictionsTrend2 = -1;
+                }
+            }
             
             // Sum
             $this->win = 0;
@@ -187,7 +199,8 @@ class Statistics
                 +$d->bestPlayers1
                 +$this->mv1
                 +$this->home
-                +$this->predictionsHistoryHome;
+                +$this->predictionsHistoryHome
+                +$this->predictionsTrend1;
             $this->sum2=
                 $d->motivation2
                 +$d->currentForm2
@@ -196,7 +209,8 @@ class Statistics
                 +$d->bestPlayers2
                 +$this->mv2
                 +$this->away
-                +$this->predictionsHistoryAway;
+                +$this->predictionsHistoryAway
+                +$this->predictionsTrend2;
             
             $this->sumD=setSumD($this->sum1, $this->sum2, $this->predictionsHistoryDraw);
             
@@ -269,8 +283,8 @@ class Statistics
                     $this->graph[$d->number] = $this->profitSum;
             } elseif($page == 'matchday') {
                 $val.="  		<tr>\n";
-                $val.="  		  <td>".Theme::icon('team')." ".$d->name1;
-                $val.="<br />".Theme::icon('team')." ".$d->name2."</td>\n";
+                $val.="  		  <td>".Theme::icon('team')."&nbsp;".$d->name1;
+                $val.="<br />".Theme::icon('team')."&nbsp;".$d->name2."</td>\n";
                 $val.="  		  <td><small>".$this->sum1."<br />(".number_format($this->probOdds1,2).")</small></td>\n";
                 $val.="  		  <td><small>".$this->sumD."<br />(".number_format($this->probOddsD,2).")</small></td>\n";
                 $val.="  		  <td><small>".$this->sum2."<br />(".number_format($this->probOdds2,2).")</small></td>\n";

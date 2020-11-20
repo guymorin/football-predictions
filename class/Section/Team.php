@@ -143,7 +143,7 @@ class Team
                 $val .= "  <tr>\n";
                 $val .= "      <td>\n";
                 if(($_SESSION['role'])==2) $val .= $form->inputHidden('id_team[]', $d->id_team);
-                $val .= Theme::icon('team') . " " . $d->name;
+                $val .= Theme::icon('team') . "&nbsp;" . $d->name;
                 $val .= "      </td>\n";
                 $val .= "      <td>\n";
                 if(($_SESSION['role'])==2){ 

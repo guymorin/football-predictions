@@ -8,7 +8,7 @@ use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Team;
 
-echo "<h2>" . Theme::icon('team') . " " . (Language::title('team')) . "</h2>\n";
+echo "<h2>" . Theme::icon('team') . "&nbsp;" . (Language::title('team')) . "</h2>\n";
 
 // Values
 $val=null;

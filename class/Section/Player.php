@@ -247,7 +247,7 @@ class Player
                 $val .= "      <td>";
                 if($counter!=$d->team){
                     $counterPodium = 0;
-                    $val .= Theme::icon('team')." ".$d->team;
+                    $val .= Theme::icon('team')."&nbsp;".$d->team;
                 }
                 
                 $counterPodium++;

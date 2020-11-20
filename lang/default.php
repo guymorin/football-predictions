@@ -161,6 +161,7 @@ $array = array(
     "teams" => _("Teams"),
     "teamOfTheWeek" => _("Team of the week"),
     "theme" => _("Theme"),
+    "trend" => _("Trend"),
     "site" => _("FP"),
     "siteSubTitle" => _("Football predictions"),
     "siteData" => _("Website datas"),

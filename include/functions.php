@@ -1,4 +1,5 @@
 <?php
+// Functions
 use FootballPredictions\Language;
 
 function setProb($prob,$sum1,$sumD,$sum2){
@@ -29,6 +30,7 @@ function setProb($prob,$sum1,$sumD,$sum2){
 }
 
 function setPrediction($sum1,$sumD,$sum2){
+    // Return the final prediction result
     $val='';
     if($sum1>$sum2)      $val = "1";
     elseif($sum1==$sum2) $val = "D";
@@ -38,6 +40,7 @@ function setPrediction($sum1,$sumD,$sum2){
 }
 
 function setSumD($sum1,$sum2,$historyDraw){
+    // Return the draw sum value
     $val = ($sum1+$sum2)/2;
     $val = intval($val);
     $val = $val + $historyDraw;
@@ -261,216 +264,15 @@ function valColor($val){
     }
     return $color;
 }
-function criterion($type,$data,$pdo){
-    $v=0;
-    switch($type){
-        case "motivC1":
-            if($data->motivation1!="") $v=$data->motivation1;
-            else $v=1; // Avantage à domicile
-            break;
-        case "motivC2":
-            if($data->motivation2!="") $v=$data->motivation2;
-            break;
-        case "serieC1":
-            if($data->currentForm1!="") $v=$data->currentForm1;
-            elseif(($_SESSION['matchdayNum']-1)>0){
-                $num = ($_SESSION['matchdayNum']-1);
-                $req="
-                    SELECT m.team_1 as team FROM matchgame m
-                    LEFT JOIN season_championship_team s ON s.id_team=m.team_1
-                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number = :number
-                    AND m.team_1 = :team_1
-                    AND m.result = '1'
-                    AND j.id_championship = :id_championship 
-                    AND j.id_season = :id_season 
-                    UNION
-                    SELECT m.team_2 as team FROM matchgame m
-                    LEFT JOIN season_championship_team s ON s.id_team=m.team_2
-                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number = :number
-                    AND m.team_2 = :team_1
-                    AND m.result = '2'
-                    AND j.id_championship = :id_championship
-                    AND j.id_season = :id_season;";
-                $r = $pdo->prepare($req,[
-                    'number' => $num,
-                    'team_1' => $data->eq1,
-                    'id_championship' => $_SESSION['championshipId'],
-                    'id_season' => $_SESSION['seasonId']
-                ]);
-                
-                if($r == null) $v=0;
-                else {
-                    $res = array();
-                    foreach($r as $valTeam){
-                        $res[] = $valTeam;
-                    }
-                    if(in_array($data->eq1,$res)) $v=1;
-                }
-            }
-            break;
-        case "serieC2":
-            if($data->currentForm2!="") $v=$data->currentForm2;
-            elseif(($_SESSION['matchdayNum']-1)>0){
-                $num = ($_SESSION['matchdayNum']-1);
-                // Did the team win in the last matchday ?
-                $req="
-                    SELECT m.team_1 as team FROM matchgame m
-                    LEFT JOIN season_championship_team s ON s.id_team=m.team_1
-                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number = :number
-                    AND m.team_1 = :team_2
-                    AND m.result='1'
-                    AND j.id_championship = :id_championship
-                    AND j.id_season = :id_season
-                    UNION
-                    SELECT m.team_2 as team FROM matchgame m
-                    LEFT JOIN season_championship_team s ON s.id_team=m.team_2
-                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number = :number
-                    AND m.team_2 = :team_2
-                    AND m.result = '2'
-                    AND j.id_championship = :id_championship
-                    AND j.id_season = :id_season;";
-                $r = $pdo->prepare($req,[
-                    'number' => $num,
-                    'team_2' => $data->eq2,
-                    'id_championship' => $_SESSION['championshipId'],
-                    'id_season' => $_SESSION['seasonId']
-                ]);
-                
-                if($r == null) $v=0;
-                else {
-                    $res = array();
-                    foreach($r as $valTeam){
-                        $res[] = $valTeam;
-                    }
-                    if(in_array($data->eq2,$res)) $v=1;
-                }
-            }
-            break;
-        case "physicalC1":
-            if($data->physicalForm1!="") $v=$data->physicalForm1;
-            elseif(($_SESSION['matchdayNum']-1)>0){
-                $num = ($_SESSION['matchdayNum']-1);
-                $req="
-                    SELECT m.team_1 as team FROM matchgame m
-                    LEFT JOIN season_championship_team s ON s.id_team=m.team_1
-                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number = :number
-                    AND m.team_1 = :team_1
-                    AND m.red1 > '0'
-                    AND s.id_championship = :id_championship
-                    AND s.id_season = :id_season
-                    UNION
-                    SELECT m.team_2 as team FROM matchgame m
-                    LEFT JOIN season_championship_team s ON s.id_team=m.team_2
-                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number = :number
-                    AND m.team_2 = :team_1
-                    AND m.red2 > '0'
-                    AND s.id_championship = :id_championship
-                    AND s.id_season = :id_season;";
-                $r = $pdo->prepare($req,[
-                    'number' => $num,
-                    'team_1' => $data->eq1,
-                    'id_championship' => $_SESSION['championshipId'],
-                    'id_season' => $_SESSION['seasonId']
-                ]);
-                
-                if($r == null) $v=0;
-                else {
-                    $res = array();
-                    foreach($r as $valTeam){
-                        $res[] = $valTeam;
-                    }
-                    if(in_array($data->eq1,$res)) $v='-1';
-                }
-            }
-            break;
-        case "physicalC2":
-            if($data->physicalForm2!="") $v=$data->physicalForm2;
-            elseif(($_SESSION['matchdayNum']-1)>0){
-                $num = ($_SESSION['matchdayNum']-1);
-                // Did the team have a red card in the last matchday ?
-                $req="
-                    SELECT m.team_1 as team FROM matchgame m
-                    LEFT JOIN season_championship_team s ON s.id_team=m.team_1
-                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number = :number
-                    AND m.team_1 = :team_2
-                    AND m.red1>'0'
-                    AND s.id_championship = :id_championship
-                    AND s.id_season = :id_season
-                    UNION
-                    SELECT m.team_2 as team FROM matchgame m
-                    LEFT JOIN season_championship_team s ON s.id_team=m.team_2
-                    LEFT JOIN matchday j ON j.id_matchday=m.id_matchday
-                    WHERE j.number = :number
-                    AND m.team_2 = :team_2
-                    AND m.red2 > '0'
-                    AND s.id_championship = :id_championship
-                    AND s.id_season = :id_season;";
-                $r = $pdo->prepare($req,[
-                    'number' => $num,
-                    'team_2' => $data->eq2,
-                    'id_championship' => $_SESSION['championshipId'],
-                    'id_season' => $_SESSION['seasonId']
-                ]);
-                
-                if($r == null) $v=0;
-                else {
-                    $res = array();
-                    foreach($r as $valTeam){
-                        $res[] = $valTeam;
-                    }
-                    if(in_array($data->eq2,$res)) $v='-1';
-                }
-            }
-            break;
-        case "v1":
-            $req="SELECT marketValue FROM marketValue 
-            WHERE id_team=:id_team  
-            AND id_season=:id_season;";
-            $r = $pdo->prepare($req,[
-                'id_team' => $data->eq1,
-                'id_season' => $_SESSION['seasonId']
-            ]);
-            $v = $r->marketValue;
-            break;
-        case "v2":
-            $req="SELECT marketValue FROM marketValue 
-            WHERE id_team=:id_team  
-            AND id_season=:id_season;";
-            $r = $pdo->prepare($req,[
-                'id_team' => $data->eq2,
-                'id_season' => $_SESSION['seasonId']
-            ]);
-            $v = $r->marketValue;
-            break;
-        case "predictionsHistoryHome":
-            if(isset($data->Home)) $v=$data->Home;
-            break;
-        case "predictionsHistoryDraw":
-            if(isset($data->Draw)) $v=$data->Draw;
-            break;
-        case "predictionsHistoryAway":
-        if(isset($data->Away)) $v=$data->Away;
-            break;
-    }
-    return $v;
-}
 
 function popup($text,$link){
+    // Display a popup with a text and add a link for the Ok button.
     echo "<div id='overlay'><div class='update'><p class='close'><a href='".$link."'>&times;</a></p><p>".$text."</p><p><a href='".$link."' id='ok'>Ok</a></p></div></div>\n";    
     echo "<script>document.getElementById('ok').focus();</script>";
 }
 
 function changeMD($pdo,$page){
-    
-
-    // Arrows to change matchday
+    // Display arrows to change matchday
     echo "<div id='changeMD'>\n";
     $req = "SELECT id_matchday, number FROM matchday
         WHERE number >= :match1
@@ -519,6 +321,8 @@ function changeMD($pdo,$page){
     echo "</div>\n";
     
 }
+
+// Other functions
 if (!function_exists('array_key_first')){
     function array_key_first(array $arr){
         foreach($arr as $key => $unused){

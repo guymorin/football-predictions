@@ -305,11 +305,11 @@ class Championship
                 $val .= "</td>\n";
                 $val .= "          <td>";
                 $icon = '';
-                $teamIcon = Theme::icon('team')." ";
-                if($counterPos==1)$icon = Theme::icon('medalGold') . ' ';
-                elseif($counterPos==2) $icon = Theme::icon('medalSilver') . ' ';
-                elseif($counterPos==3) $icon = Theme::icon('medalBronze') . ' ';
-                if($icon != '') $val .= $icon . " ".$teamIcon." <strong>" .$d->name."</strong>";
+                $teamIcon = Theme::icon('team')."&nbsp;";
+                if($counterPos==1) $icon = Theme::icon('medalGold') . "&nbsp;";
+                elseif($counterPos==2) $icon = Theme::icon('medalSilver') . "&nbsp;";
+                elseif($counterPos==3) $icon = Theme::icon('medalBronze') . "&nbsp;";
+                if($icon != '') $val .= $icon . $teamIcon."<strong>" .$d->name."</strong>";
                 else $val .= $teamIcon.$d->name;
                 $val .= "</td>\n";
                 $val .= "          <td>".$d->points."</td>\n";

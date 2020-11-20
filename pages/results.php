@@ -118,7 +118,8 @@ else {
         echo "      <th>1</th>\n";
         echo "      <th>" . (Language::title('draw')) . "</th>\n";
         echo "      <th>2</th>\n";
-        echo "      <th colspan='2'>" . (Language::title('redCards')) . "</th>\n";
+        echo "      <th colspan='2'>" . Theme::icon('redcard'). " "
+                . (Language::title('redCards')) . "</th>\n";
         echo "  </tr>\n";
         
         foreach ($data as $d)
@@ -134,8 +135,8 @@ else {
             else  echo $form->inputRadio("", "result[$id]", "", false);
             echo "</td>\n";
             
-            echo "  	<td>" . Theme::icon('team') . " " . $d->name1 . "<br />";
-            echo Theme::icon('team') . " " . $d->name2."</td>\n";
+            echo "  	<td>" . Theme::icon('team') . "&nbsp;" . $d->name1 . "<br />";
+            echo Theme::icon('team') . "&nbsp;" . $d->name2."</td>\n";
             
             echo "  	<td>";
             if($d->result=="1") echo $form->inputRadio("1", "result[$id]", "1", true);

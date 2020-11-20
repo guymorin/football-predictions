@@ -34,6 +34,17 @@ if($counter > 0){
         $historyDraw=criterion("predictionsHistoryDraw",$r,$pdo);
         $historyAway=criterion("predictionsHistoryAway",$r,$pdo);
 
+        // Trend
+        $trend1= $trend2 = 0;
+        if($_SESSION['matchdayNum']>3) {
+            $trendTeam1 = criterion('trendTeam1', $d, $pdo);
+            $trendTeam2 = criterion('trendTeam2', $d, $pdo);
+            if($trendTeam1>4 and $trendTeam2<2){
+                $trend1 = 1;
+                $trend2 = -1;
+            }
+        }
+        
         $win="";
         $id=$d->id_matchgame;
         $sum1=
@@ -44,7 +55,8 @@ if($counter > 0){
             +$d->bestPlayers1
             +$d->marketValue1
             +$d->home_away1
-            +$historyHome;
+            +$historyHome
+            +$trend1;
         $sum2=
             $d->motivation2
             +$d->currentForm2
@@ -53,7 +65,8 @@ if($counter > 0){
             +$d->bestPlayers2
             +$d->marketValue2
             +$d->home_away2
-            +$historyAway;
+            +$historyAway
+            +$trend2;
         $sumD=setSumD($sum1, $sum2, $historyDraw);
         
         $prediction = setPrediction($sum1, $sumD, $sum2);
@@ -63,8 +76,8 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <th>".Theme::icon('matchday')." ".Language::title('MD').$_SESSION['matchdayNum'];
         echo ", ".$d->date."<br />";
-        echo Theme::icon('team')." ".$d->name1."<br />";
-        echo Theme::icon('team')." ".$d->name2;
+        echo Theme::icon('team')."&nbsp;".$d->name1."<br />";
+        echo Theme::icon('team')."&nbsp;".$d->name2;
         echo "</th>\n";
         echo "            <th>1</th>\n";
         echo "            <th>";
@@ -131,6 +144,12 @@ if($counter > 0){
         echo "            <td>$historyAway</td>\n";
         echo "          </tr>\n";
         
+        echo "          <tr>\n";
+        echo "            <td>" . (Language::title('trend')) . "</td>\n";
+        echo "            <td>$trend1</td>\n";
+        echo "            <td>0</td>\n";
+        echo "            <td>$trend2</td>\n";
+        echo "          </tr>\n";
         
         echo "  		<tr>\n";
         echo "  		  <td><strong>" . (Language::title('criterionSum')) . "</strong></td>";

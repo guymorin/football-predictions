@@ -18,6 +18,7 @@ if(empty($_SESSION['language'])) Language::getBrowserLang();
 
 // File to include
 require 'include/changeMD.php';
+require 'include/criterion.php';
 require 'include/functions.php';
 
 $pdo = App::getDb();

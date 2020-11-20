@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: FP\n"
-"POT-Creation-Date: 2020-11-16 10:41+0100\n"
-"PO-Revision-Date: 2020-11-16 10:41+0100\n"
+"POT-Creation-Date: 2020-11-20 13:09+0100\n"
+"PO-Revision-Date: 2020-11-20 13:10+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -644,30 +644,34 @@ msgid "Theme"
 msgstr "Thème"
 
 #: default.php:164
+msgid "Trend"
+msgstr "Tendance"
+
+#: default.php:165
 msgid "FP"
 msgstr "PDF"
 
-#: default.php:165
+#: default.php:166
 msgid "Football predictions"
 msgstr "Pronostics de football"
 
-#: default.php:166
+#: default.php:167
 msgid "Website datas"
 msgstr "Données du site web"
 
-#: default.php:167
+#: default.php:168
 msgid "Yes"
 msgstr "Oui"
 
-#: default.php:169
+#: default.php:170
 msgid "Weather"
 msgstr "Météo"
 
-#: default.php:170
+#: default.php:171
 msgid "Weather code"
 msgstr "Code météo"
 
-#: default.php:171
+#: default.php:172
 msgid "W"
 msgstr "G"
 
