@@ -248,9 +248,11 @@ class Statistics
                 $this->win = Theme::icon('winKO');
             } else $this->win = "?";
             
-            $this->totalPlayed += $this->playedOdds;
             $this->matchs++;
-            if($d->result!="") $this->bet++;
+            if($d->result!=""){
+                $this->bet++;
+                $this->totalPlayed += $this->playedOdds;
+            }
             
             $this->profit = $this->earning - $this->bet;
                         
@@ -297,20 +299,22 @@ class Statistics
                 else $val.=$d->result;
                 $val.="</strong></td>\n";
                 
-                $valueBet = '<br />'.Theme::icon('moneyEuro');
+                $betValue = "<br /><a href='#' class='tooltip'><big>".Theme::icon('moneyEuro')."</big>";
+                $betValue.= "<span>".Language::title('betValueText')."</span></a>";
+                
                 switch($this->prediction){
                     case '1':
-                        if($this->probOdds1 > $this->playedOdds) $valueBet='';
+                        if($this->probOdds1 > $this->playedOdds) $betValue='';
                         break;
                     case 'D':
-                        if($this->probOddsD > $this->playedOdds) $valueBet='';
+                        if($this->probOddsD > $this->playedOdds) $betValue='';
                         break;
                     case '2':
-                        if($this->probOdds2 > $this->playedOdds) $valueBet='';
+                        if($this->probOdds2 > $this->playedOdds) $betValue='';
                         break;
                 }
                 
-                $val.="  		  <td>".number_format($this->playedOdds,2).$valueBet."</td>\n";
+                $val.="  		  <td>".number_format($this->playedOdds,2).$betValue."</td>\n";
                 $val.="  		  <td>".$this->win."</td>\n";
                 $val.="       </tr>\n";
             }

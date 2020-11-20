@@ -4,6 +4,7 @@ $array = array(
     "admin" => "&#128295;",
     "championship" => "&#127942;",
     "create" => "&#x270F;&#xFE0F;",
+    "currentForm" => "&#128677;",
     "delete" => "&#128465;",
     "exit" => "&#128682;",
     "homepage" => "&#127968;",
@@ -16,10 +17,12 @@ $array = array(
     "moneyEuro" => "&#x1F4B6;",
     "OK" => "<big>&#x2714;</big>",
     "player" => "&#127939;",
+    "predictionsHistory" => "&#128218;",
     "quicknav" => "&#128640;",
     "redcard" => "&#128997;",
     "season" => "&#127937;",
     "team" => "&#127933;",
+    "trend" => "&#128200;",
     "winOK" => "<big style='color:green'>&#x2714;</big>",
     "winKO" => "<small style='color:gray'>&times;</small>"
 )

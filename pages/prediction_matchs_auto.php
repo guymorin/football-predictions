@@ -55,8 +55,8 @@ if($counter > 0){
             $motivC2=criterion("motivC2",$d,$pdo);
             
             // Current form
-            $serieC1=criterion("serieC1",$d,$pdo);
-            $serieC2=criterion("serieC2",$d,$pdo);
+            $currentFormTeam1=criterion("serieC1",$d,$pdo);
+            $currentFormTeam2=criterion("serieC2",$d,$pdo);
 
             // Physical form
             $physicalC1=criterion("physicalC1",$d,$pdo);
@@ -87,13 +87,13 @@ if($counter > 0){
             if(is_array($extMalus)){
                 if(in_array($d->eq2,$extMalus)) $ext=(-1);
             }
+            
             // Weather
+            $cloud = $cloudText = "";
             if($d->date!=""){
-                
                 $date1 = new DateTime($d->date);
                 $date2 = new DateTime(date('Y-m-d'));
                 $diff = $date2->diff($date1)->format("%a");
-                $cloud="";
                 
                 if($diff>=0 && $diff<14){
                     $api="https://api.meteo-concept.com/api/forecast/daily/".$diff."?token=1aca29e38eb644104b41975b55a6842fc4fb2bfd2f79f85682baecb1c5291a3e&insee=".$d->weather_code;
@@ -109,14 +109,20 @@ if($counter > 0){
                     switch($rain){
                         case ($rain==0):
                             $cloud="&#x1F323;";// Sun
-                        case ($rain>=0&&$rain<1):
+                            $cloudText=Language::title('weatherSun');
+                            break;
+                        case ($rain>=0 && $rain<1):
                             $cloud="&#x1F324;";// Low rain
+                            $cloudText=Language::title('weatherLowRain');
                             $weather=1;
+                            // if market value of team 2 is higher then 1 point for team 2
                             if(round($v2/10)>round($v1/10)) $team2Weather=$weather;
+                            // else if market value is equal then 1 point for both team
                             elseif(round($v2/10)==round($v1/10)){
                                 $team1Weather=$weather;
                                 $team2Weather=$weather;
                             }
+                            // else it means market value of team 1 is higher then 1 point for team 1
                             else {
                                 $team1Weather=$weather;
                                 $team2Weather=0;
@@ -124,12 +130,16 @@ if($counter > 0){
                             break;
                         case ($rain>=1&&$rain<3):
                             $cloud="&#x1F326;";// Middle rain
-                            $weather=1;
+                            $cloudText=Language::title('weatherMiddleRain');
+                            $weather=2;
+                            // if market value of team 2 is higher then 2 points for team 2
                             if(round($v2/10)>round($v1/10)) $team1Weather=$weather;
+                            // else if market value is equal then 2 points for both team
                             elseif(round($v2/10)==round($v1/10)){
                                 $team1Weather=$weather;
                                 $team2Weather=$weather;
                             }
+                            // else it means market value of team 1 is higher then 2 points for team 1
                             else {
                                 $team1Weather=0;
                                 $team2Weather=$weather;
@@ -137,30 +147,24 @@ if($counter > 0){
                             break;
                         case ($rain>=3):
                             $cloud="&#x1F327;";//High rain
-                            $weather=2;
+                            $cloudText=Language::title('weatherHighRain');
+                            $weather=3;
+                            // if market value of team 2 is higher then 3 points for team 2
                             if(round($v2/10)>round($v1/10)) $team1Weather=$weather;
+                            // else if market value is equal then 3 points for both team
                             elseif(round($v2/10)==round($v1/10)){
                                 $team1Weather=$weather;
                                 $team2Weather=$weather;
                             }
+                            // else it means market value of team 1 is higher then 3 points for team 1
                             else {
                                 $team1Weather=0;
                                 $team2Weather=$weather;
                             }
                             break;
                     }
-                    
-                }
-            }
-            
-            // Trend
-            $trend1= $trend2 = 0;
-            if($_SESSION['matchdayNum']>3) {
-                $trendTeam1 = criterion('trendTeam1', $d, $pdo);
-                $trendTeam2 = criterion('trendTeam2', $d, $pdo);
-                if($trendTeam1>4 and $trendTeam2<2){
-                    $trend1 = 1;
-                    $trend2 = -1;
+                    $team1Weather=intval($team1Weather);
+                    $team2Weather=intval($team2Weather);                    
                 }
             }
             
@@ -169,16 +173,28 @@ if($counter > 0){
         } else {
             $motivC1 = $d->motivation1;
             $motivC2 = $d->motivation2;
-            $serieC1 = $d->currentForm1;
-            $serieC2 = $d->currentForm2;
+            $currentFormTeam1 = $d->currentForm1;
+            $currentFormTeam2 = $d->currentForm2;
             $physicalC1 = $d->physicalForm1;
             $physicalC2 = $d->physicalForm1;
+            $cloud = $cloudText = "";
             $team1Weather = $d->weather1;
             $team2Weather = $d->weather2;
             $mv1 = $d->marketValue1;
             $mv2 = $d->marketValue2;
             $dom = $d->home_away1;
             $ext = $d->home_away2;
+        }
+        
+        // Trend
+        $trend1= $trend2 = 0;
+        if($_SESSION['matchdayNum']>3) {
+            $trendTeam1 = criterion('trendTeam1', $d, $pdo);
+            $trendTeam2 = criterion('trendTeam2', $d, $pdo);
+            if($trendTeam1>4 and $trendTeam2<2){
+                $trend1 = 1;
+                $trend2 = -1;
+            }
         }
         
         // Predictions history
@@ -194,9 +210,9 @@ if($counter > 0){
         
         $sum1 = 
             $motivC1
-            +$serieC1
+            +$currentFormTeam1
             +$physicalC1
-            +intval($team1Weather)
+            +$team1Weather
             +$d->bestPlayers1
             +$mv1
             +$dom
@@ -204,9 +220,9 @@ if($counter > 0){
             +$trend1;
         $sum2 = 
             $motivC2
-            +$serieC2
+            +$currentFormTeam2
             +$physicalC2
-            +intval($team2Weather)
+            +$team2Weather
             +$d->bestPlayers2
             +$mv2
             +$ext
@@ -243,15 +259,19 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('currentForm')) . "</td>";
-        if($d->result!="") echo "<td>".$serieC1."</td>\n";
-        else echo "  		  <td><input size='1' type='text' name='currentForm1[$id]' readonly value='".$serieC1."'></td>\n";
+        echo "  		  <td>";
+        echo "<a href='#' class='tooltip'><big>".Theme::icon('currentForm')."</big>";
+        echo "<span>".Language::title('currentFormText')."</span></a>";
+        echo " " . Language::title('currentForm');
+        echo "</td>";
+        if($d->result!="") echo "<td>".$currentFormTeam1."</td>\n";
+        else echo "  		  <td><input size='1' type='text' name='currentForm1[$id]' readonly value='".$currentFormTeam1."'></td>\n";
         echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$serieC2."</td>\n";
-        else echo "  		  <td><input size='1' type='text' name='currentForm2[$id]' readonly value='".$serieC2."'></td>\n";
+        if($d->result!="") echo "<td>".$currentFormTeam2."</td>\n";
+        else echo "  		  <td><input size='1' type='text' name='currentForm2[$id]' readonly value='".$currentFormTeam2."'></td>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('physicalForm')) . "</td>\n";
+        echo "  		  <td>" . Language::title('physicalForm') . "</td>\n";
         if($d->result!="") echo "<td>".$physicalC1."</td>\n";
         else echo "  		  <td><input size='1' type='number' name='physicalForm1[$id]' value='".$physicalC1."' placeholder='0'></td>\n";
         echo "  		  <td></td>\n";
@@ -261,7 +281,12 @@ if($counter > 0){
         
         
         echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('weather')) . " <big>".$cloud."</big></td>\n";
+        echo "  		  <td>";
+        if($d->result==""){
+            echo "<a href='#' class='tooltip'><big>".$cloud."</big><span>".$cloudText."</span></a> ";
+        }
+        echo Language::title('weather');
+        echo "</td>\n";        
         if($d->result!="") echo "<td>".$team1Weather."</td>\n";
         else {
             echo "  		  <td><input size='1' type='text' readonly name='weather1[$id]' value='".$team1Weather."'></td>\n";
@@ -285,7 +310,11 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('marketValue')) . "</td>\n";
+        echo "  		  <td>";
+        echo "<a href='#' class='tooltip'><big>".Theme::icon('team')."</big>";
+        echo "<span>".Language::title('marketValueText')."</span></a>";
+        echo " " . Language::title('marketValue');
+        echo "</td>";
         if($d->result!="") echo "<td>".$mv1."</td>\n";
         else echo "  		  <td><input size='1' type='text' readonly name='marketValue1[$id]' value='".$mv1."'></td>\n";
         echo "  		  <td></td>\n";
@@ -294,7 +323,11 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('home')) . " / " . (Language::title('away')) . "</td>";
+        echo "  		  <td>";
+        echo "<a href='#' class='tooltip'><big>".Theme::icon('championship')."</big>";
+        echo "<span>".Language::title('homeAwayText')."</span></a>";
+        echo " " . Language::title('home') . " / " . Language::title('away');
+        echo "</td>";
         if($d->result!="") echo "<td>".$dom."</td>\n";
         else echo "  		  <td><input size='1' type='text' readonly name='home_away1[$id]' value='".$dom."'></td>\n";
         echo "  		  <td></td>\n";
@@ -303,14 +336,22 @@ if($counter > 0){
         echo "          </tr>\n";
         
         echo "          <tr>\n";
-        echo "            <td>" . (Language::title('predictionsHistory')) . "</td>\n";
+        echo "  		  <td>";
+        echo "<a href='#' class='tooltip'><big>".Theme::icon('predictionsHistory')."</big>";
+        echo "<span>".Language::title('predictionsHistoryText')."</span></a>";
+        echo " " . Language::title('predictionsHistory');
+        echo "</td>";
         echo "            <td>$historyHome</td>\n";
         echo "            <td>$historyDraw</td>\n";
         echo "            <td>$historyAway</td>\n";
         echo "          </tr>\n";
 
         echo "          <tr>\n";
-        echo "            <td>" . (Language::title('trend')) . "</td>\n";
+        echo "  		  <td>";
+        echo "<a href='#' class='tooltip'><big>".Theme::icon('trend')."</big>";
+        echo "<span>".Language::title('trendText')."</span></a>";
+        echo " " . Language::title('trend');
+        echo "</td>";
         echo "            <td>$trend1</td>\n";
         echo "            <td>0</td>\n";
         echo "            <td>$trend2</td>\n";
