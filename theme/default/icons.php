@@ -7,6 +7,7 @@ $array = array(
     "currentForm" => "&#128677;",
     "delete" => "&#128465;",
     "exit" => "&#128682;",
+    "floppyDisk" => "&#128190;",
     "homepage" => "&#127968;",
     "KO" => "<small style='color:gray'>&times;</small>",
     "matchday" => "&#x1f4c6;",

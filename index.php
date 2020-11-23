@@ -21,47 +21,52 @@ require 'include/changeMD.php';
 require 'include/criterion.php';
 require 'include/functions.php';
 
+// PHP classes
 $pdo = App::getDb();
 $error = new Errors();
 $form = new Forms($_POST);
+
+// Page to display
 $page = '';
 if($pdo==false) {
     $page = 'install';
 }
-if(isset($_GET['page'])) $page=$error->check("Alnum",$_GET['page']);
+if(isset($_GET['page'])){
+    $page=$error->check("Alnum",$_GET['page']);
+}
 
-// Popup if needed
-    // Season selected
-    if(isset($_POST['seasonSelect'])){
-        $v=explode(",",$_POST['seasonSelect']);
-        $_SESSION['seasonId'] = $error->check("Digit",$v[0]);
-        $_SESSION['seasonName'] = $error->check("Alnum",$v[1]);
-        $req = "UPDATE fp_user SET last_season = '" . $_SESSION['seasonId'] . "' 
-        WHERE id_fp_user = '" . $_SESSION['userId'] . "';";
-        $pdo->exec($req);
-        header('Location:index.php');
-    }
-    // Championship selected
-    if(isset($_POST['championshipSelect'])){
-        $v=explode(",",$_POST['championshipSelect']);
-        $_SESSION['championshipId'] = $error->check("Digit",$v[0]);
-        $_SESSION['championshipName'] = $error->check("Alnum",$v[1]);
-        unset($_SESSION['matchdayId']);
-        unset($_SESSION['matchdayNum']);
-        $req = "UPDATE fp_user SET last_championship = '" . $_SESSION['championshipId'] . "'
-        WHERE id_fp_user = '" . $_SESSION['userId'] . "';";
-        $pdo->exec($req);
-        header('Location:index.php?page=dashboard');
-    }
-    // Matchday selected
-    if(isset($_POST['matchdaySelect'])&&(!isset($_SESSION['matchdayId']))){
-        $v=explode(",",$_POST['matchdaySelect']);
-        $_SESSION['matchdayId'] = $error->check("Digit",$v[0]);
-        $_SESSION['matchdayNum'] = $error->check("Digit",$v[1]);
-        $url = '';
-        if($page!='') $url='?page=' . $page;
-        header('Location:index.php' . $url);
-    }
+// If Season selected then set SESSION values and go to index
+if(isset($_POST['seasonSelect'])){
+    $v=explode(",",$_POST['seasonSelect']);
+    $_SESSION['seasonId'] = $error->check("Digit",$v[0]);
+    $_SESSION['seasonName'] = $error->check("Alnum",$v[1]);
+    $req = "UPDATE fp_user SET last_season = '" . $_SESSION['seasonId'] . "' 
+    WHERE id_fp_user = '" . $_SESSION['userId'] . "';";
+    $pdo->exec($req);
+    header('Location:index.php');
+}
+// If Championship selected then set SESSION values and go to dashboard page
+if(isset($_POST['championshipSelect'])){
+    $v=explode(",",$_POST['championshipSelect']);
+    $_SESSION['championshipId'] = $error->check("Digit",$v[0]);
+    $_SESSION['championshipName'] = $error->check("Alnum",$v[1]);
+    unset($_SESSION['matchdayId']);
+    unset($_SESSION['matchdayNum']);
+    $req = "UPDATE fp_user SET last_championship = '" . $_SESSION['championshipId'] . "'
+    WHERE id_fp_user = '" . $_SESSION['userId'] . "';";
+    $pdo->exec($req);
+    header('Location:index.php?page=dashboard');
+}
+// Matchday selected then set SESSION values and go to selected page
+if(isset($_POST['matchdaySelect'])&&(!isset($_SESSION['matchdayId']))){
+    $v=explode(",",$_POST['matchdaySelect']);
+    $_SESSION['matchdayId'] = $error->check("Digit",$v[0]);
+    $_SESSION['matchdayNum'] = $error->check("Digit",$v[1]);
+    $url = '';
+    if($page!='') $url='?page=' . $page;
+    header('Location:index.php' . $url);
+}
+    
 // Check the page value
 $create = $modify = $add = $delete = $exit = $logon = $modifyuser = 0;
 isset($_GET['create'])          ? $create = $error->check("Action",$_GET['create']) : null;
@@ -80,10 +85,9 @@ if($exit==1){
     header('Location:index.php');
 }
 
-// Choose a season, a championship...
+// If no install and no login then page is account
 if($page!='install'){
     if(empty($_SESSION['userLogin'])) $page="account";
-
 }
 
 /* Header */
