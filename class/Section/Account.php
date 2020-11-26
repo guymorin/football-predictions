@@ -14,6 +14,37 @@ class Account
 
     }
     
+    static function title(){
+        $val = "<h2>";
+        $val .= Theme::icon('account') . " " . Language::title('account');
+        $val .= "</h2>\n";
+        return $val;
+    }
+    
+    static function titleInstall(){
+        $val = "<h2>";
+        if(isset($_SESSION['install']) and $_SESSION['install'] == 'true')  $val .= Language::title('install');
+        else                                $val .= Language::title('homepage');
+        $val .= "</h2>\n";
+        $val .= "<h3>";
+        if(isset($_SESSION['install']) and $_SESSION['install'] == 'true')  $val .= Language::title('createAnAdmin');
+        else                                $val .= Language::title('createAnAccount');
+        $val .= "</h3>\n";
+        return $val;
+    }
+    
+    static function titleModify($pdo, $error, $form, $userId){
+        $val = '';
+        if($userId == $_SESSION['userId']){
+            $val .= "<h3>" . Language::title('myAccount') . "</h3>\n";
+            $val .= Account::modifyForm($pdo, $error, $form, $userId);
+        } else {
+            $val .= "<h3>" . Language::title('modifyAnAccount') . "</h3>\n";
+            $val .= Account::modifyUserForm($pdo, $error, $form, $userId);
+        }
+        return $val;
+    }
+    
     static function logonForm($pdo, $error, $form){
         //
         $val = '';
@@ -27,11 +58,12 @@ class Account
         $val .= "<br />\n";
         $val .= $form->inputPassword(Language::title('password'), 'password');
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('logon'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('enter')." "
+                .Language::title('logon'));
         $val .= "</form>\n";
-        $val .= "<br />\n";
         $val .= "<a href='index.php?page=account&create=1'>" . (Language::title('createAnAccount')) . "</a>\n";
+        $val .= "</fieldset>\n";
         return $val;
     }
 
@@ -93,12 +125,12 @@ class Account
         $val .= "<br />\n";
         $val .= $form->inputPassword(Language::title('passwordConfirm'), 'password2');
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        
-        $val .= $form->submit(Language::title('create'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('create')." "
+                .Language::title('create'));
         $val .= "</form>\n";
-        $val .= "<br />\n";
         if(empty($_SESSION['install']) || $_SESSION['install']!='true') $val .= "<a href='index.php?page=account'>" . (Language::title('logon')) . "</a>\n";
+        $val .= "</fieldset>\n";
         return $val;
     }
     
@@ -106,7 +138,7 @@ class Account
         $userPassword = password_hash($userPassword, PASSWORD_DEFAULT);
         $pdo->alterAuto('fp_user');
         $role = 1;
-        if($_SESSION['install'] == 'true') $role = 2;
+        if(isset($_SESSION['install']) and $_SESSION['install'] == 'true') $role = 2;
         $req="INSERT INTO fp_user
         VALUES(NULL,:name,:password,'" . date('Y-m-d') . "',
         '" . $_SESSION['language'] . "',
@@ -153,11 +185,12 @@ class Account
         $dataTheme = $pdo->query($req);
         $val .= $form->select('theme', $dataTheme, $_SESSION['themeId'], false);
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('modify'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('modify')." "
+                .Language::title('modify'));
         $val .= "</form>\n";
-        $val .= "<br />\n";
         $val .= $form->deleteForm('account', 'id_fp_user', $userId);     
+        $val .= "</fieldset>\n";
         
         return $val;
     }
@@ -183,11 +216,11 @@ class Account
             $dataRole = $pdo->query($req);
             $val .= $form->select('role', $dataRole, $data->role);
             $val .= "</fieldset>\n";
-            $val .= "<br />\n";
+            $val .= "<fieldset>\n";
             $val .= $form->submit(Language::title('modify'));
             $val .= "</form>\n";
-            $val .= "<br />\n";
             $val .= $form->deleteForm('account', 'id_fp_user', $userId);
+            $val .= "<fieldset>\n";
         }
         return $val;
     }

@@ -9,9 +9,11 @@ use FootballPredictions\Forms;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Matchday;
+use FootballPredictions\Section\Matchgame;
 
-
-echo "<h2>" . (Theme::icon('matchday')) . " " . (Language::title('matchday')) . " ".$_SESSION['matchdayNum']."</h2>\n";
+echo "<h2>" . (Theme::icon('matchday')) . " "
+        . (Language::title('matchday')) . " "
+        .$_SESSION['matchdayNum']."</h2>\n";
 
 // Values
 $date = "";
@@ -26,23 +28,21 @@ isset($_POST['oddsD'])          ? $oddsD=$error->check("Num",$_POST['oddsD'], La
 isset($_POST['odds2'])          ? $odds2=$error->check("Num",$_POST['odds2'], Language::title('odds').' 2') : null;
 isset($_POST['date'])           ? $date=$error->check("Date",$_POST['date'], Language::title('date')) : null;
 
-
 // Create
 if($create==1){
     echo "<h3>" . (Language::title('createAMatch')) . "</h3>\n";
-
-    if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchday::createPopupMatch($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date);
-    else echo Matchday::createMatchForm($pdo, $error, $form);
+    if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchgame::createPopup($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date);
+    else                                         echo Matchgame::createForm($pdo, $error, $form);
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyAMatch')) . "</h3>\n";
-    echo Matchday::modifyMatchForm($pdo, $error, $form, $idMatch);
-    if($delete==1) echo $form->popupConfirm('matchgame', 'id_matchgame', $idMatch);
-    elseif($delete==2) Matchday::deletePopupMatch($pdo, $idMatch);
+    echo Matchgame::modifyForm($pdo, $error, $form, $idMatch);
+    if($delete==1)       echo $form->popupConfirm('matchgame', 'id_matchgame', $idMatch);
+    elseif($delete==2)   Matchgame::deletePopup($pdo, $idMatch);
     elseif($modify==1){
-        if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchday::modifyPopupMatch($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date, $idMatch);
+        if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchgame::modifyPopup($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date, $idMatch);
     }
-    
-}?>  
+}
+?>

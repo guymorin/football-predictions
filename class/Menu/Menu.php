@@ -17,12 +17,11 @@ class Menu
     static function menu(){
         // Display menu with hamburger button
         $val = '';
-        $val .= "  <input type='checkbox' id='fp-button' />\n";
-        $val .= "  <label class='hamburger'  for='fp-button'>&#x2630;</label>\n";
-        $val .= "  <div id='fp-menu'>\n";
-        $val .= "  <ul>\n";
-        $val .= "	 <li><a href='/'>" . (Language::title('homepage')) . "</a></li>\n";
         if(isset($_SESSION['userLogin'])){
+            $val .= "  <input type='checkbox' id='fp-button' />\n";
+            $val .= "  <label class='hamburger'  for='fp-button'>&#x2630;</label>\n";
+            $val .= "  <div id='fp-menu'>\n";
+            $val .= "  <ul>\n";
             $val .= "	 <li><a href='/index.php?page=account&exit=1'>"
                 . Theme::icon('exit') . " "
                     . (Language::title('logoff')) . "</a></li>\n";
@@ -55,10 +54,10 @@ class Menu
                                                                     .Theme::icon('player'). " "
                                                                         . (Language::title('player')) . "</a></li>\n";
                                     }
-        }
         $val .= "  </ul>\n";
         $val .= "  <label class='layer' for='fp-button'></label>\n";
         $val .= "  </div>\n";
+        }
         return $val;
     }
 }

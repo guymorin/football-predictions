@@ -8,10 +8,10 @@ use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Championship;
 use FootballPredictions\Section\Season;
-
 ?>
 
-<h2><?= Theme::icon('season') . " " . Language::title('season');?></h2>
+<h2><?= Theme::icon('season') . " "
+        . Language::title('season');?></h2>
 
 <?php
 // Values
@@ -59,4 +59,3 @@ else {
     echo Season::list($pdo,$form);
 }
 ?>
-</section>

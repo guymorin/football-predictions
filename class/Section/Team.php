@@ -47,8 +47,10 @@ class Team
         $val .= "<br />\n";
         $val .= $form->input(Language::title('weathercode'), 'weather_code');
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('create'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('create')." "
+                .Language::title('create'));
+        $val .= "</fieldset>\n";
         $val .= "</form>\n";  
         return $val;
     }
@@ -77,10 +79,10 @@ class Team
         $val .= "<br />\n";
         $val .= $form->input(Language::title('weathercode'), 'weather_code');
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('modify'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('modify')." "
+            .Language::title('modify'));
         $val .= "</form>\n";
-        $val .= "<br />\n";
         $req = "SELECT * FROM season_championship_team 
         WHERE id_season = :id_season 
         AND id_championship = :id_championship 
@@ -95,12 +97,16 @@ class Team
             $val .= "<form action='index.php?page=team' method='POST'>\n";
             $val .= $form->inputAction('add');
             $val .= $form->inputHidden('id_team',$teamId);
-            $val .= $form->submit(Language::title('addTeamTo').$_SESSION['championshipName'].' '.$_SESSION['seasonName']);
+            $val .= $form->submit(Theme::icon('add')." "
+                .Language::title('addTeamTo')." :<br />"
+                .$_SESSION['championshipName']." "
+                .$_SESSION['seasonName']);
             $val .= "</form>\n";
             $val .= "<br />\n";
         }
 
         $val .= $form->deleteForm('team', 'id_team', $teamId);
+        $val .= "</fieldset>\n";
         return $val;
     }
     
@@ -131,7 +137,6 @@ class Team
                 $val = $error->getError();
                 $val .= "<form action='index.php?page=team' method='POST'>\n";
                 $form->setValues($data);
-                $val .= $form->label(Language::title('modifyAMarketValue'));
             }
             $val .= "<table class='team'>\n";
             $val .= "  <tr>\n";
@@ -155,7 +160,9 @@ class Team
             }
             $val .= "</table>\n";
             if(($_SESSION['role'])==2){ 
-                $val .= $form->submit(Language::title('modify'));
+                $val .= "<fieldset>\n";
+                $val .= $form->submit(Theme::icon('modify')." ".Language::title('modify'));
+                $val .= "</fieldset>\n";
             }
         } else $val .= Language::title('noTeam');
         return $val;

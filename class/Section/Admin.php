@@ -69,13 +69,15 @@ class Admin
                     AND id_championship=" . $_SESSION['championshipId'] . ";";
             $response = $pdo->query($req);
             $counter = $pdo->rowCount();
+            $val .= "            <button type='submit'>" . Theme::icon('create'). " ";
             if($counter>0){
                 $_SESSION['noTeam'] = false;
-                $val .= "            <button type='submit'>" . (Language::title('createAChampionship')) . "</button>\n";
+                $val .= Language::title('createAChampionship');
             } else {
                 $_SESSION['noTeam'] = true;
-                $val .= "            <button type='submit'>". (Language::title('selectTheTeams')) . "</button>\n";
+                $val .= Language::title('selectTheTeams');
             }
+            $val .= "</button>\n";
             $val .= "      </form>\n";
             $val .= "   </td>\n";
             // Modify
@@ -102,20 +104,22 @@ class Admin
     static function matchdayList($pdo,$form){
         $val = '';
         if(isset($_SESSION['championshipId'])){
-            $val .= "   <td>" . ucfirst(Language::title('matchday')) . "</td>\n";
             $req = "SELECT DISTINCT id_matchday, number
                     FROM matchday
                     WHERE id_season=" . $_SESSION['seasonId']."
                     AND id_championship=" . $_SESSION['championshipId'] . " ORDER BY number DESC;";
             $response = $pdo->query($req);
             $counter = $pdo->rowCount();
-            
             if($counter>0){
                 $_SESSION['noMatchday'] = false;
                 if(isset($_SESSION['matchdayId'])){
+                    $val .= "   <td>" . ucfirst(Language::title('matchday')) . "</td>\n";
                     $val .= "   <td>\n";
                     $val .= "   <form action='/index.php?page=matchday&create=1' method='POST'>\n";
-                    $val .= "            <button type='submit'>" . Theme::icon('create') . " "  . (Language::title('createAMatchday')) . "</button>\n";
+                    $val .= "            <button type='submit'>" 
+                            . Theme::icon('create') . " "  
+                            . (Language::title('createAMatchday')) 
+                            . "</button>\n";
                     $val .= "   </form>\n";
                     $val .= "   </td>\n";
                     if(($_SESSION['role'])==2){
@@ -133,50 +137,57 @@ class Admin
                             $val .= "</form>\n";
                         }
                         $val .= "   </td>\n";
-                    }
+                    } else $val .= "   <td></td>\n";
+                    $val = Admin::surround($val);
                 }
             } else {
                 $_SESSION['noMatchday'] = true;
+                $val .= "   <td>" . ucfirst(Language::title('matchday')) . "</td>\n";
                 $val .= "   <td>\n";
                 $val .= "   <form action='/index.php?page=matchday&create=1' method='POST'>\n";
-                $val .= "            <button type='submit'>" . Theme::icon('create') . " "  . (Language::title('createTheMatchdays')) . "</button>\n";
+                $val .= "            <button type='submit'>" 
+                            . Theme::icon('create') . " "  
+                            . (Language::title('createTheMatchdays')) 
+                            . "</button>\n";
                 $val .= "   </form>\n";
                 $val .= "   </td>\n";
-                $val .= "   <td>\n";
-                $val .= "   </td>\n";
+                $val .= "   <td></td>\n";
+                $val = Admin::surround($val);
             }
-            $val = Admin::surround($val);
-        
         }
         return $val;
     }
     
     static function playerList($pdo,$form) {
         $val = '';
-        $val .= "   <td>" . ucfirst(Language::title('player')) . "</td>\n";
-        $val .= "   <td>\n";
-        $val .= "   <form action='/index.php?page=player&create=1' method='POST'>\n";
-        $val .= "            <button type='submit'>" . Theme::icon('create') . " "  . (Language::title('createAPlayer')) . "</button>\n";
-        $val .= "   </form>\n";
-        $val .= "   </td>\n";
-        $val .= "   <td>\n";
-        if(($_SESSION['role'])==2){
-            $req = "SELECT id_player, name, firstname
-        FROM player
-        ORDER BY name, firstname;";
-            $data = $pdo->query($req);
-            $counter = $pdo->rowCount();
-            
-            if($counter > 1){
-                $val .= "       <form action='index.php?page=player' method='POST'>\n";
-                $val .= $form->inputAction('modify');
-                $val .= $form->label(Language::title('modifyAPlayer'));
-                $val .= $form->selectSubmit('id_player', $data);
-                $val .= "       </form>\n";
+        if(isset($_SESSION['championshipId'])){
+            $val .= "   <td>" . ucfirst(Language::title('player')) . "</td>\n";
+            $val .= "   <td>\n";
+            $val .= "   <form action='/index.php?page=player&create=1' method='POST'>\n";
+            $val .= "            <button type='submit'>" . Theme::icon('create') . " " 
+                        . (Language::title('createAPlayer')) 
+                        . "</button>\n";
+            $val .= "   </form>\n";
+            $val .= "   </td>\n";
+            $val .= "   <td>\n";
+            if(($_SESSION['role'])==2){
+                $req = "SELECT id_player, name, firstname
+            FROM player
+            ORDER BY name, firstname;";
+                $data = $pdo->query($req);
+                $counter = $pdo->rowCount();
+                
+                if($counter > 1){
+                    $val .= "       <form action='index.php?page=player' method='POST'>\n";
+                    $val .= $form->inputAction('modify');
+                    $val .= $form->label(Language::title('modifyAPlayer'));
+                    $val .= $form->selectSubmit('id_player', $data);
+                    $val .= "       </form>\n";
+                }
             }
+            $val .= "   </td>\n";
+            $val = Admin::surround($val);
         }
-        $val .= "   </td>\n";
-        $val = Admin::surround($val);
         return $val;
     }
     
@@ -187,7 +198,10 @@ class Admin
         // Create
         $val .= "   <td>\n";
         $val .= "       <form action='index.php?page=season&create=1' method='POST'>\n";
-        $val .= "            <button type='submit'> " . Theme::icon('create') . " " . Language::title('createASeason') . "</button>\n";
+        $val .= "            <button type='submit'> " 
+                        . Theme::icon('create') . " " 
+                        . Language::title('createASeason') 
+                        . "</button>\n";
         $val .= "       </form>\n";
         $val .= "   </td>\n";
         // Modify
@@ -258,7 +272,10 @@ class Admin
         $val .= "   <td>" . ucfirst(Language::title('team')) . "</td>\n";
         $val .= "   <td>\n";
         $val .= "       <form action='/index.php?page=team&create=1' method='POST'>\n";
-        $val .= "            <button type='submit'>" . Theme::icon('create') . " "  . (Language::title('createATeam')) . "</button>\n";
+        $val .= "            <button type='submit'>" 
+                        . Theme::icon('create') . " "  
+                        . (Language::title('createATeam')) 
+                        . "</button>\n";
         $val .= "       </form>\n";
         $val .= "   </td>\n";
         $val .= "   <td>\n";

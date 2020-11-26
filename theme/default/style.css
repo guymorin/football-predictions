@@ -47,7 +47,7 @@ section a:hover{border-radius:4px}
 
 header a:hover, table a, table a:hover{background:none}
 
-table{font-size:.9em;margin:0 auto;border:2px solid #666;border-radius:3px;min-width:50%;}
+table{display:inline-table;min-width:50%;font-size:.9em;margin:0 auto;border:2px solid #666;border-radius:3px;}
 td{border:.1em solid #aaa;}
 tr:nth-child(odd){background:#ccc}
 tr:nth-child(even){background:#ddd}
@@ -275,19 +275,20 @@ section a {font-weight: bold;}
 section li a {font-weight: normal;}
 section table.admin td:first-child{width:10em;text-align:right;font-weight:bold}
 section table.admin td:nth-child(3){text-align:left}
-section table.benef td:first-child{text-align: left}
+section table.matchdayTable td{width:3em}
 section table.prediction th:first-child,
 section table.prediction td:first-child{width:12em;text-align:left}
 section table.stats th,
-section table.stats td{height:2em}
+section table.stats td{height:2em;width:25%}
 section table.stats td:first-child,
 section table.stats td:nth-child(3){text-align:right;font-weight:bold}
 section table.stats td:nth-child(2),
-section table.stats td:nth-child(4){text-align:right;}
-section table.stats th:first-child,
-section table.statsMatchday td:first-child{width:10em;text-align:left}
-section table.team td:first-child,
-
+section table.stats td:nth-child(4){text-align:right}
+section table.matchdayStats td:first-child{width:10em;text-align:left}
+section table.team td:first-child{text-align:left}
+section table.team td:nth-child(2) input{width:3em}
+section table.teamOfTheWeek td:nth-child(2){text-align:left}
+section table.teamOfTheWeek td:nth-child(3) input{width:3em}
 section .graph {
 	background:#efefef;
 	border: 2px solid #666;
@@ -337,9 +338,11 @@ section form fieldset.result label {width:2em}
 section form fieldset.position {text-align: right;}
 section form fieldset input[type='radio']{vertical-align:bottom;}
 section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em;min-width:10em;}
+section table.matchdayList button[type="submit"],
+section table.matchdayTable button[type="submit"]{text-align: left;}
 
 /* Standing table buttons */
-section #standing ul {display:inline;}
+section #standing ul {display:block;}
 /* Others button */
 section #standing li a,
 section #standing li p {

@@ -5,9 +5,11 @@
 // Namespaces
 use FootballPredictions\Language;
 use FootballPredictions\Section\Install;
+use FootballPredictions\Theme;
 
-
-echo "<h2>" . (Language::title('install')) . "</h2>\n";
+echo "<h2>" . Theme::icon('admin'). " "
+        .Language::title('install') 
+        . "</h2>\n";
 
 // Values
 $test = $DbHost = $DbName = $DbUser = $DbPass = '';
@@ -21,12 +23,8 @@ if($DbHost!='' && $DbName!='' && $DbUser!='' && $DbPass!=''){
 }
 
 echo "<h3>" . (Language::title('createDatabase')) . "</h3>\n";
-if($test){
-    echo Install::createPopup($DbHost, $DbName, $DbUser, $DbPass);
-}
+if($test)                   echo Install::createPopup($DbHost, $DbName, $DbUser, $DbPass);
 $folder = 'install';
-if(!is_writable($folder)){
-    echo Language::title('errorWritable');
-} else echo Install::createForm($error, $form);
-
+if(!is_writable($folder))   echo Language::title('errorWritable');
+else                        echo Install::createForm($error, $form);
 ?>

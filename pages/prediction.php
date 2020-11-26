@@ -6,7 +6,10 @@
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 
-echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . $_SESSION['matchdayNum']."</h2>\n";
+echo "<h2>" . Theme::icon('matchday') . " " 
+        . (Language::title('matchday')) . " "
+        . $_SESSION['matchdayNum']
+        ."</h2>\n";
 
 // Values
 $manual = '';

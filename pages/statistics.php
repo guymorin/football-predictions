@@ -12,10 +12,8 @@ use FootballPredictions\Section\Championship;
 
 ?>
 
-<h2><?= Theme::icon('matchday') . ' ' . (Language::title('matchday')) . ' ' . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>
+<h2><?= Theme::icon('matchday') . " "
+        . Language::title('matchday') . " " 
+        . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null);?></h2>
 
-<?php
-if(isset($_SESSION['matchdayId'])){
-        echo Matchday::stats($pdo);
-}
-?>
+<p><?php if(isset($_SESSION['matchdayId'])) echo Matchday::stats($pdo); ?></p>

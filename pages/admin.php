@@ -6,19 +6,15 @@
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Admin;
-
 ?>
-
-<h2><?= Theme::icon('admin') . " " . Language::title('administration');?></h2>
-
+<h2><?= Theme::icon('admin') . " "
+        . Language::title('administration');?></h2>
 <?php
 // Values
     if(($_SESSION['role'])!=2) header('Location:index.php');
     
     // Table for administration options
-    $val = '';
-    $val .= "<h3>".ucfirst(Language::title('administrator'))."</h3>\n";
-    
+    $val = "<h3>".ucfirst(Language::title('administrator'))."</h3>\n";
     $val .= "<table class='admin'>\n";
     $val .= Admin::siteData();
     $val .= Admin::accountList($pdo,$form);
@@ -30,4 +26,3 @@ use FootballPredictions\Section\Admin;
     $val .= "</table>\n";
     echo $val;
 ?>
-</section>

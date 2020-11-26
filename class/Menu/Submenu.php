@@ -216,7 +216,7 @@ class Submenu
                 }
                 $val .= "</a>";
             }
-        }
+        } else Submenu::exitAccount();
         return $val;
     }
     

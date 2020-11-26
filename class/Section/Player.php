@@ -40,15 +40,17 @@ class Player
         $val .= "<legend>" . (Language::title('player')) . "</legend>\n";
         $val .= $error->getError();
         $val .= $form->input(Language::title('name'), 'name', 'name');
-        $val .= "<!-- Response --><div id='uname_response'></div>";
+        $val .= "<!-- Response --><div id='uname_response'></div>";// Warning
         $val .= "<br />\n";
         $val .= $form->input(Language::title('firstname'), 'firstname');
         $val .= "<br />\n";
         $val .= $form->inputRadioPosition();
         $val .= $form->selectTeam($pdo,'id_team',null,null,true);
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('create'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('create')." "
+                .Language::title('create'));
+        $val .= "</fieldset>\n";
         $val .= "</form>\n";
         return $val;
     }
@@ -130,12 +132,12 @@ class Player
         $val .= $form->selectTeam($pdo, null, $data->id_team, null, true);
         $val .= $table;
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('modify'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('modify')." "
+                .Language::title('modify'));
         $val .= "</form>\n";
-        $val .= "<br />\n";
         $val .= $form->deleteForm('player', 'id_player', $playerId, false, 'id_team', $data->id_team);
-        
+        $val .= "</fieldset>\n";
         
         return $val;
     }
@@ -143,7 +145,7 @@ class Player
     static function modifyPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition){
         
         // Check if the player is known in Season Team Player table
-        $req = "SELECT COUNT(*) as nb
+        $req = "SELECT * 
         FROM season_team_player
         WHERE id_season=:id_season
         AND id_team=:id_team
@@ -153,10 +155,12 @@ class Player
             'id_team' => $teamId,
             'id_player' => $playerId
         ],true);
+        $counter = $pdo->rowCount();
+        
         $req="UPDATE player
         SET name=:name, firstname=:firstname, position=:position
         WHERE id_player=:id_player;";
-        if($data->nb==0){
+        if($counter==0){
             $req.="INSERT INTO season_team_player
             VALUES(NULL,:id_season,:id_team,:id_player);";
         } else {
@@ -201,11 +205,11 @@ class Player
             {
                 $counterPodium++;
                 if($counterPodium==2) $icon = Theme::icon('medalSilver'); // Silver medal
-                else $icon = Theme::icon('medalBronze'); // Bronze medal
+                elseif($counterPodium==3) $icon = Theme::icon('medalBronze'); // Bronze medal
                 
                 $val .= "      <td><strong>".$counterPodium."</strong></td>\n";
-                $val .= "      <td>".$icon." ".$iconPlayer."<strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong></td>\n";
-                $val .= "      <td>".$d->team."</td>\n";
+                $val .= "      <td>".$icon." ".$iconPlayer." ".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</td>\n";
+                $val .= "      <td>".Theme::icon('team')."&nbsp;".$d->team."</td>\n";
                 $val .= "      <td>".$d->nb."</td>\n";
                 $val .= "      <td>".round($d->rating,1)."</td>\n";
                 $val .= "  </tr>\n";
@@ -266,8 +270,8 @@ class Player
                 }
                 
                 $val .= "</td><td>";
-                if($icon != '') $val .= $icon." ".$iconPlayer."<strong>".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname."</strong>";
-                else $val .= $iconPlayer." ".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
+                if($icon != '') $val .= $icon." ";
+                $val .= $iconPlayer." ".mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
                 $val .= "</td><td>".$d->nb."</td><td>".round($d->rating,1)."</td>\n";
                 $val .= "  </tr>\n";
                 $counter=$d->team;

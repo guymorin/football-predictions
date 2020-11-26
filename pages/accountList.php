@@ -10,7 +10,8 @@ use FootballPredictions\Section\Account;
 App::exitNoAdmin();
 ?>
 
-<h2><?= Theme::icon('account') . ' ' . (Language::title('account'));?></h2>
+<h2><?= Theme::icon('account') . " "
+        . (Language::title('account'));?></h2>
 <h3><?= Language::title('listAccounts');?></h3>
 
-<?= Account::list($pdo, $form); ?>
+<p><?= Account::list($pdo, $form); ?></p>

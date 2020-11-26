@@ -8,13 +8,14 @@ namespace FootballPredictions;
 
 class Language
 {
-    static function title($val){
+    static function title($val,$count=null){
         self::getBrowserLang();
         // Using default with gettext function and 'po' files 
-        require "lang/default.php";
-        return $array[$val];
+        require_once "lang/default.php";
+        $v = getMessage($val,$count);
+        return $v;
     }
-    
+        
     static function getBrowserLang(){
         if(empty($_SESSION['language'])){
             $val = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);

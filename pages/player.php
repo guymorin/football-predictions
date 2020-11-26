@@ -10,8 +10,9 @@ use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Player;
 
-echo "<h2>" . Theme::icon('player') . " " . (Language::title('player')) . "</h2>\n";
-
+echo "<h2>" . Theme::icon('player') . " "
+            . (Language::title('player'))
+            . "</h2>\n";
 
 // Values
 $playerId = $teamId = 0;
@@ -25,7 +26,7 @@ isset($_POST['id_team'])        ? $teamId = $error->check("Digit",$_POST['id_tea
 // Create
 if($create==1){
     echo "<h3>" . (Language::title('createAPlayer')) . "</h3>\n";
-    if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)){
+    if(($playerName!="")&&($playerFirstname!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)){
         Player::createPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition);
     }
     echo Player::createForm($pdo, $error, $form);

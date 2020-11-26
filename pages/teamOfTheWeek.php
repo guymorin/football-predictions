@@ -6,15 +6,17 @@
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 
-
-echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . $_SESSION['matchdayNum']."</h2>\n";
+echo "<h2>" . Theme::icon('matchday') . " "
+        . (Language::title('matchday')) . " "
+        . $_SESSION['matchdayNum']
+        ."</h2>\n";
 
 // Values
 $teamOfTheWeek = 0;
-isset($_POST['teamOfTheWeek']) ? $teamOfTheWeek=$error->check("Action",$_POST['teamOfTheWeek']) : null;
-isset($_POST['deletePlayer']) ? $deletePlayer = $_POST['deletePlayer'] : $deletePlayer = array();
-isset($_POST['id_player']) ? $idPlayer = $_POST['id_player'] : $idPlayer = array();
-isset($_POST['rating']) ? $ratingPlayer = $_POST['rating'] : $ratingPlayer = array();
+isset($_POST['teamOfTheWeek']) ?    $teamOfTheWeek = $error->check("Action",$_POST['teamOfTheWeek']) : null;
+isset($_POST['deletePlayer']) ?     $deletePlayer = $_POST['deletePlayer'] : $deletePlayer = array();
+isset($_POST['id_player']) ?        $idPlayer = $_POST['id_player'] : $idPlayer = array();
+isset($_POST['rating']) ?           $ratingPlayer = $_POST['rating'] : $ratingPlayer = array();
 
 $val = array_combine($idPlayer,$ratingPlayer);
 
@@ -92,12 +94,14 @@ if(isset($_SESSION['matchdayId'])){
         if(($_SESSION['role'])==2){
             echo "<p><a href='/index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . " ?</a></p>";
         }
-        echo "<table id='teamOfTheWeek'>\n";
+        echo "<table class='teamOfTheWeek'>\n";
         echo "  <tr>\n";
         echo "      <th> </th>\n";
         echo "      <th>" . Language::title('player') . "</th>\n";
         echo "      <th>" . Language::title('rating') . "</th>\n";
-        echo "      <th>" . Language::title('delete') . "</th>\n";
+        if(($_SESSION['role'])==2){
+            echo "      <th>" . Language::title('delete') . "</th>\n";
+        }
         echo "  </tr>\n";
         
         $counter=0;
@@ -120,12 +124,15 @@ if(isset($_SESSION['matchdayId'])){
             echo "  <tr>";
             echo "      <td>".$counter."</td>\n";
             echo "      <td>";
+            echo Theme::icon('player');
             echo $form->inputHidden('id_player[]',$d->id_player);
             echo mb_strtoupper($d->name,'UTF-8')." ".$d->firstname;
             echo "</td>\n";
-            $form->setValue('rating',$d->rating);
-            echo "      <td>" . $form->input('','rating[]') . "</td>\n";
-            echo "      <td><input type='checkbox' name='deletePlayer[]' value='".$d->id_player."'>";
+            if(($_SESSION['role'])==2){
+                $form->setValue('rating',$d->rating);
+                echo "      <td>" . $form->input('','rating[]') . "</td>\n";
+                echo "      <td><input type='checkbox' name='deletePlayer[]' value='".$d->id_player."'>";
+            } else echo $d->rating;
             echo "</td>\n";
             echo "  </tr>\n";
         }
@@ -146,7 +153,7 @@ if(isset($_SESSION['matchdayId'])){
                 'id_season' => $_SESSION['seasonId'],
                 'id_championship' => $_SESSION['championshipId']
             ]);
-            echo " <tr>\n";
+            echo "<tr>\n";
             echo "  <td>".$counter."</td>\n";
             echo "  <td>" . $form->selectPlayer($pdo,'id_player[]') . "</td>\n";
             echo "  <td><p><input maxlength='50' type='text' name='rating[]' value=''></p></td>\n";

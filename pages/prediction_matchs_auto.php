@@ -3,32 +3,26 @@
 
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
+use FootballPredictions\Predictions;
 
-echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
+echo "<h3>" . (Language::title('prediction')) 
+        . "</h3>\n";
 
 $prediction = $team1Weather = $team2Weather = $cloud = $history = "";
 
 // Select data
 $data = result('selectCriterion',$pdo);
 $counter = $pdo->rowCount();
-
 if($counter > 0){
     
-    if($_SESSION['role']==2){
-        // Switch form
-        echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
-        echo $form->inputHidden('modify','2');
-        echo $form->inputHidden('manual','1');
-        echo $form->submit(Language::title('swithToManual'));
-        echo "</form>\n";
-        echo "<br />\n";
-    }
+    if($_SESSION['role']==2) echo Predictions::switchButton($form, 'toManual');
 
     // Modify form
     echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";
     echo $form->inputAction('modify');
     
-    /* Requests */
+    /* REQUESTS : */
+
     // Best teams home
     $r = result('bestHome',$pdo);
     foreach($r as $v) $domBonus[] = $v->id_team;
@@ -168,7 +162,6 @@ if($counter > 0){
                 }
             }
             
-            
         // Else = there is a result
         } else {
             $motivC1 = $d->motivation1;
@@ -278,7 +271,6 @@ if($counter > 0){
         if($d->result!="") echo "<td>".$physicalC2."</td>\n";
         else echo "  		  <td><input size='1' type='number' name='physicalForm2[$id]' value='".$physicalC2."' placeholder='0'></td>\n";
         echo "          </tr>\n";
-        
         
         echo "  		<tr>\n";
         echo "  		  <td>";

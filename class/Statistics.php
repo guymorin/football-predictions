@@ -6,6 +6,7 @@
  */
 namespace FootballPredictions;
 use \PDO;
+use FootballPredictions\Section\Matchday;
 
 class Statistics
 {
@@ -77,7 +78,7 @@ class Statistics
             cr.home_away1,cr.home_away2,
             c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
             m.result, m.date, m.odds1, m.oddsD, m.odds2";
-            if($page == 'dashboard') $req .= ", j.number";
+            if($page == 'dashboard') $req .= ", j.number, j.id_matchday";
             $req .= " FROM matchgame m
             LEFT JOIN team c1 ON m.team_1=c1.id_team
             LEFT JOIN team c2 ON m.team_2=c2.id_team
@@ -86,7 +87,7 @@ class Statistics
                 $req .= " LEFT JOIN matchday j ON j.id_matchday=m.id_matchday 
                 WHERE j.id_season = :id_season 
                 AND j.id_championship = :id_championship  
-                ORDER BY j.number;";
+                ORDER BY j.number, m.id_matchgame;";
             } elseif($page == 'matchday') {
                 $req .= " WHERE m.id_matchday=:id_matchday ORDER BY m.date;";
             }
@@ -115,22 +116,22 @@ class Statistics
     public function prepareTableDashboard(){
         $val = '';
         $val .= "<p>\n";
-        $val .= "	 <table class='benef'>\n";
+        $val .= "	 <table class='matchdayTable'>\n";
         $val .= "  		<tr>\n";
         $val .= "  		  <th>" . (Language::title('matchday')) . "</th>\n";
-        $val .= "  		  <th>" . (Language::title('bet')) . "</th>\n";
-        $val .= "           <th>" . (Language::title('success')) . "</th>\n";
+        $val .= "  		  <th>" . (Language::title('bet',2)) . "</th>\n";
+        $val .= "           <th>" . (Language::title('success',2)) . "</th>\n";
         $val .= "           <th>" . (Language::title('oddsAveragePlayed')) . "</th>\n";
-        $val .= "           <th>" . (Language::title('earning')) . "</th>\n";
+        $val .= "           <th>" . (Language::title('earning',2)) . "</th>\n";
         $val .= "           <th>" . (Language::title('profit')) . "</th>\n";
-        $val .= "           <th>" . (Language::title('profit')) . "<br />total</th>\n";
+        $val .= "           <th>" . (Language::title('profitSum')) . "</th>\n";
         $val .= "         </tr>\n";
         return $val;
     }
     public function prepareTableMatchday(){
         $val = '';
         $val.= "<p>\n";
-        $val.="<table class='statsMatchday'>\n";
+        $val.="<table class='matchdayStats'>\n";
         $val.="  		<tr>\n";
         $val.="  		  <th>" . (Language::title('matchgame')) . "</th>\n";
         $val.="  		  <th colspan='3'>".Language::title('criterionSum')."</th>\n";
@@ -264,8 +265,7 @@ class Statistics
                     $this->playedOddsSum += $this->totalPlayed;
                     $this->nbMatchdays = $d->number;
                     $val .= "       <tr>\n";
-                    $val .= "           <td>" . Theme::icon('matchday') . " ";
-                    $val .= Language::title('MD').$d->number . "</td>\n";
+                    $val .= Matchday::matchdayButtons($d->id_matchday,$d->number);
                     $val .= "           <td>" . $this->bet. " </td>\n";
                     $val .= "           <td>" . $this->success. " </td>\n";
                     $this->averageOdds = (round($this->totalPlayed / $this->bet,2));
@@ -355,16 +355,15 @@ class Statistics
         if($this->betSum > 0){
             $val .= "<p>\n";
             $val .= "<table class='stats'>\n";
-            
             $val .= "    <tr>\n";
-            $val .= "      <td>" . (Language::title('bet')) . "</td>\n";
+            $val .= "      <td>" . (Language::title('bet',$this->betSum)) . "</td>\n";
             $val .= "      <td>". $this->betSum . "</td>\n";
-            $val .= "      <td>" . (Language::title('success')) . "</td>\n";
+            $val .= "      <td>" . (Language::title('success',$this->successSum)) . "</td>\n";
             $val .= "      <td>" . $this->successSum . "</td>\n";
             $val .= "    </tr>\n";
             
             $val .= "    <tr>\n";
-            $val .= "      <td>" . (Language::title('earning')) . "</td>\n";
+            $val .= "      <td>" . (Language::title('earning',$this->earningSum)) . "</td>\n";
             $val .= "      <td>" . $this->earningSum."&nbsp;&euro;</td>\n";
             $val .= "      <td>" . (Language::title('successRate')) . "</td>\n";
             $val .= "      <td>";
@@ -417,14 +416,14 @@ class Statistics
             $val .= "<table class='stats'>\n";
             
             $val .= "    <tr>\n";
-            $val .= "      <td>" . (Language::title('bet')) . "</td>\n";
+            $val .= "      <td>" . (Language::title('bet',$this->bet)) . "</td>\n";
             $val .= "      <td>". $this->bet . "</td>\n";
-            $val .= "      <td>" . (Language::title('success')) . "</td>\n";
+            $val .= "      <td>" . (Language::title('success',$this->success)) . "</td>\n";
             $val .= "      <td>" . $this->success . "</td>\n";
             $val .= "    </tr>\n";
             
             $val .= "    <tr>\n";
-            $val .= "      <td>" . (Language::title('earning')) . "</td>\n";
+            $val .= "      <td>" . (Language::title('earning',$this->earning)) . "</td>\n";
             $val .= "      <td>" . $this->earning."&nbsp;&euro;</td>\n";
             $val .= "      <td>" . (Language::title('successRate')) . "</td>\n";
             $val .= "      <td>";

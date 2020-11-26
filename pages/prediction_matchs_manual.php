@@ -1,9 +1,11 @@
 <?php
 // Predictions matchgame manual include file
 use FootballPredictions\Language;
+use FootballPredictions\Predictions;
 use FootballPredictions\Theme;
 
-echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
+echo "<h3>" . (Language::title('prediction'))
+        . "</h3>\n";
 
 // Select data
 $data = result('selectCriterion',$pdo);
@@ -11,14 +13,8 @@ $counter = $pdo->rowCount();
 
 if($counter > 0){
     
-    if($_SESSION['role']==2){
-        // Switch form
-        echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
-        echo $form->inputHidden('manual','0');
-        echo $form->submit(Language::title('swithToAuto'));
-        echo "</form>\n";
-        echo "<br />\n";
-    }
+    if($_SESSION['role']==2) echo Predictions::switchButton($form, 'toAuto');
+
     // Modify form
     echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";
     echo $form->inputAction('modify');
@@ -161,16 +157,16 @@ if($counter > 0){
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('prediction')) . "</td>";
         echo "  		  <td>";
-        if($prediction == '1') echo Theme::icon('OK');
-        else echo Theme::icon('KO');
+        if($prediction == '1')  echo Theme::icon('OK');
+        else                    echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
-        if($prediction == 'D') echo Theme::icon('OK');
-        else echo Theme::icon('KO');
+        if($prediction == 'D')  echo Theme::icon('OK');
+        else                    echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
-        if($prediction == '2') echo Theme::icon('OK');
-        else echo Theme::icon('KO');
+        if($prediction == '2')  echo Theme::icon('OK');
+        else                    echo Theme::icon('KO');
         echo "</td>\n";
         echo "          </tr>\n";
         
@@ -179,29 +175,28 @@ if($counter > 0){
         echo "  		  <td>";
         $varName = "result[$id]";
         if($d->result == '1'){
-            if($d->result == $prediction) echo Theme::icon('winOK');
-            else echo Theme::icon('OK');
+            if($d->result == $prediction)   echo Theme::icon('winOK');
+            else                            echo Theme::icon('OK');
         } else echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
         if($d->result == 'D'){
-            if($d->result == $prediction) echo Theme::icon('winOK');
-            else echo Theme::icon('OK');
+            if($d->result == $prediction)   echo Theme::icon('winOK');
+            else                            echo Theme::icon('OK');
         } else echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
         if($d->result == '2'){
-            if($d->result == $prediction) echo Theme::icon('winOK');
-            else echo Theme::icon('OK');
+            if($d->result == $prediction)   echo Theme::icon('winOK');
+            else                            echo Theme::icon('OK');
         } else echo Theme::icon('KO');
         echo "</td>\n";
         echo "          </tr>\n";
         
-        echo "	 </table>\n";
-    
+        echo "	 </table>\n";    
     }
     
-    echo $form->submit(Language::title('modify'));
+    echo $form->submit(Theme::icon('modify')." ".Language::title('modify'));
     
     echo "</form>\n";
     

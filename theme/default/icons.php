@@ -1,11 +1,13 @@
 <?php 
 $array = array(
     "account" => "&#128100;",
+    "add" => "&#10133;",
     "admin" => "&#128295;",
     "championship" => "&#127942;",
     "create" => "&#x270F;&#xFE0F;",
     "currentForm" => "&#128677;",
     "delete" => "&#128465;",
+    "enter" => "&#128682;",
     "exit" => "&#128682;",
     "floppyDisk" => "&#128190;",
     "homepage" => "&#127968;",
@@ -22,6 +24,7 @@ $array = array(
     "quicknav" => "&#128640;",
     "redcard" => "&#128997;",
     "season" => "&#127937;",
+    "switch" => "&#128257;",
     "team" => "&#127933;",
     "trend" => "&#128200;",
     "winOK" => "<big style='color:green'>&#x2714;</big>",

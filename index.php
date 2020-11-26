@@ -133,7 +133,7 @@ else  header('Location:index.php?page=season');
 ?>
 </section>
 <footer>
-    
+
 </footer>
 
 </body>

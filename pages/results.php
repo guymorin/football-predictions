@@ -8,7 +8,10 @@ use FootballPredictions\Forms;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 
-echo "<h2>" . Theme::icon('matchday') . " " . (Language::title('matchday')) . " " . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null)."</h2>\n";
+echo "<h2>" . Theme::icon('matchday') . " "
+        . (Language::title('matchday')) . " "
+        . (isset($_SESSION['matchdayNum']) ? $_SESSION['matchdayNum'] : null)
+        ."</h2>\n";
 
 // Modify
 // Modify popup

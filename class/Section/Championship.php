@@ -105,8 +105,10 @@ class Championship
         $val .= $error->getError();
         $val .= $form->input(Language::title('name'),"name");
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('create'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('create')." "
+                .Language::title('create'));
+        $val .= "</fieldset>\n";
         $val .= "</form>\n"; 
         return $val;
     }
@@ -138,18 +140,24 @@ class Championship
             $val .= '<legend>' . (Language::title('teams')). '</legend>';
             $val .= $form->selectSubmit('teams[]', $data, false, true);
             $val .= "</fieldset>\n";
-            $val .= "<br />\n";
-            $val .= $form->submit(Language::title('select'));
+            $val .= "<fieldset>\n";
+            $val .= $form->submit(Theme::icon('add')." "
+                    .Language::title('select'));
+            $val .= "</fieldset>\n";
             $val .= "</form>\n";
         } else {
             $val .= "  <h4>" . (Language::title('noTeam')) . "</h4>\n";
             // Create if admin
             if(($_SESSION['role'])==2){
                 $val .= "   <form action='index.php?page=team&create=1' method='POST'>\n";
-                $val .= "            <button type='submit'>" . Language::title('createATeam') . "</button>\n";
+                $val .= "<fieldset>\n";
+                $val .= "            <button type='submit'>" 
+                            . Theme::icon('create'). " "
+                            . Language::title('createATeam') 
+                            . "</button>\n";
+                $val .= "</fieldset>\n";
                 $val .= "   </form>\n";
             }
-            
         }
         return $val;
     }
@@ -183,11 +191,12 @@ class Championship
         $val .= $form->inputHidden("id_championship", $data->id_championship);
         $val .= $form->input(Language::title('name'), "name");
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('modify'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('modify')." "
+                .Language::title('modify'));
         $val .= "</form>\n";
-        $val .= "<br />\n";
         $val .= $form->deleteForm('championship', 'id_championship', $championshipId);
+        $val .= "</fieldset>\n";
         return $val;
     }
     

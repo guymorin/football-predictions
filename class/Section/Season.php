@@ -49,7 +49,11 @@ class Season
             // Create if admin
             if(($_SESSION['role'])==2){
                 $val .= "   <form action='index.php?page=season&create=1' method='POST'>\n";
-                $val .= "            <button type='submit'> " . (Language::title('createASeason')) . "</button>\n";
+                $val .= "<fieldset>\n";
+                $val .= "            <button type='submit'> " 
+                            .Theme::icon('create')." "
+                            . (Language::title('createASeason')) . "</button>\n";
+                $val .= "</fieldset>\n";
                 $val .= "   </form>\n";
             }
         }
@@ -92,8 +96,10 @@ class Season
         $val .= $error->getError();
         $val .= $form->input(Language::title('name'),"name");
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('create'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('create')." "
+                .Language::title('create'));
+        $val .= "</fieldset>\n";
         $val .= "</form>\n";
         return $val;    
     }
@@ -124,11 +130,12 @@ class Season
         $val .= $form->inputHidden('id_season',$data->id_season);
         $val .= $form->input(Language::title('name'),'name');
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('modify'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('modify')." "
+                .Language::title('modify'));
         $val .= "</form>\n";
-        $val .= "<br />\n";
         $val .= $form->deleteForm('season', 'id_season', $seasonId);
+        $val .= "</fieldset>\n";
         return $val;
     }
     
