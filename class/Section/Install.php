@@ -8,6 +8,7 @@ namespace FootballPredictions\Section;
 use FootballPredictions\Language;
 use FootballPredictions\Database;
 use \PDO;
+use FootballPredictions\Theme;
 
 class Install
 {
@@ -31,8 +32,9 @@ class Install
         $val .= $form->input(Language::title('installPass'), 'DbPass');
         $val .= "<br />\n";
         $val .= "</fieldset>\n";
-        $val .= "<br />\n";
-        $val .= $form->submit(Language::title('create'));
+        $val .= "<fieldset>\n";
+        $val .= $form->submit(Theme::icon('create')." ".Language::title('create'));
+        $val .= "</fieldset>\n";
         $val .= "</form>\n";
         return $val;
     }

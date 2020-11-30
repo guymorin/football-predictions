@@ -54,6 +54,18 @@ class Admin
         return $val;
     }
     
+    static function adminButton(){
+        $val = '';
+        if(($_SESSION['role'])==2){
+            $val .= "   <br />\n<form action='index.php?page=admin' method='POST'>\n";
+            $val .= "            <button type='submit'> "
+                .Theme::icon('admin')." "
+                    . ucfirst(Language::title('administration')) . "</button>\n";
+                    $val .= "   </form>\n";
+        }
+        return $val;
+    }
+    
     static function championshipList($pdo,$form) {
         $val = '';
         if(isset($_SESSION['championshipId'])){

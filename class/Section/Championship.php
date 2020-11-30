@@ -235,16 +235,16 @@ class Championship
         $val .= "  </li>\n";
         $val .= "</ul>\n";
         
-        $val .= "    <table>\n";
-        $val .= "      <tr>\n";
-        $val .= "            <th> </th>\n";
-        $val .= "            <th>" . (Language::title('team')) . "</th>\n";
-        $val .= "            <th>" . (Language::title('pts')) . "</th>\n";
-        $val .= "            <th>" . (Language::title('MD')) . "</th>\n";
-        $val .= "            <th>" . (Language::title('win')) . "</th>\n";
-        $val .= "            <th>" . (Language::title('draw')) . "</th>\n";
-        $val .= "            <th>" . (Language::title('lose')) . "</th>\n";
-        $val .= "      </tr>\n";
+        $tableHeader .= "    <table>\n";
+        $tableHeader .= "      <tr>\n";
+        $tableHeader .= "            <th> </th>\n";
+        $tableHeader .= "            <th>" . (Language::title('team')) . "</th>\n";
+        $tableHeader .= "            <th>" . (Language::title('pts')) . "</th>\n";
+        $tableHeader .= "            <th>" . (Language::title('MD')) . "</th>\n";
+        $tableHeader .= "            <th>" . (Language::title('win')) . "</th>\n";
+        $tableHeader .= "            <th>" . (Language::title('draw')) . "</th>\n";
+        $tableHeader .= "            <th>" . (Language::title('lose')) . "</th>\n";
+        $tableHeader .= "      </tr>\n";
         
         $req="SELECT c.id_team, c.name, COUNT(m.id_matchgame) as matchgame,
     	SUM(";
@@ -302,6 +302,7 @@ class Championship
         $previousPoints=0;
         $counter = $pdo->rowCount();
         if($counter>0){
+            $val .= $tableHeader;
             foreach ($data as $d)
             {
                 $val .= "        <tr>\n";
@@ -327,13 +328,22 @@ class Championship
                 $val .= "          <td>".$d->nul."</td>\n";
                 $val .= "          <td>".$d->perdu."</td>\n";
                 $val .= "        </tr>\n";
+                $val .= "   </table>\n";
             }
         } else {
+            $val .= $tableHeader;
             $val .= "        <tr>\n";
             $val .= "<td colspan='7'>" . Language::title('notPlayed') . "</td>\n";
             $val .= "        </tr>\n";
+            if(($_SESSION['role'])==2){
+                $val .= "        <tr>\n";
+                $val .= "           <td colspan='7'>\n";
+                $val .= Admin::adminButton();
+                $val .= "           </td>\n";
+                $val .= "        </tr>\n";
+            }
+            $val .= "   </table>\n";
         }
-    $val .= "   </table>\n";
     $val .= "</div>\n";
     return $val;
     }

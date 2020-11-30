@@ -36,7 +36,7 @@ if(
             break;
         case 1:
             if(Account::logonPopup($pdo, $userLogin, $userPassword)==true){
-                header('Location:index.php?page=dashboard');
+                header('Location:index.php');
             } elseif($userLogin != '') {
                 $error->setError(Language::title('errorPassword'));
             }

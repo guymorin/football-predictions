@@ -23,7 +23,7 @@ class Account
     
     static function titleInstall(){
         $val = "<h2>";
-        if(isset($_SESSION['install']) and $_SESSION['install'] == 'true')  $val .= Language::title('install');
+        if(isset($_SESSION['install']) and $_SESSION['install'] == 'true')  $val .= Theme::icon('admin'). " " . Language::title('install')." 2/2";
         else                                $val .= Language::title('homepage');
         $val .= "</h2>\n";
         $val .= "<h3>";
@@ -148,8 +148,11 @@ class Account
             'password' => $userPassword
         ]);
         if(self::logonPopup($pdo, $userLogin, $userPassword)) {
-            $_SESSION['install']=false;
-            popup(Language::title('created'),"index.php?page=account");
+            if(isset($_SESSION['install']) and $_SESSION['install'] == 'true'){
+                popup(Language::title('installComplete'),"index.php?page=account&exit=1");
+                $_SESSION['install']=false;
+            } else popup(Language::title('created'),"index.php?page=account");
+            
         }
     }
     

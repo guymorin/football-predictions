@@ -7,6 +7,7 @@
 namespace FootballPredictions;
 use \PDO;
 use FootballPredictions\Section\Matchday;
+use FootballPredictions\Section\Admin;
 
 class Statistics
 {
@@ -109,7 +110,10 @@ class Statistics
             $this->summaryPrepare($page);
             $val .= $this->summaryTable($page);
             $val .=  $this->statsTable($page, $pdo);
-        } else $val .=  Language::title('noMatch');
+        } else {
+            $val .=  Language::title('noMatch');
+            $val .= Admin::adminButton();
+        }
         return $val;
     }
     

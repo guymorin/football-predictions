@@ -190,29 +190,7 @@ class Season
                 $val .= "  </tr>\n";
             }
             $val .= "</table>\n";
-        } else {
-            $val .= "  <h4>" . (Language::title('noChampionship')) . "</h4>\n";
-            // Create if admin
-            if(($_SESSION['role'])==2){
-                $val .= "   <form action='index.php?page=championship&create=1' method='POST'>\n";
-                $req = "SELECT DISTINCT id_team
-                    FROM season_championship_team
-                    WHERE id_season=" . $_SESSION['seasonId']."
-                    AND id_championship=" . $_SESSION['championshipId'] . ";";
-                $response = $pdo->query($req);
-                $counter = $pdo->rowCount();
-                if($counter>0){
-                    $_SESSION['noTeam'] = false;
-                    $val .= "            <button type='submit'>" . (Language::title('createAChampionship')) . "</button>\n";
-                } else {
-                    $_SESSION['noTeam'] = true;
-                    $val .= "            <button type='submit'>". (Language::title('selectTheTeams')) . "</button>\n";
-                }
-                $val .= "   </form>\n";
-                
-            }
-        }
-
+        } else      header('Location:index.php?page=championship');
         return $val;
     }
 }

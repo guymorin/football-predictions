@@ -201,6 +201,9 @@ function getMessage($val,$count){
         case "install":
     		$val = _("Install");
     		break;
+        case "installComplete":
+            $val = _("Installation complete");
+            break;
         case "installHost":
     		$val = _("Host");
     		break;

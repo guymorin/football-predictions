@@ -8,7 +8,7 @@ use FootballPredictions\Section\Install;
 use FootballPredictions\Theme;
 
 echo "<h2>" . Theme::icon('admin'). " "
-        .Language::title('install') 
+    .Language::title('install') ." 1/2"
         . "</h2>\n";
 
 // Values

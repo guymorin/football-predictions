@@ -165,9 +165,9 @@ class Matchday
             $quickNav .= "</td>\n";
             $quickNav .= "</form>\n";
             $quickNav .= "  </tr>\n";   
-            $quickNav .= "</table>\n<br />\n";   
+            $quickNav .= "</table>\n";   
         }
-        $val .= $quickNav;
+        $val .= "<p>".$quickNav."</p>\n";
        
         $req = "SELECT md.id_matchday, md.number as number, COUNT(id_matchgame) as nb, COUNT(CASE WHEN mg.result IN('1','D','2') THEN 1 END) as played
         FROM matchday md
