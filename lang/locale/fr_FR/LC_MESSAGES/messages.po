@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: FP\n"
-"POT-Creation-Date: 2020-11-27 22:52+0100\n"
-"PO-Revision-Date: 2020-11-27 22:52+0100\n"
+"POT-Creation-Date: 2020-12-01 16:17+0100\n"
+"PO-Revision-Date: 2020-12-01 16:17+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -713,16 +713,16 @@ msgid "Weather"
 msgstr "Météo"
 
 #: default.php:526
-msgid "High rain favors the less technical team (+3)"
-msgstr "Une pluie forte favorise l'équipe la moins technique (+3)"
+msgid "High rain favors the less technical team (+2)"
+msgstr "Une pluie forte favorise l'équipe la moins technique (+2)"
 
 #: default.php:529
-msgid "Low rain favors the less technical team (+1)"
-msgstr "Une pluie faible favorise l'équipe la moins technique (+1)"
+msgid "Low rain is neutral (0)"
+msgstr "Un temps ensoleillé est neutre (0)"
 
 #: default.php:532
-msgid "Middle rain favors the less technical team (+2)"
-msgstr "Une pluie moyenne favorise l'équipe la moins technique (+2)"
+msgid "Middle rain favors the less technical team (+1)"
+msgstr "Une pluie moyenne favorise l'équipe la moins technique (+1)"
 
 #: default.php:535
 msgid "Sun is neutral (0)"
@@ -735,6 +735,9 @@ msgstr "Code météo"
 #: default.php:541
 msgid "W"
 msgstr "G"
+
+#~ msgid "Low rain favors the less technical team (+1)"
+#~ msgstr "Une pluie faible favorise l'équipe la moins technique (+1)"
 
 #~ msgid "Modify a marketvalue"
 #~ msgstr "Modifier une valeur marchande"

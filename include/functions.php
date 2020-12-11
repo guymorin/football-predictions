@@ -2,7 +2,7 @@
 // Functions
 use FootballPredictions\Language;
 
-function setProb($prob,$sum1,$sumD,$sum2){
+function setProbSum($prob,$sum1,$sumD,$sum2){
     $val='';
     $sum=abs($sum1)+abs($sumD)+abs($sum2);
     if($sum<3){
@@ -69,7 +69,7 @@ function result($type,$pdo,$d='',$team1Weather=0,$team2Weather=0){
             WHERE md.id_matchday=:id_matchday
             AND md.id_season=:id_season
             AND md.id_championship = :id_championship
-            ORDER BY m.date;";
+            ORDER BY m.date, md.number, m.id_matchgame;";
             $r = $pdo->prepare($req,[
                 'id_season' => $_SESSION['seasonId'],
                 'id_championship' => $_SESSION['championshipId'],

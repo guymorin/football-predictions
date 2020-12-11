@@ -235,7 +235,7 @@ class Championship
         $val .= "  </li>\n";
         $val .= "</ul>\n";
         
-        $tableHeader .= "    <table>\n";
+        $tableHeader = "    <table>\n";
         $tableHeader .= "      <tr>\n";
         $tableHeader .= "            <th> </th>\n";
         $tableHeader .= "            <th>" . (Language::title('team')) . "</th>\n";
@@ -328,7 +328,6 @@ class Championship
                 $val .= "          <td>".$d->nul."</td>\n";
                 $val .= "          <td>".$d->perdu."</td>\n";
                 $val .= "        </tr>\n";
-                $val .= "   </table>\n";
             }
         } else {
             $val .= $tableHeader;
@@ -342,10 +341,10 @@ class Championship
                 $val .= "           </td>\n";
                 $val .= "        </tr>\n";
             }
-            $val .= "   </table>\n";
         }
-    $val .= "</div>\n";
-    return $val;
+        $val .= "   </table>\n";
+        $val .= "</div>\n";
+        return $val;
     }
 }
 ?>

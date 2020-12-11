@@ -30,9 +30,17 @@ class Predictions
     private $mv2;
     private $physicalC1;
     private $physicalC2;
-    private $sum1;
-    private $sumD;
-    private $sum2;
+    public $playedOdds;
+    public $prediction;
+    private $prob1;
+    private $probD;
+    private $prob2;
+    public $probOdds1;
+    public $probOddsD;
+    public $probOdds2;
+    public $sum1;
+    public $sumD;
+    public $sum2;
     private $team1Weather;
     private $team2Weather;
     private $trend1;
@@ -45,50 +53,69 @@ class Predictions
      * @param array $data Form or database data
      */
     public function __construct(){
-        $this->currentFormTeam1 = $this->currentFormTeam2 = $this->dom = $this->ext = $this->historyHome = $this->historyDraw = $this->historyAway = $this->id = $this->motivC1 = $this->motivC2 = $this->mv1 = $this->mv2 = $this->physicalC1 = $this->physicalC2 = $this->sum1 = $this->sumD = $this->sum2 = $this->team1Weather = $this->team2Weather = $this->trend1 = $this->trend2 = $this->v1 = $this->v2 = 0;
+        $this->initValues();
     }
-
-    public function setCriteria($d,$pdo,$result){
+    
+    private function initValues(){
         $this->cloud = $this->cloudText = "";
-        // If results
-        if($result==true){
-            $this->motivC1 = $d->motivation1;
-            $this->motivC2 = $d->motivation2;
+        $this->currentFormTeam1 = $this->currentFormTeam2
+        = $this->dom = $this->ext
+        = $this->historyHome = $this->historyDraw = $this->historyAway
+        = $this->id
+        = $this->motivC1 = $this->motivC2
+        = $this->mv1 = $this->mv2
+        = $this->physicalC1 = $this->physicalC2
+        = $this->playedOdds
+        = $this->prediction
+        = $this->prob1 = $this->probD = $this->prob2
+        = $this->probOdds1 = $this->probOddsD = $this->probOdds2
+        = $this->sum1 = $this->sumD = $this->sum2
+        = $this->team1Weather = $this->team2Weather
+        = $this->trend1 = $this->trend2
+        = $this->v1 = $this->v2 = 0;
+    }
+    
+    public function setCriteria($d,$pdo,$result,$resultMD){
+        $this->initValues();
+        $this->setMotivation($pdo,$d,$result);
+        $this->setCurrentForm($pdo,$d,$result);
+        $this->setPhysicalForm($pdo,$d,$result);
+        $this->setWeather($pdo, $d,$result);
+        $this->setMarketValue($pdo,$d,$resultMD);
+        $this->setHomeAway($pdo,$d,$result);
+        $this->setTrend($pdo,$d);
+        $this->setHistory($pdo,$d);
+    }
+    
+    private function setCurrentForm($pdo,$d,$result=false){
+        // Current form
+        if($result){
             $this->currentFormTeam1 = $d->currentForm1;
             $this->currentFormTeam2 = $d->currentForm2;
-            $this->physicalC1 = $d->physicalForm1;
-            $this->physicalC2 = $d->physicalForm1;
-            if(isset($d->weather1)) $this->team1Weather = $d->weather1;
-            if(isset($d->weather1)) $this->team2Weather = $d->weather2;
-            $this->mv1 = $d->marketValue1;
-            $this->mv2 = $d->marketValue2;
-            $this->dom = $d->home_away1;
-            $this->ext = $d->home_away2;
-        // Else is predictions
         } else {
-            // Motivation
-            $this->motivC1=criterion("motivC1",$d,$pdo);
-            $this->motivC2=criterion("motivC2",$d,$pdo);
-            
-            // Current form
             $this->currentFormTeam1=criterion("serieC1",$d,$pdo);
             $this->currentFormTeam2=criterion("serieC2",$d,$pdo);
-            
-            // Physical form
-            $this->physicalC1=criterion("physicalC1",$d,$pdo);
-            $this->physicalC2=criterion("physicalC2",$d,$pdo);
-            
-            // Market value
-            $this->v1=criterion("v1",$d,$pdo);
-            $this->v2=criterion("v2",$d,$pdo);
-            if( ($this->v1 != 0) && ($this->v2 != 0) ){
-                $this->mv1 = round(sqrt($this->v1/$this->v2));
-                $this->mv2 = round(sqrt($this->v2/$this->v1));
-            } else {
-                $this->mv1 = $this->mv2 = 0;
-            }
-            
-            // Home / Away
+        }
+        $this->currentFormTeam1 = intval($this->currentFormTeam1);
+        $this->currentFormTeam2 = intval($this->currentFormTeam2);
+        
+    }
+    
+    private function setHistory($pdo,$d){
+        // Predictions history
+        $this->historyHome=$this->historyDraw=$this->historyAway=0;
+        $r = result('history',$pdo,$d,$this->team1Weather,$this->team2Weather);
+        $this->historyHome=criterion("predictionsHistoryHome",$r,$pdo);
+        $this->historyDraw=criterion("predictionsHistoryDraw",$r,$pdo);
+        $this->historyAway=criterion("predictionsHistoryAway",$r,$pdo);
+    }
+    
+    private function setHomeAway($pdo,$d,$result=false){
+        // Home / Away
+        if($result){
+            $this->dom = $d->home_away1;
+            $this->ext = $d->home_away2;
+        } else {
             $this->dom = 0;
             if(is_array(self::$domBonus)){
                 if(in_array($d->eq1,self::$domBonus)) $this->dom=1;
@@ -103,7 +130,111 @@ class Predictions
             if(is_array(self::$extMalus)){
                 if(in_array($d->eq2,self::$extMalus)) $this->ext=(-1);
             }
-            
+        }
+        $this->dom = intval($this->dom);
+        $this->ext = intval($this->ext);
+        
+    }
+    
+    private function setMarketValue($pdo,$d,$result=false){
+        // Market value
+        if($result){
+            $this->mv1 = $d->marketValue1;
+            $this->mv2 = $d->marketValue2;
+        } else {
+           $this->v1=intval(criterion("v1",$d,$pdo));
+           $this->v2=intval(criterion("v2",$d,$pdo));
+           if( ($this->v1 != 0) && ($this->v2 != 0) ){
+               $this->mv1 = round(sqrt($this->v1/$this->v2));
+               $this->mv2 = round(sqrt($this->v2/$this->v1));
+           } else {
+               $this->mv1 = $this->mv2 = 0;
+           }
+        }
+        $this->mv1 = intval($this->mv1);
+        $this->mv2 = intval($this->mv2);
+    }
+    
+    private function setMotivation($pdo,$d,$result=false) {
+        // Motivation
+        if($result){
+            $this->motivC1 = $d->motivation1;
+            $this->motivC2 = $d->motivation2;
+        } else {
+            $this->motivC1=criterion("motivC1",$d,$pdo);
+            $this->motivC2=criterion("motivC2",$d,$pdo);
+        }
+        $this->motivC1 = intval($this->motivC1);
+        $this->motivC2 = intval($this->motivC2);
+    }
+    
+    private function setPhysicalForm($pdo,$d,$result=false){
+        // Physical form
+        if($result){
+            $this->physicalC1 = $d->physicalForm1;
+            $this->physicalC2 = $d->physicalForm2;
+        } else {
+            $this->physicalC1=criterion("physicalC1",$d,$pdo);
+            $this->physicalC2=criterion("physicalC2",$d,$pdo);
+        }
+        $this->physicalC1 = intval($this->physicalC1);
+        $this->physicalC2 = intval($this->physicalC2);
+    }
+    
+    public function setPlayedOdds($d){
+        $this->playedOdds=0;
+        switch($this->prediction){
+            case "1":
+                $this->playedOdds = $d->odds1;
+                break;
+            case ("D"):
+                $this->playedOdds = $d->oddsD;
+                break;
+            case "2":
+                $this->playedOdds = $d->odds2;
+                break;
+        }
+    }
+    
+    public function setProb(){
+        $this->prob1 = setProbSum('1',$this->sum1, $this->sumD, $this->sum2);
+        $this->probD = setProbSum('D',$this->sum1, $this->sumD, $this->sum2);
+        $this->prob2 = setProbSum('2',$this->sum1, $this->sumD, $this->sum2);
+        $this->probOdds1 = $this->setProbOdds($this->prob1);
+        $this->probOddsD = $this->setProbOdds($this->probD);
+        $this->probOdds2 = $this->setProbOdds($this->prob2);
+        if($this->probOdds1==99) $this->probOdds1 = $this->probOddsD * 2;
+        if($this->probOdds2==99) $this->probOdds2 = $this->probOddsD * 2;
+    }
+    
+    private function setProbOdds($v){
+        if($v<1) $v=99;
+        else $v = round(100/$v,2);
+        return $v;
+    }
+    
+    private function setTrend($pdo,$d){
+        // Trend
+        $this->trend1= $this->trend2 = 0;
+        if(isset($_SESSION['matchdayNum'])) $matchdayNum = $_SESSION['matchdayNum'];
+        else $matchdayNum = $d->number;
+        if($matchdayNum > 3){
+                $trendTeam1 = criterion('trendTeam1', $d, $pdo);
+                $trendTeam2 = criterion('trendTeam2', $d, $pdo);
+                if($trendTeam1>4 and $trendTeam2<2){
+                    $this->trend1 = 1;
+                    $this->trend2 = -1;
+                }
+        }
+        $this->trend1 = intval($this->trend1);
+        $this->trend2 = intval($this->trend2);
+    }
+    
+    private function setWeather($pdo,$d,$result=false){
+        if($result){
+            if(isset($d->weather1)) $this->team1Weather = $d->weather1;
+            if(isset($d->weather1)) $this->team2Weather = $d->weather2;
+        } else {
             // Weather
             if($d->date!=""){
                 $date1 = new \DateTime($d->date);
@@ -187,42 +318,16 @@ class Predictions
                             }
                             break;
                     }
-                    $this->team1Weather=intval($this->team1Weather);
-                    $this->team2Weather=intval($this->team2Weather);
                 }
             }
         }
-        $this->setTrend($pdo,$d);
-        $this->setHistory($pdo,$d);
-    }
-    
-    public function setHistory($pdo,$d){
-        // Predictions history
-        $this->historyHome=$this->historyDraw=$this->historyAway=0;
-        $r = result('history',$pdo,$d,$this->team1Weather,$this->team2Weather);
-        $this->historyHome=criterion("predictionsHistoryHome",$r,$pdo);
-        $this->historyDraw=criterion("predictionsHistoryDraw",$r,$pdo);
-        $this->historyAway=criterion("predictionsHistoryAway",$r,$pdo);
-    }
-    
-    public function setTrend($pdo,$d){
-        // Trend
-        $this->trend1= $this->trend2 = 0;
-        if($_SESSION['matchdayNum']>3) {
-            $trendTeam1 = criterion('trendTeam1', $d, $pdo);
-            $trendTeam2 = criterion('trendTeam2', $d, $pdo);
-            if($trendTeam1>4 and $trendTeam2<2){
-                $this->trend1 = 1;
-                $this->trend2 = -1;
-            }
-        }
+        $this->team1Weather=intval($this->team1Weather);
+        $this->team2Weather=intval($this->team2Weather);
     }
     
     public function displayCriteria($d, $form, $manual=false){
         // Display table
         if($d->result=="") echo $form->inputHidden('id_match[]',$d->id_matchgame);
-        if(isset($history[0])) echo $history[0];
-        
         echo "	 <table class='prediction";
         if($manual) echo " manual";
         echo "'>\n";
@@ -255,10 +360,20 @@ class Predictions
         echo " " . Language::title('currentForm');
         echo "</td>";
         if($d->result!="") echo "<td>".$this->currentFormTeam1."</td>\n";
-        else echo "  		  <td><input size='1' type='text' name='currentForm1[$this->id]' readonly value='".$this->currentFormTeam1."'></td>\n";
+        else {
+            echo "  		  <td><input size='1' name='currentForm1[$this->id]' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "value='".$this->currentFormTeam1."'></td>\n";
+        }
         echo "  		  <td></td>\n";
         if($d->result!="") echo "<td>".$this->currentFormTeam2."</td>\n";
-        else echo "  		  <td><input size='1' type='text' name='currentForm2[$this->id]' readonly value='".$this->currentFormTeam2."'></td>\n";
+        else {
+            echo "  		  <td><input size='1' name='currentForm2[$this->id]' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "value='".$this->currentFormTeam2."'></td>\n";
+        }
         
         echo "  		<tr>\n";
         echo "  		  <td>" . Language::title('physicalForm') . "</td>\n";
@@ -278,13 +393,19 @@ class Predictions
         echo "</td>\n";
         if($d->result!="") echo "<td>".$this->team1Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' type='text' readonly name='weather1[$this->id]' value='".$this->team1Weather."'></td>\n";
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='weather1[$this->id]' value='".$this->team1Weather."'></td>\n";
         }
         echo "  		  <td></td>\n";
         
         if($d->result!="") echo "<td>".$this->team2Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' type='text' readonly name='weather2[$this->id]' value='".$this->team2Weather."'></td>\n";
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='weather2[$this->id]' value='".$this->team2Weather."'></td>\n";
         }
         echo "          </tr>\n";
         
@@ -304,10 +425,20 @@ class Predictions
         echo " " . Language::title('marketValue');
         echo "</td>";
         if($d->result!="") echo "<td>".$this->mv1."</td>\n";
-        else echo "  		  <td><input size='1' type='text' readonly name='marketValue1[$this->id]' value='".$this->mv1."'></td>\n";
+        else {
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='marketValue1[$this->id]' value='".$this->mv1."'></td>\n";
+        }
         echo "  		  <td></td>\n";
         if($d->result!="") echo "<td>".$this->mv2."</td>\n";
-        else echo "  		  <td><input size='1' type='text' readonly name='marketValue2[$this->id]' value='".$this->mv2."'></td>\n";
+        else {
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='marketValue2[$this->id]' value='".$this->mv2."'></td>\n";
+        }
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
@@ -317,10 +448,20 @@ class Predictions
         echo " " . Language::title('home') . " / " . Language::title('away');
         echo "</td>";
         if($d->result!="") echo "<td>".$this->dom."</td>\n";
-        else echo "  		  <td><input size='1' type='text' readonly name='home_away1[$this->id]' value='".$this->dom."'></td>\n";
+        else {
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='home_away1[$this->id]' value='".$this->dom."'></td>\n";
+        }
         echo "  		  <td></td>\n";
         if($d->result!="") echo "<td>".$this->ext."</td>\n";
-        else echo "  		  <td><input size='1' type='text' readonly name='home_away2[$this->id]' value='".$this->ext."'></td>\n";
+        else {
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='home_away2[$this->id]' value='".$this->ext."'></td>\n";
+        }
         echo "          </tr>\n";
         
         echo "          <tr>\n";
@@ -436,33 +577,35 @@ class Predictions
     }
     
     public function sumCriterion($d){
-        //$this->win = "";
         $this->id = $d->id_matchgame;
         
         $this->sum1 =
-        $this->motivC1
-        +$this->currentFormTeam1
-        +$this->physicalC1
-        +$this->team1Weather
-        +$d->bestPlayers1
-        +$this->mv1
-        +$this->dom
-        +$this->historyHome
-        +$this->trend1;
+        intval($this->motivC1)
+        +intval($this->currentFormTeam1)
+        +intval($this->physicalC1)
+        +intval($this->team1Weather)
+        +intval($d->bestPlayers1)
+        +intval($this->mv1)
+        +intval($this->dom)
+        +intval($this->historyHome)
+        +intval($this->trend1);
+        
         $this->sum2 =
-        $this->motivC2
-        +$this->currentFormTeam2
-        +$this->physicalC2
-        +$this->team2Weather
-        +$d->bestPlayers2
-        +$this->mv2
-        +$this->ext
-        +$this->historyAway
-        +$this->trend2;
+        intval($this->motivC2)
+        +intval($this->currentFormTeam2)
+        +intval($this->physicalC2)
+        +intval($this->team2Weather)
+        +intval($d->bestPlayers2)
+        +intval($this->mv2)
+        +intval($this->ext)
+        +intval($this->historyAway)
+        +intval($this->trend2);
         
         $this->sumD = setSumD($this->sum1,$this->sum2,$this->historyDraw);
+        $this->sumD = intval($this->sumD);
         
         $this->prediction = setPrediction($this->sum1, $this->sumD, $this->sum2);
+        $this->prediction = intval($this->prediction);
     }
 }
 ?>

@@ -170,10 +170,11 @@ function criterion($type,$data,$pdo){
             }
             break;
         case "trendTeam1":
-            $v=trend($data->eq1,$pdo);
-            break;
         case "trendTeam2":
-            $v=trend($data->eq2,$pdo);
+            if(isset($_SESSION['matchdayNum'])) $matchdayNum = $_SESSION['matchdayNum'];
+            else $matchdayNum = $data->number;
+            if($type=="trendTeam1") $v=trend($data->eq1,$pdo,$matchdayNum);
+            else $v=trend($data->eq2,$pdo,$matchdayNum);
             break;
         case "v1":
             $v=value($data->eq1,$pdo);
@@ -194,7 +195,7 @@ function criterion($type,$data,$pdo){
     return $v;
 }
 
-function trend($team,$pdo){
+function trend($team,$pdo,$matchdayNumber){
     // Return the team championship results on the last three matches
     $val=0;
     $req="SELECT SUM(t.cnt) as trend FROM (
@@ -228,9 +229,9 @@ function trend($team,$pdo){
         'id_team' => $team,
         'id_season' => $_SESSION['seasonId'],
         'id_championship' => $_SESSION['championshipId'],
-        'num1' => ($_SESSION['matchdayNum'] - 3),
-        'num2' => ($_SESSION['matchdayNum'] - 2),
-        'num3' => ($_SESSION['matchdayNum'] - 1)
+        'num1' => ($matchdayNumber - 3),
+        'num2' => ($matchdayNumber - 2),
+        'num3' => ($matchdayNumber - 1)
     ]);
     $val = $r->trend;
     return $val;

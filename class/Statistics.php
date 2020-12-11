@@ -21,32 +21,14 @@ class Statistics
     private $graph = array();
     private $home;
     private $matchs;
-    private $mv1;
-    private $mv2;
     private $nbMatchdays;
-    private $playedOdds;
     private $playedOddsSum;
-    private $prediction;
-    private $predictionsHistoryAway;
-    private $predictionsHistoryDraw;
-    private $predictionsHistoryHome;
-    private $predictionsTrend1;
-    private $predictionsTrend2;
-    private $prob1;
-    private $probD;
-    private $prob2;
-    private $probOdds1;
-    private $probOddsD;
-    private $probOdds2;
     private $profit;
     private $profitSum;
     private $roi;
     private $success;
     private $successRate;
     private $successSum;
-    private $sum1;
-    private $sumD;
-    private $sum2;
     private $table;
     private $totalPlayed;
     private $v1;
@@ -78,19 +60,19 @@ class Statistics
             cr.marketValue1,cr.marketValue2,
             cr.home_away1,cr.home_away2,
             c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
-            m.result, m.date, m.odds1, m.oddsD, m.odds2";
-            if($page == 'dashboard') $req .= ", j.number, j.id_matchday";
-            $req .= " FROM matchgame m
+            m.result, m.date, m.odds1, m.oddsD, m.odds2, j.number, j.id_matchday 
+            FROM matchgame m
             LEFT JOIN team c1 ON m.team_1=c1.id_team
             LEFT JOIN team c2 ON m.team_2=c2.id_team
-            LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame ";
+            LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame 
+            LEFT JOIN matchday j ON j.id_matchday=m.id_matchday ";  
             if($page == 'dashboard') {
-                $req .= " LEFT JOIN matchday j ON j.id_matchday=m.id_matchday 
-                WHERE j.id_season = :id_season 
+                $req .= "WHERE j.id_season = :id_season
                 AND j.id_championship = :id_championship  
-                ORDER BY j.number, m.id_matchgame;";
+                ORDER BY j.number;";
             } elseif($page == 'matchday') {
-                $req .= " WHERE m.id_matchday=:id_matchday ORDER BY m.date;";
+                $req .= "WHERE m.id_matchday=:id_matchday 
+                ORDER BY m.date, m.id_matchgame;";
             }
     
             if($page == 'dashboard') {
@@ -124,12 +106,12 @@ class Statistics
         $val .= "  		<tr>\n";
         $val .= "  		  <th>" . (Language::title('matchday')) . "</th>\n";
         $val .= "  		  <th>" . (Language::title('bet',2)) . "</th>\n";
-        $val .= "           <th>" . (Language::title('success',2)) . "</th>\n";
-        $val .= "           <th>" . (Language::title('oddsAveragePlayed')) . "</th>\n";
-        $val .= "           <th>" . (Language::title('earning',2)) . "</th>\n";
-        $val .= "           <th>" . (Language::title('profit')) . "</th>\n";
-        $val .= "           <th>" . (Language::title('profitSum')) . "</th>\n";
-        $val .= "         </tr>\n";
+        $val .= "         <th>" . (Language::title('success',2)) . "</th>\n";
+        $val .= "         <th>" . (Language::title('oddsAveragePlayed')) . "</th>\n";
+        $val .= "         <th>" . (Language::title('earning',2)) . "</th>\n";
+        $val .= "         <th>" . (Language::title('profit')) . "</th>\n";
+        $val .= "         <th>" . (Language::title('profitSum')) . "</th>\n";
+        $val .= "       </tr>\n";
         return $val;
     }
     public function prepareTableMatchday(){
@@ -149,106 +131,38 @@ class Statistics
     
     public function prepareTable($pdo, $data, $page){
         $val = '';
-        if($page == 'dashboard') {
-            $val .= "<h3>" . (Language::title('profitByMatchday')) . "</h3>\n";
-            $val .= $this->prepareTableDashboard();
+        switch($page){
+            case "dashboard":
+                $val .= "<h3>" . (Language::title('profitByMatchday')) . "</h3>\n";
+                $val .= $this->prepareTableDashboard();
+                break;
+            case "matchday":
+                $val.= $this->prepareTableMatchday();
+                break;
         }
-        elseif($page == 'matchday') $val.= $this->prepareTableMatchday();
         
         foreach ($data as $d)
         { 
+            $pred = new Predictions();
+            
             // Marketvalue
-            if($page == 'dashboard'){
-                $this->mv1 = $d->marketValue1;
-                $this->mv2 = $d->marketValue2;
-            } elseif($page == 'matchday') {
-                $this->v1=criterion("v1",$d,$pdo);
-                $this->v2=criterion("v2",$d,$pdo);
-                if( ($this->v1 != 0) && ($this->v2 != 0) ){
-                    $this->mv1 = round(sqrt($this->v1/$this->v2));
-                    $this->mv2 = round(sqrt($this->v2/$this->v1));
-                } else {
-                    $this->mv1 = $this->mv2 = 0;
-                }
-            }
-            // Home Away
-            $this->home = $d->home_away1;
-            $this->away = $d->home_away2;
+            $isResult = false;
+            if($page == 'dashboard')    $isResult = true;
+            elseif($page == 'matchday') $isResult = false;
             
-            // Predictions history
-            $this->predictionsHistoryHome=$this->predictionsHistoryDraw=$this->predictionsHistoryAway=0;
-            $r = result('history',$pdo,$d,$d->weather1,$d->weather2);
-            $this->predictionsHistoryHome = criterion("predictionsHistoryHome",$r,$pdo);
-            $this->predictionsHistoryDraw = criterion("predictionsHistoryDraw",$r,$pdo);
-            $this->predictionsHistoryAway = criterion("predictionsHistoryAway",$r,$pdo);
-            
-            // Trend
-            $this->predictionsTrend1= $this->predictionsTrend2 = 0;
-            if($page == 'matchday' and $_SESSION['matchdayNum']>3) {
-                $trendTeam1 = criterion('trendTeam1', $d, $pdo);
-                $trendTeam2 = criterion('trendTeam2', $d, $pdo);
-                if($trendTeam1>4 and $trendTeam2<2){
-                    $this->predictionsTrend1 = 1;
-                    $this->predictionsTrend2 = -1;
-                }
-            }
+            $pred->setCriteria($d, $pdo, true, $isResult);
             
             // Sum
-            $this->win = 0;
-            
-            $this->sum1=
-                $d->motivation1
-                +$d->currentForm1
-                +$d->physicalForm1
-                +$d->weather1
-                +$d->bestPlayers1
-                +$this->mv1
-                +$this->home
-                +$this->predictionsHistoryHome
-                +$this->predictionsTrend1;
-            $this->sum2=
-                $d->motivation2
-                +$d->currentForm2
-                +$d->physicalForm2
-                +$d->weather2
-                +$d->bestPlayers2
-                +$this->mv2
-                +$this->away
-                +$this->predictionsHistoryAway
-                +$this->predictionsTrend2;
-            
-            $this->sumD=setSumD($this->sum1, $this->sum2, $this->predictionsHistoryDraw);
-            
-            $this->prob1 = setProb('1',$this->sum1, $this->sumD, $this->sum2);
-            $this->probD = setProb('D',$this->sum1, $this->sumD, $this->sum2);
-            $this->prob2 = setProb('2',$this->sum1, $this->sumD, $this->sum2);
-            $this->probOdds1 = $this->setProbOdds($this->prob1);
-            $this->probOddsD = $this->setProbOdds($this->probD);
-            $this->probOdds2 = $this->setProbOdds($this->prob2);
-            if($this->probOdds1==99) $this->probOdds1 = $this->probOddsD * 2;
-            if($this->probOdds2==99) $this->probOdds2 = $this->probOddsD * 2;
-            
-            $this->prediction = setPrediction($this->sum1, $this->sumD, $this->sum2);
-            
-            $this->playedOdds=0;
-            switch($this->prediction){
-                case "1":
-                    $this->playedOdds = $d->odds1;
-                    break;
-                case ("D"):
-                    $this->playedOdds = $d->oddsD;
-                    break;
-                case "2":
-                    $this->playedOdds = $d->odds2;
-                    break;
-            }
+            $this->win = '';
+            $pred->sumCriterion($d);
+            $pred->setProb();
+            $pred->setPlayedOdds($d);
 
-               
-            if($this->prediction == $d->result){
+            if($pred->prediction === $d->result && $d->result !== ''){
                 $this->win = Theme::icon('winOK');
                 $this->success++;
-                if($page == 'dashboard') $this->earning += $this->playedOdds;
-                elseif($page == 'matchday') $this->earningSum += $this->playedOdds;
+                if($page == 'dashboard') $this->earning += $pred->playedOdds;
+                elseif($page == 'matchday') $this->earningSum += $pred->playedOdds;
             } elseif ($d->result != "") {
                 $this->win = Theme::icon('winKO');
             } else $this->win = "?";
@@ -256,18 +170,20 @@ class Statistics
             $this->matchs++;
             if($d->result!=""){
                 $this->bet++;
-                $this->totalPlayed += $this->playedOdds;
+                $this->totalPlayed += $pred->playedOdds;
             }
             
             $this->profit = $this->earning - $this->bet;
                         
             if( ($page == 'dashboard') && ($this->matchs == 10) && ($this->bet>0)  ){
-                    $this->profitSum += $this->profit;
-                    $this->betSum += $this->bet;
-                    $this->successSum += $this->success;
-                    $this->earningSum += $this->earning;
-                    $this->playedOddsSum += $this->totalPlayed;
-                    $this->nbMatchdays = $d->number;
+                    $this->profitSum        += $this->profit;
+                    $this->betSum           += $this->bet;
+                    $this->successSum       += $this->success;
+                    $this->earningSum       += $this->earning;
+                    $this->playedOddsSum    += $this->totalPlayed;
+                    $this->nbMatchdays      = $d->number;
+                    
+                    // Display table
                     $val .= "       <tr>\n";
                     $val .= Matchday::matchdayButtons($d->id_matchday,$d->number);
                     $val .= "           <td>" . $this->bet. " </td>\n";
@@ -283,20 +199,22 @@ class Statistics
                     $val .= (money_format('%i',$this->profitSum)). " </span></td>\n";
                     $val .= "       </tr>\n";
                     
+                    // Reset values
                     $this->profit = $this->matchs = $this->success
                     = $this->earning = $this->totalPlayed = $this->bet = 0;
                     
                     $this->graph[$d->number] = $this->profitSum;
             } elseif($page == 'matchday') {
+                // Display table
                 $val.="  		<tr>\n";
                 $val.="  		  <td>".Theme::icon('team')."&nbsp;".$d->name1;
                 $val.="<br />".Theme::icon('team')."&nbsp;".$d->name2."</td>\n";
-                $val.="  		  <td><small>".$this->sum1."<br />(".number_format($this->probOdds1,2).")</small></td>\n";
-                $val.="  		  <td><small>".$this->sumD."<br />(".number_format($this->probOddsD,2).")</small></td>\n";
-                $val.="  		  <td><small>".$this->sum2."<br />(".number_format($this->probOdds2,2).")</small></td>\n";
+                $val.="  		  <td><small>".$pred->sum1."<br />(".number_format($pred->probOdds1,2).")</small></td>\n";
+                $val.="  		  <td><small>".$pred->sumD."<br />(".number_format($pred->probOddsD,2).")</small></td>\n";
+                $val.="  		  <td><small>".$pred->sum2."<br />(".number_format($pred->probOdds2,2).")</small></td>\n";
                 $val.="  		  <td><strong>";
-                if($this->prediction=='D') $val.=Language::title('draw');
-                else $val.=$this->prediction;
+                if($pred->prediction=='D') $val.=Language::title('draw');
+                else $val.=$pred->prediction;
                 $val.="</strong></td>\n";
                 $val.="  		  <td><strong>";
                 if($d->result=='D') $val.=Language::title('draw');
@@ -306,19 +224,19 @@ class Statistics
                 $betValue = "<br /><a href='#' class='tooltip'><big>".Theme::icon('moneyEuro')."</big>";
                 $betValue.= "<span>".Language::title('betValueText')."</span></a>";
                 
-                switch($this->prediction){
+                switch($pred->prediction){
                     case '1':
-                        if($this->probOdds1 > $this->playedOdds) $betValue='';
+                        if($pred->probOdds1 > $pred->playedOdds) $betValue='';
                         break;
                     case 'D':
-                        if($this->probOddsD > $this->playedOdds) $betValue='';
+                        if($pred->probOddsD > $pred->playedOdds) $betValue='';
                         break;
                     case '2':
-                        if($this->probOdds2 > $this->playedOdds) $betValue='';
+                        if($pred->probOdds2 > $pred->playedOdds) $betValue='';
                         break;
                 }
                 
-                $val.="  		  <td>".number_format($this->playedOdds,2).$betValue."</td>\n";
+                $val.="  		  <td>".number_format($pred->playedOdds,2).$betValue."</td>\n";
                 $val.="  		  <td>".$this->win."</td>\n";
                 $val.="       </tr>\n";
             }
@@ -535,10 +453,5 @@ class Statistics
         return $val;
     }
     
-    function setProbOdds($v){
-        if($v<1) $v=99;
-        else $v = round(100/$v,2);
-        return $v;
-    }
 }
 ?>

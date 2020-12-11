@@ -523,13 +523,13 @@ function getMessage($val,$count){
     		$val = _("Weather");
     		break;
         case "weatherHighRain":
-    		$val = _("High rain favors the less technical team (+3)");
+    		$val = _("High rain favors the less technical team (+2)");
     		break;
         case "weatherLowRain":
-    		$val = _("Low rain favors the less technical team (+1)");
+    		$val = _("Low rain is neutral (0)");
     		break;
         case "weatherMiddleRain":
-    		$val = _("Middle rain favors the less technical team (+2)");
+    		$val = _("Middle rain favors the less technical team (+1)");
     		break;
         case "weatherSun":
     		$val = _("Sun is neutral (0)");

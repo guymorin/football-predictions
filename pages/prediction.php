@@ -4,6 +4,7 @@
 
 // Files to include
 use FootballPredictions\Language;
+use FootballPredictions\Predictions;
 use FootballPredictions\Theme;
 
 echo "<h2>" . Theme::icon('matchday') . " " 
@@ -133,7 +134,46 @@ if($modify==1){
 // Default page or manual page
 else {
     changeMD($pdo,"prediction");
-    if($manual==1) require 'prediction_matchs_manual.php';
-    else require 'prediction_matchs_auto.php';
+    echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
+    
+    // Select data
+    $data = result('selectCriterion',$pdo);
+    $counter = $pdo->rowCount();
+    if($counter > 0){
+        
+        if($_SESSION['role']==2) {
+            $switchText = 'toManual';
+            if($manual==1) $switchText = 'toAuto';          
+            echo Predictions::switchButton($form, $switchText);
+        }
+        
+        // Modify form
+        echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";
+        echo $form->inputAction('modify');
+        
+        if($manual==1)  echo $form->inputHidden('manual','1');
+        else            Predictions::teamsBonusMalus($pdo);
+        
+        // Predictions for the matchday
+        foreach ($data as $d)
+        {
+            
+            $pred = new Predictions();
+            $isResult = true;
+            $isManual = false;
+            if($manual!=1){
+                if($d->result=="") $isResult=false;
+            } else {
+                $isManual=true;
+            }
+            $pred->setCriteria($d, $pdo, $isResult, $isResult);
+            $pred->sumCriterion($d);
+            $pred->displayCriteria($d, $form, $isManual);
+        }
+        echo $form->submit(Theme::icon('modify')." ".Language::title('modify'));
+        echo "</form>\n";
+        
+    } else echo Language::title('noMatch');
+    
 }
 ?>  
