@@ -157,8 +157,7 @@ class Statistics
             $pred->sumCriterion($d);
             $pred->setProb();
             $pred->setPlayedOdds($d);
-
-            if($pred->prediction === $d->result && $d->result !== ''){
+            if($d->result !== "" && $pred->prediction == $d->result){
                 $this->win = Theme::icon('winOK');
                 $this->success++;
                 if($page == 'dashboard') $this->earning += $pred->playedOdds;
