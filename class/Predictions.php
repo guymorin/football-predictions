@@ -221,7 +221,7 @@ class Predictions
         if($matchdayNum > 3){
                 $trendTeam1 = criterion('trendTeam1', $d, $pdo);
                 $trendTeam2 = criterion('trendTeam2', $d, $pdo);
-                if($trendTeam1>4 and $trendTeam2<2){
+                if($trendTeam1>7 and $trendTeam2<2){
                     $this->trend1 = 1;
                     $this->trend2 = -1;
                 }
