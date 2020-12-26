@@ -5,14 +5,14 @@ function criterion($type,$data,$pdo){
     $v=0;
     switch($type){
         case "motivC1":
-            if($data->motivation1!="") $v=$data->motivation1;
+            if($data->motivation1!="") $v=intval($data->motivation1);
             else $v=1; // default is for home team
             break;
         case "motivC2":
-            if($data->motivation2!="") $v=$data->motivation2;
+            if($data->motivation2!="") $v=intval($data->motivation2);
             break;
         case "physicalC1":
-            if($data->physicalForm1!="") $v=$data->physicalForm1;
+            if($data->physicalForm1!="") $v=intval($data->physicalForm1);
             elseif(($_SESSION['matchdayNum']-1)>0){
                 $num = ($_SESSION['matchdayNum']-1);
                 $req="
@@ -51,7 +51,7 @@ function criterion($type,$data,$pdo){
             }
             break;
         case "physicalC2":
-            if($data->physicalForm2!="") $v=$data->physicalForm2;
+            if($data->physicalForm2!="") $v=intval($data->physicalForm2);
             elseif(($_SESSION['matchdayNum']-1)>0){
                 $num = ($_SESSION['matchdayNum']-1);
                 // Did the team have a red card in the last matchday ?
@@ -91,7 +91,7 @@ function criterion($type,$data,$pdo){
             }
             break;
         case "serieC1":
-            if($data->currentForm1!="") $v=$data->currentForm1;
+            if($data->currentForm1!="") $v=intval($data->currentForm1);
             elseif(($_SESSION['matchdayNum']-1)>0){
                 $num = ($_SESSION['matchdayNum']-1);
                 $req="
@@ -130,7 +130,7 @@ function criterion($type,$data,$pdo){
             }
             break;
         case "serieC2":
-            if($data->currentForm2!="") $v=$data->currentForm2;
+            if($data->currentForm2!="") $v=intval($data->currentForm2);
             elseif(($_SESSION['matchdayNum']-1)>0){
                 $num = ($_SESSION['matchdayNum']-1);
                 // Did the team win in the last matchday ?
@@ -183,13 +183,13 @@ function criterion($type,$data,$pdo){
             $v=value($data->eq2,$pdo);
             break;
         case "predictionsHistoryHome":
-            if(isset($data->Home)) $v=$data->Home;
+            if(isset($data->Home)) $v=intval($data->Home);
             break;
         case "predictionsHistoryDraw":
-            if(isset($data->Draw)) $v=$data->Draw;
+            if(isset($data->Draw)) $v=intval($data->Draw);
             break;
         case "predictionsHistoryAway":
-            if(isset($data->Away)) $v=$data->Away;
+            if(isset($data->Away)) $v=intval($data->Away);
             break;
     }
     return $v;

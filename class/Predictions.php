@@ -14,6 +14,8 @@ class Predictions
     private static $domMalus = array();
     private static $extBonus = array();
     private static $extMalus = array();
+    private $bestPlayers1;
+    private $bestPlayers2;
     private $cloud;
     private $cloudText;
     private $currentFormTeam1;
@@ -57,16 +59,16 @@ class Predictions
     }
     
     private function initValues(){
-        $this->cloud = $this->cloudText = "";
+        $this->cloud = $this->cloudText = $this->prediction = "";
         $this->currentFormTeam1 = $this->currentFormTeam2
         = $this->dom = $this->ext
         = $this->historyHome = $this->historyDraw = $this->historyAway
         = $this->id
         = $this->motivC1 = $this->motivC2
+        = $this->bestPlayers1 = $this->bestPlayers2 
         = $this->mv1 = $this->mv2
         = $this->physicalC1 = $this->physicalC2
         = $this->playedOdds
-        = $this->prediction
         = $this->prob1 = $this->probD = $this->prob2
         = $this->probOdds1 = $this->probOddsD = $this->probOdds2
         = $this->sum1 = $this->sumD = $this->sum2
@@ -75,13 +77,20 @@ class Predictions
         = $this->v1 = $this->v2 = 0;
     }
     
-    public function setCriteria($d,$pdo,$result,$resultMD){
+    private function setBestPlayers($d){
+        // Best players
+        $this->bestPlayers1 = intval($d->bestPlayers1);
+        $this->bestPlayers2 = intval($d->bestPlayers2);
+    }
+    
+    public function setCriteria($d,$pdo,$result){
         $this->initValues();
         $this->setMotivation($pdo,$d,$result);
         $this->setCurrentForm($pdo,$d,$result);
         $this->setPhysicalForm($pdo,$d,$result);
         $this->setWeather($pdo, $d,$result);
-        $this->setMarketValue($pdo,$d,$resultMD);
+        $this->setBestPlayers($d);
+        $this->setMarketValue($pdo,$d,$result);
         $this->setHomeAway($pdo,$d,$result);
         $this->setTrend($pdo,$d);
         $this->setHistory($pdo,$d);
@@ -208,6 +217,7 @@ class Predictions
     }
     
     private function setProbOdds($v){
+        $v = intval($v);
         if($v<1) $v=99;
         else $v = round(100/$v,2);
         return $v;
@@ -584,7 +594,7 @@ class Predictions
         +intval($this->currentFormTeam1)
         +intval($this->physicalC1)
         +intval($this->team1Weather)
-        +intval($d->bestPlayers1)
+        +intval($this->bestPlayers1)
         +intval($this->mv1)
         +intval($this->dom)
         +intval($this->historyHome)
@@ -595,7 +605,7 @@ class Predictions
         +intval($this->currentFormTeam2)
         +intval($this->physicalC2)
         +intval($this->team2Weather)
-        +intval($d->bestPlayers2)
+        +intval($this->bestPlayers2)
         +intval($this->mv2)
         +intval($this->ext)
         +intval($this->historyAway)
@@ -605,7 +615,6 @@ class Predictions
         $this->sumD = intval($this->sumD);
         
         $this->prediction = setPrediction($this->sum1, $this->sumD, $this->sum2);
-        $this->prediction = intval($this->prediction);
     }
 }
 ?>

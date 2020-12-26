@@ -95,6 +95,7 @@ class Database
     }
     
     public function export(){
+        // File name and path
         $mysqlExportPath = "data/" . date("Ymd") . "_dump.sql";
         $command = 'mysqldump --opt -h' .$this->db_host .' -u' .$this->db_user .' -p' .$this->db_pass .' ' .$this->db_name .' > ' .$mysqlExportPath;
         $worked = null;

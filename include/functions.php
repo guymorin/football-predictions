@@ -3,7 +3,7 @@
 use FootballPredictions\Language;
 
 function setProbSum($prob,$sum1,$sumD,$sum2){
-    $val='';
+    $val = 0;
     $sum=abs($sum1)+abs($sumD)+abs($sum2);
     if($sum<3){
         $sum1 = $sum1 + $sum;
@@ -61,7 +61,7 @@ function result($type,$pdo,$d='',$team1Weather=0,$team2Weather=0){
             cr.home_away1,cr.home_away2,
             c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
             c1.weather_code,
-            m.result, m.date FROM matchgame m
+            m.result, m.date, md.number FROM matchgame m
             LEFT JOIN team c1 ON m.team_1=c1.id_team
             LEFT JOIN team c2 ON m.team_2=c2.id_team
             LEFT JOIN criterion cr ON cr.id_matchgame=m.id_matchgame

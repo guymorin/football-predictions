@@ -147,10 +147,7 @@ class Statistics
             
             // Marketvalue
             $isResult = false;
-            if($page == 'dashboard')    $isResult = true;
-            elseif($page == 'matchday') $isResult = false;
-            
-            $pred->setCriteria($d, $pdo, true, $isResult);
+            $pred->setCriteria($d, $pdo, true);
             
             // Sum
             $this->win = '';
@@ -160,8 +157,8 @@ class Statistics
             if($d->result !== "" && $pred->prediction == $d->result){
                 $this->win = Theme::icon('winOK');
                 $this->success++;
-                if($page == 'dashboard') $this->earning += $pred->playedOdds;
-                elseif($page == 'matchday') $this->earningSum += $pred->playedOdds;
+                if($page == 'dashboard') $this->earning += floatval($pred->playedOdds);
+                elseif($page == 'matchday') $this->earningSum += floatval($pred->playedOdds);
             } elseif ($d->result != "") {
                 $this->win = Theme::icon('winKO');
             } else $this->win = "?";
@@ -169,18 +166,17 @@ class Statistics
             $this->matchs++;
             if($d->result!=""){
                 $this->bet++;
-                $this->totalPlayed += $pred->playedOdds;
+                $this->totalPlayed += floatval($pred->playedOdds);
             }
+            $this->profit = floatval($this->earning) - floatval($this->bet);
             
-            $this->profit = $this->earning - $this->bet;
-                        
             if( ($page == 'dashboard') && ($this->matchs == 10) && ($this->bet>0)  ){
-                    $this->profitSum        += $this->profit;
-                    $this->betSum           += $this->bet;
-                    $this->successSum       += $this->success;
-                    $this->earningSum       += $this->earning;
-                    $this->playedOddsSum    += $this->totalPlayed;
-                    $this->nbMatchdays      = $d->number;
+                $this->profitSum            += floatval($this->profit);
+                    $this->betSum           += intval($this->bet);
+                    $this->successSum       += intval($this->success);
+                    $this->earningSum       += floatval($this->earning);
+                    $this->playedOddsSum    += intval($this->totalPlayed);
+                    $this->nbMatchdays      = intval($d->number);
                     
                     // Display table
                     $val .= "       <tr>\n";
