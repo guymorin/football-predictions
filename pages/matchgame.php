@@ -10,6 +10,8 @@ use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Matchday;
 use FootballPredictions\Section\Matchgame;
+use FootballPredictions\Section\MatchgamePopup;
+use FootballPredictions\Section\MatchgameForm;
 
 echo "<h2>" . (Theme::icon('matchday')) . " "
         . (Language::title('matchday')) . " "
@@ -31,18 +33,18 @@ isset($_POST['date'])           ? $date=$error->check("Date",$_POST['date'], Lan
 // Create
 if($create==1){
     echo "<h3>" . (Language::title('createAMatch')) . "</h3>\n";
-    if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchgame::createPopup($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date);
-    else                                         echo Matchgame::createForm($pdo, $error, $form);
+    if(($team1>0)&&($team2>0)&&($team1!=$team2)) MatchgamePopup::createPopup($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date);
+    else                                         echo MatchgameForm::createForm($pdo, $error, $form);
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyAMatch')) . "</h3>\n";
-    echo Matchgame::modifyForm($pdo, $error, $form, $idMatch);
+    echo MatchgameForm::modifyForm($pdo, $error, $form, $idMatch);
     if($delete==1)       echo $form->popupConfirm('matchgame', 'id_matchgame', $idMatch);
-    elseif($delete==2)   Matchgame::deletePopup($pdo, $idMatch);
+    elseif($delete==2)   MatchgamePopup::deletePopup($pdo, $idMatch);
     elseif($modify==1){
-        if(($team1>0)&&($team2>0)&&($team1!=$team2)) Matchgame::modifyPopup($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date, $idMatch);
+        if(($team1>0)&&($team2>0)&&($team1!=$team2)) MatchgamePopup::modifyPopup($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date, $idMatch);
     }
 }
 ?>

@@ -7,6 +7,8 @@ use FootballPredictions\App;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Matchday;
+use FootballPredictions\Section\MatchdayForm;
+use FootballPredictions\Section\MatchdayPopup;
 
 ?>
 <h2><?= Theme::icon('matchday') . " "
@@ -37,23 +39,23 @@ if(
 if($create==1){
     if ($_SESSION['noMatchday'] == true) {
         echo "<h3>" . (Language::title('createTheMatchdays')) . "</h3>\n";
-        echo Matchday::createMultiForm($pdo, $error, $form);
-        if($matchdayTotalNumber!="") Matchday::createMultiPopup($pdo, $matchdayTotalNumber);
+        echo MatchdayForm::createMultiForm($pdo, $error, $form);
+        if($matchdayTotalNumber!="") MatchdayPopup::createMultiPopup($pdo, $matchdayTotalNumber);
     } else {
         echo "<h3>" . Language::title('createAMatchday') . "</h3>\n";
-        echo Matchday::createForm($pdo, $error, $form);
-        if($matchdayNumber!="")      Matchday::createPopup($pdo, $matchdayNumber);
+        echo MatchdayForm::createForm($pdo, $error, $form);
+        if($matchdayNumber!="")      MatchdayPopup::createPopup($pdo, $matchdayNumber);
     }
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
     echo "<h3>" . Language::title('modifyAMatchday') . "</h3>\n";
-    echo Matchday::modifyForm($pdo, $matchdayId, $error, $form); 
+    echo MatchdayForm::modifyForm($pdo, $matchdayId, $error, $form); 
     if($delete == 1)        echo $form->popupConfirm('matchday', 'id_matchday', $matchdayId);
-    elseif($delete == 2)    Matchday::deletePopup($pdo, $matchdayId);
+    elseif($delete == 2)    MatchdayPopup::deletePopup($pdo, $matchdayId);
     elseif($modify == 1){
-        if($matchdayNumber != '') Matchday::modifyPopup($pdo, $matchdayNumber, $matchdayId);   
+        if($matchdayNumber != '') MatchdayPopup::modifyPopup($pdo, $matchdayNumber, $matchdayId);   
     }
 }
 // List

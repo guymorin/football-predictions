@@ -9,6 +9,8 @@ use FootballPredictions\Forms;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Championship;
+use FootballPredictions\Section\ChampionshipForm;
+use FootballPredictions\Section\ChampionshipPopup;
 
 $titlePage = '';
 if(
@@ -51,29 +53,29 @@ elseif($create == 1){
         echo "<h3>" . (Language::title('selectTheTeams')) . "</h3>\n";
         echo "<h4>" . $_SESSION['championshipName'] . " - "
                     . $_SESSION['seasonName']. "</h4>\n";
-        if($selectTeams != '') Championship::selectMultiPopup($pdo, $selectTeams);
-        echo Championship::selectMultiForm($pdo, $error, $form);          
+        if($selectTeams != '') ChampionshipPopup::selectMultiPopup($pdo, $selectTeams);
+        echo ChampionshipForm::selectMultiForm($pdo, $error, $form);          
     // Else create form
     } else {
         echo "<h3>" . (Language::title('createAChampionship')) . "</h3>\n";
         if($pdo->findName('championship', $championshipName))  $error->setError(Language::title('errorExists'));
-        elseif($championshipName != '') Championship::createPopup($pdo, $championshipName);
-        echo Championship::createForm($pdo, $error, $form);
+        elseif($championshipName != '') ChampionshipPopup::createPopup($pdo, $championshipName);
+        echo ChampionshipForm::createForm($pdo, $error, $form);
     }
 }
 // If Delete or Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyAChampionship')) . "</h3>\n";
-    echo Championship::modifyForm($pdo, $error, $form, $championshipId);    
+    echo ChampionshipForm::modifyForm($pdo, $error, $form, $championshipId);    
     if($delete == 1)            echo $form->popupConfirm('championship', 'id_championship', $championshipId);
     elseif($delete == 2){
         if($championshipId==0)  popup(Language::title('error'),"index.php?page=championship");
-        else                    Championship::deletePopup($pdo, $championshipId);
+        else                    ChampionshipPopup::deletePopup($pdo, $championshipId);
     }    
     elseif($modify == 1){
         if($championshipId==0)          popup(Language::title('error'),"index.php?page=championship");
-        elseif($championshipName != '') Championship::modifyPopup($pdo, $championshipName, $championshipId);
+        elseif($championshipName != '') ChampionshipPopup::modifyPopup($pdo, $championshipName, $championshipId);
     }
 }
 // If List (champoinship standings)

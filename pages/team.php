@@ -7,6 +7,8 @@ use FootballPredictions\App;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Team;
+use FootballPredictions\Section\TeamPopup;
+use FootballPredictions\Section\TeamForm;
 
 echo "<h2>" . Theme::icon('team') . " "
         . Language::title('team')
@@ -28,25 +30,25 @@ if(empty($_POST['marketValue'])){
 if($create == 1){
     echo "<h3>" . (Language::title('createATeam')) . "</h3>\n";
     if($pdo->findName('team', $teamName))  $error->setError(Language::title('errorExists'));
-    elseif($teamName!="") Team::createPopup($pdo, $teamName, $weatherCode);
-    echo Team::createForm($pdo, $error, $form, $teamName, $weatherCode);
+    elseif($teamName!="") TeamPopup::createPopup($pdo, $teamName, $weatherCode);
+    echo TeamForm::createForm($pdo, $error, $form, $teamName, $weatherCode);
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1 || $add == 1){
     App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyATeam')) . "</h3>\n";
-    echo Team::modifyForm($pdo, $error, $form, $teamId);
+    echo TeamForm::modifyForm($pdo, $error, $form, $teamId);
     if($delete == 1) echo $form->popupConfirm('team', 'id_team', $teamId);
-    elseif($delete == 2) Team::deletePopup($pdo, $teamId);
+    elseif($delete == 2) TeamPopup::deletePopup($pdo, $teamId);
     elseif($modify == 1){
-        if($teamName!="") Team::modifyPopup($pdo, $teamName, $weatherCode, $teamId);
+        if($teamName!="") TeamPopup::modifyPopup($pdo, $teamName, $weatherCode, $teamId);
     }
     elseif($add == 1){
-        if($teamId!="") Team::addPopup($pdo, $teamId);
+        if($teamId!="") TeamPopup::addPopup($pdo, $teamId);
     }
 } else {
     echo "<h3>" . (Language::title('marketValue')) . "</h3>";
-    echo Team::modifyFormMarketValue($pdo, $error, $form);
-    if(isset($val)) Team::modifyPopupMarketValue($pdo, $error, $val); 
+    echo TeamForm::modifyFormMarketValue($pdo, $error, $form);
+    if(isset($val)) TeamPopup::modifyPopupMarketValue($pdo, $error, $val); 
 }
 ?>

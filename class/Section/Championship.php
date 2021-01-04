@@ -2,7 +2,7 @@
 /**
  * 
  * Class Championship
- * Manage championship page
+ * Manage Championship page
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;

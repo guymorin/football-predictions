@@ -9,6 +9,8 @@ use FootballPredictions\Forms;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Player;
+use FootballPredictions\Section\PlayerPopup;
+use FootballPredictions\Section\PlayerForm;
 
 echo "<h2>" . Theme::icon('player') . " "
             . (Language::title('player'))
@@ -27,20 +29,20 @@ isset($_POST['id_team'])        ? $teamId = $error->check("Digit",$_POST['id_tea
 if($create==1){
     echo "<h3>" . (Language::title('createAPlayer')) . "</h3>\n";
     if(($playerName!="")&&($playerFirstname!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)){
-        Player::createPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition);
+        PlayerPopup::createPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition);
     }
-    echo Player::createForm($pdo, $error, $form);
+    echo PlayerForm::createForm($pdo, $error, $form);
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyAPlayer')) . "</h3>\n";
-    echo Player::modifyForm($pdo, $error, $form, $playerId);
+    echo PlayerForm::modifyForm($pdo, $error, $form, $playerId);
     if($delete == 1) echo $form->popupConfirm('player', 'id_player', $playerId, 'id_team', $teamId);
-    elseif($delete==2) Player::deletePopup($pdo, $teamId, $playerId);
+    elseif($delete==2) PlayerPopup::deletePopup($pdo, $teamId, $playerId);
     elseif($modify==1){
         if(($playerName!="")&&($playerFirstname==$_POST['firstname'])&&($playerPosition!="")&&($teamId>0)){
-            Player::modifyPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition);
+            PlayerPopup::modifyPopup($pdo, $teamId, $playerId, $playerName, $playerFirstname, $playerPosition);
         } 
     }
 }

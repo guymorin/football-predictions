@@ -7,6 +7,7 @@ use FootballPredictions\Theme;
 use FootballPredictions\Section\Championship;
 
 $titlePage = '';
+if(isset($_SESSION['matchdayNum'])) unset($_SESSION['matchdayNum']); 
 if(
     (isset($_SESSION['championshipId']))
     and ($_SESSION['championshipId']>0)

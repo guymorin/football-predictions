@@ -1,8 +1,8 @@
 <?php 
 /**
  * 
- * Class Season
- * Manage season page
+ * Class Season Form
+ * Manage Season Form page
  */
 namespace FootballPredictions\Section;
 use FootballPredictions\Language;
@@ -12,8 +12,7 @@ class Season
 {
     public function __construct(){
 
-    }
-        
+    }   
         
     static function selectSeason($pdo, $form){
         

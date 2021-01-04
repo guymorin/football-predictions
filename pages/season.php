@@ -8,6 +8,8 @@ use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Championship;
 use FootballPredictions\Section\Season;
+use FootballPredictions\Section\SeasonPopup;
+use FootballPredictions\Section\SeasonForm;
 ?>
 
 <h2><?= Theme::icon('season') . " "
@@ -37,20 +39,20 @@ if(
 elseif($create == 1){
     echo "<h3>" . Language::title('createASeason') . "</h3>\n";
     if($pdo->findName('season', $seasonName))  $error->addError(Language::title('name'), Language::title('errorExists'));
-    elseif($seasonName!="") Season::createPopup($pdo, $seasonName);
-    echo Season::createForm($error, $form);
+    elseif($seasonName!="") SeasonPopup::createPopup($pdo, $seasonName);
+    echo SeasonForm::createForm($error, $form);
 }
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
     echo "<h3>" . (Language::title('modifyASeason')) . "</h3>\n";
-    echo Season::modifyForm($pdo, $error, $form, $seasonId);
+    echo SeasonForm::modifyForm($pdo, $error, $form, $seasonId);
 
     if($delete == 1) echo $form->popupConfirm('season', 'id_season', $seasonId);
-    elseif($delete == 2) Season::deletePopup($pdo, $seasonId);
+    elseif($delete == 2) SeasonPopup::deletePopup($pdo, $seasonId);
     elseif($modify == 1){
         if($pdo->findName('season', $seasonName))  $error->addError(Language::title('name'), Language::title('errorExists'));
-        elseif($seasonName!="") Season::modifyPopup($pdo, $seasonName, $seasonId);
+        elseif($seasonName!="") SeasonPopup::modifyPopup($pdo, $seasonName, $seasonId);
     }
 }
 else {

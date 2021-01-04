@@ -7,6 +7,8 @@ use FootballPredictions\App;
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\Account;
+use FootballPredictions\Section\AccountForm;
+use FootballPredictions\Section\AccountPopup;
 
 // Values
 $userId = 0;
@@ -32,15 +34,15 @@ if(
     echo "<h3>" . Language::title('logon') . "</h3>\n";
     switch($logon){
         case 0:
-            echo Account::logonForm($pdo, $error, $form);
+            echo AccountForm::logonForm($pdo, $error, $form);
             break;
         case 1:
-            if(Account::logonPopup($pdo, $userLogin, $userPassword)==true){
+            if(AccountPopup::logonPopup($pdo, $userLogin, $userPassword)==true){
                 header('Location:index.php');
             } elseif($userLogin != '') {
                 $error->setError(Language::title('errorPassword'));
             }
-            echo  Account::logonForm($pdo, $error, $form);
+            echo  AccountForm::logonForm($pdo, $error, $form);
             break;
     }
 }
@@ -52,8 +54,8 @@ elseif(
     echo Account::titleInstall();
     if($pdo->findName('fp_user', $userLogin))   $error->addError(Language::title('login'), Language::title('errorExists'));
     elseif($userPassword != $userPassword2)     $error->addError(Language::title('password'), Language::title('errorPasswordNoMatch'));
-    elseif($userLogin!="")                      Account::createPopup($pdo, $userLogin, $userPassword);
-    echo Account::createForm($error, $form);
+    elseif($userLogin!="")                      AccountPopup::createPopup($pdo, $userLogin, $userPassword);
+    echo AccountForm::createForm($error, $form);
 }
 // If Delete or Modify display form
 elseif($delete == 1  || $delete == 2 || $modify == 1 || $modifyuser == 1){
@@ -61,13 +63,13 @@ elseif($delete == 1  || $delete == 2 || $modify == 1 || $modifyuser == 1){
     App::exitNoAdmin();
     echo Account::titleModify($pdo, $error, $form, $userId);
     if($delete == 1)                                echo $form->popupConfirm('account', 'id_fp_user', $userId);
-    elseif($delete == 2)                            Account::deletePopup($pdo, $userId);
-    elseif(($modify == 1) and ($userLogin!=""))     Account::modifyPopup($pdo, $userId, $userLogin, $userPassword, $userLanguage, $userTheme);
-    elseif(($modifyuser == 1) and ($userRole!=""))  Account::modifyUserPopup($pdo, $userId, $userRole);
+    elseif($delete == 2)                            AccountPopup::deletePopup($pdo, $userId);
+    elseif(($modify == 1) and ($userLogin!=""))     AccountPopup::modifyPopup($pdo, $userId, $userLogin, $userPassword, $userLanguage, $userTheme);
+    elseif(($modifyuser == 1) and ($userRole!=""))  AccountPopup::modifyUserPopup($pdo, $userId, $userRole);
 // Else List of accounts
 } else {
     echo Account::title();
     echo "<h3>" . Language::title('myAccount') . "</h3>\n";
-    echo Account::modifyForm($pdo, $error, $form, $_SESSION['userId']);
+    echo AccountForm::modifyForm($pdo, $error, $form, $_SESSION['userId']);
 }
 ?>
