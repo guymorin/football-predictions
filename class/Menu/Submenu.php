@@ -121,7 +121,7 @@ class Submenu
                 $classLMD = $currentClass;
                 break;
         }
-        if(isset($_SESSION['matchdayId'])){ 
+        if(isset($_SESSION['matchdayNum']) && $_SESSION['matchdayNum']>0){ 
             $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
             $val .= "<a" . $classS . " href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a>";
             if(($_SESSION['role'])==2){
