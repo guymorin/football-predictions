@@ -59,6 +59,8 @@ function result($type,$pdo,$d='',$team1Weather=0,$team2Weather=0){
             cr.bestPlayers1,cr.bestPlayers2,
             cr.marketValue1,cr.marketValue2,
             cr.home_away1,cr.home_away2,
+            cr.trend1,cr.trend2,            
+            cr.histo1,cr.histoD,cr.histo2,            
             c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
             c1.weather_code,
             m.result, m.date, md.number FROM matchgame m

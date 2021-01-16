@@ -59,6 +59,8 @@ class Statistics
             cr.bestPlayers1,cr.bestPlayers2,
             cr.marketValue1,cr.marketValue2,
             cr.home_away1,cr.home_away2,
+            cr.trend1,cr.trend2,            
+            cr.histo1,cr.histoD,cr.histo2,            
             c1.name as name1,c2.name as name2,c1.id_team as eq1,c2.id_team as eq2,
             m.result, m.date, m.odds1, m.oddsD, m.odds2, j.number, j.id_matchday 
             FROM matchgame m
@@ -142,12 +144,13 @@ class Statistics
         }
         
         foreach ($data as $d)
-        { 
+        {
             $pred = new Predictions();
             
             // Marketvalue
             $isResult = false;
-            $pred->setCriteria($d, $pdo, true);
+            $isManual = true;
+            $pred->setCriteria($d, $pdo, true, $isManual);
             
             // Sum
             $this->win = '';

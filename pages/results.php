@@ -28,8 +28,10 @@ if($modify==1){
         isset($_POST['red1'])           ? $r1Match[$v]=$error->check("Digit",$_POST['red1'][$v], Language::title('redCards').' 1') : null;
         isset($_POST['red2'])           ? $r2Match[$v]=$error->check("Digit",$_POST['red2'][$v], Language::title('redCards').' 2') : null;
         
-        $req.= "UPDATE matchgame SET ";
-        $req.= "result='".$rMatch[$v]."'";
+        $result = $rMatch[$v];
+        $req.= "UPDATE matchgame SET result=";
+        if($result=='') $req.= "NULL";
+        else             $req.= "'".$result."'";
         $cpt=1;
         if($dMatch[$v]!=""){
             if($cpt==1){

@@ -83,17 +83,17 @@ class Predictions
         $this->bestPlayers2 = intval($d->bestPlayers2);
     }
     
-    public function setCriteria($d,$pdo,$result){
+    public function setCriteria($d,$pdo,$result,$manual=false){
         $this->initValues();
         $this->setMotivation($pdo,$d,$result);
         $this->setCurrentForm($pdo,$d,$result);
         $this->setPhysicalForm($pdo,$d,$result);
-        $this->setWeather($pdo, $d,$result);
+        $this->setWeather($pdo, $d,$result,$manual);
         $this->setBestPlayers($d);
-        $this->setMarketValue($pdo,$d,$result);
+        $this->setMarketValue($pdo,$d,$result,$manual);
         $this->setHomeAway($pdo,$d,$result);
-        $this->setTrend($pdo,$d);
-        $this->setHistory($pdo,$d);
+        $this->setTrend($pdo,$d,$result,$manual);
+        $this->setHistory($pdo,$d,$result,$manual);
     }
     
     private function setCurrentForm($pdo,$d,$result=false){
@@ -110,13 +110,19 @@ class Predictions
         
     }
     
-    private function setHistory($pdo,$d){
+    private function setHistory($pdo,$d,$result=false,$manual=false){
         // Predictions history
         $this->historyHome=$this->historyDraw=$this->historyAway=0;
-        $r = result('history',$pdo,$d,$this->team1Weather,$this->team2Weather);
-        $this->historyHome=criterion("predictionsHistoryHome",$r,$pdo);
-        $this->historyDraw=criterion("predictionsHistoryDraw",$r,$pdo);
-        $this->historyAway=criterion("predictionsHistoryAway",$r,$pdo);
+        if($result or $manual){
+            $this->historyHome = $d->histo1;
+            $this->historyDraw = $d->histoD;
+            $this->historyAway = $d->histo2;
+        } else {
+            $r = result('history',$pdo,$d,$this->team1Weather,$this->team2Weather);
+            $this->historyHome=criterion("predictionsHistoryHome",$r,$pdo);
+            $this->historyDraw=criterion("predictionsHistoryDraw",$r,$pdo);
+            $this->historyAway=criterion("predictionsHistoryAway",$r,$pdo);
+        }
     }
     
     private function setHomeAway($pdo,$d,$result=false){
@@ -142,12 +148,11 @@ class Predictions
         }
         $this->dom = intval($this->dom);
         $this->ext = intval($this->ext);
-        
     }
     
-    private function setMarketValue($pdo,$d,$result=false){
+    private function setMarketValue($pdo,$d,$result=false,$manual=false){
         // Market value
-        if($result){
+        if($result or $manual){
             $this->mv1 = $d->marketValue1;
             $this->mv2 = $d->marketValue2;
         } else {
@@ -223,12 +228,16 @@ class Predictions
         return $v;
     }
     
-    private function setTrend($pdo,$d){
+    private function setTrend($pdo,$d,$result=false,$manual=false){
         // Trend
         $this->trend1= $this->trend2 = 0;
-        if(isset($_SESSION['matchdayNum'])) $matchdayNum = $_SESSION['matchdayNum'];
-        else $matchdayNum = $d->number;
-        if($matchdayNum > 3){
+        if($manual or $result){
+            $this->trend1 = $d->trend1;
+            $this->trend2 = $d->trend2;
+        } else {
+            if(isset($_SESSION['matchdayNum'])) $matchdayNum = $_SESSION['matchdayNum'];
+            else $matchdayNum = $d->number;
+            if($matchdayNum > 3){
                 $trendTeam1 = criterion('trendTeam1', $d, $pdo);
                 $trendTeam2 = criterion('trendTeam2', $d, $pdo);
                 if($trendTeam1>6){
@@ -237,13 +246,14 @@ class Predictions
                 if($trendTeam2<2){
                     $this->trend2 = -1;
                 }
+            }
         }
         $this->trend1 = intval($this->trend1);
         $this->trend2 = intval($this->trend2);
     }
     
-    private function setWeather($pdo,$d,$result=false){
-        if($result){
+    private function setWeather($pdo,$d,$result=false,$manual=false){
+        if($manual or $result){
             if(isset($d->weather1)) $this->team1Weather = $d->weather1;
             if(isset($d->weather1)) $this->team2Weather = $d->weather2;
         } else {
@@ -478,24 +488,72 @@ class Predictions
         
         echo "          <tr>\n";
         echo "  		  <td>";
-        echo "<a href='#' class='tooltip'><big>".Theme::icon('predictionsHistory')."</big>";
-        echo "<span>".Language::title('predictionsHistoryText')."</span></a>";
-        echo " " . Language::title('predictionsHistory');
-        echo "</td>";
-        echo "            <td>$this->historyHome</td>\n";
-        echo "            <td>$this->historyDraw</td>\n";
-        echo "            <td>$this->historyAway</td>\n";
-        echo "          </tr>\n";
-        
-        echo "          <tr>\n";
-        echo "  		  <td>";
         echo "<a href='#' class='tooltip'><big>".Theme::icon('trend')."</big>";
         echo "<span>".Language::title('trendText')."</span></a>";
         echo " " . Language::title('trend');
         echo "</td>";
-        echo "            <td>$this->trend1</td>\n";
-        echo "            <td>0</td>\n";
-        echo "            <td>$this->trend2</td>\n";
+
+        if($d->result!="") echo "<td>".$this->trend1."</td>\n";
+        else {
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='trend1[$this->id]' value='";
+            echo $this->trend1;
+            echo "'></td>\n";
+        }
+        
+        echo "  		  <td></td>\n";
+        
+        if($d->result!="") echo "<td>".$this->trend2."</td>\n";
+        else {
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='trend2[$this->id]' value='";
+            echo $this->trend2;
+            echo "'></td>\n";
+        }
+        
+        echo "          </tr>\n";
+        
+        echo "          <tr>\n";
+        echo "  		  <td>";
+        echo "<a href='#' class='tooltip'><big>".Theme::icon('predictionsHistory')."</big>";
+        echo "<span>".Language::title('predictionsHistoryText')."</span></a>";
+        echo " " . Language::title('predictionsHistory');
+        echo "</td>";
+        
+        if($d->result!="") echo "<td>$this->historyHome</td>\n";
+        else {
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='histo1[$this->id]' value='";
+            echo $this->historyHome;
+            echo "'></td>\n";
+        }
+        
+        if($d->result!="") echo "<td>$this->historyDraw</td>\n";
+        else {
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='histoD[$this->id]' value='";
+            echo $this->historyDraw;
+            echo "'></td>\n";
+        }
+        
+        if($d->result!="") echo "<td>$this->historyAway</td>\n";
+        else {
+            echo "  		  <td><input size='1' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "name='histo2[$this->id]' value='";
+            echo $this->historyAway;
+            echo "'></td>\n";
+        }
+        
         echo "          </tr>\n";
         
         echo "  		<tr>\n";

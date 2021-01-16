@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : footcore302.mysql.db
--- Généré le :  Dim 03 mai 2020 à 17:59
--- Version du serveur :  5.6.46-log
+-- Généré le :  sam. 16 jan. 2021 à 22:09
+-- Version du serveur :  5.6.50-log
 -- Version de PHP :  7.0.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -55,7 +55,12 @@ CREATE TABLE `criterion` (
   `weather2` int(11) NOT NULL DEFAULT '0',
   `bestPlayers2` int(11) NOT NULL DEFAULT '0',
   `marketValue2` int(11) NOT NULL DEFAULT '0',
-  `home_away2` int(11) NOT NULL DEFAULT '0'
+  `home_away2` int(11) NOT NULL DEFAULT '0',
+  `trend1` int(11) NOT NULL DEFAULT '0',
+  `trend2` int(11) NOT NULL DEFAULT '0',
+  `histo1` int(11) NOT NULL DEFAULT '0',
+  `histoD` int(11) NOT NULL DEFAULT '0',
+  `histo2` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -107,7 +112,7 @@ CREATE TABLE `fp_user` (
   `name` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `registration` date NOT NULL,
-  `language` varchar(5) NOT NULL DEFAULT 'en_US',
+  `language` varchar(5) NOT NULL DEFAULT 'fr_FR',
   `theme` int(11) NOT NULL DEFAULT '1',
   `last_season` int(11) DEFAULT NULL,
   `last_championship` int(11) DEFAULT NULL,
