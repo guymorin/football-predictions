@@ -86,12 +86,12 @@ if($exit==1){
 }
 
 // If no install and no login then page is account
-if($page!='install'){
-    if(empty($_SESSION['userLogin'])) $page="account";
+if($page!='install' and $page!='preferences' and empty($_SESSION['userLogin'])){
+    $page="account";
 }
 
 /* Header */
-
+App::setTitle($pdo);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -118,7 +118,6 @@ function myFunction() {
     <nav id='fp'>
 	<?= Home::menu();?>
 	</nav>
-	<?= App::setTitle(Language::title('site'));?>
     <h1><a href="/"><?= App::getTitle();?>
     <?php
         if(isset($_SESSION['seasonName'])) {

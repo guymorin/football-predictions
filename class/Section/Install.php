@@ -54,7 +54,7 @@ class Install
             file_put_contents($file, $info);
         }
         $_SESSION['install'] = 'true';
-        popup($val,"index.php?page=account&create=1");
+        popup($val,"index.php?page=install");
     }
 }
 ?>

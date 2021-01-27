@@ -202,6 +202,23 @@ class Admin
         }
         return $val;
     }
+
+    static function preferences() {
+        $val = '';
+        if(($_SESSION['role'])==2){
+        $val .= "   <td>" . ucfirst(Language::title('preferences')) . "</td>\n";
+        $val .= "   <td>\n";
+        $val .= "   <form action='/index.php?page=preferences' method='POST'>\n";
+        $val .= "            <button type='submit'>" . Theme::icon('preferences') . " "
+            . (Language::title('Preferences'))
+            . "</button>\n";
+            $val .= "   </form>\n";
+            $val .= "   </td>\n";
+            $val .= "   <td></td>\n";
+            $val = Admin::surround($val);
+        }
+        return $val;
+    }
     
     static function seasonList($pdo,$form){
         $val = '';

@@ -7,8 +7,10 @@ use FootballPredictions\Language;
 use FootballPredictions\Section\Install;
 use FootballPredictions\Theme;
 
+if($_SESSION['install']=='true') header('Location:index.php?page=preferences');
+
 echo "<h2>" . Theme::icon('admin'). " "
-    .Language::title('install') ." 1/2"
+    .Language::title('install') ." 1/3"
         . "</h2>\n";
 
 // Values

@@ -21,14 +21,19 @@ class App
         self::$database = null;
     }
     
+    public static function checkInstall(){
+        $val = false;
+        $dir = 'install';
+        $files = scandir($dir);
+        foreach($files as $f){
+            if($f == 'AppConnect.inc') $val = true;
+        }
+        return $val;
+    }
+    
     public static function getDb(){
         if(self::$database == null){
-            $info = false;
-            $dir = 'install';
-            $files = scandir($dir);
-            foreach($files as $f){
-                if($f == 'AppConnect.inc') $info = true;
-            }
+            $info = self::checkInstall();
             if($info){
                 require 'install/AppConnect.inc';
                 self::$DB_HOST = $DB_HOST;
@@ -45,8 +50,20 @@ class App
         return self::$title;
     }
 
-    public static function setTitle($title){
-        self::$title = $title;
+    public static function setTitle($pdo){
+        $counter = 0;
+        if(self::checkInstall()){
+            $req = "SELECT name FROM fp_preferences LIMIT 0,1;";
+            $data = $pdo->prepare($req,null,true);
+            $counter = $pdo->rowCount();
+        }
+        if($counter>0){
+            foreach ($data as $d) {
+                self::$title = $d->name;
+            }
+        } else {
+            self::$title = Language::title('site');
+        }
     }
     
     public static function exitNoAdmin(){

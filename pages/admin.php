@@ -17,6 +17,7 @@ use FootballPredictions\Section\Admin;
     $val = "<h3>".ucfirst(Language::title('administrator'))."</h3>\n";
     $val .= "<table class='admin'>\n";
     $val .= Admin::siteData();
+    $val .= Admin::preferences();
     $val .= Admin::accountList($pdo,$form);
     $val .= Admin::seasonList($pdo,$form);
     $val .= Admin::championshipList($pdo,$form);

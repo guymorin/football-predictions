@@ -21,6 +21,7 @@ $array = array(
     "OK" => "<big>&#x2714;</big>",
     "player" => "&#127939;",
     "predictionsHistory" => "&#128218;",
+    "preferences" => "&#9881;",
     "quicknav" => "&#128640;",
     "redcard" => "&#128997;",
     "season" => "&#127937;",

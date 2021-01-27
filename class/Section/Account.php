@@ -23,7 +23,7 @@ class Account
     
     static function titleInstall(){
         $val = "<h2>";
-        if(isset($_SESSION['install']) and $_SESSION['install'] == 'true')  $val .= Theme::icon('admin'). " " . Language::title('install')." 2/2";
+        if(isset($_SESSION['install']) and $_SESSION['install'] == 'true')  $val .= Theme::icon('admin'). " " . Language::title('install')." 3/3";
         else                                $val .= Language::title('homepage');
         $val .= "</h2>\n";
         $val .= "<h3>";

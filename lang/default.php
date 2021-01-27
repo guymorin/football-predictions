@@ -375,6 +375,9 @@ function getMessage($val,$count){
         case "predictionsHistoryText":
     		$val = _("Old results on the same criteria");
     		break;
+        case "preferences":
+            $val = _("Preferences");
+            break;
         case "previous":
     		$val = _("Previous");
     		break;

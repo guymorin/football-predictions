@@ -116,7 +116,7 @@ class Player
             }
         } else {
             $val .= "        <tr>\n";
-            $val .= "<td colspan='4'>" . Language::title('notPlayed') . "</td>\n";
+            $val .= "<td colspan='4' style='text-align:center'>" . Language::title('notPlayed') . "</td>\n";
             $val .= "        </tr>\n";
         }
         $val .= "  </table>\n";

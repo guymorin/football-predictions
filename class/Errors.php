@@ -149,6 +149,14 @@ class Errors
                         return null;
                     }
                     break;
+                case "URL":
+                    $aValid = array('.','-');
+                    if(ctype_alnum(str_replace($aValid,'',$val))) return $val;
+                    else {
+                        $this->setError($title, Language::title('error')." (URL)");
+                        return null;
+                    }
+                    break;
                 default:
                     break;
             }
