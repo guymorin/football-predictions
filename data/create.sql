@@ -1,11 +1,4 @@
 -- phpMyAdmin SQL Dump
--- version OVH
--- https://www.phpmyadmin.net/
---
--- Hôte : footcore302.mysql.db
--- Généré le :  sam. 16 jan. 2021 à 22:09
--- Version du serveur :  5.6.50-log
--- Version de PHP :  7.0.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +12,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `footcore302`
+-- Base de données :  `football_predictions`
 --
 
 -- --------------------------------------------------------
@@ -62,6 +55,18 @@ CREATE TABLE `criterion` (
   `histoD` int(11) NOT NULL DEFAULT '0',
   `histo2` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `fp_preferences`
+--
+
+CREATE TABLE `fp_preferences` (
+  `id_fp_preferences` int NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `url` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -257,6 +262,13 @@ ALTER TABLE `criterion`
   ADD PRIMARY KEY (`id_criterion`),
   ADD KEY `C_Match` (`id_matchgame`);
 
+
+--
+-- Index pour la table `fp_preferences`
+--
+ALTER TABLE `fp_preferences`
+  ADD PRIMARY KEY (`id_fp_preferences`);
+
 --
 -- Index pour la table `fp_theme`
 --
@@ -354,6 +366,13 @@ ALTER TABLE `championship`
 --
 ALTER TABLE `criterion`
   MODIFY `id_criterion` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `fp_preferences`
+--
+ALTER TABLE `fp_preferences`
+  MODIFY `id_fp_preferences` int NOT NULL AUTO_INCREMENT;
+COMMIT;
 
 --
 -- AUTO_INCREMENT pour la table `fp_theme`
