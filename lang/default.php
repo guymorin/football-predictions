@@ -540,6 +540,9 @@ function getMessage($val,$count){
         case "weathercode":
     		$val = _("Weather code");
     		break;
+        case "websiteName":
+            $val = _("Website name");
+            break;
         case "win":
     		$val = _("W");
     		break;

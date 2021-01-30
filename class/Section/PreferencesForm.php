@@ -21,7 +21,7 @@ class PreferencesForm
         $val .= "<fieldset>\n";
         $val .= "<legend>" . (Language::title('Preferences')) . "</legend>\n";
         $val .= $error->getError();
-        $val .= $form->input(Language::title('name'), 'name');
+        $val .= $form->input(Language::title('websiteName'), 'name');
         $val .= "<br />\n";
         $val .= "</fieldset>\n";
         $val .= "<fieldset>\n";
@@ -41,7 +41,7 @@ class PreferencesForm
         $val .= "<fieldset>\n";
         $val .= "<legend>" . (Language::title('Preferences')) . "</legend>\n";
         $val .= $error->getError();
-        $val .= $form->input(Language::title('name'),'name');
+        $val .= $form->input(Language::title('websiteName'),'name');
         $val .= "<br />\n";
         $val .= "</fieldset>\n";
         $val .= "<fieldset>\n";
