@@ -9,11 +9,11 @@ use FootballPredictions\Section\PreferencesForm;
 use FootballPredictions\Theme;
 use FootballPredictions\Section\PreferencesPopup;
 
-echo "<h2>" . Theme::icon('preferences'). " ";
+echo "<h2>";
 if(isset($_SESSION['install']) and $_SESSION['install']==true) {
-    echo Language::title('install') ." 2/3";
+    echo Theme::icon('admin'). " " . Language::title('install') ." 2/3";
 } else {
-    echo Language::title('Preferences');
+    echo Theme::icon('preferences'). " " . Language::title('Preferences');
 }
 echo "</h2>\n";
 

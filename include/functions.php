@@ -190,6 +190,8 @@ function result($type,$pdo,$d='',$team1Weather=0,$team2Weather=0){
             AND cr.marketValue2 = :marketValue2
             AND cr.home_away1 = :home_away1
             AND cr.home_away2 = :home_away2
+            AND cr.trend1 = :trend1
+            AND cr.trend2 = :trend2
             AND m.date < :mdate;";
             $r = $pdo->prepare($req,[
                 'motivation1' => $d->motivation1,
@@ -206,6 +208,8 @@ function result($type,$pdo,$d='',$team1Weather=0,$team2Weather=0){
                 'marketValue2' => $d->marketValue2,
                 'home_away1' => $d->home_away1,
                 'home_away2' => $d->home_away2,
+                'trend1' => $d->trend1,
+                'trend2' => $d->trend2,
                 'mdate' => $d->date
             ]);
             break;

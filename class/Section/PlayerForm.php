@@ -53,6 +53,7 @@ class PlayerForm
             
         ],true);
         $counter = $pdo->rowCount();
+        $isThisSeason = false;
         if($counter>0){
             $table = "<table>\n";
             $table .= "   <tr>\n";
@@ -62,6 +63,7 @@ class PlayerForm
             foreach($data as $d){
                 $table .= "   <tr>\n";
                 $table .= "       <td>" . $d->season . "</td>\n";
+                if($d->season==$_SESSION['seasonName']) $isThisSeason = true;
                 $table .= "       <td>" . $d->team . "</td>\n";
                 $table .= "   </tr>\n";
             }
@@ -96,7 +98,11 @@ class PlayerForm
         $val .= "</fieldset>\n";
         $val .= "<fieldset>\n";
         $val .= $form->submit(Theme::icon('modify')." "
-                .Language::title('modify'));
+            .Language::title('modify'));
+        if(!$isThisSeason){
+            $val .= $form->submit(Theme::icon('add')." "
+                .$_SESSION['seasonName']);
+        }
         $val .= "</form>\n";
         $val .= $form->deleteForm('player', 'id_player', $playerId, false, 'id_team', $data->id_team);
         $val .= "</fieldset>\n";

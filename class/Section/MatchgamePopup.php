@@ -15,11 +15,10 @@ class MatchgamePopup
 
     }
      
-    static function createPopup($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date){
-        
+    static function createPopup($pdo, $team1, $team2, $result, $odds1, $oddsD, $odds2, $date){        
         $pdo->alterAuto('matchgame');
         $req="INSERT INTO matchgame
-            VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."','".$result."','".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0);";
+            VALUES(NULL,'".$_SESSION['matchdayId']."','".$team1."','".$team2."',".$result.",'".$odds1."','".$oddsD."','".$odds2."','".$date."',0,0);";
         $pdo->exec($req);
         popup(Language::title('created'),"index.php?page=matchgame&create=1");
     }

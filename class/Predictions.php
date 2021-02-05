@@ -7,6 +7,7 @@
 namespace FootballPredictions;
 use \PDO;
 use FootballPredictions\Section\Matchday;
+use FootballPredictions\Plugin\MeteoConcept;
 
 class Predictions
 {
@@ -88,12 +89,12 @@ class Predictions
         $this->setMotivation($pdo,$d,$result);
         $this->setCurrentForm($pdo,$d,$result);
         $this->setPhysicalForm($pdo,$d,$result);
-        $this->setWeather($pdo, $d,$result,$manual);
         $this->setBestPlayers($d);
         $this->setMarketValue($pdo,$d,$result,$manual);
         $this->setHomeAway($pdo,$d,$result);
         $this->setTrend($pdo,$d,$result,$manual);
         $this->setHistory($pdo,$d,$result,$manual);
+        $this->setWeather($pdo, $d,$result,$manual);
     }
     
     private function setCurrentForm($pdo,$d,$result=false){
@@ -258,93 +259,30 @@ class Predictions
             if(isset($d->weather1)) $this->team2Weather = $d->weather2;
         } else {
             // Weather
+            
             if($d->date!=""){
                 $date1 = new \DateTime($d->date);
                 $date2 = new \DateTime(date('Y-m-d'));
                 $diff = $date2->diff($date1)->format("%a");
                 
                 if($diff>=0 && $diff<14){
-                    $api="https://api.meteo-concept.com/api/forecast/daily/".$diff."?token=1aca29e38eb644104b41975b55a6842fc4fb2bfd2f79f85682baecb1c5291a3e&insee=".$d->weather_code;
-                    $weatherData = file_get_contents($api);
-                    $rain=0;
                     
-                    if ($weatherData !== false){
-                        $decoded = json_decode($weatherData);
-                        $city = $decoded->city;
-                        $forecast = $decoded->forecast;
-                        $rain=$forecast->rr1;
-                    }
-                    switch($rain){
-                        case ($rain==0):
-                            $this->cloud="&#x1F323;";// Sun
-                            $this->cloudText=Language::title('weatherSun');
-                            break;
-                        case ($rain>=0 && $rain<1):
-                            $this->cloud="&#x1F324;";// Low rain
-                            $this->cloudText=Language::title('weatherLowRain');
-                            $weather=0;
-                            // if market value of team 2 is higher then point for team 2 (low rain)
-                            if(round($this->v2/10)>round($this->v1/10)){
-                                $this->team2Weather=$weather;
-                                $this->team2Weather=0;
-                            }
-                            // else if market value is equal then point for both team
-                            elseif(round($this->v2/10)==round($this->v1/10)){
-                                $this->team1Weather=$weather;
-                                $this->team2Weather=$weather;
-                            }
-                            // else it means market value of team 1 is higher then point for team 1
-                            else {
-                                $this->team1Weather=$weather;
-                                $this->team2Weather=0;
-                            }
-                            break;
-                        case ($rain>=1&&$rain<3):
-                            $this->cloud="&#x1F326;";// Middle rain
-                            $this->cloudText=Language::title('weatherMiddleRain');
-                            $weather=1;
-                            // if market value of team 2 is higher then points for team 1
-                            if(round($this->v2/10)>round($this->v1/10)){
-                                $this->team1Weather=$weather;
-                                $this->team2Weather=0;
-                            }
-                            // else if market value is equal then points for both team
-                            elseif(round($this->v2/10)==round($this->v1/10)){
-                                $this->team1Weather=$weather;
-                                $this->team2Weather=$weather;
-                            }
-                            // else it means market value of team 1 is higher then points for team 2
-                            else {
-                                $this->team1Weather=0;
-                                $this->team2Weather=$weather;
-                            }
-                            break;
-                        case ($rain>=3):
-                            $this->cloud="&#x1F327;";//High rain
-                            $this->cloudText=Language::title('weatherHighRain');
-                            $weather=2;
-                            // if market value of team 2 is higher then points for team 1
-                            if(round($this->v2/10)>round($this->v1/10)){
-                                $this->team1Weather=$weather;
-                                $this->team2Weather=0;
-                            }
-                            // else if market value is equal then points for both team
-                            elseif(round($this->v2/10)==round($this->v1/10)){
-                                $this->team1Weather=$weather;
-                                $this->team2Weather=$weather;
-                            }
-                            // else it means market value of team 1 is higher then points for team 2
-                            else {
-                                $this->team1Weather=0;
-                                $this->team2Weather=$weather;
-                            }
-                            break;
+                    $req = "SELECT plugin_name
+                    FROM plugin
+                    WHERE activate=1
+                    AND plugin_name='meteo-concept';";
+                    $data = $pdo->prepare($req,[],true);
+                    $counter = $pdo->rowCount();
+                    if($counter==1){
+                        MeteoConcept::setWeather($pdo, $diff, $this->mv1, $this->mv2, $d->weather_code);
+                        $this->team1Weather = MeteoConcept::getTeamWeather(1);
+                        $this->team2Weather = MeteoConcept::getTeamWeather(2);
                     }
                 }
             }
         }
-        $this->team1Weather=intval($this->team1Weather);
-        $this->team2Weather=intval($this->team2Weather);
+        $this->team1Weather = intval($this->team1Weather);
+        $this->team2Weather = intval($this->team2Weather);
     }
     
     public function displayCriteria($d, $form, $manual=false){
@@ -376,34 +314,21 @@ class Predictions
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
-        echo "  		  <td>";
-        echo "<a href='#' class='tooltip'><big>".Theme::icon('currentForm')."</big>";
-        echo "<span>".Language::title('currentFormText')."</span></a>";
-        echo " " . Language::title('currentForm');
-        echo "</td>";
-        if($d->result!="") echo "<td>".$this->currentFormTeam1."</td>\n";
-        else {
-            echo "  		  <td><input size='1' name='currentForm1[$this->id]' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "value='".$this->currentFormTeam1."'></td>\n";
-        }
-        echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$this->currentFormTeam2."</td>\n";
-        else {
-            echo "  		  <td><input size='1' name='currentForm2[$this->id]' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "value='".$this->currentFormTeam2."'></td>\n";
-        }
-        
-        echo "  		<tr>\n";
         echo "  		  <td>" . Language::title('physicalForm') . "</td>\n";
         if($d->result!="") echo "<td>".$this->physicalC1."</td>\n";
         else echo "  		  <td><input size='1' type='number' name='physicalForm1[$this->id]' value='".$this->physicalC1."' placeholder='0'></td>\n";
         echo "  		  <td></td>\n";
         if($d->result!="") echo "<td>".$this->physicalC2."</td>\n";
         else echo "  		  <td><input size='1' type='number' name='physicalForm2[$this->id]' value='".$this->physicalC2."' placeholder='0'></td>\n";
+        echo "          </tr>\n";
+
+        echo "  		<tr>\n";
+        echo "  		  <td>" . (Language::title('bestPlayers')) . "</td>\n";
+        if($d->result!="") echo "<td>".$d->bestPlayers1."</td>\n";
+        else echo "  		  <td><input size='1' type='number' name='bestPlayers1[$this->id]' value='".$d->bestPlayers1."' placeholder='0'></td>\n";
+        echo "  		  <td></td>\n";
+        if($d->result!="") echo "<td>".$d->bestPlayers2."</td>\n";
+        else echo "  		  <td><input size='1' type='number' name='bestPlayers2[$this->id]' value='".$d->bestPlayers2."' placeholder='0'></td>\n";
         echo "          </tr>\n";
         
         echo "  		<tr>\n";
@@ -415,31 +340,18 @@ class Predictions
         echo "</td>\n";
         if($d->result!="") echo "<td>".$this->team1Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
+            echo "  		  <td><input size='1' type='number' placeholder='0' ";
             echo "name='weather1[$this->id]' value='".$this->team1Weather."'></td>\n";
         }
         echo "  		  <td></td>\n";
         
         if($d->result!="") echo "<td>".$this->team2Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
+            echo "  		  <td><input size='1' type='number' placeholder='0' ";
             echo "name='weather2[$this->id]' value='".$this->team2Weather."'></td>\n";
         }
         echo "          </tr>\n";
-        
-        echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('bestPlayers')) . "</td>\n";
-        if($d->result!="") echo "<td>".$d->bestPlayers1."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='bestPlayers1[$this->id]' value='".$d->bestPlayers1."' placeholder='0'></td>\n";
-        echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$d->bestPlayers2."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='bestPlayers2[$this->id]' value='".$d->bestPlayers2."' placeholder='0'></td>\n";
-        echo "          </tr>\n";
-        
+         
         echo "  		<tr>\n";
         echo "  		  <td>";
         echo "<a href='#' class='tooltip'><big>".Theme::icon('team')."</big>";

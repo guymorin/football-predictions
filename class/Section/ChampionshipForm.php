@@ -61,13 +61,11 @@ class ChampionshipForm
         $val = '';
         $val .= "<form action='index.php?page=championship' method='POST'>\n";
         $val .= $form->inputAction('create');
-        $val .= "</form>\n";
         $req = "SELECT id_team, name FROM team
                 ORDER BY name;";
         $data = $pdo->query($req);
         $counter = $pdo->rowCount();
         if($counter > 0){
-            $val .= "<form action='index.php?page=championship' method='POST'>\n";
             $val .= $form->inputAction('selectTeams');
             $val .= $error->getError();
             $val .= "<fieldset>\n";

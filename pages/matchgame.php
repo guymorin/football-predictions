@@ -19,7 +19,7 @@ echo "<h2>" . (Theme::icon('matchday')) . " "
 
 // Values
 $date = "";
-$result = NULL;
+$result = 'NULL';
 $idMatch = $team1 = $team2 = $odds1 = $oddsD = $odds2 = 0;
 isset($_POST['id_matchgame'])   ? $idMatch=$error->check("Digit",$_POST['id_matchgame']) : null;
 isset($_POST['team_1'])         ? $team1=$error->check("Digit",$_POST['team_1'], Language::title('team').' 1') : null;
@@ -39,6 +39,7 @@ if($create==1){
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
+    var_dump($POST);
     echo "<h3>" . (Language::title('modifyAMatch')) . "</h3>\n";
     echo MatchgameForm::modifyForm($pdo, $error, $form, $idMatch);
     if($delete==1)       echo $form->popupConfirm('matchgame', 'id_matchgame', $idMatch);
