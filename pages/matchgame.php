@@ -24,7 +24,7 @@ $idMatch = $team1 = $team2 = $odds1 = $oddsD = $odds2 = 0;
 isset($_POST['id_matchgame'])   ? $idMatch=$error->check("Digit",$_POST['id_matchgame']) : null;
 isset($_POST['team_1'])         ? $team1=$error->check("Digit",$_POST['team_1'], Language::title('team').' 1') : null;
 isset($_POST['team_2'])         ? $team2=$error->check("Digit",$_POST['team_2'], Language::title('team').' 2') : null;
-isset($_POST['result'])         ? $result=$error->check("Result",$_POST['result'], Language::title('result')) : null;
+isset($_POST['result'])         ? $result=$error->check("Result",$_POST['result'], Language::title('result')) : $result = 'NULL';
 isset($_POST['odds1'])          ? $odds1=$error->check("Num",$_POST['odds1'], Language::title('odds').' 1') : null;
 isset($_POST['oddsD'])          ? $oddsD=$error->check("Num",$_POST['oddsD'], Language::title('odds').' '.Language::title('draw')) : null;
 isset($_POST['odds2'])          ? $odds2=$error->check("Num",$_POST['odds2'], Language::title('odds').' 2') : null;
@@ -39,7 +39,6 @@ if($create==1){
 // Delete / Modify
 elseif($delete == 1  || $delete == 2 || $modify == 1){
     App::exitNoAdmin();
-    var_dump($POST);
     echo "<h3>" . (Language::title('modifyAMatch')) . "</h3>\n";
     echo MatchgameForm::modifyForm($pdo, $error, $form, $idMatch);
     if($delete==1)       echo $form->popupConfirm('matchgame', 'id_matchgame', $idMatch);

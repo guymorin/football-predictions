@@ -49,8 +49,10 @@ class Submenu
     static function menuAdmin($pdo, $form, $current = null){
         $val = '';
         Submenu::exitAccount();
-        $val .= "<a href='index.php?page=admin' class='current'>" . ucfirst(Language::title('administration')) . "</a>";
-        $val .= "<a href='/'>" . (Language::title('homepage')) . "</a>\n";
+        if(($_SESSION['role'])==2){
+            $val .= "<a href='index.php?page=admin' class='current'>" . ucfirst(Language::title('administration')) . "</a>";
+            $val .= "<a href='/'>" . (Theme::icon('soccer')) . " " . (Language::title('homepage')) . "</a>\n";
+        }
         return $val;
     }
     
@@ -189,6 +191,37 @@ class Submenu
             }
         }
         
+        return $val;
+    }
+    
+    static function menuPreferences($pdo, $form, $current = null){
+        $val ='';
+        $currentClass = " class='current'";
+        $classP = $classP1 = '';
+        switch($current){
+            case 'preferences':
+                $classP = $currentClass;
+                break;
+            case 'plugin_meteo_concept':
+                $classP1 = $currentClass;
+                break;
+        }
+        
+        if(($_SESSION['role'])==2){
+            $val .= "<a href='index.php?page=admin'>" . (Theme::icon('admin')) . "&nbsp;" . ucfirst(Language::title('administration')) . "</a>";
+            $val .= "<a href='index.php?page=preferences'" . $classP . ">" . ucfirst(Language::title('preferences')) . "</a>";
+            // Plugin
+            $req = "SELECT plugin_name
+                    FROM plugin
+                    WHERE activate=1
+                    AND plugin_name='meteo-concept';";
+            $data = $pdo->prepare($req,[],true);
+            $counter = $pdo->rowCount();
+            if($counter==1){
+                $val .= "<a href='index.php?page=plugin_meteo_concept' " . $classP1 . ">" . ucfirst('Meteo-Concept') . "</a>";
+            }
+        
+        }
         return $val;
     }
     

@@ -66,6 +66,12 @@ class Home
                 else                    $current = 'bestPlayers';
                 echo Submenu::menuPlayer($pdo, $form, $current);
                 break;
+            case "preferences":
+            case "plugin_meteo_concept":
+                if($page=='preferences')                        $current = 'preferences';
+                elseif($page=='plugin_meteo_concept')           $current = 'plugin_meteo_concept';
+                echo Submenu::menuPreferences($pdo, $form, $current);
+                break;
             case "season":
                 if($create == 1)        $current = 'create';
                 elseif($modify == 1)    $current = 'modify';

@@ -97,7 +97,7 @@ class Errors
                     else return null;
                     break;
                 case "Alnum":
-                    $aValid = array('-',' ','ç','é','à','è','ù','ä','ë','ï','ö','ü','â','ê','î','ô','û'); 
+                    $aValid = array('-','_',' ','ç','é','à','è','ù','ä','ë','ï','ö','ü','â','ê','î','ô','û'); 
                     if(ctype_alnum(str_replace($aValid,'',$val))) return $val;
                     else {
                         $this->setError($title, Language::title('errorAlnum'));
