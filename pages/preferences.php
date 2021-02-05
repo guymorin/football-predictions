@@ -25,7 +25,23 @@ if($create == 1)    echo PreferencesPopup::createPopup($name, $pdo);
 elseif(isset($_SESSION['install']) and $_SESSION['install']==true){
     echo PreferencesForm::createForm($error, $form);
 } else {
-    if($name!="")   echo PreferencesPopup::modifyPopup($name, $pdo);
-    else            echo PreferencesForm::modifyForm($pdo, $error, $form);
+    if($name!=""){
+        // Plugin update
+        
+        isset($_POST['id_plugin'])   ? $idPluginTab=$_POST['id_plugin'] : null;
+        $req = '';
+        foreach($idPluginTab as $k => $v){
+            isset($_POST['id_plugin'])         ? $id_plugin=$_POST['id_plugin'][$v] : null;
+            isset($_POST['activate'])          ? $activate =$_POST['activate'][$v] : $activate = 0;
+            $req .= "UPDATE plugin 
+                SET activate='" . $activate . "'"
+                . " WHERE id_plugin='" . $id_plugin . "';";
+        }
+        $pdo->exec($req);
+        // Other updates and popup
+        echo PreferencesPopup::modifyPopup($name, $pdo);
+    } else {
+       echo PreferencesForm::modifyForm($pdo, $error, $form);
+    }
 }
 ?>

@@ -360,6 +360,9 @@ function getMessage($val,$count){
         case "player":
     		$val = _("Player");
     		break;
+        case "plugins":
+            $val = _("Plugins");
+            break;
         case "position":
     		$val = _("Position");
     		break;

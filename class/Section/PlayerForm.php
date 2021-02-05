@@ -40,7 +40,7 @@ class PlayerForm
     
     static function modifyForm($pdo, $error, $form, $playerId){
         
-        // Table of seasons
+        // Table of players
         $req ="SELECT s.name as season, c.name as team
         FROM player j
         LEFT JOIN season_team_player scj ON j.id_player=scj.id_player

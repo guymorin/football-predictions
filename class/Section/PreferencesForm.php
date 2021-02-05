@@ -43,6 +43,26 @@ class PreferencesForm
         $val .= $error->getError();
         $val .= $form->input(Language::title('websiteName'),'name');
         $val .= "<br />\n";
+        $req ="SELECT id_plugin, plugin_name, activate FROM plugin;";
+        $data = $pdo->prepare($req,[],true);
+        $counter = $pdo->rowCount();
+        if($counter>0){
+            $val .= "<table>";
+            $val .= "<tr>\n";
+            $val .= "   <th colspan='2'>Plugins</th>\n";
+            $val .= "</tr>\n";
+            foreach ($data as $d)
+            {
+                $val .= "<tr>\n";
+                $val .= $form->inputHidden('id_plugin['.$d->id_plugin.']',$d->id_plugin);
+                $val .= "   <td>" . $d->plugin_name . "</td>\n";
+                $val .= "   <td>" 
+                    . $form->inputCheckBox('activate['.$d->id_plugin.']', '1', $d->activate)
+                        . "</td>\n";
+                $val .= "</tr>\n";
+            }
+            $val .= "</table>";
+        }
         $val .= "</fieldset>\n";
         $val .= "<fieldset>\n";
         $val .= $form->submit(Theme::icon('modify')." ".Language::title('modify'));

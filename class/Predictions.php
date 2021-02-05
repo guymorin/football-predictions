@@ -87,11 +87,11 @@ class Predictions
     public function setCriteria($d,$pdo,$result,$manual=false){
         $this->initValues();
         $this->setMotivation($pdo,$d,$result);
-        $this->setCurrentForm($pdo,$d,$result);
         $this->setPhysicalForm($pdo,$d,$result);
         $this->setBestPlayers($d);
         $this->setMarketValue($pdo,$d,$result,$manual);
         $this->setHomeAway($pdo,$d,$result);
+        $this->setCurrentForm($pdo,$d,$result);
         $this->setTrend($pdo,$d,$result,$manual);
         $this->setHistory($pdo,$d,$result,$manual);
         $this->setWeather($pdo, $d,$result,$manual);
@@ -291,6 +291,8 @@ class Predictions
         echo "	 <table class='prediction";
         if($manual) echo " manual";
         echo "'>\n";
+        
+        // Header
         echo "  		<tr>\n";
         echo "  		  <th>".Theme::icon('matchday')." ".Language::title('MD').$_SESSION['matchdayNum'];
         echo ", ".$d->date."<br />";
@@ -304,6 +306,7 @@ class Predictions
         echo "            <th>2</th>\n";
         echo "          </tr>\n";
         
+        // Motivation
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('motivation')) . "</td>\n";
         if($d->result!="") echo "<td>".$this->motivC1."</td>\n";
@@ -313,6 +316,7 @@ class Predictions
         else echo "  		  <td><input size='1' type='number' name='motivation2[$this->id]' value='".$this->motivC2."' placeholder='0'></td>\n";
         echo "          </tr>\n";
         
+        // Physical form
         echo "  		<tr>\n";
         echo "  		  <td>" . Language::title('physicalForm') . "</td>\n";
         if($d->result!="") echo "<td>".$this->physicalC1."</td>\n";
@@ -331,6 +335,7 @@ class Predictions
         else echo "  		  <td><input size='1' type='number' name='bestPlayers2[$this->id]' value='".$d->bestPlayers2."' placeholder='0'></td>\n";
         echo "          </tr>\n";
         
+        // Weather
         echo "  		<tr>\n";
         echo "  		  <td>";
         if(($d->result=="") and ($manual==false)){
@@ -351,7 +356,8 @@ class Predictions
             echo "name='weather2[$this->id]' value='".$this->team2Weather."'></td>\n";
         }
         echo "          </tr>\n";
-         
+        
+        // Market value
         echo "  		<tr>\n";
         echo "  		  <td>";
         echo "<a href='#' class='tooltip'><big>".Theme::icon('team')."</big>";
@@ -375,6 +381,7 @@ class Predictions
         }
         echo "          </tr>\n";
         
+        // Home / Away
         echo "  		<tr>\n";
         echo "  		  <td>";
         echo "<a href='#' class='tooltip'><big>".Theme::icon('championship')."</big>";
@@ -398,6 +405,32 @@ class Predictions
         }
         echo "          </tr>\n";
         
+        // Current form
+        echo "  		<tr>\n";
+        echo "  		  <td>";
+        echo "<a href='#' class='tooltip'><big>".Theme::icon('currentForm')."</big>";
+        echo "<span>".Language::title('currentFormText')."</span></a>";
+        echo " " . Language::title('currentForm');
+        echo "</td>";
+        if($d->result!="") echo "<td>".$this->currentFormTeam1."</td>\n";
+        else {
+            echo "  		  <td><input size='1' name='currentForm1[$this->id]' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "value='".$this->currentFormTeam1."'></td>\n";
+        }
+        echo "  		  <td></td>\n";
+        if($d->result!="") echo "<td>".$this->currentFormTeam2."</td>\n";
+        else {
+            echo "  		  <td><input size='1' name='currentForm2[$this->id]' ";
+            if($manual==false) echo "type='type='text' readonly ";
+            else echo "type='number' placeholder='0' ";
+            echo "value='".$this->currentFormTeam2."'></td>\n";
+        }
+        echo "          </tr>\n";
+        
+        
+        // Trend
         echo "          <tr>\n";
         echo "  		  <td>";
         echo "<a href='#' class='tooltip'><big>".Theme::icon('trend')."</big>";
@@ -426,7 +459,6 @@ class Predictions
             echo $this->trend2;
             echo "'></td>\n";
         }
-        
         echo "          </tr>\n";
         
         echo "          <tr>\n";

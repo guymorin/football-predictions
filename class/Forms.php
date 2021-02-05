@@ -152,6 +152,22 @@ class Forms
     }
     
     /**
+     *
+     * @param int $id
+     * @param string $name
+     * @param int $value
+     * @param boolean $checked
+     * @return string HTML code
+     */
+    public function inputCheckBox($name, $value, $checked=false){
+        $val = '';
+        $val.= "<input type='checkbox' ";
+        $val.= "name='$name' value='$value'";
+        $checked ? $val.= " checked='checked'" : null;
+        $val.= ">";
+        return $val;
+    }
+    /**
      * 
      * @param string $name
      * @param string $value
