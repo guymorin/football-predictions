@@ -5,7 +5,8 @@
 // Namespaces
 use FootballPredictions\Language;
 use FootballPredictions\Theme;
-use FootballPredictions\Section\Admin;
+use FootballPredictions\Plugin\MeteoConceptForm;
+use FootballPredictions\Plugin\MeteoConceptPopup;
 ?>
 <h2><?= Theme::icon('preferences') . " "
         . ucfirst('Meteo-Concept');?></h2>
@@ -13,22 +14,15 @@ use FootballPredictions\Section\Admin;
 // Values
     if(($_SESSION['role'])!=2) header('Location:index.php');
     
-    // Table for administration options
-    $val = "<h3>".ucfirst(Language::title('administrator'))."</h3>\n";
-
-    $val .= "<form action='index.php?page=plugin_meteo_concept' method='POST'>\n";
-    $val .= $form->inputAction('modify');
-    $val .= "<fieldset>\n";
-    $val .= "<legend>" . ucfirst('Meteo-Concept') . "</legend>\n";
-    $val .= $error->getError();
-    $val .= $form->input('Token', 'token');
-    $val .= $form->input('URL', 'url');
-    $val .= "<br />\n";
-    $val .= "</fieldset>\n";
-    $val .= "<fieldset>\n";
-    $val .= $form->submit(Theme::icon('modify')." ".Language::title('modify'));
-    $val .= "</fieldset>\n";
-    $val .= "</form>\n";
+    $url = $token = "";
+    isset($_POST['url'])    ? $url = $error->check("Alnum",$_POST['url']) : null;
+    isset($_POST['token'])  ? $token = $error->check("Alnum",$_POST['token']) : null;
     
-    echo $val;
+    
+    // Table for administration options
+    echo "<h3>".ucfirst(Language::title('administrator'))."</h3>\n";
+
+    echo MeteoConceptForm::modifyForm($pdo, $error, $form);
+    if($modify == 1) MeteoConceptPopup::modifyPopup($pdo, $url, $token);
+    
 ?>
