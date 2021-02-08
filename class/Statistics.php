@@ -189,10 +189,10 @@ class Statistics
                     $this->averageOdds = (round($this->totalPlayed / $this->bet,2));
                     $val .= "           <td>" . number_format($this->averageOdds,2). " </td>\n";
                     $val .= "           <td>" . (money_format('%i',$this->earning)). " </td>\n";
-                    $val .= "           <td><span style='color:" . valColor($this->profit). " '>";
+                    $val .= "           <td><span class='" . valColor($this->profit). "'>";
                     if($this->profit>0) $val.="+";
                     $val .= (money_format('%i',$this->profit)). " </span></td>\n";
-                    $val .= "           <td><span style='color:" . valColor($this->profitSum). " '>";
+                    $val .= "           <td><span class='" . valColor($this->profitSum). "'>";
                     if($this->profitSum>0) $val.="+";
                     $val .= (money_format('%i',$this->profitSum)). " </span></td>\n";
                     $val .= "       </tr>\n";
@@ -309,12 +309,12 @@ class Statistics
             
             $val .= "    <tr>\n";
             $val .= "      <td>" . (Language::title('profit')) . "</td>\n";
-            $val .= "      <td><span style='color:" . valColor($this->profitSum) . "'>";
+            $val .= "      <td><span class='" . valColor($this->profitSum) . "'>";
             if($this->profitSum>0) $val .= "+";
             $val .= $this->profitSum."</span></td>\n";
             $val .= "      <td>" . (Language::title('ROI')) . "</td>\n";
             $val .= "      <td>";
-            $val .= "<span style='color:" . valColor($this->roi) . "'>";
+            $val .= "<span class='" . valColor($this->roi) . "'>";
             if($this->roi>0) $val .= "+";
             $val .= $this->roi."&nbsp;%</span>";
             $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($this->roi)."</a>";
@@ -368,12 +368,12 @@ class Statistics
             
             $val .= "    <tr>\n";
             $val .= "      <td>" . (Language::title('profit')) . "</td>\n";
-            $val .= "      <td><span style='color:" . valColor($this->profit) . "'>";
+            $val .= "      <td><span class='" . valColor($this->profit) . "'>";
             if($this->profit>0) $val .= "+";
             $val .= $this->profit."</span></td>\n";
             $val .= "      <td>" . (Language::title('ROI')) . "</td>\n";
             $val .= "      <td>";
-            $val .= "<span style='color:" . valColor($this->roi) . "'>";
+            $val .= "<span class='" . valColor($this->roi) . "'>";
             if($this->roi>0) $val .= "+";
             $val .= $this->roi."&nbsp;%</span>";
             $val .= "&nbsp;<a href='#' class='tooltip'>&#128172;".valRoi($this->roi)."</a>";

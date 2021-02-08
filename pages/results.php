@@ -89,9 +89,8 @@ if($modify==1){
 }
 // Modify form    
 else {
-    changeMD($pdo,"results");
     echo "<h3>" . (Language::title('results')) . "</h3>\n";
-
+    echo changeMD($pdo,"results");
     $req="SELECT m.id_matchgame,
         c1.name as name1,c2.name as name2,
         m.result, m.date, m.odds1, m.oddsD, m.odds2, m.red1, m.red2 FROM matchgame m

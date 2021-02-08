@@ -8,50 +8,56 @@ html, body {
  overflow-x:hidden;
  }
 html {
- background:#ddd;
+ background:#147b45;
 }
 body {
- font-family: Arial, sans-serif; 
+ font-family: Calibri, sans-serif; 
  font-size: .9em;
  text-align:center;
  }
 h1 {
  text-align: center;
  }
+ 
+h2, h3 {
+ text-align: left;
+ margin: 0;
+ padding:.2em .4em;
+}
 h2 {
- font: 100% sans-serif; 
- text-align:center;
- text-transform:uppercase;
+ font: 1.1em sans-serif; 
+ background-color: #299b59;
  color:#fff;
- background:#aaa linear-gradient(to left,#ccc,#999,#ccc);
- border-radius:2px;
- margin:0;
- padding:.2em 1.8em;
 }
 h3 {
- font: 110% Arial, sans-serif; 
- font-weight:bold;
+ font: 1em Arial, sans-serif; 
+ background-color: #52b440;
+ color: #fff;
+ margin-bottom: 1.1em;
  }
 h4 {
- font: 100% sans-serif; 
- margin:.5em;
- }
+ text-align: center;
+ font: 1em Arial, sans-serif; 
+ font-weight: bold;
+ color: #333;
+ border-bottom: 1px solid #c8c8c8;
+ margin: 0 1em;
+ padding-bottom: .5em;
+}
 select {min-width:10em;}
 select, input {font-size:.8em;}
 table input {min-width:0}
 select {margin-bottom:1em}
-th,td {padding:.5em}
+th,td {padding:.2em .5em}
 a{color:#382;text-decoration:none;padding:0 .5em}
 a:hover{background:#5a4;color:#fff;}
-section a:hover{border-radius:4px}
 
 header a:hover, table a, table a:hover{background:none}
 
-table{display:inline-table;min-width:50%;font-size:.9em;margin:0 auto;border:2px solid #666;border-radius:3px;}
-td{border:.1em solid #aaa;}
-tr:nth-child(odd){background:#ccc}
-tr:nth-child(even){background:#ddd}
-th{padding:.4em;background:#888 linear-gradient(#888,#666);color:#fff;font-weight:normal}
+table{color:#dcdcdc;display:inline-table;min-width:50%;font-size:.9em;margin:1em auto;border-collapse: collapse;border:1px solid #000 !important;}
+tr:nth-child(odd){background:#333;border-top:1px solid #299b59}
+tr:nth-child(even){background:#444;border-top:1px solid #299b59}
+th{padding:.4em;background:#222;color:#fff;font-weight:normal;border-bottom:2px solid #299b59}
 input[type='date'] {font-size:1.2em}
 input[type='number'] {width:6em;padding:1em 0}
 
@@ -62,8 +68,7 @@ header{
 	height:2.35em;
 	overflow:hidden;
 	position:fixed;
-	background: #000;
-	border-bottom:1px solid #ccc;
+	background: #147b45;
 }
 header h1 {
 	margin:0;
@@ -71,13 +76,14 @@ header h1 {
 	width:100%;
 }
 header h1 a {
-	font: 50% sans-serif;
-	letter-spacing:1em;
+	font: .7em Calibri, sans-serif;
+	padding:0 0 .8em 0;
+	letter-spacing:.5em;
 	text-decoration:none;
 	text-transform:uppercase;
-	color:#777;
+	text-shadow: 2px 2px 1px #0e5f31;
+	color:#fff;
 	vertical-align: middle;
-	padding-bottom: .15em
 }
 header h1 a:hover {text-decoration:none}
 
@@ -96,12 +102,13 @@ nav a {
 }
 #fp input {display: none;}
 #fp .hamburger {
-	display:inline-block;
-	padding:.05em 0;
+	position: absolute;
+	top: -.1em;
 	font-size:1.8em;
-	color:#777;
+	font-weight: bold;
+	color:#fff;
 	cursor: pointer;
-	transition:color .5s;
+	transition:color .2s;
 }
 #fp input:checked + label,
 #fp label:focus,
@@ -125,14 +132,14 @@ nav a {
 #fp input:checked ~ #fp-menu {
 	opacity:1;
 	visibility:visible;
-	transition:opacity .5s;
+	transition:opacity .2s;
 }
 #fp input:not(:checked) ~ #fp-menu ul {
 	transform: translate(-100%, 0);
 }
 #fp input:checked ~ #fp-menu ul {
 	transform: none;
-	transition:transform .5s;
+	transition:transform .2s;
 }
 .layer {
 	position:absolute;
@@ -154,9 +161,9 @@ nav a {
  {
  	color:#222;
 	background:#eee;
+	border-bottom:1px solid #ccc;
 	text-shadow:1px 1px #0003;
 	display: block;
-	text-transform:uppercase;
 	text-decoration: none;
 	font-size: 1em;
 	margin:0;
@@ -166,7 +173,7 @@ nav a {
 }
 #fp-menu li a:hover,
 #fp-menu li a:focus {
-  background:#ccc;
+  background:#fff;
 }
 
 #fp-submenu a:focus, #fp-submenu a:hover,
@@ -178,7 +185,8 @@ nav a {
 
 /* Submenu */
 #fp-submenu {
-	color:#333;
+	border-top:1px solid #0e5f31;
+	color:#c8c8c8;
 	position:fixed;
 	margin-top:2.35em;
 	width:100%;
@@ -191,25 +199,42 @@ nav a {
 }
 #fp-submenu a {
 	display:inline-block;
-
+	text-transform: uppercase;
 	padding:.5em;
-	background:#fff;
-	color:#333;
-	transition:background .5s;
+	background-color:#0e5f31;
+	border-bottom: 2px solid #279c5f;
+	color:#fff;
+	transition:background .2s;
 }
-#fp-submenu a:hover, #fp-submenu a:focus, #fp-submenu .current {
+#fp-submenu a:hover, #fp-submenu a:focus {
 	padding:.5em;
 	color:#fff;
-	background:#382;
-	transition:background .5s;
+	background-color:#178c4f;
+	border-bottom: 2px solid #52b440;
+	transition:background .2s;
+}
+
+#fp-submenu a.main {
+	color: #fff;
+	border-bottom: 2px solid #fff;
+}
+
+#fp-submenu a.main:hover {
+	color: #fff;
+	border-bottom: 2px solid #fff;
+}
+
+#fp-submenu .current, #fp-submenu a.current:hover, #fp-submenu a.current:focus {
+	background-color: #147b45;
+	border-bottom: 2px solid #147b45;
 }
 tr.current {
-	background:#cf7;
+	background:#222;
 }
 tr.current button {
 	opacity: 0.5;
 }
-#fp-submenu .session {color:#444}
+#fp-submenu .session {color:#fff}
 #fp-submenu form, #fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}
 #fp-submenu form {display:inline-block; margin-top:.2em;}
 #fp-submenu label {margin-right:.2em}
@@ -218,16 +243,13 @@ tr.current button {
 /* Section */
 
 section {
-	background: #eee;
-	border:1px solid #aaa;
-	box-shadow:0 0 10px #666;
-	width:95%;
-	height:calc(100% - 7em);
+	background: #fff;
+	width:90%;
+	min-height: 3em;
 	text-align:center;
 	margin:6em auto .7em auto;
-	padding:.4em .4em .8em .4em;
+	padding-bottom: 1em;
 	display:inline-block;
-	border-radius:4px;
 }
 section ul {list-style:none;padding:.2em 0 0 0;margin:0}
 section ul li, section ul li ul {display:inline}
@@ -257,19 +279,18 @@ section a.red {
 }
 section .menu li ul li a:hover {background:linear-gradient(#4a2,#6c4);border:1px solid green;color:white;}
 
-section #changeMD {display:inline-block;margin:0 auto;text-align:center;}
-section #changeMD input[type=submit] {
-	min-width:0;
-	margin:.5em
-}
 section #changeMD {
 	display:block;
-	width:100%;
+	margin:1em auto;
+	width: 100%;
 }
-section #leftArrow {float:left;}
-section #rightArrow {float:right;}
+section #changeMD input[type=submit] {
+	 width:10em;
+}
+section #leftArrow {float:left;display:block;width:11em;}
+section #rightArrow {float:right;display:block;width:11em;}
 section #leftArrow, section #rightArrow {
-	display:block; width:10em; height:4em; text-overflow:ellipsis;
+	display:block; height:4em; text-overflow:ellipsis;
 }
 section a {font-weight: bold;}
 section li a {font-weight: normal;}
@@ -289,6 +310,8 @@ section table.team td:first-child{text-align:left}
 section table.team td:nth-child(2) input{width:3em}
 section table.teamOfTheWeek td:nth-child(2){text-align:left}
 section table.teamOfTheWeek td:nth-child(3) input{width:3em}
+.green {color: #6f6;}
+.red {color: #f66;}
 section .graph {
 	background:#efefef;
 	border: 2px solid #666;
@@ -313,7 +336,7 @@ section #criterion table input[type='radio'] {margin-bottom:.3em}
 
 section form {text-align:center;margin: 0 auto;display:inline-block;}
 section form input, section form select {color:#000;font-size:.95em;}
-section form label {color:#333;vertical-align: middle;text-align:right;margin:0 .5em;display:inline-block;}
+section form label {color:#fff;vertical-align: middle;text-align:right;margin:0 .5em;display:inline-block;}
 section .menu form label, .center {text-align:center}
 section form label.right {text-align:right;padding-right:.2em;min-width:1em;}
 section form p {text-align:right;margin:.2em auto;padding:.4em;}
@@ -322,44 +345,48 @@ section form .update p {text-align:center;}
 section .menu form p {margin:0;padding:0;}
 
 section form fieldset {
-	background:#ddd;
-	border: 1px solid #ccc;
-	border-radius:4px;
+	background:#5c5c5c;
+	color: #c8c8c8;
+	border: none;
+	border-radius:3px;
 	margin:.5em;
 	display:inline;
 	text-align: center;
 	vertical-align: top;
 }
+section form fieldset a {color: #c8c8c8;}
+section form fieldset a:hover {color: #fff;}
+
 section form fieldset legend {display:none;}
-section form fieldset fieldset {background:#ddd;border:none;}
-section form fieldset fieldset legend {background:#ddd;font-weight:bold;border:none;color:#333;display:inline;}
+section form fieldset fieldset {background:#5c5c5c;border:none;}
+section form fieldset fieldset legend {background:#5c5c5c;font-weight:bold;border:none;color:#fff;display:inline;}
 section form fieldset.odds label,
 section form fieldset.result label {width:2em}
 section form fieldset.position {text-align: right;}
 section form fieldset input[type='radio']{vertical-align:bottom;}
 section button[type='submit'], section input[type='submit'] {margin:.5em;padding:.5em 1em;min-width:10em;}
+section fieldset button[type='submit'], section fieldset input[type='submit'] {min-width:15em;}
+section .admin button[type='submit'], section .admin input[type='submit'] {min-width:20em;}
 section table.matchdayList button[type="submit"],
 section table.matchdayTable button[type="submit"]{text-align: left;}
 
 /* Standing table buttons */
-section #standing ul {display:block;}
+section #standing table {margin-top: 0;}
+section #standing ul {display:block;margin-top: 1em}
 /* Others button */
 section #standing li a,
 section #standing li p {
 	font-size:1em;
 	display:inline-block;
-	background:linear-gradient(#eee,#fff);
-	color:#2229;
-	padding:.4em 1em;
+	background-color: #555;
+	color:#c8c8c8;
+	padding:.2em 1em;
 	margin:0;
-	border:1px solid #999;
-	border-bottom:none;
-	border-top-left-radius:3px;
-	border-top-right-radius:3px}
+}
 /* Current button */
-section #standing li p {background:#cf7;color:#333;}
+section #standing li p {background-color: #222;color:#fff;}
 /* Hover button */
-section #standing li a:hover{text-decoration:none;background:#cf79;color:#3339}
+section #standing li a:hover{text-decoration:none;background-color:#555;color:#eee}
 section #standing th {min-width:2em}
 section #standing td:nth-child(2),
 section .player td:nth-child(2),
@@ -380,7 +407,7 @@ section .tooltip:hover span,.tooltip:focus span{
   color:#fff;
   margin-top:.5em;
   padding:.5em;
-  transition:background .5s;
+  transition:background .2s;
 }
 
 footer {clear:both;font-size:.9em;color:#564;padding:.5em;margin-top:1em;text-align:center}
@@ -413,27 +440,26 @@ footer strong {color:#222}
 .update a,
 section .menu li ul li a,
 button[type=submit], input[type=submit], input[type=button], input[type=reset] {
-	background:#eee linear-gradient(#ddd,#eee);
-	transition: background .5s, border .5s;
-	color:#444;
-	border:1px outset #ccc;
-	border-radius:5px;
+	background:#ffe71f;
+	transition: background .2s, border .2s;
+	color:#333;
+	border: 1px solid #2223;
+	border-radius:3px;
 	font-size:1em;
+	font-weight: bold;
 	margin:0 .5em .5em .5em;
 	text-decoration:none;
-	text-shadow:1px 1px #fff;
-	
  	cursor: pointer;
 }
 .update a:hover,.update a:focus,
 section .menu li ul li a:hover,section .menu li ul li a:focus,
 button[type=submit]:hover:enabled, input[type=submit]:hover:enabled, input[type=button]:hover:enabled, input[type=reset]:hover:enabled,
 button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=button]:focus:enabled, input[type=reset]:focus:enabled {
-	background:#fff linear-gradient(#fff,#fff);
-	transition: background .5s, border .5s;
-	border:1px solid #000;
-	border-radius:5px;
-  	color:#000;
+	background:#ffea45;
+	transition: background .2s, border .2s;
+	border: 1px solid #2223;
+	border-radius:3px;
+  	color:#333;
  	text-decoration: none;
  	text-shadow:none;
  	cursor: pointer;
@@ -443,11 +469,11 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 #overlay {
   position: fixed;
   overflow:hidden;
-  top: 0;
+  top: 2.3em;
   bottom: 0;
   left: 0;
   right: 0;
-  background: #0009;
+  background: #222;
   transition: opacity 500ms;
   visibility: visible;
   opacity: 1;
@@ -457,7 +483,7 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
   margin:8em auto;
   padding:.2em .2em .4em .2em;
   background: white;
-  border-radius: 6px;
+  border-radius: 3px;
   text-align:center;
   width: 30%;
   position: relative;
@@ -469,6 +495,7 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 .update .close {margin:0;padding:0;}
 .update .close a {
   font-size: 1.5em;
+  line-height: .8em;
   font-weight: bold;
   text-decoration: none;
   background:none;border:none;color:#888;
@@ -488,25 +515,3 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 }
 .confirm p, .confirm form {display:block;margin:0;padding:0}
 
-
-@media all and (max-width:1024px){
-	body {font-size:2em;}
-	
-	header h1 a {
-		font: 40% sans-serif;
-	}
-	section {
-		margin:9em auto .7em auto;
-		overflow-x:auto;
-	}
-	table, section .graph {
-		min-width: 100%
-	}
-	.layer {
-		left:calc(80vw + 2em);
-	}
-	#fp-menu ul {
-		width:calc(80vw + 2em);
-	}
-	#fp-menu li a {width:80vw;}
-}

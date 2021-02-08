@@ -162,9 +162,8 @@ if($modify==1){
 }
 // Default page or manual page
 else {
-    changeMD($pdo,"prediction");
     echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
-    
+    echo changeMD($pdo,"prediction");
     // Select data
     $data = result('selectCriterion',$pdo);
     $counter = $pdo->rowCount();

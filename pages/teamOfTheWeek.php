@@ -23,7 +23,7 @@ $val = array_combine($idPlayer,$ratingPlayer);
 // Only if a matchday is selected
 if(isset($_SESSION['matchdayId'])){
 
-    changeMD($pdo,"teamOfTheWeek");
+    echo changeMD($pdo,"teamOfTheWeek");
     
     // Popup modified
     if($teamOfTheWeek==1){
@@ -91,9 +91,6 @@ if(isset($_SESSION['matchdayId'])){
     // Modify form
     else {
         echo "<h3>" . (Language::title('teamOfTheWeek')) . "</h3>\n";
-        if(($_SESSION['role'])==2){
-            echo "<p><a href='/index.php?page=player&create=1'>" . (Language::title('createAPlayer')) . " ?</a></p>";
-        }
         echo "<table class='teamOfTheWeek'>\n";
         echo "  <tr>\n";
         echo "      <th> </th>\n";

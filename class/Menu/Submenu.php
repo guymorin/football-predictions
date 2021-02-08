@@ -16,7 +16,7 @@ class Submenu
     
     static function exitAccount() {
         if(isset($_SESSION['userLogin'])){
-            echo "<a class='session' href='index.php?page=account&exit=1'>"
+            echo "<a class='session main' href='index.php?page=account&exit=1'>"
                 .(Theme::icon('exit')) . " "
                     .(Language::title('logoff')) . " [" . ucfirst($_SESSION['userLogin'])."]</a>";
         }
@@ -24,7 +24,7 @@ class Submenu
     
     static function exitSeason() {
         if(isset($_SESSION['seasonName'])){
-            echo "<a class='session' href='index.php?page=season&exit=1'>"
+            echo "<a class='session main' href='index.php?page=season&exit=1'>"
                 . (Theme::icon('season')) . " "
                     . (Language::title('selectTheSeason')) . "</a>";
         }
@@ -42,7 +42,7 @@ class Submenu
                 break;
         }
         $val = "<a" . $classMA . " href='index.php?page=account'>" . (Language::title('myAccount')) . "</a>";
-        $val.= "<a href='index.php?page=season'>" . (Theme::icon('season')) . " " . (Language::title('season')) . "</a>";
+        $val.= "<a class='main' href='index.php?page=season'>" . (Theme::icon('season')) . " " . (Language::title('season')) . "</a>";
         return $val;
     }
     
@@ -51,7 +51,7 @@ class Submenu
         Submenu::exitAccount();
         if(($_SESSION['role'])==2){
             $val .= "<a href='index.php?page=admin' class='current'>" . ucfirst(Language::title('administration')) . "</a>";
-            $val .= "<a href='/'>" . (Theme::icon('soccer')) . " " . (Language::title('homepage')) . "</a>\n";
+            $val .= "<a class='main' href='/'>" . (Theme::icon('soccer')) . " " . (Language::title('homepage')) . "</a>\n";
         }
         return $val;
     }
@@ -75,10 +75,10 @@ class Submenu
         if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0 &&
             (empty($_SESSION['noTeam']) or $_SESSION['noTeam'] == false)
             ){
-                $val .= "  	<a href='index.php?page=season'>" . (Theme::icon('season')) . " " . $_SESSION['seasonName'] . "</a>";
+                $val .= "  	<a class='main' href='index.php?page=season'>" . (Theme::icon('season')) . " " . $_SESSION['seasonName'] . "</a>";
                 $val .= "<a" . $classDB . " href='index.php?page=dashboard'>" . (Language::title('dashboard')) . "</a>";
                 $val .= "<a" . $classS . " href='index.php?page=championship'>" . (Language::title('standing')) . "</a>";
-                $val .= "<a href='index.php?page=matchday'>" . (Theme::icon('matchday')) . " " . (Language::title('matchdays')) . "</a>";
+                $val .= "<a class='main' href='index.php?page=matchday'>" . (Theme::icon('matchday')) . " " . (Language::title('matchdays')) . "</a>";
         } else {
             if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) $val .= "  	<a href='/'>" . (Language::title('homepage')) . "</a>";
             else {
@@ -91,7 +91,7 @@ class Submenu
     
     
     static function menuMatchday($pdo, $form, $current = null){
-        $val = "<a href='index.php?page=dashboard'>" . (Theme::icon('championship')) . " ";
+        $val = "<a class='main' href='index.php?page=dashboard'>" . (Theme::icon('championship')) . " ";
         if(isset($_SESSION['championshipId']) && $_SESSION['championshipId']>0) {
             $val .= $_SESSION['championshipName'];
         } else {
@@ -149,7 +149,7 @@ class Submenu
                     $val .= "</form>\n";
                 }
             }
-            $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . "&nbsp;" . (Language::title('teams')) . "</a>";
+            $val .= "<a class='main' href='index.php?page=team'>" . (Theme::icon('team')) . "&nbsp;" . (Language::title('teams')) . "</a>";
         } else {
             $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
         }
@@ -170,7 +170,7 @@ class Submenu
                 break;
         }
         $response = $pdo->query("SELECT * FROM player ORDER BY name, firstname");
-        $val .= "<a href='index.php?page=team'>" . (Theme::icon('team')) . "&nbsp;" . (Language::title('teams')) . "</a>";
+        $val .= "<a class='main' href='index.php?page=team'>" . (Theme::icon('team')) . "&nbsp;" . (Language::title('teams')) . "</a>";
         $val .= "<a" . $classBP . " href='index.php?page=player'>" . (Language::title('bestPlayers')) . "</a>";
         
         if(($_SESSION['role'])==2){
@@ -208,7 +208,7 @@ class Submenu
         }
         
         if(($_SESSION['role'])==2){
-            $val .= "<a href='index.php?page=admin'>" . (Theme::icon('admin')) . "&nbsp;" . ucfirst(Language::title('administration')) . "</a>";
+            $val .= "<a class='main' href='index.php?page=admin'>" . (Theme::icon('admin')) . "&nbsp;" . ucfirst(Language::title('administration')) . "</a>";
             $val .= "<a href='index.php?page=preferences'" . $classP . ">" . ucfirst(Language::title('preferences')) . "</a>";
             // Plugin
             $req = "SELECT plugin_name
@@ -241,7 +241,7 @@ class Submenu
             Submenu::exitSeason();
             $val .= "<a" . $classL . " href='index.php?page=season'>" . (Language::title('listChampionships')) . "</a>";
             if(isset($_SESSION['championshipId'])){
-                $val .= "<a href='index.php?page=dashboard'>" . (Theme::icon('championship')) . " ";
+                $val .= "<a class='main' href='index.php?page=dashboard'>" . (Theme::icon('championship')) . " ";
                 if($_SESSION['championshipId']>0) {
                     $val .= $_SESSION['championshipName'];
                 } else {
@@ -266,7 +266,7 @@ class Submenu
                 break;
             case '':break;
         }
-        $val .= "  	<a href='index.php?page=matchday'>" . (Theme::icon('matchday')) . " " . (Language::title('matchdays')) . "</a>";
+        $val .= "  	<a class='main' href='index.php?page=matchday'>" . (Theme::icon('matchday')) . " " . (Language::title('matchdays')) . "</a>";
         $val .= "<a" . $classMV . " href='index.php?page=team'>" . (Language::title('marketValue')) . "</a>";
         if(($_SESSION['role'])==2){
             $val .= "<a" . $classC . " href='index.php?page=team&create=1'>" . (Language::title('createATeam')) . "</a>\n";
@@ -281,7 +281,7 @@ class Submenu
                 $val .= "</form>\n";
             }
         }
-        $val .= "<a href='index.php?page=player'>" . (Theme::icon('player')) . " " . (Language::title('player')) . "</a>";
+        $val .= "<a class='main' href='index.php?page=player'>" . (Theme::icon('player')) . " " . (Language::title('player')) . "</a>";
         return $val;
     }
     

@@ -118,12 +118,7 @@ function myFunction() {
     <nav id='fp'>
 	<?= Home::menu();?>
 	</nav>
-    <h1><a href="/"><?= App::getTitle();?>
-    <?php
-        if(isset($_SESSION['seasonName'])) {
-            echo " " . $_SESSION['seasonName'];
-        }
-    ?></a></h1>
+    <h1><a href="/"><?= App::getTitle();?></a></h1>
 </header>
 <section>
 <?php

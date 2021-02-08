@@ -41,15 +41,19 @@ class Admin
         $val .= "       </form>\n";
         $val .= "  </td>\n";
         // Modify
-        $val .= "  <td>\n";
         if($counter > 1){
+            $val .= "  <td>\n";
             $val .= "       <form action='index.php?page=account' method='POST'>\n";
             $val .= $form->inputAction('modifyuser');
             $val .= $form->label(Language::title('modifyAnAccount'));
+            $val .= "  </td>\n";
+            $val .= "  <td>\n";
             $val .= $form->selectSubmit('id_fp_user', $data);
             $val .= "       </form>\n";
+            $val .= "  </td>\n";
+        } else {
+            $val .= "  <td colspan='2'></td>\n";
         }
-        $val .= "  </td>\n";
         $val = Admin::surround($val);
         return $val;
     }
@@ -98,15 +102,19 @@ class Admin
                 ORDER BY c.name;";
             $data = $pdo->query($req);
             $counter = $pdo->rowCount();
-            $val .= "   <td>\n";
             if($counter > 1){    
+                $val .= "   <td>\n";
                 $val .= "   <form action='index.php?page=championship' method='POST'>\n";
                 $val .= $form->inputAction('modify');
                 $val .= $form->label(Language::title('modifyAChampionship'));
+                $val .= "   </td>\n";
+                $val .= "   <td>\n";
                 $val .= $form->selectSubmit('id_championship', $data);
                 $val .= "   </form>\n";
+                $val .= "   </td>\n";
+            } else {
+                $val .= "  <td colspan='2'></td>\n";
             }
-            $val .= "   </td>\n";
             $val = Admin::surround($val);
         
         }
@@ -134,22 +142,23 @@ class Admin
                             . "</button>\n";
                     $val .= "   </form>\n";
                     $val .= "   </td>\n";
-                    if(($_SESSION['role'])==2){
-                        $req = "SELECT DISTINCT id_matchday, number FROM matchday
+                    $req = "SELECT DISTINCT id_matchday, number FROM matchday
                     WHERE id_season = " . $_SESSION['seasonId'] . "
                     AND id_championship = " . $_SESSION['championshipId'] . " ORDER BY number DESC;";
-                        $data = $pdo->query($req);
-                        $counter = $pdo->rowCount();
-                        $val .= "   <td>\n";
-                        if($counter > 0){
+                    $data = $pdo->query($req);
+                    $counter = $pdo->rowCount();
+                    if($_SESSION['role']==2 and $counter > 0){
+                            $val .= "   <td>\n";
                             $val .= "<form action='index.php?page=matchday' method='POST'>\n";
                             $val .= $form->inputAction('modify');
                             $val .= $form->label(Language::title('modifyAMatchday'));
+                            $val .= "   </td>\n";
+                            $val .= "   <td>\n";
                             $val .= $form->selectSubmit('matchdayModify', $data);
                             $val .= "</form>\n";
-                        }
-                        $val .= "   </td>\n";
-                    } else $val .= "   <td></td>\n";
+                    } else {
+                        $val .= "   <td colspan='2'></td>\n";
+                    }
                     $val = Admin::surround($val);
                 }
             } else {
@@ -163,7 +172,7 @@ class Admin
                             . "</button>\n";
                 $val .= "   </form>\n";
                 $val .= "   </td>\n";
-                $val .= "   <td></td>\n";
+                $val .= "   <td colspan='2'></td>\n";
                 $val = Admin::surround($val);
             }
         }
@@ -182,14 +191,13 @@ class Admin
             $val .= "   </form>\n";
             $val .= "   </td>\n";
             $val .= "   <td>\n";
-            if(($_SESSION['role'])==2){
-                $req = "SELECT id_player, name, firstname
+            $req = "SELECT id_player, name, firstname
             FROM player
             ORDER BY name, firstname;";
                 $data = $pdo->query($req);
                 $counter = $pdo->rowCount();
                 
-                if($counter > 1){
+                if($_SESSION['role']==2 and $counter > 1){
                     $val .= "       <form action='index.php?page=player' method='POST'>\n";
                     $val .= $form->inputAction('modify');
                     $val .= $form->label(Language::title('modifyAPlayer'));

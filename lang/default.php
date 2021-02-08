@@ -13,7 +13,7 @@ function getMessage($val,$count){
     		$val = _("Added");
     		break;
         case "administration":
-    		$val = _("administration");
+    		$val = _("Administration");
     		break;
         case "administrator":
     		$val = _("administrator");

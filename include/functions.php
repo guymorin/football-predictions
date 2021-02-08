@@ -279,7 +279,7 @@ function popup($text,$link){
 
 function changeMD($pdo,$page){
     // Display arrows to change matchday
-    echo "<div id='changeMD'>\n";
+    $val = "<div id='changeMD'>\n";
     $req = "SELECT id_matchday, number FROM matchday
         WHERE number >= :match1
         AND number <> :match2
@@ -318,14 +318,14 @@ function changeMD($pdo,$page){
         }
         $counter--;
     }
-    echo "<form id='leftArrow' action='index.php?page=$page' method='POST'>\n";
-    echo $button1;
-    echo "</form>\n";
-    echo "<form id='rightArrow' action='index.php?page=$page' method='POST'>\n";
-    echo $button2;
-    echo "</form>\n";
-    echo "</div>\n";
-    
+    $val .= "<form id='leftArrow' action='index.php?page=$page' method='POST'>\n";
+    $val .= $button1;
+    $val .= "</form>\n";
+    $val .= "<form id='rightArrow' action='index.php?page=$page' method='POST'>\n";
+    $val .= $button2;
+    $val .= "</form>\n";
+    $val .= "</div>\n";
+    return $val;
 }
 
 // Other functions
