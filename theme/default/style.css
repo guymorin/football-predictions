@@ -293,7 +293,7 @@ section #changeMD input[type=submit] {
 section #leftArrow {float:left;display:block;width:11em;}
 section #rightArrow {float:right;display:block;width:11em;}
 section #leftArrow, section #rightArrow {
-	display:block; height:4em; text-overflow:ellipsis;
+	display:block; height:4em; margin-top: .4em;
 }
 section a {font-weight: bold;}
 section li a {font-weight: normal;}
@@ -406,11 +406,11 @@ section .tooltip:hover span,.tooltip:focus span{
   position:absolute; 
   background:#fff;
   border: none;
-  border-radius: 9px;
+  border-radius: 6px;
   box-shadow: 0 0 10px #333;
   color:#333;
   margin-top:.5em;
-  padding:.8em;
+  padding:.4em .8em;
   transition:background .2s;
 }
 
