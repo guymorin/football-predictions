@@ -22,8 +22,6 @@ $val = array_combine($idPlayer,$ratingPlayer);
 
 // Only if a matchday is selected
 if(isset($_SESSION['matchdayId'])){
-
-    echo changeMD($pdo,"teamOfTheWeek");
     
     // Popup modified
     if($teamOfTheWeek==1){
@@ -91,6 +89,7 @@ if(isset($_SESSION['matchdayId'])){
     // Modify form
     else {
         echo "<h3>" . (Language::title('teamOfTheWeek')) . "</h3>\n";
+        echo changeMD($pdo,"teamOfTheWeek");
         echo "<table class='teamOfTheWeek'>\n";
         echo "  <tr>\n";
         echo "      <th> </th>\n";

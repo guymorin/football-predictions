@@ -194,16 +194,20 @@ class Admin
             $req = "SELECT id_player, name, firstname
             FROM player
             ORDER BY name, firstname;";
-                $data = $pdo->query($req);
-                $counter = $pdo->rowCount();
-                
-                if($_SESSION['role']==2 and $counter > 1){
-                    $val .= "       <form action='index.php?page=player' method='POST'>\n";
-                    $val .= $form->inputAction('modify');
-                    $val .= $form->label(Language::title('modifyAPlayer'));
-                    $val .= $form->selectSubmit('id_player', $data);
-                    $val .= "       </form>\n";
-                }
+            $data = $pdo->query($req);
+            $counter = $pdo->rowCount();
+            
+            if($_SESSION['role']==2 and $counter > 1){
+                $val .= "       <form action='index.php?page=player' method='POST'>\n";
+                $val .= $form->inputAction('modify');
+                $val .= $form->label(Language::title('modifyAPlayer'));
+                $val .= "   </td>\n";
+                $val .= "   <td>\n";
+                $val .= $form->selectSubmit('id_player', $data);
+                $val .= "       </form>\n";
+            } else {
+                $val .= "   </td>\n";
+                $val .= "   <td>\n";
             }
             $val .= "   </td>\n";
             $val = Admin::surround($val);
@@ -222,7 +226,7 @@ class Admin
             . "</button>\n";
             $val .= "   </form>\n";
             $val .= "   </td>\n";
-            $val .= "   <td></td>\n";
+            $val .= "   <td colspan='2'></td>\n";
             $val = Admin::surround($val);
         }
         return $val;
@@ -242,20 +246,28 @@ class Admin
         $val .= "       </form>\n";
         $val .= "   </td>\n";
         // Modify
-        $val .= "   <td>\n";
         if(isset($_SESSION['seasonId'])){
             $req = "SELECT id_season, name FROM season ORDER BY name;";
             $data = $pdo->query($req);
             $counter = $pdo->rowCount();
+            $val .= "   <td>\n";
             if($counter > 0){
                 $val .= "<form action='index.php?page=season' method='POST'>\n";
                 $val .= $form->inputAction('modify');
                 $val .= $form->label(Language::title('modifyASeason'));
+                $val .= "   </td>\n";
+                $val .= "   <td>\n";
                 $val .= $form->selectSubmit('id_season', $data);
                 $val .= "</form>\n";
+            } else {
+                $val .= "   </td>\n";
+                $val .= "   <td>\n";
             }
+            $val .= "   </td>\n";
+        } else {
+            $val .= "   <td colspan='2'></td>\n";
         }
-        $val .= "   </td>\n";
+        
         $val = Admin::surround($val);
         return $val;
     }
@@ -298,7 +310,7 @@ class Admin
                     . Language::title('save') . "</button>\n";
         $val .= "   </form></td>\n";
         // Text
-        $val .= "   <td>" . Language::title('lastSave') . " : " . $lastDump . "</td>\n";
+        $val .= "   <td colspan='2'>" . Language::title('lastSave') . " : " . $lastDump . "</td>\n";
         $val = Admin::surround($val);
         return $val;
     }
@@ -324,9 +336,14 @@ class Admin
                 $val .= "<form action='index.php?page=team' method='POST'>\n";
                 $val .= $form->inputAction('modify');
                 $val .= $form->label(Language::title('modifyATeam'));
+                $val .= "   </td>\n";
+                $val .= "   <td>\n";
                 $val .= $form->selectSubmit('id_team', $data);
                 $val .= "</form>\n";
             }
+        } else {
+            $val .= "   </td>\n";
+            $val .= "   <td>\n";
         }
         $val .= "   </td>\n";
         $val = Admin::surround($val);

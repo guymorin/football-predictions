@@ -24,7 +24,7 @@ class Menu
             $val .= "  <ul>\n";
             $val .= "	 <li><a href='/index.php?page=account&exit=1'>"
                 . Theme::icon('exit') . " "
-                    . (Language::title('logoff')) . "</a></li>\n";
+                    . (Language::title('logoff')) . " [" . ucfirst($_SESSION['userLogin'])."] </a></li>\n";
                     
                     // Admin page link
                     if(($_SESSION['role'])==2){

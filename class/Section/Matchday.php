@@ -17,10 +17,8 @@ class Matchday
     }
     
     static function stats($pdo){
-        $val = "<h3>" . (Language::title('statistics')) . "</h3>";
-        $val .= changeMD($pdo,"statistics");
         $stats = new Statistics();
-        $val .= $stats->getStats($pdo, 'matchday');
+        $val = $stats->getStats($pdo, 'matchday');
         return $val;
     }
     

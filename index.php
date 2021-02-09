@@ -99,7 +99,10 @@ App::setTitle($pdo);
     <?= Theme::style();?>
 </head>
 
-<body>
+<?php 
+if(empty($_SESSION['userLogin'])) echo "<body class='home'>\n";
+else                              echo "<body>\n";
+?>
 <script>
 window.onscroll = function() {myFunction()};
 
