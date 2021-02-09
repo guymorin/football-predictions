@@ -277,6 +277,8 @@ class Predictions
                         MeteoConcept::setWeather($pdo, $diff, $this->mv1, $this->mv2, $d->weather_code);
                         $this->team1Weather = MeteoConcept::getTeamWeather(1);
                         $this->team2Weather = MeteoConcept::getTeamWeather(2);
+                        $this->cloud = MeteoConcept::$cloud;
+                        $this->cloudText = MeteoConcept::$cloudText;
                     }
                 }
             }

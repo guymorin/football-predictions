@@ -8,8 +8,8 @@ namespace FootballPredictions\Plugin;
 use FootballPredictions\Language;
 class MeteoConcept
 {
-    private static $cloud;
-    private static $cloudText;
+    public static $cloud;
+    public static $cloudText;
     private static $team1Weather;
     private static $team2Weather;
     
