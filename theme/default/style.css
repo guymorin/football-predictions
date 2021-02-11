@@ -488,7 +488,7 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
   bottom: 0;
   left: 0;
   right: 0;
-  background: #0e5f31;
+  background: #147b45;
   transition: opacity 500ms;
   visibility: visible;
   opacity: 1;
