@@ -4,7 +4,7 @@
 /* Author : Guy Morin */
 // Class
 require 'vendor/autoload.php';
-require 'lang/localization.php';
+
 // Namespaces
 use FootballPredictions\App;
 use FootballPredictions\Errors;
@@ -15,6 +15,7 @@ use FootballPredictions\Theme;
 
 // Language
 if(empty($_SESSION['language'])) Language::getBrowserLang();
+require 'lang/localization.php';
 
 // File to include
 require 'include/changeMD.php';
@@ -127,6 +128,7 @@ function myFunction() {
 <?php
 if($page!='') require("pages/" . $page . ".php");
 else  header('Location:index.php?page=season');
+
 ?>
 </section>
 <footer>

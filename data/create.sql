@@ -79,7 +79,7 @@ CREATE TABLE `fp_preferences` (
 --
 
 INSERT INTO `fp_preferences` (`id_fp_preferences`, `name`) VALUES
-(1, 'FootballPronos');
+(1, 'FP');
 
 -- --------------------------------------------------------
 

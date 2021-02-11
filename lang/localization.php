@@ -34,7 +34,10 @@ require_once('lib/php-gettext-1.0.12/gettext.inc');
 $supported_locales = array('en_US'.'.'.$encoding,'fr_FR'.'.'.$encoding);
 
 
-$locale = (isset($_SESSION['language']))? $_SESSION['language'].'.'.$encoding : DEFAULT_LOCALE;
+$locale = DEFAULT_LOCALE;
+if(isset($_SESSION['language'])){
+    $locale = $_SESSION['language'].'.'.$encoding;
+}
 
 // gettext setup
 T_setlocale(LC_MESSAGES, $locale);

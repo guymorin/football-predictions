@@ -11,7 +11,7 @@ html {
  background:#147b45;
 }
 body {
- min-height:26em;
+ height: 100vh;
  font-family: Calibri, sans-serif; 
  font-size: .9em;
  text-align:center;
@@ -192,6 +192,8 @@ nav a {
 	color:#c8c8c8;
 	position:fixed;
 	margin-top:2.35em;
+	height: 2.8em;
+	overflow: hidden;
 	width:100%;
 	text-align:center;
 	opacity:1;
@@ -203,6 +205,7 @@ nav a {
 #fp-submenu a {
 	display:inline-block;
 	text-transform: uppercase;
+	margin: 0;
 	padding:.5em;
 	background-color:#0e5f31;
 	border-bottom: 2px solid #279c5f;
@@ -238,8 +241,14 @@ tr.current button {
 	opacity: 0.5;
 }
 #fp-submenu .session {color:#fff}
-#fp-submenu form, #fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}
-#fp-submenu form {display:inline-block; margin-top:.2em;}
+#fp-submenu form {
+	display:inline-block;
+	margin: 0;
+	padding:.2em 0 .2em .5em;
+	color:#fff;
+	transition:background .2s;
+}
+#fp-submenu select, #fp-submenu .hamburger, #fp-submenu input {margin:0 .5em;padding:0}
 #fp-submenu label {margin-right:.2em}
 #fp-submenu select {min-width:10em;font-size:.6em}
 
@@ -520,7 +529,15 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 .confirm p, .confirm form {display:block;margin:0;padding:0}
 
 @media all and (max-width:720px){
+	body {font-size: 110%;}
+	section {width: 600px;}
 	#fp-submenu a.main, #fp-submenu a.current {display: none;}
 	#fp-menu ul 	{width:calc(80vw + 2em);}
 	#fp-menu li a 	{width:80vw;}
+}
+
+@media all and (max-width:480px){
+	body {font-size: 130%;}
+	section {width:440px;}
+	header h1 a {font-size:.6em;}
 }
