@@ -6,6 +6,9 @@ function getMessage($val,$count){
         case "account":
     		$val = _("Account");
     		break;
+        case "addPlayerTo":
+            $val = _("Add player to ");
+            break;
         case "addTeamTo":
     		$val = _("Add team to ");
     		break;

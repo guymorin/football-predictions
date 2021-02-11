@@ -101,6 +101,8 @@ class PlayerForm
             .Language::title('modify'));
         if(!$isThisSeason){
             $val .= $form->submit(Theme::icon('add')." "
+                .Language::title('addPlayerTo')." :<br />"
+                .$_SESSION['championshipName']." "
                 .$_SESSION['seasonName']);
         }
         $val .= "</form>\n";
