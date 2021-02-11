@@ -90,6 +90,8 @@ header h1 a {
 }
 header h1 a:hover {text-decoration:none}
 
+nav {background: #147b45;}
+
 nav a {
 	color:white;
 	text-decoration:none;
@@ -123,7 +125,6 @@ nav a {
 	z-index:1;
 	width:100vw;
 	height:100vh;
-	overflow:hidden;
 	padding:0;
 	list-style-type: none;
 	background:#0004;
@@ -192,8 +193,9 @@ nav a {
 	color:#c8c8c8;
 	position:fixed;
 	margin-top:2.35em;
-	height: 2.8em;
 	overflow: hidden;
+	overflow-x:auto;
+	height: 2.6em;
 	width:100%;
 	text-align:center;
 	opacity:1;
@@ -486,7 +488,7 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
   bottom: 0;
   left: 0;
   right: 0;
-  background: #222;
+  background: #0e5f31;
   transition: opacity 500ms;
   visibility: visible;
   opacity: 1;
@@ -528,16 +530,27 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 }
 .confirm p, .confirm form {display:block;margin:0;padding:0}
 
+@media all and (max-width:1024px){
+	body {font-size:1.3em;}
+	#fp-submenu {height: 2.55em;}
+}
+
 @media all and (max-width:720px){
-	body {font-size: 110%;}
-	section {width: 600px;}
-	#fp-submenu a.main, #fp-submenu a.current {display: none;}
-	#fp-menu ul 	{width:calc(80vw + 2em);}
-	#fp-menu li a 	{width:80vw;}
+	body {font-size: 1.6em;}
+	section {
+		margin:6.7em auto .7em auto;
+		overflow-x:auto;
+	}
+	#fp-submenu {height: 2.5em;}
+	header h1 a {font-size:.8em;}
 }
 
 @media all and (max-width:480px){
-	body {font-size: 130%;}
-	section {width:440px;}
+	body {font-size: 1.8em;}
+	section {
+		margin:7.7em auto .7em auto;
+		overflow-x:auto;
+	}
+	#fp-submenu {height: 2.45em;}
 	header h1 a {font-size:.6em;}
 }

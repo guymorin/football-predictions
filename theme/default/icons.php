@@ -29,7 +29,7 @@ $array = array(
     "switch" => "&#128257;",
     "team" => "&#127933;",
     "trend" => "&#128200;",
-    "winOK" => "<big style='color:green'>&#x2714;</big>",
-    "winKO" => "<small style='color:gray'>&times;</small>"
+    "winOK" => "<big class='green'>&#x2714;</big>",
+    "winKO" => "<big class='red'>&times;</big>"
 )
 ?>
