@@ -409,10 +409,13 @@ class Statistics
         if($h < 80) $h = 500;
         $height=abs($h);
         $maxX=array_key_last($this->graph);
-        $maxY=end($this->graph);;
+        $maxY=end($this->graph);
+        $colorText='#fff';
+        $colorTextAnchor='#ccc';
+        $colorStroke='#555';
         $val .= "<div class='graph'>\n";
-        $val .= "<svg width='$width' height='$height'>\n";
-        $val .= "<rect width='100%' height='100%' fill='#fff' stroke='#aaa' stroke-width='2'/>\n";
+        $val .= "<svg width='".$width."' height='".$height."'>\n";
+        $val .= "<rect width='100%' height='100%' fill-opacity='0' stroke-width='0'/>\n";
         // Margin
         $val .= "<g class='layer' transform='translate(40,". ($height/2) . ")'>\n";
         $cxPrec = 0;
@@ -428,21 +431,21 @@ class Statistics
         }
         // Y Axis
         $val .= "<g class='y axis' fill='purple'>\n";
-        $val .= "<line x1='<?= -($width-10);?>' y1='0' x2='" . ($width-10) . "' y2='0' stroke='#555' stroke-width='1' />\n";
+        $val .= "<line x1='<?= -($width-10);?>' y1='0' x2='" . ($width-10) . "' y2='0' stroke='".$colorStroke."' stroke-width='1' />\n";
         
         for($i=-($height/(2*25));$i<($height/(2*25)+1);$i++){
             if($i!=0){
-                $val .= "<text text-anchor='end' x='-6' y='" . (($i*20)+4). "' fill='#222'>" . -($i*10). " </text>\n";
-                $val .= "<line x1='-2' y1='" . ($i*20). "' x2='2' y2='" . ($i*20). "' stroke='#555' stroke-width='2' />\n";
+                $val .= "<text text-anchor='end' x='-6' y='" . (($i*20)+4). "' fill='".$colorTextAnchor."'>" . -($i*10). " </text>\n";
+                $val .= "<line x1='-2' y1='" . ($i*20). "' x2='2' y2='" . ($i*20). "' stroke='".$colorStroke."' stroke-width='2' />\n";
             }
         }
         $val .= "</g>\n";
         
         // X axis
         $val .= "<g class='x axis' fill='purple'>\n";
-        $val .= "<line x1='0' y1='" . -($height-10) . "' x2='0' y2='" . ($height-10) . "' stroke='#555' stroke-width='1' />\n";
-        $val .= "<text x='5' y='20' fill='black'>" . Language::title('MD') . " 1</text>\n";
-        $val .= "<text x='" . (($maxX*10)+5) . "' y='" . (-($maxY*2)+15) . "' fill='black'>" . (Language::title('MD')) . $maxX . "</text>\n";
+        $val .= "<line x1='0' y1='" . -($height-10) . "' x2='0' y2='" . ($height-10) . "' stroke='".$colorStroke."' stroke-width='1' />\n";
+        $val .= "<text x='5' y='20' fill='".$colorText."'>" . Language::title('MD') . " 1</text>\n";
+        $val .= "<text x='" . (($maxX*10)+5) . "' y='" . (-($maxY*2)+15) . "' fill='".$colorText."'>" . (Language::title('MD')) . $maxX . "</text>\n";
         $val .= "</g>\n";
         
         $val .= "</g>\n";

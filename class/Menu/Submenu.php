@@ -127,7 +127,7 @@ class Submenu
             $val .= "<a" . $classLMD . " href='index.php?page=matchday'>" . (Language::title('listMatchdays')) . "</a>";
             $val .= "<a" . $classS . " href='index.php?page=statistics'>" . (Language::title('statistics')) . "</a>";
             if(($_SESSION['role'])==2){
-                $val .= "<a" . $classP . " href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
+                $val .= "<a onclick='myLoader()' " . $classP . " href='index.php?page=prediction'>" . (Language::title('predictions')) . "</a>";
                 $val .= "<a" . $classR . " href='index.php?page=results'>" . (Language::title('results')) . "</a>";
                 $val .= "<a" . $classTOTW . " href='index.php?page=teamOfTheWeek'>" . (Language::title('teamOfTheWeek')) . "</a>";
                 $val .= "<a" . $classCM . " href='index.php?page=matchgame&create=1'>" . (Language::title('createAMatch')) . "</a>";

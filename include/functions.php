@@ -260,10 +260,10 @@ function valRoi($val){
 function valColor($val){
     switch($val){
         case $val>0:
-            $color="green";
+            $color="#6f6";
             break;
         case $val<0:
-            $color="red";
+            $color="#f66";
             break;
         default:
             $color="black";

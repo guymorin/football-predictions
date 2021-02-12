@@ -114,7 +114,11 @@ function myFunction() {
     document.getElementById('fp-submenu').className = "";
   }
 }
+function myLoader() {
+  document.getElementById('loading').style.display = 'flex';
+}
 </script>
+<div id="loading"><div id="loader-1" class="loader"></div></div>
 <header>
     <nav id='fp-submenu'>
 <?= Home::submenu($pdo, $form, $page, $create, $modify, $modifyuser);?>
@@ -132,9 +136,6 @@ else  header('Location:index.php?page=season');
 ?>
 </section>
 <footer>
-
 </footer>
-
 </body>
-
 </html>

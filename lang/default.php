@@ -37,10 +37,10 @@ function getMessage($val,$count){
     		$val = _("Good bet value");
     		break;
         case "careful":
-    		$val = _("Careful game!");
+    		$val = _("Careful play!");
     		break;
         case "carefulToo":
-    		$val = _("Too careful game!");
+    		$val = _("Too careful play!");
     		break;
         case "championship":
     		$val = _("Championship");
@@ -196,7 +196,7 @@ function getMessage($val,$count){
     		$val = _("Home");
     		break;
         case "homeAwayText":
-    		$val = _("The standing of the home or away team is good or bad (+ 1 / -1)");
+    		$val = _("The ranking of the home or away team is good or bad (+ 1 / -1)");
     		break;
         case "homepage":
     		$val = _("Homepage");
@@ -405,6 +405,9 @@ function getMessage($val,$count){
         case "quickNav":
     		$val = _("Quick nav");
     		break;
+        case "ranking":
+            $val = _("Ranking");
+            break;
         case "rating":
     		$val = _("Rating");
     		break;
@@ -472,16 +475,13 @@ function getMessage($val,$count){
     		$val = _("Select the teams");
     		break;
         case "speculative":
-    		$val = _("Speculative game!");
+    		$val = _("Speculative play!");
     		break;
         case "speculativeToo":
-    		$val = _("Too speculative game!");
+    		$val = _("Very speculative play!");
     		break;
         case "statistics":
     		$val = _("Statistics");
-    		break;
-        case "standing":
-    		$val = _("Standing");
     		break;
         case "success":
             $val = ngettext("Success","Successes",$count);

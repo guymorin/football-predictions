@@ -508,7 +508,7 @@ class Forms
      * @return string HTML code
      */
     public function submit($title){
-        $val = "<button type='submit'>$title</button>";
+        $val = "<button onclick='myLoader()' type='submit'>$title</button>";
         return $this->surround($val, 'center');
         ;
     }

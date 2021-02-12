@@ -78,9 +78,9 @@ elseif($delete == 1  || $delete == 2 || $modify == 1){
         elseif($championshipName != '') ChampionshipPopup::modifyPopup($pdo, $championshipName, $championshipId);
     }
 }
-// If List (champoinship standings)
+// If List (championship rankings)
 elseif(isset($_SESSION['championshipId'])&&($exit==0)){
-    echo "<h3>". (Language::title('standing')) . "</h3>\n";
+    echo "<h3>". (Language::title('ranking')) . "</h3>\n";
     echo Championship::list($pdo, $standhome, $standaway);
 }
 ?>
