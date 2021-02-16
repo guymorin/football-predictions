@@ -128,7 +128,7 @@ nav a {
 	height:100vh;
 	padding:0;
 	list-style-type: none;
-	background:#0004;
+	background:#0009;
 }
 #fp input:not(:checked) ~ #fp-menu {
 	opacity:0;
@@ -194,11 +194,11 @@ nav a {
 	color:#c8c8c8;
 	position:fixed;
 	margin-top:2.35em;
-	overflow: hidden;
+	overflow-y:hidden;
 	overflow-x:auto;
-	height: 2.6em;
 	width:100%;
 	text-align:center;
+	white-space: nowrap;
 	opacity:1;
 	transition: opacity 1s;
 }
@@ -236,6 +236,7 @@ nav a {
 #fp-submenu .current, #fp-submenu a.current:hover, #fp-submenu a.current:focus {
 	background-color: #147b45;
 	border-bottom: 2px solid #147b45;
+	cursor: default;
 }
 tr.current {
 	background:#222;
@@ -490,7 +491,7 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
   position: fixed;
   display: flex;
   overflow:hidden;
-  top: 2.3em;
+  top: 5em;
   bottom: 0;
   left: 0;
   right: 0;
@@ -540,7 +541,7 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 /* Loader */
 #loading {
 	position: fixed;
-	background:#0004;
+	background:#0009;
 	width: 100%;
 	height: 100%;
 	line-height: 100%;
@@ -593,7 +594,10 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 /* Media */
 @media all and (max-width:1024px){
 	body {font-size:1.4em;}
-	#fp-submenu {height: 2.55em;}
+	#fp-menu ul {
+		width:calc(40vw + 2em);
+	}
+	#fp-menu li a {width:40vw;}
 }
 
 @media all and (max-width:720px){
@@ -602,7 +606,10 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 		margin:6.7em auto .7em auto;
 		overflow-x:auto;
 	}
-	#fp-submenu {height: 2.5em;}
+	#fp-menu ul {
+		width:calc(60vw + 2em);
+	}
+	#fp-menu li a {width:60vw;}
 	header h1 a {font-size:.8em;}
 }
 
@@ -612,6 +619,9 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 		margin:7.7em auto .7em auto;
 		overflow-x:auto;
 	}
-	#fp-submenu {height: 2.45em;}
+	#fp-menu ul {
+		width:calc(80vw + 2em);
+	}
+	#fp-menu li a {width:80vw;}
 	header h1 a {font-size:.6em;}
 }
