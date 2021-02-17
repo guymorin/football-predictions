@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FP\n"
 "POT-Creation-Date: 2021-02-17 22:48+0100\n"
-"PO-Revision-Date: 2021-02-17 22:52+0100\n"
+"PO-Revision-Date: 2021-02-17 23:00+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ko_KR\n"
@@ -21,11 +21,11 @@ msgstr "계정"
 
 #: default.php:10
 msgid "Add player to "
-msgstr "팀 추가"
+msgstr "팀 추가 "
 
 #: default.php:13
 msgid "Add team to "
-msgstr "팀 추가"
+msgstr "팀 추가 "
 
 #: default.php:16
 msgid "Added"
@@ -150,7 +150,7 @@ msgstr "방어자"
 
 #: default.php:106
 msgid "Delete"
-msgstr "지우다 "
+msgstr "지우다"
 
 #: default.php:109
 msgid "Deleted"
@@ -375,7 +375,7 @@ msgstr "플레이 한 매치 게임"
 
 #: default.php:274
 msgid "MD"
-msgstr "MD"
+msgstr "R"
 
 #: default.php:277
 msgid "Midfielder"
@@ -387,7 +387,7 @@ msgstr "수정하기"
 
 #: default.php:283
 msgid "Modified"
-msgstr "수정 됨 "
+msgstr "수정 됨"
 
 #: default.php:286
 msgid "Modify a championship"
@@ -543,7 +543,7 @@ msgstr "포인트들"
 
 #: default.php:406
 msgid "Quick nav"
-msgstr "빠른 탐색 "
+msgstr "빠른 탐색"
 
 #: default.php:409
 msgid "Ranking"
@@ -575,7 +575,7 @@ msgstr "ROI"
 
 #: default.php:430
 msgid "ROI is losing!"
-msgstr "ROI가 떨어지고 있습니다! "
+msgstr "ROI가 떨어지고 있습니다!"
 
 #: default.php:433
 msgid "ROI is neutral!"
@@ -583,11 +583,11 @@ msgstr "ROI는 중립적입니다!"
 
 #: default.php:436
 msgid "ROI wins!"
-msgstr "ROI가 승리합니다! "
+msgstr "ROI가 승리합니다!"
 
 #: default.php:439
 msgid "ROI is excellent!"
-msgstr "ROI는 훌륭합니다! "
+msgstr "ROI는 훌륭합니다!"
 
 #: default.php:442
 msgid "Role"

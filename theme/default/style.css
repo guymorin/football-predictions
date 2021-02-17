@@ -598,7 +598,7 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 		width: calc(40vw + 2em);
 	}
 	#fp-menu li a {width: 40vw;}
-	table {width: 100%;}
+	table, .graph {width: 100%;}
 }
 
 @media all and (max-width:720px){
