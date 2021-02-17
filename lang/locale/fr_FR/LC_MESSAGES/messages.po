@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: FP\n"
-"POT-Creation-Date: 2021-02-11 23:51+0100\n"
-"PO-Revision-Date: 2021-02-11 23:51+0100\n"
+"POT-Creation-Date: 2021-02-17 22:48+0100\n"
+"PO-Revision-Date: 2021-02-17 22:48+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -515,8 +515,8 @@ msgid "Predictions history"
 msgstr "Historique des pronostics"
 
 #: default.php:382
-msgid "Old results on the same criteria"
-msgstr "Anciens résultats sur les mêmes critères"
+msgid "Previous results for the same criteria"
+msgstr "Anciens résultats pour les mêmes critères"
 
 #: default.php:385
 msgid "Preferences"
