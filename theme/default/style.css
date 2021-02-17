@@ -349,7 +349,7 @@ section #criterion table td:nth-child(4){width:10em;text-align:center}
 section #criterion table td:nth-child(3){width:3em}
 section #criterion table input[type='radio'] {margin-bottom:.3em}
 
-section form {text-align:center;margin: 0 auto;display:inline-block;}
+section form {text-align:center;margin: 0 auto;}
 section form input, section form select {color:#000;font-size:.95em;}
 section form label {color:#fff;vertical-align: middle;text-align:right;margin:0 .5em;display:inline-block;}
 section .menu form label, .center {text-align:center}
@@ -593,35 +593,36 @@ button[type=submit]:focus:enabled, input[type=submit]:focus:enabled, input[type=
 
 /* Media */
 @media all and (max-width:1024px){
-	body {font-size:1.4em;}
+	body {font-size: 1.4em;}
 	#fp-menu ul {
-		width:calc(40vw + 2em);
+		width: calc(40vw + 2em);
 	}
-	#fp-menu li a {width:40vw;}
+	#fp-menu li a {width: 40vw;}
+	table {width: 100%;}
 }
 
 @media all and (max-width:720px){
 	body {font-size: 1.7em;}
 	section {
-		margin:6.7em auto .7em auto;
-		overflow-x:auto;
+		margin: 6.7em auto .7em auto;
+		overflow-x: auto;
 	}
 	#fp-menu ul {
-		width:calc(60vw + 2em);
+		width: calc(60vw + 2em);
 	}
-	#fp-menu li a {width:60vw;}
-	header h1 a {font-size:.8em;}
+	#fp-menu li a {width: 60vw;}
+	header h1 a {font-size: .8em;}
 }
 
 @media all and (max-width:480px){
 	body {font-size: 1.9em;}
 	section {
-		margin:7.7em auto .7em auto;
-		overflow-x:auto;
+		margin: 7.7em auto .7em auto;
+		overflow-x: auto;
 	}
 	#fp-menu ul {
-		width:calc(80vw + 2em);
+		width: calc(80vw + 2em);
 	}
-	#fp-menu li a {width:80vw;}
-	header h1 a {font-size:.6em;}
+	#fp-menu li a {width: 80vw;}
+	header h1 a {font-size: .6em;}
 }

@@ -123,10 +123,11 @@ class AccountForm
             $val .= $form->select('role', $dataRole, $data->role);
             $val .= "</fieldset>\n";
             $val .= "<fieldset>\n";
-            $val .= $form->submit(Language::title('modify'));
+            $val .= $form->submit(Theme::icon('modify')." "
+                    .Language::title('modify'));
             $val .= "</form>\n";
             $val .= $form->deleteForm('account', 'id_fp_user', $userId);
-            $val .= "<fieldset>\n";
+            $val .= "</fieldset>\n";
         }
         return $val;
     }
