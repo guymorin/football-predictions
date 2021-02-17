@@ -1,0 +1,750 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FP\n"
+"POT-Creation-Date: 2021-02-17 22:48+0100\n"
+"PO-Revision-Date: 2021-02-17 22:52+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ko_KR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-KeywordsList: _;ngettext:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: default.php:7
+msgid "Account"
+msgstr "계정"
+
+#: default.php:10
+msgid "Add player to "
+msgstr "팀 추가"
+
+#: default.php:13
+msgid "Add team to "
+msgstr "팀 추가"
+
+#: default.php:16
+msgid "Added"
+msgstr "추가됨"
+
+#: default.php:19
+msgid "Administration"
+msgstr "관리"
+
+#: default.php:22
+msgid "administrator"
+msgstr "관리자"
+
+#: default.php:25
+msgid "Away"
+msgstr "원정"
+
+#: default.php:28
+msgid "Best players"
+msgstr "최고의 선수"
+
+#: default.php:31
+msgid "Best players by team"
+msgstr "팀별 최고의 선수"
+
+#: default.php:34
+msgid "Bet"
+msgid_plural "Bets"
+msgstr[0] "내기"
+
+#: default.php:37
+msgid "Good bet value"
+msgstr "좋은 베팅 가치"
+
+#: default.php:40
+msgid "Careful play!"
+msgstr "신중한 플레이!"
+
+#: default.php:43
+msgid "Too careful play!"
+msgstr "너무 조심스러운 플레이!"
+
+#: default.php:46
+msgid "Championship"
+msgstr "선수권 대회"
+
+#: default.php:49
+msgid "contributor"
+msgstr "기부자"
+
+#: default.php:52
+msgid "Create"
+msgstr "생성"
+
+#: default.php:55
+msgid "Created"
+msgstr "생성되었습니다"
+
+#: default.php:58
+msgid "Create a championship"
+msgstr "챔피언십 생성"
+
+#: default.php:61
+msgid "Create a match"
+msgstr "매치 게임 생성"
+
+#: default.php:64
+msgid "Create a matchday"
+msgstr "매치 데이 생성"
+
+#: default.php:67
+msgid "Create an account"
+msgstr "계정 생성"
+
+#: default.php:70
+msgid "Create an administrator account"
+msgstr "관리자 계정 생성"
+
+#: default.php:73
+msgid "Create a player"
+msgstr "플레이어 생성"
+
+#: default.php:76
+msgid "Create a season"
+msgstr "시즌 생성"
+
+#: default.php:79
+msgid "Create a team"
+msgstr "팀 생성"
+
+#: default.php:82
+msgid "Create the database"
+msgstr "데이터베이스 생성"
+
+#: default.php:85
+msgid "Create the matchdays"
+msgstr "모든 매치 데이 생성"
+
+#: default.php:88
+msgid "Criterion sum"
+msgstr "특징적인 합계"
+
+#: default.php:91
+msgid "Current form"
+msgstr "현재 형태"
+
+#: default.php:94
+msgid "Victory in the last match (+1)"
+msgstr "마지막 경기에서 승리 (+1)"
+
+#: default.php:97
+msgid "Dashboard"
+msgstr "계기반"
+
+#: default.php:100
+msgid "Date"
+msgstr "날짜"
+
+#: default.php:103
+msgid "Defender"
+msgstr "방어자"
+
+#: default.php:106
+msgid "Delete"
+msgstr "지우다 "
+
+#: default.php:109
+msgid "Deleted"
+msgstr "지워졌다"
+
+#: default.php:112
+msgid "D"
+msgstr "D"
+
+#: default.php:115
+msgid "Earning"
+msgid_plural "Earnings"
+msgstr[0] "소득"
+
+#: default.php:118
+msgid "Earning by bet"
+msgstr "내기 수입"
+
+#: default.php:121
+msgid "E-mail address"
+msgstr "이메일 주소"
+
+#: default.php:124
+msgid "Error"
+msgstr "오류"
+
+#: default.php:127
+msgid "alphanumeric characters only"
+msgstr "영숫자 만"
+
+#: default.php:130
+msgid "problem with the database connection"
+msgstr "데이터베이스 연결 문제"
+
+#: default.php:133
+msgid "invalid date"
+msgstr "잘못된 날짜"
+
+#: default.php:136
+msgid "integer numeric characters only"
+msgstr "정수 숫자 만"
+
+#: default.php:139
+msgid "this name already exists"
+msgstr "이 이름은 이미 존재합니다"
+
+#: default.php:142
+msgid "problem with the export"
+msgstr "수출 문제"
+
+#: default.php:145
+msgid "some fields have not been filled in correctly"
+msgstr "일부 필드가 올바르게 채워지지 않았습니다"
+
+#: default.php:148
+msgid "problem with the import"
+msgstr "수입 문제"
+
+#: default.php:151
+msgid "field not filled"
+msgstr "필드가 채워지지 않았습니다"
+
+#: default.php:154
+msgid "numeric characters only"
+msgstr "숫자 만"
+
+#: default.php:157
+msgid "invalid username or password"
+msgstr "잘못된 사용자 이름 또는 암호"
+
+#: default.php:160
+msgid "those passwords didn't match"
+msgstr "해당 비밀번호가 일치하지 않습니다"
+
+#: default.php:163
+msgid "invalid path"
+msgstr "유효하지 않은 경로"
+
+#: default.php:166
+msgid "invalid position"
+msgstr "잘못된 필드 위치"
+
+#: default.php:169
+msgid "invalid result"
+msgstr "잘못된 결과"
+
+#: default.php:172
+msgid "9 characters max."
+msgstr "최대 9 자"
+
+#: default.php:175
+msgid "Writable access needed on the installation repository"
+msgstr "설치 저장소에 필요한 쓰기 액세스 권한"
+
+#: default.php:178
+msgid "Exit"
+msgstr "출구"
+
+#: default.php:181
+msgid "Exited"
+msgstr "나갔다"
+
+#: default.php:184
+msgid "Firstname"
+msgstr "이름"
+
+#: default.php:187
+msgid "Forward"
+msgstr "포워드"
+
+#: default.php:190
+msgid "General"
+msgstr "일반"
+
+#: default.php:193
+msgid "Goalkeeper"
+msgstr "골키퍼"
+
+#: default.php:196
+msgid "Home"
+msgstr "홈"
+
+#: default.php:199
+msgid "The ranking of the home or away team is good or bad (+ 1 / -1)"
+msgstr "홈 팀 또는 원정 팀의 순위가 좋거나 나쁘다 (+1/1)"
+
+#: default.php:202
+msgid "Homepage"
+msgstr "홈페이지"
+
+#: default.php:205
+msgid "Install"
+msgstr "설치"
+
+#: default.php:208
+msgid "Installation complete"
+msgstr "설치 완료"
+
+#: default.php:211
+msgid "Host"
+msgstr "호스트"
+
+#: default.php:214 default.php:316
+msgid "Name"
+msgstr "이름"
+
+#: default.php:217
+msgid "User"
+msgstr "사용자"
+
+#: default.php:220 default.php:355
+msgid "Password"
+msgstr "암호"
+
+#: default.php:223
+msgid "Language"
+msgstr "언어"
+
+#: default.php:226
+msgid "List of accounts"
+msgstr "계정 목록"
+
+#: default.php:229
+msgid "Last backup"
+msgstr "마지막 백업"
+
+#: default.php:232
+msgid "List of championship"
+msgstr "우승 일람"
+
+#: default.php:235
+msgid "List of matchdays"
+msgstr "경기 일 목록"
+
+#: default.php:238
+msgid "Username"
+msgstr "사용자 이름"
+
+#: default.php:241
+msgid "Log on"
+msgstr "로그온"
+
+#: default.php:244
+msgid "Log off"
+msgstr "로그 오프"
+
+#: default.php:247
+msgid "L"
+msgstr "L"
+
+#: default.php:250
+msgid "Marketvalue"
+msgstr "시장 가치"
+
+#: default.php:253
+msgid "The market value of the team is hight or low (+N)"
+msgstr "팀의 시장 가치가 높거나 낮음 (+ N)"
+
+#: default.php:256
+msgid "Matchday"
+msgstr "매치 데이"
+
+#: default.php:259
+msgid "Next matchday"
+msgstr "다음 경기 일"
+
+#: default.php:262
+msgid "Matchdays"
+msgstr "매치 데이"
+
+#: default.php:265
+msgid "Matchgame"
+msgstr "매치 게임"
+
+#: default.php:268
+msgid "Number of matchgame"
+msgstr "매치 게임 수"
+
+#: default.php:271
+msgid "Played matchgames"
+msgstr "플레이 한 매치 게임"
+
+#: default.php:274
+msgid "MD"
+msgstr "MD"
+
+#: default.php:277
+msgid "Midfielder"
+msgstr "미드 필더"
+
+#: default.php:280
+msgid "Modify"
+msgstr "수정하기"
+
+#: default.php:283
+msgid "Modified"
+msgstr "수정 됨 "
+
+#: default.php:286
+msgid "Modify a championship"
+msgstr "챔피언십 수정"
+
+#: default.php:289
+msgid "Modify a matchgame"
+msgstr "매치 게임 수정"
+
+#: default.php:292
+msgid "Modify an account"
+msgstr "계정 수정"
+
+#: default.php:295
+msgid "Modify a player"
+msgstr "플레이어 수정"
+
+#: default.php:298
+msgid "Modify predictions"
+msgstr "예측 수정"
+
+#: default.php:301
+msgid "Modify a season"
+msgstr "시즌 수정"
+
+#: default.php:304
+msgid "Modify a team"
+msgstr "팀 수정"
+
+#: default.php:307
+msgid "Modify a matchday"
+msgstr "매치 데이 수정"
+
+#: default.php:310
+msgid "Motivation"
+msgstr "동기"
+
+#: default.php:313
+msgid "My account"
+msgstr "내 계정"
+
+#: default.php:319
+msgid "Next"
+msgstr "다음"
+
+#: default.php:322
+msgid "No"
+msgstr "아니요"
+
+#: default.php:325
+msgid "Not played"
+msgstr "아직 플레이하지 않음"
+
+#: default.php:328
+msgid "No championship"
+msgstr "챔피언십 없음"
+
+#: default.php:331
+msgid "No matchgame"
+msgstr "매치 게임 없음"
+
+#: default.php:334
+msgid "No matchday"
+msgstr "매치 데이 없음"
+
+#: default.php:337
+msgid "No season"
+msgstr "시즌 없음"
+
+#: default.php:340
+msgid "No team"
+msgstr "팀 없음"
+
+#: default.php:343
+msgid "Number"
+msgstr "번호"
+
+#: default.php:346
+msgid "Number of matchdays"
+msgstr "매치 데이 수"
+
+#: default.php:349
+msgid "Odds"
+msgstr "배당률"
+
+#: default.php:352
+msgid "Average played odds"
+msgstr "평균 플레이 배당률"
+
+#: default.php:358
+msgid "Confirm password"
+msgstr "비밀번호 확인"
+
+#: default.php:361
+msgid "Physical form"
+msgstr "물리적 형태"
+
+#: default.php:364
+msgid "Player"
+msgstr "플레이어"
+
+#: default.php:367
+msgid "Plugins"
+msgstr "플러그인"
+
+#: default.php:370
+msgid "Position"
+msgstr "위치"
+
+#: default.php:373
+msgid "Prediction"
+msgstr "예측"
+
+#: default.php:376
+msgid "Predictions"
+msgstr "예측"
+
+#: default.php:379
+msgid "Predictions history"
+msgstr "예측 역사"
+
+#: default.php:382
+msgid "Previous results for the same criteria"
+msgstr "동일한 기준에 대한 이전 결과"
+
+#: default.php:385
+msgid "Preferences"
+msgstr "환경 설정"
+
+#: default.php:388
+msgid "Previous"
+msgstr "이전"
+
+#: default.php:391
+msgid "Profit"
+msgstr "이익"
+
+#: default.php:394
+msgid "Profit sum"
+msgstr "이익 합계"
+
+#: default.php:397
+msgid "Profit by matchday"
+msgstr "매치 데이 이익"
+
+#: default.php:400
+msgid "Profit evolution"
+msgstr "이익 진화"
+
+#: default.php:403
+msgid "Pts"
+msgstr "포인트들"
+
+#: default.php:406
+msgid "Quick nav"
+msgstr "빠른 탐색 "
+
+#: default.php:409
+msgid "Ranking"
+msgstr "순위"
+
+#: default.php:412
+msgid "Rating"
+msgstr "평가"
+
+#: default.php:415
+msgid "Average rating"
+msgstr "평균 평가"
+
+#: default.php:418
+msgid "Red cards"
+msgstr "레드 카드"
+
+#: default.php:421
+msgid "Result"
+msgstr "결과"
+
+#: default.php:424
+msgid "Results"
+msgstr "결과"
+
+#: default.php:427
+msgid "ROI"
+msgstr "ROI"
+
+#: default.php:430
+msgid "ROI is losing!"
+msgstr "ROI가 떨어지고 있습니다! "
+
+#: default.php:433
+msgid "ROI is neutral!"
+msgstr "ROI는 중립적입니다!"
+
+#: default.php:436
+msgid "ROI wins!"
+msgstr "ROI가 승리합니다! "
+
+#: default.php:439
+msgid "ROI is excellent!"
+msgstr "ROI는 훌륭합니다! "
+
+#: default.php:442
+msgid "Role"
+msgstr "역할"
+
+#: default.php:445
+msgid "Save"
+msgstr "저장"
+
+#: default.php:448
+msgid "Saved"
+msgstr "저장되었다"
+
+#: default.php:451
+msgid "Season"
+msgstr "시즌"
+
+#: default.php:454
+msgid "Select"
+msgstr "고르다"
+
+#: default.php:457
+msgid "Select another season"
+msgstr "다른 시즌 선택"
+
+#: default.php:460
+msgid "Selected"
+msgstr "선택된"
+
+#: default.php:463
+msgid "Select a championship"
+msgstr "챔피언십 선택"
+
+#: default.php:466
+msgid "Select a matchday"
+msgstr "매치 데이 선택"
+
+#: default.php:469
+msgid "Select a player"
+msgstr "선수 선택"
+
+#: default.php:472
+msgid "Select a season"
+msgstr "시즌 선택"
+
+#: default.php:475
+msgid "Select the teams"
+msgstr "팀 선택"
+
+#: default.php:478
+msgid "Speculative play!"
+msgstr "투기 적 플레이!"
+
+#: default.php:481
+msgid "Very speculative play!"
+msgstr "매우 사변적 인 플레이!"
+
+#: default.php:484
+msgid "Statistics"
+msgstr "통계"
+
+#: default.php:487
+msgid "Success"
+msgid_plural "Successes"
+msgstr[0] "성공"
+
+#: default.php:490
+msgid "Success rate"
+msgstr "성공률"
+
+#: default.php:493
+msgid "Switch to semi-automatical"
+msgstr "수동 반자동으로 전환"
+
+#: default.php:496
+msgid "Switch to manual mode"
+msgstr "수동 모드로 전환"
+
+#: default.php:499
+msgid "Team"
+msgstr "팀"
+
+#: default.php:502
+msgid "Teams"
+msgstr "팀"
+
+#: default.php:505
+msgid "Team of the week"
+msgstr "금주의 팀"
+
+#: default.php:508
+msgid "Theme"
+msgstr "테마"
+
+#: default.php:511
+msgid "Trend"
+msgstr "경향"
+
+#: default.php:514
+msgid ""
+"In the last three matches, if team 1 has min 5 points and team 2 has max 1 "
+"point (+1/-1)"
+msgstr ""
+"지난 세 경기에서 팀 1의 최소 점수가 5 점이고 팀 2의 점수가 최대 1 점인 경"
+"우 (+ 1 / -1)"
+
+#: default.php:517
+msgid "FP"
+msgstr "FP"
+
+#: default.php:520
+msgid "Football predictions"
+msgstr "축구 예측"
+
+#: default.php:523
+msgid "Website datas"
+msgstr "웹 사이트 데이터"
+
+#: default.php:526
+msgid "Yes"
+msgstr "네"
+
+#: default.php:529
+msgid "Warning: this name already exists!"
+msgstr "경고 :이 이름은 이미 존재합니다!"
+
+#: default.php:532
+msgid "Weather"
+msgstr "날씨"
+
+#: default.php:535
+msgid "High rain favors the less technical team (+2)"
+msgstr "높은 비는 기술이 부족한 팀 )에 적합합니다 (+2)"
+
+#: default.php:538
+msgid "Low rain is neutral (0)"
+msgstr "낮은 비는 중립적입니다 (0)"
+
+#: default.php:541
+msgid "Middle rain favors the less technical team (+1)"
+msgstr "기술 팀이 적은 팀 에서는 중간 비가 더 좋습니다 (+1)"
+
+#: default.php:544
+msgid "Sun is neutral (0)"
+msgstr "태양은 중립입니다 (0)"
+
+#: default.php:547
+msgid "Weather code"
+msgstr "날씨 코드"
+
+#: default.php:550
+msgid "Website name"
+msgstr "웹 사이트 이름"
+
+#: default.php:553
+msgid "W"
+msgstr "W"
+
+#~ msgid "Low rain favors the less technical team (+1)"
+#~ msgstr "기술력이 부족한 팀은 낮은 비가 더 좋습니다 (+1)"
