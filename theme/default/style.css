@@ -53,7 +53,7 @@ select, input {font-size:.8em;}
 table input {min-width:0}
 select {margin-bottom:1em}
 th,td {padding:.2em .5em}
-a{color:#382;text-decoration:none;padding:0 .5em}
+a{color:#c8c8c8;;text-decoration:none;padding:0 .5em}
 a:hover{color:#fff;}
 
 header a:hover, table a, table a:hover{background:none}
@@ -73,6 +73,7 @@ header{
 	overflow:hidden;
 	position:fixed;
 	background: #147b45;
+	z-index: 99;
 }
 header h1 {
 	margin:0;

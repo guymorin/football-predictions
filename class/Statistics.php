@@ -423,7 +423,7 @@ class Statistics
         foreach ($this->graph as $k => $v){
             $cx = $k*10;
             $cy = -$v*2;
-            $color = valColor(-($cy));
+            $color = 'yellow';
             $val .= "<circle r='2' cx='" . $cx. " ' cy='" . $cy. " ' fill='" . $color. " ' />\n";
             $val .= "<line x1='" . $cxPrec. " ' y1='" . $cyPrec. " ' x2='" . $cx. " ' y2='" . $cy. " ' stroke='" . $color. " ' stroke-width='1' />\n";
             $cxPrec = $cx;
