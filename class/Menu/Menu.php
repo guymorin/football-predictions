@@ -19,7 +19,12 @@ class Menu
         $val = '';
         if(isset($_SESSION['userLogin'])){
             $val .= "  <input type='checkbox' id='fp-button' />\n";
-            $val .= "  <label class='hamburger'  for='fp-button'>&#x2630;</label>\n";
+            $hamburgerIcon = '<svg viewBox="0 0 50 40" width="20" height="20" fill="#eee">
+		  		<rect width="50" height="7"></rect>
+		  		<rect y="15" width="50" height="7"></rect>
+		  		<rect y="30" width="50" height="7"></rect>
+			      </svg>';
+            $val .= "  <label class='hamburger'  for='fp-button'>".$hamburgerIcon."</label>\n";
             $val .= "  <div id='fp-menu'>\n";
             $val .= "  <ul>\n";
             $val .= "	 <li><a href='/index.php?page=account&exit=1'>"
