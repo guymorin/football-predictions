@@ -169,6 +169,7 @@ else {
     $counter = $pdo->rowCount();
     if($counter > 0){
         
+        
         if($_SESSION['role']==2) {
             $switchText = 'toManual';
             if($manual==1) $switchText = 'toAuto';          
@@ -178,6 +179,7 @@ else {
         // Modify form
         echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";
         echo $form->inputAction('modify');
+
         
         if($manual==1)  echo $form->inputHidden('manual','1');
         else            Predictions::teamsBonusMalus($pdo);
@@ -196,7 +198,11 @@ else {
             $pred->sumCriterion($d);
             $pred->displayCriteria($d, $form, $isManual);
         }
+        
+        echo "<fieldset style='display: block;width: 0; margin: 0 auto;'>\n";
         echo $form->submit(Theme::icon('modify')." ".Language::title('modify'));
+        echo "</fieldset>\n";
+        
         echo "</form>\n";
         
     } else echo Language::title('noMatch');

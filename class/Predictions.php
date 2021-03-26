@@ -50,6 +50,7 @@ class Predictions
     private $trend2;
     private $v1;
     private $v2;
+    private $weatherIsAuto;
     
     /**
      *
@@ -259,14 +260,13 @@ class Predictions
             if(isset($d->weather1)) $this->team2Weather = $d->weather2;
         } else {
             // Weather
-            
+            $this->weatherIsAuto = false;
             if($d->date!=""){
                 $date1 = new \DateTime($d->date);
                 $date2 = new \DateTime(date('Y-m-d'));
                 $diff = $date2->diff($date1)->format("%a");
                 
-                if($diff>=0 && $diff<14){
-                    
+                if($diff>=0 && $diff<14){   
                     $req = "SELECT plugin_name
                     FROM plugin
                     WHERE activate=1
@@ -279,6 +279,7 @@ class Predictions
                         $this->team2Weather = MeteoConcept::getTeamWeather(2);
                         $this->cloud = MeteoConcept::$cloud;
                         $this->cloudText = MeteoConcept::$cloudText;
+                        $this->weatherIsAuto = true;
                     }
                 }
             }
@@ -347,14 +348,18 @@ class Predictions
         echo "</td>\n";
         if($d->result!="") echo "<td>".$this->team1Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' type='number' placeholder='0' ";
+            echo "  		  <td><input size='1' ";
+            if($this->weatherIsAuto)    echo "type='text' readonly ";
+            else                        echo "type='number' placeholder='0' ";
             echo "name='weather1[$this->id]' value='".$this->team1Weather."'></td>\n";
         }
         echo "  		  <td></td>\n";
         
         if($d->result!="") echo "<td>".$this->team2Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' type='number' placeholder='0' ";
+            echo "  		  <td><input size='1' ";
+            if($this->weatherIsAuto)    echo "type='text' readonly ";
+            else                        echo "type='number' placeholder='0' ";
             echo "name='weather2[$this->id]' value='".$this->team2Weather."'></td>\n";
         }
         echo "          </tr>\n";
@@ -369,7 +374,7 @@ class Predictions
         if($d->result!="") echo "<td>".$this->mv1."</td>\n";
         else {
             echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
+            if($manual==false) echo "type='text' readonly ";
             else echo "type='number' placeholder='0' ";
             echo "name='marketValue1[$this->id]' value='".$this->mv1."'></td>\n";
         }
@@ -575,6 +580,7 @@ class Predictions
         // Switch form
         $val = "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
         $icon = Theme::icon('switch')." ";
+        $val .= "<fieldset>\n";
         switch($type){
             case "toAuto":
                 $val .= $form->inputHidden('manual','0');
@@ -587,6 +593,7 @@ class Predictions
                 break;
             default:
         }
+        $val .= "</fieldset>\n";
         $val .= "</form>\n";
         $val .= "<br />\n";
         return $val;

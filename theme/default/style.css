@@ -111,10 +111,12 @@ nav a {
 #fp .hamburger {
 	position: absolute;
 	top: -.1em;
+	left: 0;
+	padding: 0 .3em;
 	font-size:1.8em;
 	font-weight: bold;
 	color:#fff !important;
-	cursor: pointer;
+    cursor: pointer;
 	transition:color .2s;
 }
 #fp input:checked + label,
@@ -337,6 +339,12 @@ section .graph {
 }
 section .graph svg {color: #fff;padding:.5em;}
 
+section .graph svg .layer circle.green {fill: #6f6}
+section .graph svg .layer circle.red   {fill: #f66}
+section .graph svg .layer line.green   {stroke: #6f6; stroke-width: 1;}
+section .graph svg .layer line.red     {stroke: #f66; stroke-width: 1;}
+
+section #results {width: 100%; overflow-x: auto;}
 section #results td:nth-child(3){width:10em;text-align:left}
 
 section #teamOfTheWeek td:nth-child(2){width:20em;}
