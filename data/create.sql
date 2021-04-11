@@ -60,7 +60,8 @@ CREATE TABLE `criterion` (
   `trend2` int NOT NULL DEFAULT '0',
   `histo1` int NOT NULL DEFAULT '0',
   `histoD` int NOT NULL DEFAULT '0',
-  `histo2` int NOT NULL DEFAULT '0'
+  `histo2` int NOT NULL DEFAULT '0',
+  `isValidate` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

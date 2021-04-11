@@ -15,6 +15,8 @@ echo "<h2>" . Theme::icon('matchday') . " "
 // Values
 $manual = '';
 isset($_POST['manual'])     ? $manual=$error->check("Digit",$_POST['manual']) : null;
+$isValidate = 0;
+isset($_POST['isValidate']) ? $isValidate=$error->check("Digit",$_POST['isValidate']) : null;
 if($manual=='') isset($_GET['manual'])      ? $manual=$error->check("Digit",$_GET['manual']) : null;
 
 // Modified popup
@@ -92,6 +94,9 @@ if($modify==1){
                 isset($hiMatchD[$k]) ? $req.=$hiMatchD[$k] : $req.=0;
                 $req.="','";
                 isset($hiMatch2[$k]) ? $req.=$hiMatch2[$k] : $req.=0;
+                $req.="','";
+                if($isValidate>0) $req.=1;
+                else $req.=0;
                 $req.="');";
             }
             if($data->nb == 1){
@@ -152,6 +157,10 @@ if($modify==1){
                 $req.="',";
                 $req.="histo2='";
                 isset($hiMatch2[$k]) ? $req.=$hiMatch2[$k] : $req.=0;
+                $req.="',";
+                $req.="isValidate='";
+                if($isValidate>0) $req.=1;
+                else $req.=0;
                 $req.="' WHERE id_matchgame='".$k."';";
             }  
         }
@@ -170,7 +179,7 @@ else {
     if($counter > 0){
         
         
-        if($_SESSION['role']==2) {
+        if(($_SESSION['role']==2)and($data[0]->isValidate==0)) {
             $switchText = 'toManual';
             if($manual==1) $switchText = 'toAuto';          
             echo Predictions::switchButton($form, $switchText);
@@ -182,17 +191,19 @@ else {
 
         
         if($manual==1)  echo $form->inputHidden('manual','1');
-        else            Predictions::teamsBonusMalus($pdo);
+        else            {
+            echo $form->inputHidden('isValidate','1');
+            Predictions::teamsBonusMalus($pdo);
+        }
         
         // Predictions for the matchday
         foreach ($data as $d)
         {
-            
             $pred = new Predictions();
             $isResult = true;
             $isManual = false;
-            if($manual==1)          $isManual=true;
-            elseif($d->result=="")  $isResult=false;
+            if(($manual==1)or($d->isValidate==1))   $isManual=true;
+            elseif($d->result=="")                  $isResult=false;
             
             $pred->setCriteria($d, $pdo, $isResult, $isManual);
             $pred->sumCriterion($d);
@@ -200,7 +211,7 @@ else {
         }
         
         echo "<fieldset style='display: block;width: 0; margin: 0 auto;'>\n";
-        echo $form->submit(Theme::icon('modify')." ".Language::title('modify'));
+        echo $form->submit(Theme::icon('floppyDisk')." ".Language::title('save'));
         echo "</fieldset>\n";
         
         echo "</form>\n";

@@ -148,9 +148,9 @@ class Statistics
             $pred = new Predictions();
             
             // Marketvalue
-            $isResult = false;
+            $isResult = true;
             $isManual = true;
-            $pred->setCriteria($d, $pdo, true, $isManual);
+            $pred->setCriteria($d, $pdo, $isResult, $isManual);
             
             // Sum
             $this->win = '';
