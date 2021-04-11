@@ -3,4 +3,5 @@
 .settings
 /install/*.inc
 /data/2*
+/data/createdata.sql
 /vendor/

@@ -171,7 +171,7 @@ else {
         }
         
         echo "</table>\n";
-        echo $form->submit(Language::title('modify'));
+        echo $form->submit(Theme::icon('modify').' '.Language::title('modify'));
         echo "</form>\n";
     } else echo Language::title('noMatch');
 }
