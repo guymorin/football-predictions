@@ -517,15 +517,15 @@ class Predictions
         echo "  		<tr>\n";
         echo "  		  <td>" . (Language::title('prediction')) . "</td>\n";
         echo "  		  <td>";
-        if($this->prediction == '1') echo Theme::icon('OK');
+        if($this->prediction == '1') echo Theme::icon('soccer');
         else echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
-        if($this->prediction == 'D') echo Theme::icon('OK');
+        if($this->prediction == 'D') echo Theme::icon('soccer');
         else echo Theme::icon('KO');
         echo "</td>\n";
         echo "  		  <td>";
-        if($this->prediction == '2') echo Theme::icon('OK');
+        if($this->prediction == '2') echo Theme::icon('soccer');
         else echo Theme::icon('KO');
         echo "</td>\n";
         echo "          </tr>\n";
