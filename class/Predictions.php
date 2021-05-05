@@ -115,11 +115,12 @@ class Predictions
     private function setHistory($pdo,$d,$result=false,$manual=false){
         // Predictions history
         $this->historyHome=$this->historyDraw=$this->historyAway=0;
-        if($result or $manual){
+        if($result){
             $this->historyHome = $d->histo1;
             $this->historyDraw = $d->histoD;
             $this->historyAway = $d->histo2;
         } else {
+            // Function to select history sums
             $r = result('history',$pdo,$d,$this->team1Weather,$this->team2Weather);
             $this->historyHome=criterion("predictionsHistoryHome",$r,$pdo);
             $this->historyDraw=criterion("predictionsHistoryDraw",$r,$pdo);
@@ -290,270 +291,272 @@ class Predictions
     
     public function displayCriteria($d, $form, $manual=false){
         // Display table
-        if($d->result=="") echo $form->inputHidden('id_match[]',$d->id_matchgame);
-        echo "	 <table class='prediction";
-        if($manual) echo " manual";
-        echo "'>\n";
+        $val = '';
+        if($d->result=="") $val .= $form->inputHidden('id_match[]',$d->id_matchgame);
+        $val .= "	 <table class='prediction";
+        if($manual) $val .= " manual";
+        $val .= "'>\n";
         
         // Header
-        echo "  		<tr>\n";
-        echo "  		  <th>".Theme::icon('matchday')." ".Language::title('MD').$_SESSION['matchdayNum'];
-        echo ", ".$d->date."<br />";
-        echo Theme::icon('team')."&nbsp;".$d->name1."<br />";
-        echo Theme::icon('team')."&nbsp;".$d->name2;
-        echo "</th>\n";
-        echo "            <th>1</th>\n";
-        echo "            <th>". Language::title('draw');
-        if($manual) echo "<input type='hidden' name='id_match[]' value='".$d->id_matchgame."'>";
-        echo "</th>\n";
-        echo "            <th>2</th>\n";
-        echo "          </tr>\n";
+        $val .= "  		<tr>\n";
+        $val .= "  		  <th>".Theme::icon('matchday')." ".Language::title('MD').$_SESSION['matchdayNum'];
+        $val .= ", ".$d->date."<br />";
+        $val .= Theme::icon('team')."&nbsp;".$d->name1."<br />";
+        $val .= Theme::icon('team')."&nbsp;".$d->name2;
+        $val .= "</th>\n";
+        $val .= "            <th>1</th>\n";
+        $val .= "            <th>". Language::title('draw');
+        if($manual) $val .= "<input type='hidden' name='id_match[]' value='".$d->id_matchgame."'>";
+        $val .= "</th>\n";
+        $val .= "            <th>2</th>\n";
+        $val .= "          </tr>\n";
         
         // Motivation
-        echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('motivation')) . "</td>\n";
-        if($d->result!="") echo "<td>".$this->motivC1."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='motivation1[$this->id]' value='".$this->motivC1."' placeholder='0'></td>\n";
-        echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$this->motivC2."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='motivation2[$this->id]' value='".$this->motivC2."' placeholder='0'></td>\n";
-        echo "          </tr>\n";
+        $val .= "  		<tr>\n";
+        $val .= "  		  <td>" . (Language::title('motivation')) . "</td>\n";
+        if($d->result!="") $val .= "<td>".$this->motivC1."</td>\n";
+        else $val .= "  		  <td><input size='1' type='number' name='motivation1[$this->id]' value='".$this->motivC1."' placeholder='0'></td>\n";
+        $val .= "  		  <td></td>\n";
+        if($d->result!="") $val .= "<td>".$this->motivC2."</td>\n";
+        else $val .= "  		  <td><input size='1' type='number' name='motivation2[$this->id]' value='".$this->motivC2."' placeholder='0'></td>\n";
+        $val .= "          </tr>\n";
         
         // Physical form
-        echo "  		<tr>\n";
-        echo "  		  <td>" . Language::title('physicalForm') . "</td>\n";
-        if($d->result!="") echo "<td>".$this->physicalC1."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='physicalForm1[$this->id]' value='".$this->physicalC1."' placeholder='0'></td>\n";
-        echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$this->physicalC2."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='physicalForm2[$this->id]' value='".$this->physicalC2."' placeholder='0'></td>\n";
-        echo "          </tr>\n";
+        $val .= "  		<tr>\n";
+        $val .= "  		  <td>" . Language::title('physicalForm') . "</td>\n";
+        if($d->result!="") $val .= "<td>".$this->physicalC1."</td>\n";
+        else $val .= "  		  <td><input size='1' type='number' name='physicalForm1[$this->id]' value='".$this->physicalC1."' placeholder='0'></td>\n";
+        $val .= "  		  <td></td>\n";
+        if($d->result!="") $val .= "<td>".$this->physicalC2."</td>\n";
+        else $val .= "  		  <td><input size='1' type='number' name='physicalForm2[$this->id]' value='".$this->physicalC2."' placeholder='0'></td>\n";
+        $val .= "          </tr>\n";
 
-        echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('bestPlayers')) . "</td>\n";
-        if($d->result!="") echo "<td>".$d->bestPlayers1."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='bestPlayers1[$this->id]' value='".$d->bestPlayers1."' placeholder='0'></td>\n";
-        echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$d->bestPlayers2."</td>\n";
-        else echo "  		  <td><input size='1' type='number' name='bestPlayers2[$this->id]' value='".$d->bestPlayers2."' placeholder='0'></td>\n";
-        echo "          </tr>\n";
+        $val .= "  		<tr>\n";
+        $val .= "  		  <td>" . (Language::title('bestPlayers')) . "</td>\n";
+        if($d->result!="") $val .= "<td>".$d->bestPlayers1."</td>\n";
+        else $val .= "  		  <td><input size='1' type='number' name='bestPlayers1[$this->id]' value='".$d->bestPlayers1."' placeholder='0'></td>\n";
+        $val .= "  		  <td></td>\n";
+        if($d->result!="") $val .= "<td>".$d->bestPlayers2."</td>\n";
+        else $val .= "  		  <td><input size='1' type='number' name='bestPlayers2[$this->id]' value='".$d->bestPlayers2."' placeholder='0'></td>\n";
+        $val .= "          </tr>\n";
         
         // Weather
-        echo "  		<tr>\n";
-        echo "  		  <td>";
+        $val .= "  		<tr>\n";
+        $val .= "  		  <td>";
         if(($d->result=="") and ($manual==false)){
-            echo "<a href='#' class='tooltip'><big>".$this->cloud."</big><span>".$this->cloudText."</span></a> ";
+            $val .= "<a href='#' class='tooltip'><big>".$this->cloud."</big><span>".$this->cloudText."</span></a> ";
         }
-        echo Language::title('weather');
-        echo "</td>\n";
-        if($d->result!="") echo "<td>".$this->team1Weather."</td>\n";
+        $val .= Language::title('weather');
+        $val .= "</td>\n";
+        if($d->result!="") $val .= "<td>".$this->team1Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($this->weatherIsAuto)    echo "type='text' readonly ";
-            else                        echo "type='number' placeholder='0' ";
-            echo "name='weather1[$this->id]' value='".$this->team1Weather."'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($this->weatherIsAuto)    $val .= "type='text' readonly ";
+            else                        $val .= "type='number' placeholder='0' ";
+            $val .= "name='weather1[$this->id]' value='".$this->team1Weather."'></td>\n";
         }
-        echo "  		  <td></td>\n";
+        $val .= "  		  <td></td>\n";
         
-        if($d->result!="") echo "<td>".$this->team2Weather."</td>\n";
+        if($d->result!="") $val .= "<td>".$this->team2Weather."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($this->weatherIsAuto)    echo "type='text' readonly ";
-            else                        echo "type='number' placeholder='0' ";
-            echo "name='weather2[$this->id]' value='".$this->team2Weather."'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($this->weatherIsAuto)    $val .= "type='text' readonly ";
+            else                        $val .= "type='number' placeholder='0' ";
+            $val .= "name='weather2[$this->id]' value='".$this->team2Weather."'></td>\n";
         }
-        echo "          </tr>\n";
+        $val .= "          </tr>\n";
         
         // Market value
-        echo "  		<tr>\n";
-        echo "  		  <td>";
-        echo "<a href='#' class='tooltip'><big>".Theme::icon('team')."</big>";
-        echo "<span>".Language::title('marketValueText')."</span></a>";
-        echo " " . Language::title('marketValue');
-        echo "</td>";
-        if($d->result!="") echo "<td>".$this->mv1."</td>\n";
+        $val .= "  		<tr>\n";
+        $val .= "  		  <td>";
+        $val .= "<a href='#' class='tooltip'><big>".Theme::icon('team')."</big>";
+        $val .= "<span>".Language::title('marketValueText')."</span></a>";
+        $val .= " " . Language::title('marketValue');
+        $val .= "</td>";
+        if($d->result!="") $val .= "<td>".$this->mv1."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "name='marketValue1[$this->id]' value='".$this->mv1."'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($manual==false) $val .= "type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "name='marketValue1[$this->id]' value='".$this->mv1."'></td>\n";
         }
-        echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$this->mv2."</td>\n";
+        $val .= "  		  <td></td>\n";
+        if($d->result!="") $val .= "<td>".$this->mv2."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "name='marketValue2[$this->id]' value='".$this->mv2."'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "name='marketValue2[$this->id]' value='".$this->mv2."'></td>\n";
         }
-        echo "          </tr>\n";
+        $val .= "          </tr>\n";
         
         // Home / Away
-        echo "  		<tr>\n";
-        echo "  		  <td>";
-        echo "<a href='#' class='tooltip'><big>".Theme::icon('championship')."</big>";
-        echo "<span>".Language::title('homeAwayText')."</span></a>";
-        echo " " . Language::title('home') . " / " . Language::title('away');
-        echo "</td>";
-        if($d->result!="") echo "<td>".$this->dom."</td>\n";
+        $val .= "  		<tr>\n";
+        $val .= "  		  <td>";
+        $val .= "<a href='#' class='tooltip'><big>".Theme::icon('championship')."</big>";
+        $val .= "<span>".Language::title('homeAwayText')."</span></a>";
+        $val .= " " . Language::title('home') . " / " . Language::title('away');
+        $val .= "</td>";
+        if($d->result!="") $val .= "<td>".$this->dom."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "name='home_away1[$this->id]' value='".$this->dom."'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "name='home_away1[$this->id]' value='".$this->dom."'></td>\n";
         }
-        echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$this->ext."</td>\n";
+        $val .= "  		  <td></td>\n";
+        if($d->result!="") $val .= "<td>".$this->ext."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "name='home_away2[$this->id]' value='".$this->ext."'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "name='home_away2[$this->id]' value='".$this->ext."'></td>\n";
         }
-        echo "          </tr>\n";
+        $val .= "          </tr>\n";
         
         // Current form
-        echo "  		<tr>\n";
-        echo "  		  <td>";
-        echo "<a href='#' class='tooltip'><big>".Theme::icon('currentForm')."</big>";
-        echo "<span>".Language::title('currentFormText')."</span></a>";
-        echo " " . Language::title('currentForm');
-        echo "</td>";
-        if($d->result!="") echo "<td>".$this->currentFormTeam1."</td>\n";
+        $val .= "  		<tr>\n";
+        $val .= "  		  <td>";
+        $val .= "<a href='#' class='tooltip'><big>".Theme::icon('currentForm')."</big>";
+        $val .= "<span>".Language::title('currentFormText')."</span></a>";
+        $val .= " " . Language::title('currentForm');
+        $val .= "</td>";
+        if($d->result!="") $val .= "<td>".$this->currentFormTeam1."</td>\n";
         else {
-            echo "  		  <td><input size='1' name='currentForm1[$this->id]' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "value='".$this->currentFormTeam1."'></td>\n";
+            $val .= "  		  <td><input size='1' name='currentForm1[$this->id]' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "value='".$this->currentFormTeam1."'></td>\n";
         }
-        echo "  		  <td></td>\n";
-        if($d->result!="") echo "<td>".$this->currentFormTeam2."</td>\n";
+        $val .= "  		  <td></td>\n";
+        if($d->result!="") $val .= "<td>".$this->currentFormTeam2."</td>\n";
         else {
-            echo "  		  <td><input size='1' name='currentForm2[$this->id]' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "value='".$this->currentFormTeam2."'></td>\n";
+            $val .= "  		  <td><input size='1' name='currentForm2[$this->id]' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "value='".$this->currentFormTeam2."'></td>\n";
         }
-        echo "          </tr>\n";
+        $val .= "          </tr>\n";
         
         
         // Trend
-        echo "          <tr>\n";
-        echo "  		  <td>";
-        echo "<a href='#' class='tooltip'><big>".Theme::icon('trend')."</big>";
-        echo "<span>".Language::title('trendText')."</span></a>";
-        echo " " . Language::title('trend');
-        echo "</td>";
+        $val .= "          <tr>\n";
+        $val .= "  		  <td>";
+        $val .= "<a href='#' class='tooltip'><big>".Theme::icon('trend')."</big>";
+        $val .= "<span>".Language::title('trendText')."</span></a>";
+        $val .= " " . Language::title('trend');
+        $val .= "</td>";
 
-        if($d->result!="") echo "<td>".$this->trend1."</td>\n";
+        if($d->result!="") $val .= "<td>".$this->trend1."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "name='trend1[$this->id]' value='";
-            echo $this->trend1;
-            echo "'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "name='trend1[$this->id]' value='";
+            $val .= $this->trend1;
+            $val .= "'></td>\n";
         }
         
-        echo "  		  <td></td>\n";
+        $val .= "  		  <td></td>\n";
         
-        if($d->result!="") echo "<td>".$this->trend2."</td>\n";
+        if($d->result!="") $val .= "<td>".$this->trend2."</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "name='trend2[$this->id]' value='";
-            echo $this->trend2;
-            echo "'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "name='trend2[$this->id]' value='";
+            $val .= $this->trend2;
+            $val .= "'></td>\n";
         }
-        echo "          </tr>\n";
+        $val .= "          </tr>\n";
         
-        echo "          <tr>\n";
-        echo "  		  <td>";
-        echo "<a href='#' class='tooltip'><big>".Theme::icon('predictionsHistory')."</big>";
-        echo "<span>".Language::title('predictionsHistoryText')."</span></a>";
-        echo " " . Language::title('predictionsHistory');
-        echo "</td>";
+        $val .= "          <tr>\n";
+        $val .= "  		  <td>";
+        $val .= "<a href='#' class='tooltip'><big>".Theme::icon('predictionsHistory')."</big>";
+        $val .= "<span>".Language::title('predictionsHistoryText')."</span></a>";
+        $val .= " " . Language::title('predictionsHistory');
+        $val .= "</td>";
         
-        if($d->result!="") echo "<td>$this->historyHome</td>\n";
+        if($d->result!="") $val .= "<td>$this->historyHome</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "name='histo1[$this->id]' value='";
-            echo $this->historyHome;
-            echo "'></td>\n";
-        }
-        
-        if($d->result!="") echo "<td>$this->historyDraw</td>\n";
-        else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "name='histoD[$this->id]' value='";
-            echo $this->historyDraw;
-            echo "'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "name='histo1[$this->id]' value='";
+            $val .= $this->historyHome;
+            $val .= "'></td>\n";
         }
         
-        if($d->result!="") echo "<td>$this->historyAway</td>\n";
+        if($d->result!="") $val .= "<td>$this->historyDraw</td>\n";
         else {
-            echo "  		  <td><input size='1' ";
-            if($manual==false) echo "type='type='text' readonly ";
-            else echo "type='number' placeholder='0' ";
-            echo "name='histo2[$this->id]' value='";
-            echo $this->historyAway;
-            echo "'></td>\n";
+            $val .= "  		  <td><input size='1' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "name='histoD[$this->id]' value='";
+            $val .= $this->historyDraw;
+            $val .= "'></td>\n";
         }
         
-        echo "          </tr>\n";
+        if($d->result!="") $val .= "<td>$this->historyAway</td>\n";
+        else {
+            $val .= "  		  <td><input size='1' ";
+            if($manual==false) $val .= "type='type='text' readonly ";
+            else $val .= "type='number' placeholder='0' ";
+            $val .= "name='histo2[$this->id]' value='";
+            $val .= $this->historyAway;
+            $val .= "'></td>\n";
+        }
         
-        echo "  		<tr>\n";
-        echo "  		  <td><strong>" . (Language::title('criterionSum')) . "</strong></td>\n";
-        echo "  		  <td><strong>$this->sum1</strong></td>\n";
-        echo "  		  <td><strong>$this->sumD</strong></td>\n";
-        echo "  		  <td><strong>$this->sum2</strong></td>\n";
-        echo "          </tr>\n";
+        $val .= "          </tr>\n";
         
-        echo "  		<tr>\n";
-        echo "  		  <td>" . (Language::title('prediction')) . "</td>\n";
-        echo "  		  <td>";
-        if($this->prediction == '1') echo Theme::icon('soccer');
-        else echo Theme::icon('KO');
-        echo "</td>\n";
-        echo "  		  <td>";
-        if($this->prediction == 'D') echo Theme::icon('soccer');
-        else echo Theme::icon('KO');
-        echo "</td>\n";
-        echo "  		  <td>";
-        if($this->prediction == '2') echo Theme::icon('soccer');
-        else echo Theme::icon('KO');
-        echo "</td>\n";
-        echo "          </tr>\n";
+        $val .= "  		<tr>\n";
+        $val .= "  		  <td><strong>" . (Language::title('criterionSum')) . "</strong></td>\n";
+        $val .= "  		  <td><div id='sum1[$this->id]'>$this->sum1</div></td>\n";
+        $val .= "  		  <td><div id='sumD[$this->id]'>$this->sumD</div></td>\n";
+        $val .= "  		  <td><div id='sum2[$this->id]'>$this->sum2</div></td>\n";
+        $val .= "          </tr>\n";
+        
+        $val .= "  		<tr>\n";
+        $val .= "  		  <td>" . (Language::title('prediction')) . "</td>\n";
+        $val .= "  		  <td>";
+        if($this->prediction == '1') $val .= Theme::icon('soccer');
+        else $val .= Theme::icon('KO');
+        $val .= "</td>\n";
+        $val .= "  		  <td>";
+        if($this->prediction == 'D') $val .= Theme::icon('soccer');
+        else $val .= Theme::icon('KO');
+        $val .= "</td>\n";
+        $val .= "  		  <td>";
+        if($this->prediction == '2') $val .= Theme::icon('soccer');
+        else $val .= Theme::icon('KO');
+        $val .= "</td>\n";
+        $val .= "          </tr>\n";
         
         if($d->result!=""){
-            echo "  		<tr>\n";
-            echo "  		  <td>" . (Language::title('result')) . "</td>\n";
-            echo "  		  <td>";
+            $val .= "  		<tr>\n";
+            $val .= "  		  <td>" . (Language::title('result')) . "</td>\n";
+            $val .= "  		  <td>";
             if($d->result == '1'){
-                if($d->result == $this->prediction) echo Theme::icon('winOK');
-                else echo Theme::icon('OK');
-            } else echo Theme::icon('KO');
-            echo "</td>\n";
-            echo "  		  <td>";
+                if($d->result == $this->prediction) $val .= Theme::icon('winOK');
+                else $val .= Theme::icon('OK');
+            } else $val .= Theme::icon('KO');
+            $val .= "</td>\n";
+            $val .= "  		  <td>";
             if($d->result == 'D'){
-                if($d->result == $this->prediction) echo Theme::icon('winOK');
-                else echo Theme::icon('OK');
-            } else echo Theme::icon('KO');
-            echo "</td>\n";
-            echo "  		  <td>";
+                if($d->result == $this->prediction) $val .= Theme::icon('winOK');
+                else $val .= Theme::icon('OK');
+            } else $val .= Theme::icon('KO');
+            $val .= "</td>\n";
+            $val .= "  		  <td>";
             if($d->result == '2'){
-                if($d->result == $this->prediction) echo Theme::icon('winOK');
-                else echo Theme::icon('OK');
-            } else echo Theme::icon('KO');
-            echo "</td>\n";
-            echo "          </tr>\n";
+                if($d->result == $this->prediction) $val .= Theme::icon('winOK');
+                else $val .= Theme::icon('OK');
+            } else $val .= Theme::icon('KO');
+            $val .= "</td>\n";
+            $val .= "          </tr>\n";
         }
-        echo "	 </table>\n";
+        $val .= "	 </table>\n";
+        return $val;
     }
     
     static function teamsBonusMalus($pdo){
@@ -578,7 +581,7 @@ class Predictions
     
     static function switchButton($form,$type){
         // Switch form
-        $val = "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
+        $val = "<form action='index.php?page=prediction' method='POST'>\n";
         $icon = Theme::icon('switch')." ";
         $val .= "<fieldset>\n";
         switch($type){

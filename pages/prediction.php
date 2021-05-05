@@ -172,7 +172,11 @@ if($modify==1){
 // Default page or manual page
 else {
     echo "<h3>" . (Language::title('prediction')) . "</h3>\n";
+    
     echo changeMD($pdo,"prediction");
+    echo "<div id='response'></div>\n";
+    echo "<div id='uform_response'>\n";
+    
     // Select data
     $data = result('selectCriterion',$pdo);
     $counter = $pdo->rowCount();
@@ -184,12 +188,11 @@ else {
             if($manual==1) $switchText = 'toAuto';          
             echo Predictions::switchButton($form, $switchText);
         }
-        
+
         // Modify form
-        echo "<form id='criterion' action='index.php?page=prediction' method='POST' onsubmit='return confirm();'>\n";
+        echo "<form id='criterion' action='index.php?page=prediction' method='POST'>\n";
         echo $form->inputAction('modify');
 
-        
         if($manual==1)  echo $form->inputHidden('manual','1');
         else            {
             echo $form->inputHidden('isValidate','1');
@@ -207,7 +210,7 @@ else {
             
             $pred->setCriteria($d, $pdo, $isResult, $isManual);
             $pred->sumCriterion($d);
-            $pred->displayCriteria($d, $form, $isManual);
+            echo $pred->displayCriteria($d, $form, $isManual);
         }
         
         echo "<fieldset style='display: block;width: 0; margin: 0 auto;'>\n";
@@ -217,6 +220,67 @@ else {
         echo "</form>\n";
         
     } else echo Language::title('noMatch');
+    echo "</div>\n";
     
 }
+
 ?>
+<script src="jquery/jquery_3-5-1.min.js"></script>
+<script>
+$(document).ready(function(){
+
+	var isSubmit = 1;
+	var formData = null;
+	var valData = 0;
+		            	
+	$("input").change(function(){
+		
+		isSubmit = 0;
+		valData = $(this).attr('name');
+ 		valData = valData.match(/\[(.*?)\]/ig); 
+		valData = valData[0].replace(/[[\]]/g,'');
+		
+    	$("#criterion").submit(function(c){
+    		if(isSubmit==0){
+        		c.preventDefault();
+        		var histo1 = 0;
+        		var histoD = 0;
+        		var histo2 = 0;
+        		var sum1 = 0;
+        		var sumD = 0;
+        		var sum2 = 0;
+           		formData = $(this).serialize(); 
+                $.ajax({
+                    url: 'checkHistoryData.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    success: function(data){
+                        var data_length = data.length;
+                        for (var i = 0; i < data_length; i++) {
+                        	if((data[i]["id_matchgame"])==valData){
+                        		histo1 = data[i]["histo1"];
+                        		histoD = data[i]["histoD"];
+                        		histo2 = data[i]["histo2"];
+                        		sum1 = data[i]["sum1"];
+                        		sumD = data[i]["sumD"];
+                        		sum2 = data[i]["sum2"];
+                        	}
+                        }
+                    	$("input[name='histo1["+valData+"]']").val(histo1);
+                    	$("input[name='histoD["+valData+"]']").val(histoD);
+                    	$("input[name='histo2["+valData+"]']").val(histo2);
+                    	document.getElementById("sum1["+valData+"]").innerHTML=sum1;
+                    	document.getElementById("sumD["+valData+"]").innerHTML=sumD;
+                    	document.getElementById("sum2["+valData+"]").innerHTML=sum2;
+                    }
+                });
+    		}  		            
+    	});
+   		$("#criterion").submit();	
+		isSubmit = 1;
+	});
+
+ });
+</script>
+
