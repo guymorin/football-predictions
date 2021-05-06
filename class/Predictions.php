@@ -516,6 +516,8 @@ class Predictions
         $val .= "  		  <td><div id='sum2[$this->id]'>$this->sum2</div></td>\n";
         $val .= "          </tr>\n";
         
+        if($d->result!=""){
+            
         $val .= "  		<tr>\n";
         $val .= "  		  <td>" . (Language::title('prediction')) . "</td>\n";
         $val .= "  		  <td>";
@@ -532,7 +534,6 @@ class Predictions
         $val .= "</td>\n";
         $val .= "          </tr>\n";
         
-        if($d->result!=""){
             $val .= "  		<tr>\n";
             $val .= "  		  <td>" . (Language::title('result')) . "</td>\n";
             $val .= "  		  <td>";
